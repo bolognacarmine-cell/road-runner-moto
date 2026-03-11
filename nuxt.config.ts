@@ -7,6 +7,10 @@ export default defineNuxtConfig({
 
   // ✅ Configurazione runtime per API e URL pubblico
   runtimeConfig: {
+    mongodbUri: process.env.MONGODB_URI,
+    cloudinaryCloudName: process.env.CLOUDINARY_CLOUD_NAME,
+    cloudinaryApiKey: process.env.CLOUDINARY_API_KEY,
+    cloudinaryApiSecret: process.env.CLOUDINARY_API_SECRET,
     public: {
       siteUrl: 'https://road-runner-moto.it',
       apiBase: 'https://api.road-runner-moto.it'

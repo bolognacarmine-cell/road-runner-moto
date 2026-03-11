@@ -52,29 +52,10 @@ const fetchVehicles = async () => {
 }
 
 fetchVehicles()
-
-// Animazioni GSAP per Hero + FeaturedVehicles + Benefits
-onMounted(async () => {
-  await nextTick()
-  const ctx = gsap.context(() => {
-    gsap.from('.hero-badge', { y: 20, opacity: 0, duration: 0.7 })
-    gsap.from('.hero-title', { y: 40, opacity: 0, duration: 0.9, delay: 0.15 })
-    gsap.from('.hero-subtitle, .hero-actions', {
-      y: 24,
-      opacity: 0,
-      duration: 0.8,
-      stagger: 0.15,
-      delay: 0.35
-    })
-    gsap.from('.featured-grid .moto-card', { y: 28, opacity: 0, duration: 0.7, stagger: 0.12, delay: 0.2 })
-    gsap.from('.benefits-grid .benefit-card', { y: 28, opacity: 0, duration: 0.7, stagger: 0.12, delay: 0.2 })
-  })
-  onUnmounted(() => ctx.revert())
-})
 </script>
 
 <template>
-  <div class="page-shell">
+  <div>
     <!-- Hero dinamico -->
     <HeroSection
       badge="Concessionaria moto e scooter a Capodrise"

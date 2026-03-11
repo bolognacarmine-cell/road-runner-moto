@@ -1,11 +1,32 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted, nextTick } from 'vue'
+import { gsap } from 'gsap'
 
 const mobileMenuOpen = ref(false)
 
 const toggleMenu = () => {
   mobileMenuOpen.value = !mobileMenuOpen.value
 }
+
+onMounted(async () => {
+  await nextTick()
+  // Animazione d'ingresso header
+  gsap.from('.site-header', {
+    y: -100,
+    opacity: 0,
+    duration: 1,
+    ease: 'power4.out'
+  })
+  
+  gsap.from('.brand, .main-nav a, .btn-primary-custom', {
+    y: -20,
+    opacity: 0,
+    duration: 0.8,
+    stagger: 0.1,
+    delay: 0.4,
+    ease: 'power2.out'
+  })
+})
 </script>
 
 <template>
