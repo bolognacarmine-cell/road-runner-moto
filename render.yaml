@@ -2,6 +2,7 @@ services:
   - type: web
     name: road-runner-moto
     runtime: node
+    plan: free
     buildCommand: npm install && npm run build
     startCommand: npm run start
     envVars:
