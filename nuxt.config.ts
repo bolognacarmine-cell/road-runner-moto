@@ -3,7 +3,11 @@ export default defineNuxtConfig({
   compatibilityDate: '2026-03-09',
 
   // ✅ CSS globale
+<<<<<<< HEAD
   css: ['~/assets/css/main.css'],
+=======
+  css: ['./assets/css/main.css'],
+>>>>>>> cbcbbfbc44ce8e2455a9300bcbc47141fe3a8f6f
 
   // ✅ Configurazione runtime per API e URL pubblico
   runtimeConfig: {
@@ -13,7 +17,11 @@ export default defineNuxtConfig({
     }
   },
 
+<<<<<<< HEAD
   // ✅ Configurazione dell’app (head globale)
+=======
+  // ✅ Configurazione dell'app (head globale)
+>>>>>>> cbcbbfbc44ce8e2455a9300bcbc47141fe3a8f6f
   app: {
     head: {
       titleTemplate: '%s | Road Runner Moto',
@@ -69,4 +77,8 @@ export default defineNuxtConfig({
     provider: 'static',
     format: ['webp', 'avif']
   }
+<<<<<<< HEAD
 })
+=======
+})
+>>>>>>> cbcbbfbc44ce8e2455a9300bcbc47141fe3a8f6f
