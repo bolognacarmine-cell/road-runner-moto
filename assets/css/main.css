@@ -141,18 +141,32 @@ a {
 /* --------------------- Hero --------------------- */
 .hero {
   position: relative;
-  min-height: 92vh;
-  display: grid;
-  place-items: center;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   overflow: hidden;
-  background:
-    linear-gradient(rgba(0,0,0,.62), rgba(0,0,0,.80)),
-    radial-gradient(circle at top, rgba(215, 24, 42, 0.18), transparent 35%),
-    url('/hero-moto.jpg') center/cover no-repeat;
+  background: #000;
 }
 
-.hero-overlay { position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(0,0,0,.15), rgba(0,0,0,.5)); }
-.hero-content { position: relative; z-index: 2; text-align: center; max-width: 920px; padding: 90px 0 80px; }
+.hero-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+}
+
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background:
+    linear-gradient(to bottom, rgba(0,0,0,.45), rgba(0,0,0,.7)),
+    radial-gradient(circle at top, rgba(215, 24, 42, 0.12), transparent 40%);
+}
+.hero-content { position: relative; z-index: 2; text-align: center; max-width: 920px; padding: 90px 20px 80px; }
 .hero-badge {
   display: inline-flex;
   align-items: center;

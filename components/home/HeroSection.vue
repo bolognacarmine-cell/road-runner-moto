@@ -1,6 +1,21 @@
 <template>
   <section class="hero">
+    <!-- Video di sfondo -->
+    <video
+      class="hero-video"
+      autoplay
+      muted
+      loop
+      playsinline
+      preload="auto"
+    >
+      <source src="/hero-video.mp4" type="video/mp4" />
+    </video>
+
+    <!-- Overlay scuro sopra il video -->
     <div class="hero-overlay" />
+
+    <!-- Contenuto testuale -->
     <div class="container hero-content">
       <span class="hero-badge">Concessionaria moto e scooter a Capodrise</span>
       <h1 class="hero-title">
@@ -8,7 +23,7 @@
         <span class="hero-dynamic">per moto e scooter</span>
       </h1>
       <p class="hero-subtitle">
-        Road Runner è la tua concessionaria di riferimento per moto e scooter a Capodrise.
+        Vendita plurimarche, assistenza qualificata e ricambi originali
       </p>
       <div class="hero-actions">
         <a href="#moto" class="btn-primary-custom">Scopri i veicoli</a>
@@ -62,63 +77,103 @@ onMounted(async () => {
   min-height: 100vh;
   display: flex;
   align-items: center;
-  background: linear-gradient(135deg, #111, #222);
+  justify-content: center;
   overflow: hidden;
+  background: #000;
 }
 
+/* Video a tutto schermo */
+.hero-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+}
+
+/* Overlay scuro con gradiente per leggibilita del testo */
 .hero-overlay {
   position: absolute;
   inset: 0;
-  background: url('/hero-bg.jpg') center/cover no-repeat;
-  opacity: 0.3;
+  z-index: 1;
+  background:
+    linear-gradient(to bottom, rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.7)),
+    radial-gradient(circle at top, rgba(215, 24, 42, 0.12), transparent 40%);
 }
 
+/* Contenuto testuale sopra il video */
 .hero-content {
   position: relative;
-  z-index: 10;
-  text-align: justify; /* titolo giustificato */
-  padding: 0 20px;
+  z-index: 2;
+  text-align: center;
+  max-width: 920px;
+  padding: 90px 20px 80px;
+}
+
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 18px;
+  padding: 10px 20px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  font-size: 0.95rem;
+  color: #fff;
+  backdrop-filter: blur(6px);
+  letter-spacing: 0.03em;
 }
 
 .hero-title {
-  font-family: 'Anton', sans-serif; /* font graffiante */
-  font-size: clamp(2rem, 6vw, 4rem);
-  line-height: 1.1;
+  font-family: 'Anton', sans-serif;
+  font-size: clamp(2.7rem, 6vw, 5.4rem);
+  font-weight: 900;
+  line-height: 0.95;
+  letter-spacing: -0.03em;
   color: #fff;
-  letter-spacing: 0.05em;
   text-transform: uppercase;
-  overflow: hidden;
+  margin-bottom: 18px;
+  text-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
 }
 
 .hero-dynamic {
-  display: inline-block;
+  display: block;
   background: linear-gradient(90deg, #ff5b6b, #d7182a);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  background-clip: text;
   font-weight: 900;
-  font-size: clamp(2rem, 6vw, 4rem);
+  font-size: clamp(2.7rem, 6vw, 5.4rem);
   transform-origin: left center;
   will-change: transform, opacity;
+  filter: drop-shadow(0 4px 20px rgba(215, 24, 42, 0.3));
 }
 
 .hero-subtitle {
-  margin-top: 16px;
-  font-size: clamp(1rem, 2.5vw, 1.25rem);
-  color: #eee;
+  color: #e8e8e8;
+  max-width: 760px;
+  margin: 0 auto 30px;
+  font-size: 1.15rem;
+  line-height: 1.7;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
 }
 
-.btn-primary-custom {
-  background: linear-gradient(135deg, #d7182a, #ff5b6b);
-  color: #fff;
-  padding: 0.8rem 2rem;
-  border-radius: 50px;
-  font-weight: 700;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  margin-right: 1rem;
+.hero-actions {
+  display: flex;
+  gap: 14px;
+  justify-content: center;
+  flex-wrap: wrap;
 }
 
-.btn-primary-custom:hover {
-  transform: translateY(-3px) rotate(-1deg);
-  box-shadow: 0 10px 20px rgba(255,91,107,0.4);
+/* Responsive */
+@media (max-width: 900px) {
+  .hero {
+    min-height: 86vh;
+  }
+  .hero-content {
+    padding: 80px 16px 68px;
+  }
 }
 </style>
