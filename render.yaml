@@ -12,6 +12,10 @@ services:
         sync: false
       - key: MONGODB_DB_NAME
         value: roadrunner_db
+      - key: ADMIN_USER
+        value: roadrunner
+      - key: ADMIN_PASSWORD
+        value: runner2026
       - key: CLOUDINARY_CLOUD_NAME
         sync: false
       - key: CLOUDINARY_API_KEY

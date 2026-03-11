@@ -168,14 +168,16 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
+import { useRuntimeConfig } from '#imports'
 
 // --- Auth State ---
+const config = useRuntimeConfig()
 const isAuthenticated = ref(false)
 const usernameInput = ref('')
 const passwordInput = ref('')
 const loginError = ref(false)
-const ADMIN_USER = 'roadrunner'
-const ADMIN_PASSWORD = 'runner2026'
+const ADMIN_USER = config.adminUser || 'roadrunner'
+const ADMIN_PASSWORD = config.adminPassword || 'runner2026'
 
 const handleLogin = () => {
   if (usernameInput.value === ADMIN_USER && passwordInput.value === ADMIN_PASSWORD) {

@@ -9,6 +9,8 @@ export default defineNuxtConfig({
   runtimeConfig: {
     mongodbUri: process.env.MONGODB_URI,
     mongodbDbName: process.env.MONGODB_DB_NAME || 'roadrunner_db',
+    adminUser: process.env.ADMIN_USER || 'roadrunner',
+    adminPassword: process.env.ADMIN_PASSWORD || 'runner2026',
     cloudinaryCloudName: process.env.CLOUDINARY_CLOUD_NAME,
     cloudinaryApiKey: process.env.CLOUDINARY_API_KEY,
     cloudinaryApiSecret: process.env.CLOUDINARY_API_SECRET,
