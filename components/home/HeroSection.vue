@@ -1,41 +1,3 @@
-<<<<<<< HEAD
-<template>
-  <section class="hero">
-    <!-- Video di sfondo -->
-    <video
-      class="hero-video"
-      autoplay
-      muted
-      loop
-      playsinline
-      preload="auto"
-    >
-      <source src="/hero-video.mp4" type="video/mp4" />
-    </video>
-
-    <!-- Overlay scuro sopra il video -->
-    <div class="hero-overlay" />
-
-    <!-- Contenuto testuale -->
-    <div class="container hero-content">
-      <span class="hero-badge">Concessionaria moto e scooter a Capodrise</span>
-      <h1 class="hero-title">
-        La tua concessionaria di riferimento
-        <span class="hero-dynamic">per moto e scooter</span>
-      </h1>
-      <p class="hero-subtitle">
-        Vendita plurimarche, assistenza qualificata e ricambi originali
-      </p>
-      <div class="hero-actions">
-        <a href="#moto" class="btn-primary-custom">Scopri i veicoli</a>
-        <a href="tel:+393391581997" class="btn-secondary-custom">Chiama ora</a>
-      </div>
-    </div>
-  </section>
-</template>
-
-=======
->>>>>>> f586e87 (Aggiunto pannello admin e integrazione MongoDB/Cloudinary)
 <script setup>
 import { onMounted, onUnmounted, nextTick } from 'vue'
 import { gsap } from 'gsap'
@@ -150,61 +112,30 @@ onMounted(async () => {
 <style scoped>
 .hero {
   position: relative;
-<<<<<<< HEAD
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-  background: #000;
-=======
   height: 100vh;
   width: 100%;
   overflow: hidden;
   background: #000;
   padding: 0;
   margin: 0;
->>>>>>> f586e87 (Aggiunto pannello admin e integrazione MongoDB/Cloudinary)
 }
 
 /* Video a tutto schermo */
 .hero-video {
   position: absolute;
-<<<<<<< HEAD
-  inset: 0;
-=======
   top: 0;
   left: 0;
->>>>>>> f586e87 (Aggiunto pannello admin e integrazione MongoDB/Cloudinary)
   width: 100%;
   height: 100%;
   object-fit: cover;
   z-index: 0;
 }
 
-<<<<<<< HEAD
-/* Overlay scuro con gradiente per leggibilita del testo */
-=======
 /* Overlay scuro molto leggero per dare spazio al video */
->>>>>>> f586e87 (Aggiunto pannello admin e integrazione MongoDB/Cloudinary)
 .hero-overlay {
   position: absolute;
   inset: 0;
   z-index: 1;
-<<<<<<< HEAD
-  background:
-    linear-gradient(to bottom, rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.7)),
-    radial-gradient(circle at top, rgba(215, 24, 42, 0.12), transparent 40%);
-}
-
-/* Contenuto testuale sopra il video */
-.hero-content {
-  position: relative;
-  z-index: 2;
-  text-align: center;
-  max-width: 920px;
-  padding: 90px 20px 80px;
-=======
   background: linear-gradient(to bottom, 
     rgba(0, 0, 0, 0.2) 0%, 
     rgba(0, 0, 0, 0.05) 40%, 
@@ -264,58 +195,12 @@ onMounted(async () => {
 
 .hero-badge, .hero-title, .hero-subtitle, .hero-actions {
   opacity: 0; /* Nascondi i figli per l'animazione stagger */
->>>>>>> f586e87 (Aggiunto pannello admin e integrazione MongoDB/Cloudinary)
 }
 
 .hero-badge {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-<<<<<<< HEAD
-  margin-bottom: 18px;
-  padding: 10px 20px;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  font-size: 0.95rem;
-  color: #fff;
-  backdrop-filter: blur(6px);
-  letter-spacing: 0.03em;
-}
-
-.hero-title {
-  font-family: 'Anton', sans-serif;
-  font-size: clamp(2.7rem, 6vw, 5.4rem);
-  font-weight: 900;
-  line-height: 0.95;
-  letter-spacing: -0.03em;
-  color: #fff;
-  text-transform: uppercase;
-  margin-bottom: 18px;
-  text-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
-}
-
-.hero-dynamic {
-  display: block;
-  background: linear-gradient(90deg, #ff5b6b, #d7182a);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  font-weight: 900;
-  font-size: clamp(2.7rem, 6vw, 5.4rem);
-  transform-origin: left center;
-  will-change: transform, opacity;
-  filter: drop-shadow(0 4px 20px rgba(215, 24, 42, 0.3));
-}
-
-.hero-subtitle {
-  color: #e8e8e8;
-  max-width: 760px;
-  margin: 0 auto 30px;
-  font-size: 1.15rem;
-  line-height: 1.7;
-  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
-=======
   margin-bottom: 12px;
   padding: 4px 16px;
   border-radius: 100px;
@@ -355,31 +240,15 @@ onMounted(async () => {
   font-size: 0.95rem;
   line-height: 1.5;
   font-weight: 400;
->>>>>>> f586e87 (Aggiunto pannello admin e integrazione MongoDB/Cloudinary)
 }
 
 .hero-actions {
   display: flex;
-<<<<<<< HEAD
-  gap: 14px;
-=======
   gap: 12px;
->>>>>>> f586e87 (Aggiunto pannello admin e integrazione MongoDB/Cloudinary)
   justify-content: center;
   flex-wrap: wrap;
 }
 
-<<<<<<< HEAD
-/* Responsive */
-@media (max-width: 900px) {
-  .hero {
-    min-height: 86vh;
-  }
-  .hero-content {
-    padding: 80px 16px 68px;
-  }
-}
-=======
 .btn-primary-custom, .btn-secondary-custom {
   min-height: 38px;
   padding: 8px 18px;
@@ -468,5 +337,4 @@ onMounted(async () => {
     width: 100%;
   }
 }
->>>>>>> f586e87 (Aggiunto pannello admin e integrazione MongoDB/Cloudinary)
 </style>
