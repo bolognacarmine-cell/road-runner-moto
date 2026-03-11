@@ -12,9 +12,13 @@ export default defineEventHandler(async (event) => {
     })
   }
 
-  const client = new MongoClient(config.mongodbUri)
+  const client = new MongoClient(config.mongodbUri, {
+    connectTimeoutMS: 10000,
+    serverSelectionTimeoutMS: 10000
+  })
 
   try {
+    console.log(`Tentativo di eliminazione moto ${id}...`)
     await client.connect()
     const db = client.db(config.mongodbDbName)
     const collection = db.collection('motos')

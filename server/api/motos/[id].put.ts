@@ -15,18 +15,24 @@ export default defineEventHandler(async (event) => {
   }
 
   // 1. Configurazione Cloudinary
-  cloudinary.config({
-    cloud_name: config.cloudinaryCloudName,
-    api_key: config.cloudinaryApiKey,
-    api_secret: config.cloudinaryApiSecret
-  })
+  if (config.cloudinaryCloudName && config.cloudinaryApiKey && config.cloudinaryApiSecret) {
+    cloudinary.config({
+      cloud_name: config.cloudinaryCloudName,
+      api_key: config.cloudinaryApiKey,
+      api_secret: config.cloudinaryApiSecret
+    })
+  }
 
-  const client = new MongoClient(config.mongodbUri)
+  const client = new MongoClient(config.mongodbUri, {
+    connectTimeoutMS: 10000,
+    serverSelectionTimeoutMS: 10000
+  })
 
   try {
     // 2. Upload nuove immagini su Cloudinary (se presenti in Base64)
     const newImageUrls = []
     if (body.imagesBase64 && Array.isArray(body.imagesBase64)) {
+      console.log(`Aggiornamento moto ${id}: upload di ${body.imagesBase64.length} nuove immagini...`)
       for (const base64 of body.imagesBase64) {
         const uploadResponse = await cloudinary.uploader.upload(base64, {
           folder: 'road-runner-motos'
@@ -35,7 +41,9 @@ export default defineEventHandler(async (event) => {
       }
     }
 
+    console.log('Tentativo di connessione a MongoDB (PUT)...')
     await client.connect()
+    
     const db = client.db(config.mongodbDbName)
     const collection = db.collection('motos')
 
