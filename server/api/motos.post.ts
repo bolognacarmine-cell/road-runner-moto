@@ -47,23 +47,18 @@ export default defineEventHandler(async (event) => {
     const result = await collection.insertOne(newMoto)
 
     return {
-      statusCode: 201,
-      body: {
-        message: 'Moto e immagini caricate con successo!',
-        id: result.insertedId,
-        urls: imageUrls
-      }
+      message: 'Moto e immagini caricate con successo!',
+      id: result.insertedId,
+      urls: imageUrls
     }
 
   } catch (error) {
     console.error('Errore durante il caricamento:', error)
-    return {
+    throw createError({
       statusCode: 500,
-      body: {
-        message: 'Errore durante il processo di caricamento.',
-        error: error.message
-      }
-    }
+      statusMessage: 'Errore durante il processo di caricamento.',
+      data: error.message
+    })
   } finally {
     await client.close()
   }

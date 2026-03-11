@@ -222,7 +222,7 @@ const fetchMotos = async () => {
   loading.value = true
   try {
     const res = await $fetch('/api/motos')
-    motos.value = res.body.motos
+    motos.value = res.motos
   } catch (e) {
     console.error(e)
   } finally {
@@ -286,7 +286,7 @@ const handleSubmit = async () => {
     })
 
     isSuccess.value = true
-    formMessage.value = response.body.message || 'Operazione completata!'
+    formMessage.value = response.message || 'Operazione completata!'
     
     setTimeout(() => {
       fetchMotos()

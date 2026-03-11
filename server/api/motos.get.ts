@@ -14,21 +14,16 @@ export default defineEventHandler(async (event) => {
     const motos = await collection.find({}).sort({ createdAt: -1 }).toArray()
 
     return {
-      statusCode: 200,
-      body: {
-        motos
-      }
+      motos
     }
 
   } catch (error) {
     console.error('Errore MongoDB (GET):', error)
-    return {
+    throw createError({
       statusCode: 500,
-      body: {
-        message: 'Errore durante il recupero dei dati dal database.',
-        error: error.message
-      }
-    }
+      statusMessage: 'Errore durante il recupero dei dati dal database.',
+      data: error.message
+    })
   } finally {
     await client.close()
   }

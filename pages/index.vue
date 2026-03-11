@@ -39,12 +39,10 @@ const error = ref(false)
 // Recupero veicoli dal backend
 const fetchVehicles = async () => {
   try {
-    const res = await fetch(`${apiBase}/veicoli`)
-    if (!res.ok) throw new Error('Errore nel caricamento')
-    const data = await res.json()
-    vehicles.value = Array.isArray(data) ? data.filter(v => v.tipo === 'moto') : []
+    const res = await $fetch('/api/motos')
+    vehicles.value = Array.isArray(res.motos) ? res.motos : []
   } catch (e) {
-    console.error(e)
+    console.error('Errore nel caricamento:', e)
     error.value = true
   } finally {
     loading.value = false
