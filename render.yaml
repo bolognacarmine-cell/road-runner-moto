@@ -1,0 +1,21 @@
+services:
+  - type: web
+    name: road-runner-moto
+    runtime: node
+    buildCommand: npm install && npm run build
+    startCommand: npm run start
+    envVars:
+      - key: NODE_VERSION
+        value: 20.x
+      - key: MONGODB_URI
+        sync: false
+      - key: CLOUDINARY_CLOUD_NAME
+        sync: false
+      - key: CLOUDINARY_API_KEY
+        sync: false
+      - key: CLOUDINARY_API_SECRET
+        sync: false
+      - key: NUXT_PUBLIC_SITE_URL
+        value: https://road-runner-moto.onrender.com
+      - key: NUXT_PUBLIC_API_BASE
+        value: https://road-runner-moto.onrender.com
