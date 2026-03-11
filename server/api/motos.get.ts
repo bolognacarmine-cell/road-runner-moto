@@ -7,7 +7,7 @@ export default defineEventHandler(async (event) => {
 
   try {
     await client.connect()
-    const db = client.db('roadrunner_db')
+    const db = client.db(config.mongodbDbName)
     const collection = db.collection('motos')
 
     // Recupera tutte le moto ordinate per data di creazione (più recenti prima)

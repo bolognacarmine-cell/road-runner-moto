@@ -30,7 +30,7 @@ export default defineEventHandler(async (event) => {
     }
 
     await client.connect()
-    const db = client.db('roadrunner_db')
+    const db = client.db(config.mongodbDbName)
     const collection = db.collection('motos')
 
     // 4. Preparazione dei dati finali

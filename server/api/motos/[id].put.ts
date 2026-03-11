@@ -36,7 +36,7 @@ export default defineEventHandler(async (event) => {
     }
 
     await client.connect()
-    const db = client.db('roadrunner_db')
+    const db = client.db(config.mongodbDbName)
     const collection = db.collection('motos')
 
     // 3. Uniamo le vecchie immagini (quelle che sono rimaste nel form) con le nuove
