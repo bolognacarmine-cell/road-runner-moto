@@ -53,7 +53,7 @@ onMounted(async () => {
         <p>Esplora una selezione di veicoli disponibili in concessionaria.</p>
       </div>
 
-      <div v-if="!vehicles.length" class="state-box">Nessun veicolo disponibile.</div>
+      <div v-if="!props.vehicles.length" class="state-box">Nessun veicolo disponibile.</div>
 
       <div v-else class="featured-grid">
         <article v-for="moto in featuredMotos" :key="moto._id" class="moto-card">
