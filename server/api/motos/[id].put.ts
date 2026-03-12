@@ -8,22 +8,31 @@ export default defineEventHandler(async (event) => {
   const body = await readBody(event)
   
   if (!id) {
-    return { statusCode: 400, body: { message: 'ID mancante' } }
+    throw createError({
+      statusCode: 400,
+      statusMessage: 'ID mancante'
+    })
   }
 
   // 1. Configurazione Cloudinary
-  cloudinary.config({
-    cloud_name: config.cloudinaryCloudName,
-    api_key: config.cloudinaryApiKey,
-    api_secret: config.cloudinaryApiSecret
-  })
+  if (config.cloudinaryCloudName && config.cloudinaryApiKey && config.cloudinaryApiSecret) {
+    cloudinary.config({
+      cloud_name: config.cloudinaryCloudName,
+      api_key: config.cloudinaryApiKey,
+      api_secret: config.cloudinaryApiSecret
+    })
+  }
 
-  const client = new MongoClient(config.mongodbUri)
+  const client = new MongoClient(config.mongodbUri, {
+    connectTimeoutMS: 10000,
+    serverSelectionTimeoutMS: 10000
+  })
 
   try {
     // 2. Upload nuove immagini su Cloudinary (se presenti in Base64)
     const newImageUrls = []
     if (body.imagesBase64 && Array.isArray(body.imagesBase64)) {
+      console.log(`Aggiornamento moto ${id}: upload di ${body.imagesBase64.length} nuove immagini...`)
       for (const base64 of body.imagesBase64) {
         const uploadResponse = await cloudinary.uploader.upload(base64, {
           folder: 'road-runner-motos'
@@ -32,8 +41,10 @@ export default defineEventHandler(async (event) => {
       }
     }
 
+    console.log('Tentativo di connessione a MongoDB (PUT)...')
     await client.connect()
-    const db = client.db('roadrunner_db')
+    
+    const db = client.db(config.mongodbDbName)
     const collection = db.collection('motos')
 
     // 3. Uniamo le vecchie immagini (quelle che sono rimaste nel form) con le nuove
@@ -56,23 +67,25 @@ export default defineEventHandler(async (event) => {
     )
 
     if (result.matchedCount === 0) {
-      return { statusCode: 404, body: { message: 'Moto non trovata' } }
+      throw createError({
+        statusCode: 404,
+        statusMessage: 'Moto non trovata'
+      })
     }
 
     return {
-      statusCode: 200,
-      body: { 
-        message: 'Moto aggiornata con successo!',
-        urls: updatedImages
-      }
+      message: 'Moto aggiornata con successo!',
+      urls: updatedImages
     }
 
   } catch (error) {
     console.error('Errore durante l\'aggiornamento:', error)
-    return {
+    if (error.statusCode) throw error
+    throw createError({
       statusCode: 500,
-      body: { message: 'Errore durante l\'aggiornamento', error: error.message }
-    }
+      statusMessage: 'Errore durante l\'aggiornamento',
+      data: error.message
+    })
   } finally {
     await client.close()
   }

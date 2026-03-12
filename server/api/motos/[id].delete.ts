@@ -6,34 +6,45 @@ export default defineEventHandler(async (event) => {
   const id = getRouterParam(event, 'id')
   
   if (!id) {
-    return { statusCode: 400, body: { message: 'ID mancante' } }
+    throw createError({
+      statusCode: 400,
+      statusMessage: 'ID mancante'
+    })
   }
 
-  const client = new MongoClient(config.mongodbUri)
+  const client = new MongoClient(config.mongodbUri, {
+    connectTimeoutMS: 10000,
+    serverSelectionTimeoutMS: 10000
+  })
 
   try {
+    console.log(`Tentativo di eliminazione moto ${id}...`)
     await client.connect()
-    const db = client.db('roadrunner_db')
+    const db = client.db(config.mongodbDbName)
     const collection = db.collection('motos')
 
     // Elimina il documento tramite ID
     const result = await collection.deleteOne({ _id: new ObjectId(id) })
 
     if (result.deletedCount === 0) {
-      return { statusCode: 404, body: { message: 'Moto non trovata' } }
+      throw createError({
+        statusCode: 404,
+        statusMessage: 'Moto non trovata'
+      })
     }
 
     return {
-      statusCode: 200,
-      body: { message: 'Moto eliminata con successo' }
+      message: 'Moto eliminata con successo'
     }
 
   } catch (error) {
     console.error('Errore MongoDB (DELETE):', error)
-    return {
+    if (error.statusCode) throw error
+    throw createError({
       statusCode: 500,
-      body: { message: 'Errore durante l\'eliminazione', error: error.message }
-    }
+      statusMessage: 'Errore durante l\'eliminazione',
+      data: error.message
+    })
   } finally {
     await client.close()
   }

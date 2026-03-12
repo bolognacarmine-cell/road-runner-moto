@@ -4,13 +4,13 @@ import { gsap } from 'gsap'
 import { onMounted, onUnmounted, nextTick } from 'vue'
 
 // Props: veicoli dinamici e filtri
-defineProps({
+const props = defineProps({
   vehicles: { type: Array, default: () => [] }
 })
 
 // Computed: veicoli filtrati (puoi aggiungere filtri dinamici se vuoi)
 const featuredMotos = computed(() => {
-  return vehicles.slice(0, 6)
+  return props.vehicles.slice(0, 6)
 })
 
 const formatPrice = (price) => {
@@ -21,8 +21,17 @@ const formatPrice = (price) => {
 const formatYear = (moto) => moto.annoImmatricolazione || moto.anno || 'N/D'
 
 const formatImage = (moto) => {
-  const raw = moto?.immagine || moto?.immagini?.[0]?.url || '/default-moto.jpg'
-  return typeof raw === 'string' ? raw.replace('/upload/', '/upload/f_auto,q_auto/') : '/default-moto.jpg'
+  // Supporto per array di stringhe o array di oggetti
+  let raw = '/logo-road-runner.jpg'
+  
+  if (moto?.immagini && moto.immagini.length > 0) {
+    const firstImg = moto.immagini[0]
+    raw = typeof firstImg === 'string' ? firstImg : (firstImg?.url || raw)
+  } else if (moto?.immagine) {
+    raw = moto.immagine
+  }
+  
+  return typeof raw === 'string' ? raw.replace('/upload/', '/upload/f_auto,q_auto/') : '/logo-road-runner.jpg'
 }
 
 // Animazioni GSAP
@@ -44,7 +53,7 @@ onMounted(async () => {
         <p>Esplora una selezione di veicoli disponibili in concessionaria.</p>
       </div>
 
-      <div v-if="!vehicles.length" class="state-box">Nessun veicolo disponibile.</div>
+      <div v-if="!props.vehicles.length" class="state-box">Nessun veicolo disponibile.</div>
 
       <div v-else class="featured-grid">
         <article v-for="moto in featuredMotos" :key="moto._id" class="moto-card">

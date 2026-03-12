@@ -8,14 +8,22 @@
         <form @submit.prevent="handleLogin">
           <div class="form-group">
             <input 
+              type="text" 
+              v-model="usernameInput" 
+              placeholder="Username" 
+              required 
+            />
+          </div>
+          <div class="form-group">
+            <input 
               type="password" 
               v-model="passwordInput" 
-              placeholder="Inserisci Password" 
+              placeholder="Password" 
               required 
             />
           </div>
           <button type="submit" class="btn-primary-custom">Accedi</button>
-          <p v-if="loginError" class="error-msg">Password errata</p>
+          <p v-if="loginError" class="error-msg">Credenziali errate</p>
         </form>
       </div>
     </div>
@@ -160,15 +168,19 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
+import { useRuntimeConfig } from '#imports'
 
 // --- Auth State ---
+const config = useRuntimeConfig()
 const isAuthenticated = ref(false)
+const usernameInput = ref('')
 const passwordInput = ref('')
 const loginError = ref(false)
-const ADMIN_PASSWORD = 'admin' // In produzione, usa un sistema più sicuro
+const ADMIN_USER = config.adminUser || 'roadrunner'
+const ADMIN_PASSWORD = config.adminPassword || 'runner2026'
 
 const handleLogin = () => {
-  if (passwordInput.ref === ADMIN_PASSWORD || passwordInput.value === ADMIN_PASSWORD) {
+  if (usernameInput.value === ADMIN_USER && passwordInput.value === ADMIN_PASSWORD) {
     isAuthenticated.value = true
     localStorage.setItem('rr_admin_auth', 'true')
     fetchMotos()
@@ -212,7 +224,7 @@ const fetchMotos = async () => {
   loading.value = true
   try {
     const res = await $fetch('/api/motos')
-    motos.value = res.body.motos
+    motos.value = res.motos
   } catch (e) {
     console.error(e)
   } finally {
@@ -276,7 +288,7 @@ const handleSubmit = async () => {
     })
 
     isSuccess.value = true
-    formMessage.value = response.body.message || 'Operazione completata!'
+    formMessage.value = response.message || 'Operazione completata!'
     
     setTimeout(() => {
       fetchMotos()
