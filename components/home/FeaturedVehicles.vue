@@ -35,7 +35,10 @@ const formatImages = (moto) => {
 onMounted(async () => {
   await nextTick()
   const ctx = gsap.context(() => {
-    gsap.from('.featured-grid .moto-card', { y: 28, opacity: 0, duration: 0.7, stagger: 0.12, delay: 0.2 })
+    const cards = document.querySelectorAll('.featured-grid .moto-card')
+    if (cards.length > 0) {
+      gsap.from(cards, { y: 28, opacity: 0, duration: 0.7, stagger: 0.12, delay: 0.2 })
+    }
   })
   onUnmounted(() => ctx.revert())
 })

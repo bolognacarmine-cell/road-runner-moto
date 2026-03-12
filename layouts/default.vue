@@ -11,21 +11,27 @@ const toggleMenu = () => {
 onMounted(async () => {
   await nextTick()
   // Animazione d'ingresso header
-  gsap.from('.site-header', {
-    y: -100,
-    opacity: 0,
-    duration: 1,
-    ease: 'power4.out'
-  })
+  const header = document.querySelector('.site-header')
+  if (header) {
+    gsap.from(header, {
+      y: -100,
+      opacity: 0,
+      duration: 1,
+      ease: 'power4.out'
+    })
+  }
   
-  gsap.from('.brand, .main-nav a, .btn-primary-custom', {
-    y: -20,
-    opacity: 0,
-    duration: 0.8,
-    stagger: 0.1,
-    delay: 0.4,
-    ease: 'power2.out'
-  })
+  const navElements = document.querySelectorAll('.brand, .main-nav a, .btn-primary-custom')
+  if (navElements.length > 0) {
+    gsap.from(navElements, {
+      y: -20,
+      opacity: 0,
+      duration: 0.8,
+      stagger: 0.1,
+      delay: 0.4,
+      ease: 'power2.out'
+    })
+  }
 })
 </script>
 

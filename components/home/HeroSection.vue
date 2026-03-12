@@ -16,42 +16,53 @@ onMounted(async () => {
   await nextTick()
   const ctx = gsap.context(() => {
     // Animazione di comparsa fluida ed elegante
-    gsap.to('.hero-text-wrapper', {
-      y: 0,
-      opacity: 1,
-      duration: 1.5,
-      delay: 0.5,
-      ease: 'power4.out'
-    })
+    const textWrapper = document.querySelector('.hero-text-wrapper')
+    if (textWrapper) {
+      gsap.to(textWrapper, {
+        y: 0,
+        opacity: 1,
+        duration: 1.5,
+        delay: 0.5,
+        ease: 'power4.out'
+      })
+    }
 
     // Stagger dei contenuti interni per profondità
-    gsap.to('.hero-badge, .hero-title, .hero-subtitle, .hero-actions', {
-      y: 0,
-      opacity: 1,
-      duration: 1,
-      stagger: 0.1,
-      delay: 0.8,
-      ease: 'power2.out'
-    })
+    const internalContent = document.querySelectorAll('.hero-badge, .hero-title, .hero-subtitle, .hero-actions')
+    if (internalContent.length > 0) {
+      gsap.to(internalContent, {
+        y: 0,
+        opacity: 1,
+        duration: 1,
+        stagger: 0.1,
+        delay: 0.8,
+        ease: 'power2.out'
+      })
+    }
 
-    gsap.to('.scroll-indicator', { 
-      opacity: 0.6, 
-      y: 0,
-      duration: 1.2, 
-      delay: 1.5 
-    })
+    const scrollIndicator = document.querySelector('.scroll-indicator')
+    if (scrollIndicator) {
+      gsap.to(scrollIndicator, { 
+        opacity: 0.6, 
+        y: 0,
+        duration: 1.2, 
+        delay: 1.5 
+      })
+    }
 
     // Parallasse discreto sullo scroll
-    gsap.to('.hero-text-wrapper', {
-      y: -30,
-      opacity: 0.5,
-      scrollTrigger: {
-        trigger: '.hero',
-        start: 'top top',
-        end: 'bottom top',
-        scrub: 1
-      }
-    })
+    if (textWrapper && document.querySelector('.hero')) {
+      gsap.to(textWrapper, {
+        y: -30,
+        opacity: 0.5,
+        scrollTrigger: {
+          trigger: '.hero',
+          start: 'top top',
+          end: 'bottom top',
+          scrub: 1
+        }
+      })
+    }
   })
   onUnmounted(() => ctx.revert())
 })
