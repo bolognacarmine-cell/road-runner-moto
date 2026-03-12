@@ -7,8 +7,8 @@ export default defineNuxtConfig({
 
   // ✅ Configurazione runtime per API e URL pubblico
   runtimeConfig: {
-    mongodbUri: process.env.MONGODB_URI,
-    mongodbDbName: process.env.MONGODB_DB_NAME || 'roadrunner_db',
+    mongodbUri: process.env.MONGODB_URI || process.env.NUXT_MONGODB_URI,
+    mongodbDbName: process.env.MONGODB_DB_NAME || process.env.NUXT_MONGODB_DB_NAME || 'roadrunner_db',
     cloudinaryCloudName: process.env.CLOUDINARY_CLOUD_NAME,
     cloudinaryApiKey: process.env.CLOUDINARY_API_KEY,
     cloudinaryApiSecret: process.env.CLOUDINARY_API_SECRET,
