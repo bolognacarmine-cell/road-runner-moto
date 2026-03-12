@@ -144,14 +144,14 @@ onMounted(async () => {
 }
 
 .brand-logo {
-  height: 40px;
+  height: 60px;
   width: auto;
-  border-radius: 8px;
+  border-radius: 10px;
 }
 
 @media (min-width: 1024px) {
   .brand-logo {
-    height: 50px;
+    height: 70px;
   }
 }
 
@@ -163,15 +163,15 @@ onMounted(async () => {
 
 .brand-name {
   font-weight: 900;
-  font-size: 1.1rem;
+  font-size: 1.25rem;
   letter-spacing: -0.02em;
 }
 
 .brand-tagline {
-  font-size: 0.7rem;
+  font-size: 0.8rem;
   color: var(--primary-2);
   font-weight: 800;
-  letter-spacing: 0.2em;
+  letter-spacing: 0.25em;
 }
 
 .main-nav {
@@ -216,22 +216,22 @@ onMounted(async () => {
 
 .mobile-toggle span {
   display: block;
-  width: 24px;
-  height: 2px;
-  background: var(--text);
-  border-radius: 2px;
+  width: 32px;
+  height: 3px;
+  background: #fff;
+  border-radius: 4px;
   transition: transform 0.3s ease, opacity 0.3s ease;
 }
 
 /* Animazione toggle quando aperto */
 [aria-expanded="true"].mobile-toggle span:nth-child(1) {
-  transform: translateY(8px) rotate(45deg);
+  transform: translateY(9px) rotate(45deg);
 }
 [aria-expanded="true"].mobile-toggle span:nth-child(2) {
   opacity: 0;
 }
 [aria-expanded="true"].mobile-toggle span:nth-child(3) {
-  transform: translateY(-8px) rotate(-45deg);
+  transform: translateY(-9px) rotate(-45deg);
 }
 
 .mobile-nav {
