@@ -55,6 +55,12 @@
             <span class="icon">📩</span> Preventivi 
             <span v-if="leads.length" class="badge-count">{{ leads.length }}</span>
           </button>
+          <button 
+            :class="{ active: currentTab === 'portal' }" 
+            @click="currentTab = 'portal'; fetchPortalUsers()"
+          >
+            <span class="icon">👤</span> Gestione Portale
+          </button>
         </nav>
         <button @click="logout" class="btn-logout">Esci</button>
       </aside>
@@ -202,6 +208,45 @@
             </div>
           </div>
         </section>
+
+        <!-- Portal Management View -->
+        <section v-if="currentTab === 'portal'" class="content-section">
+          <div class="section-header">
+            <h2>Gestione Portale Clienti</h2>
+            <p>Crea e gestisci gli accessi privati per i tuoi clienti</p>
+          </div>
+
+          <div v-if="loading" class="loading-state">Caricamento...</div>
+
+          <div v-else class="portal-admin-grid">
+            <div class="portal-users-list">
+              <div v-for="u in portalUsers" :key="u._id" class="user-card-admin">
+                <div class="user-main-info">
+                  <strong>{{ u.nome }} {{ u.cognome }}</strong>
+                  <span>Targa: <code>{{ u.targa }}</code></span>
+                </div>
+                <div class="user-actions">
+                  <button class="btn-edit-small">Gestisci Moto</button>
+                  <button class="btn-edit-small">Documenti</button>
+                </div>
+              </div>
+              <div v-if="portalUsers.length === 0" class="empty-state-small">
+                Nessun cliente registrato nel portale.
+              </div>
+            </div>
+
+            <div class="portal-add-user">
+              <h3>Registra Nuovo Cliente</h3>
+              <form @submit.prevent="handleCreatePortalUser" class="mini-form">
+                <input v-model="newUser.nome" placeholder="Nome" required />
+                <input v-model="newUser.cognome" placeholder="Cognome" required />
+                <input v-model="newUser.targa" placeholder="Targa (es: AA123BB)" required />
+                <input v-model="newUser.password" placeholder="Password Temporanea" required />
+                <button type="submit" class="btn-primary-custom full">Crea Account Portale</button>
+              </form>
+            </div>
+          </div>
+        </section>
       </main>
     </div>
 
@@ -252,6 +297,13 @@ const logout = () => {
 const currentTab = ref('list')
 const motos = ref([])
 const leads = ref([])
+const portalUsers = ref([])
+const newUser = ref({
+  nome: '',
+  cognome: '',
+  targa: '',
+  password: ''
+})
 const loading = ref(false)
 const submitting = ref(false)
 const formMessage = ref('')
@@ -295,6 +347,32 @@ const fetchLeads = async () => {
     leads.value = res.leads || []
   } catch (e) {
     console.error('Errore caricamento leads:', e)
+  }
+}
+
+const fetchPortalUsers = async () => {
+  loading.value = true
+  try {
+    const res = await $fetch('/api/admin/portal-data')
+    portalUsers.value = res.users || []
+  } catch (e) {
+    console.error('Errore caricamento utenti portale:', e)
+  } finally {
+    loading.value = false
+  }
+}
+
+const handleCreatePortalUser = async () => {
+  try {
+    await $fetch('/api/admin/create-portal-user', {
+      method: 'POST',
+      body: newUser.value
+    })
+    alert('Cliente registrato con successo!')
+    newUser.value = { nome: '', cognome: '', targa: '', password: '' }
+    fetchPortalUsers()
+  } catch (e) {
+    alert('Errore durante la registrazione.')
   }
 }
 
@@ -730,6 +808,74 @@ onMounted(() => {
   color: var(--text);
   font-style: italic;
   margin-top: 5px;
+}
+
+/* Portal Admin Styles */
+.portal-admin-grid {
+  display: grid;
+  grid-template-columns: 1fr 350px;
+  gap: 40px;
+}
+
+@media (max-width: 1024px) {
+  .portal-admin-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.user-card-admin {
+  background: var(--panel-2);
+  border: 1px solid var(--line);
+  padding: 20px;
+  border-radius: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.user-main-info strong {
+  display: block;
+  font-size: 1.1rem;
+}
+
+.user-main-info code {
+  color: var(--primary-2);
+  font-weight: 800;
+}
+
+.btn-edit-small {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid var(--line);
+  color: #fff;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  margin-left: 8px;
+}
+
+.portal-add-user {
+  background: var(--panel-2);
+  padding: 30px;
+  border-radius: 20px;
+  border: 1px solid var(--line);
+  height: fit-content;
+}
+
+.portal-add-user h3 {
+  margin-bottom: 20px;
+  font-size: 1.25rem;
+}
+
+.mini-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.mini-form input {
+  background: var(--bg);
 }
 
 /* Form Styles */
