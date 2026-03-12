@@ -123,35 +123,40 @@ onMounted(async () => {
 <style scoped>
 .hero {
   position: relative;
-  height: 100vh;
-  height: 100dvh; /* Supporto per Safari mobile bottom bar */
+  height: 100vh; /* Fallback */
+  height: 100svh; /* Stable Viewport Height per evitare scatti allo scroll */
   width: 100%;
   overflow: hidden;
   background: #000;
   display: flex;
-  align-items: center;
+  align-items: flex-end; /* Riporta il testo verso il basso per un look più pulito */
+  padding-bottom: 10vh;
 }
 
 .hero-video {
   position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  min-width: 100%;
-  min-height: 100%;
-  width: auto;
-  height: auto;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
   object-fit: cover;
-  opacity: 0.6;
+  object-position: center; /* Assicura che il centro del video sia visibile */
+  opacity: 0.5;
+}
+
+@media (max-width: 768px) {
+  .hero-video {
+    opacity: 0.4; /* Video leggermente più scuro su mobile per leggere meglio i testi */
+  }
 }
 
 .hero-overlay {
   position: absolute;
   inset: 0;
   background: linear-gradient(to bottom, 
-    rgba(5, 5, 5, 0.4) 0%, 
-    rgba(5, 5, 5, 0.2) 50%, 
-    rgba(5, 5, 5, 0.8) 100%
+    rgba(5, 5, 5, 0.3) 0%, 
+    rgba(5, 5, 5, 0.1) 50%, 
+    rgba(5, 5, 5, 0.9) 100% /* Gradiente più forte verso il basso per sfumare nella sezione successiva */
   );
   z-index: 1;
 }
@@ -160,7 +165,6 @@ onMounted(async () => {
   position: relative;
   z-index: 2;
   width: 100%;
-  padding-top: 60px;
 }
 
 .hero-text-wrapper {
@@ -172,32 +176,32 @@ onMounted(async () => {
 .hero-badge {
   display: inline-block;
   padding: 6px 16px;
-  background: rgba(215, 24, 42, 0.15);
-  border: 1px solid rgba(215, 24, 42, 0.3);
+  background: rgba(215, 24, 42, 0.2);
+  border: 1px solid rgba(215, 24, 42, 0.4);
   color: var(--primary-2);
   border-radius: 100px;
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   font-weight: 800;
   text-transform: uppercase;
-  letter-spacing: 0.1em;
-  margin-bottom: 24px;
+  letter-spacing: 0.12em;
+  margin-bottom: 20px;
 }
 
 .hero-title {
-  font-size: clamp(2.5rem, 8vw, 5rem);
-  line-height: 1.1;
+  font-size: clamp(2.2rem, 8vw, 4.5rem);
+  line-height: 1.05;
   font-weight: 900;
-  margin-bottom: 24px;
+  margin-bottom: 20px;
   letter-spacing: -0.03em;
   color: #fff;
 }
 
 .hero-subtitle {
-  font-size: clamp(1rem, 2vw, 1.25rem);
-  color: var(--muted);
-  margin-bottom: 40px;
-  max-width: 600px;
-  line-height: 1.6;
+  font-size: clamp(1rem, 2vw, 1.2rem);
+  color: rgba(255, 255, 255, 0.8);
+  margin-bottom: 35px;
+  max-width: 550px;
+  line-height: 1.5;
 }
 
 .hero-actions {
@@ -219,7 +223,7 @@ onMounted(async () => {
 
 .scroll-indicator {
   position: absolute;
-  bottom: 40px;
+  bottom: 30px;
   left: 50%;
   transform: translateX(-50%);
   z-index: 2;
@@ -227,18 +231,18 @@ onMounted(async () => {
 }
 
 .mouse {
-  width: 26px;
-  height: 42px;
-  border: 2px solid rgba(255, 255, 255, 0.3);
+  width: 24px;
+  height: 38px;
+  border: 2px solid rgba(255, 255, 255, 0.25);
   border-radius: 20px;
   display: flex;
   justify-content: center;
-  padding-top: 8px;
+  padding-top: 6px;
 }
 
 .wheel {
-  width: 4px;
-  height: 8px;
+  width: 3px;
+  height: 6px;
   background: var(--primary-2);
   border-radius: 2px;
   animation: scrollWheel 2s infinite;
@@ -246,6 +250,6 @@ onMounted(async () => {
 
 @keyframes scrollWheel {
   0% { transform: translateY(0); opacity: 1; }
-  100% { transform: translateY(15px); opacity: 0; }
+  100% { transform: translateY(12px); opacity: 0; }
 }
 </style>

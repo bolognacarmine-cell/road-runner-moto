@@ -79,8 +79,11 @@ onMounted(async () => {
 
 <style scoped>
 .featured-section {
-  padding: 80px 0;
+  padding: 100px 0;
   background: var(--bg);
+  position: relative;
+  z-index: 2;
+  margin-top: -2px; /* Piccola sovrapposizione per evitare linee bianche tra sezioni */
 }
 
 .section-heading {
