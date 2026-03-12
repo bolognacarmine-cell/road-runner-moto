@@ -60,7 +60,6 @@ export default defineNuxtConfig({
       }
     }
   },
-
   // ✅ Moduli opzionali (immagini e sitemap)
   modules: [
     '@nuxt/image',

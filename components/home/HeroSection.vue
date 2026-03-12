@@ -337,4 +337,8 @@ onMounted(async () => {
     width: 100%;
   }
 }
+<<<<<<< HEAD
 </style>
+=======
+</style>
+>>>>>>> f586053c1dfc44c6ad8c5a6367f970d36295df53
