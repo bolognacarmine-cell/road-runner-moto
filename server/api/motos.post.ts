@@ -25,7 +25,8 @@ export default defineEventHandler(async (event) => {
   }
 
   // 2. Connessione a MongoDB
-  const client = new MongoClient(config.mongodbUri, {
+  const mongodbUri = config.mongodbUri as string
+  const client = new MongoClient(mongodbUri, {
     connectTimeoutMS: 10000,
     serverSelectionTimeoutMS: 10000
   })
