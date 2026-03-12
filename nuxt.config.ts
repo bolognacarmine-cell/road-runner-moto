@@ -54,11 +54,7 @@ export default defineNuxtConfig({
 
   // ✅ Configurazione Nitro per gestire file grandi (immagini)
   nitro: {
-    runtimeConfig: {
-      nitro: {
-        bodySizeLimit: '20mb'
-      }
-    }
+    bodySizeLimit: '20mb'
   },
   // ✅ Moduli opzionali (immagini e sitemap)
   modules: [
