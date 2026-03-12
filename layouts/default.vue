@@ -54,6 +54,7 @@ onMounted(async () => {
           <a href="#servizi">Servizi</a>
           <a href="#marchi">Marchi</a>
           <a href="#contatti">Contatti</a>
+          <NuxtLink to="/portale/login" class="portal-link">Area Clienti</NuxtLink>
           <NuxtLink to="/moto" class="btn-primary-custom">Catalogo</NuxtLink>
         </nav>
 
@@ -78,6 +79,9 @@ onMounted(async () => {
             <a href="#servizi" @click="mobileMenuOpen = false">Servizi</a>
             <a href="#marchi" @click="mobileMenuOpen = false">Marchi</a>
             <a href="#contatti" @click="mobileMenuOpen = false">Contatti</a>
+            <NuxtLink to="/portale/login" class="portal-mobile-link" @click="mobileMenuOpen = false">
+              Area Clienti 🔑
+            </NuxtLink>
             <NuxtLink to="/moto" class="btn-primary-custom mobile-cta" @click="mobileMenuOpen = false">
               Catalogo
             </NuxtLink>
@@ -195,6 +199,27 @@ onMounted(async () => {
   .main-nav a:hover {
     color: var(--text);
   }
+}
+
+.portal-link {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--primary-2) !important;
+  background: rgba(215, 24, 42, 0.1);
+  padding: 8px 16px;
+  border-radius: 8px;
+  border: 1px solid rgba(215, 24, 42, 0.2);
+}
+
+.portal-link:hover {
+  background: rgba(215, 24, 42, 0.2);
+}
+
+.portal-mobile-link {
+  font-size: 1.25rem !important;
+  font-weight: 800;
+  color: var(--primary-2) !important;
+  margin: 10px 0;
 }
 
 .mobile-toggle {

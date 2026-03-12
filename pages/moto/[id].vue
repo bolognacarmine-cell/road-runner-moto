@@ -29,6 +29,16 @@ const formatPrice = (price) => {
   if (!price) return 'Prezzo su richiesta'
   return new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(price)
 }
+
+const formatImages = (images) => {
+  if (images && Array.isArray(images) && images.length > 0) {
+    return images.map(img => {
+      const url = typeof img === 'string' ? img : (img?.url || '/logo-road-runner.jpg')
+      return url.replace('/upload/', '/upload/f_auto,q_auto/')
+    })
+  }
+  return ['/logo-road-runner.jpg']
+}
 </script>
 
 <template>
@@ -50,7 +60,7 @@ const formatPrice = (price) => {
       <div v-else-if="moto" class="moto-detail-grid">
         <!-- Colonna Sinistra: Carosello -->
         <div class="moto-visuals">
-          <MotoCarousel :images="moto.immagini" :altText="`${moto.marca} ${moto.modello}`" height="500px" />
+          <MotoCarousel :images="formatImages(moto.immagini)" :altText="`${moto.marca} ${moto.modello}`" height="500px" />
           
           <div class="moto-description-section mt-5">
             <h3>Descrizione</h3>
