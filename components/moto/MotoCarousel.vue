@@ -22,14 +22,14 @@
     <template v-if="images && images.length > 1">
       <button 
         class="nav-btn prev" 
-        @click.stop="prevSlide" 
+        @click.stop="handlePrevManual" 
         v-show="showArrows"
       >
         <span>‹</span>
       </button>
       <button 
         class="nav-btn next" 
-        @click.stop="nextSlide" 
+        @click.stop="handleNextManual" 
         v-show="showArrows"
       >
         <span>›</span>
@@ -42,7 +42,7 @@
           :key="index"
           class="dot"
           :class="{ active: currentIndex === index }"
-          @click.stop="currentIndex = index"
+          @click.stop="manualSelect(index)"
         ></span>
       </div>
     </template>
@@ -50,7 +50,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted, onUnmounted } from 'vue'
 
 const props = defineProps({
   images: {
@@ -64,11 +64,32 @@ const props = defineProps({
   height: {
     type: String,
     default: '100%'
+  },
+  autoplayInterval: {
+    type: Number,
+    default: 4000 // 4 secondi
   }
 })
 
 const currentIndex = ref(0)
 const showArrows = ref(false)
+let timer = null
+
+const startAutoplay = () => {
+  if (props.images && props.images.length > 1) {
+    stopAutoplay()
+    timer = setInterval(() => {
+      nextSlide()
+    }, props.autoplayInterval)
+  }
+}
+
+const stopAutoplay = () => {
+  if (timer) {
+    clearInterval(timer)
+    timer = null
+  }
+}
 
 const nextSlide = () => {
   currentIndex.value = (currentIndex.value + 1) % props.images.length
@@ -77,6 +98,29 @@ const nextSlide = () => {
 const prevSlide = () => {
   currentIndex.value = (currentIndex.value - 1 + props.images.length) % props.images.length
 }
+
+const manualSelect = (index) => {
+  currentIndex.value = index
+  startAutoplay() // Reset timer
+}
+
+const handleNextManual = () => {
+  nextSlide()
+  startAutoplay() // Reset timer
+}
+
+const handlePrevManual = () => {
+  prevSlide()
+  startAutoplay() // Reset timer
+}
+
+onMounted(() => {
+  startAutoplay()
+})
+
+onUnmounted(() => {
+  stopAutoplay()
+})
 </script>
 
 <style scoped>
