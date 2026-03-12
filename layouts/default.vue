@@ -71,19 +71,23 @@ onMounted(async () => {
       </div>
 
       <!-- Mobile nav -->
-      <div v-if="mobileMenuOpen" class="mobile-nav">
-        <a href="#moto" @click="mobileMenuOpen = false">Veicoli</a>
-        <a href="#servizi" @click="mobileMenuOpen = false">Servizi</a>
-        <a href="#marchi" @click="mobileMenuOpen = false">Marchi</a>
-        <a href="#contatti" @click="mobileMenuOpen = false">Contatti</a>
-        <NuxtLink to="/moto" class="btn-primary-custom mobile-cta" @click="mobileMenuOpen = false">
-          Catalogo
-        </NuxtLink>
-      </div>
+      <Transition name="fade">
+        <div v-if="mobileMenuOpen" class="mobile-nav">
+          <div class="mobile-nav-content">
+            <a href="#moto" @click="mobileMenuOpen = false">Veicoli</a>
+            <a href="#servizi" @click="mobileMenuOpen = false">Servizi</a>
+            <a href="#marchi" @click="mobileMenuOpen = false">Marchi</a>
+            <a href="#contatti" @click="mobileMenuOpen = false">Contatti</a>
+            <NuxtLink to="/moto" class="btn-primary-custom mobile-cta" @click="mobileMenuOpen = false">
+              Catalogo
+            </NuxtLink>
+          </div>
+        </div>
+      </Transition>
     </header>
 
     <!-- Main content -->
-    <main>
+    <main class="main-content">
       <NuxtPage />
     </main>
 
@@ -106,6 +110,211 @@ onMounted(async () => {
           <p>Capodrise (CE)</p>
         </div>
       </div>
+      <div class="container footer-bottom">
+        <p>&copy; 2026 Road Runner Moto. Tutti i diritti riservati.</p>
+      </div>
     </footer>
   </div>
 </template>
+
+<style scoped>
+.main-content {
+  padding-top: var(--header-h);
+}
+
+@media (min-width: 1024px) {
+  .main-content {
+    padding-top: 100px;
+  }
+}
+
+.site-header {
+  height: auto;
+}
+
+.nav-shell {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.brand-logo {
+  height: 40px;
+  width: auto;
+  border-radius: 8px;
+}
+
+@media (min-width: 1024px) {
+  .brand-logo {
+    height: 50px;
+  }
+}
+
+.brand-copy {
+  display: flex;
+  flex-direction: column;
+  line-height: 1;
+}
+
+.brand-name {
+  font-weight: 900;
+  font-size: 1.1rem;
+  letter-spacing: -0.02em;
+}
+
+.brand-tagline {
+  font-size: 0.7rem;
+  color: var(--primary-2);
+  font-weight: 800;
+  letter-spacing: 0.2em;
+}
+
+.main-nav {
+  display: none;
+}
+
+@media (min-width: 1024px) {
+  .main-nav {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+  }
+  
+  .main-nav a {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--muted);
+    transition: color var(--transition);
+  }
+  
+  .main-nav a:hover {
+    color: var(--text);
+  }
+}
+
+.mobile-toggle {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  background: none;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+  z-index: 1100;
+}
+
+@media (min-width: 1024px) {
+  .mobile-toggle {
+    display: none;
+  }
+}
+
+.mobile-toggle span {
+  display: block;
+  width: 24px;
+  height: 2px;
+  background: var(--text);
+  border-radius: 2px;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+/* Animazione toggle quando aperto */
+[aria-expanded="true"].mobile-toggle span:nth-child(1) {
+  transform: translateY(8px) rotate(45deg);
+}
+[aria-expanded="true"].mobile-toggle span:nth-child(2) {
+  opacity: 0;
+}
+[aria-expanded="true"].mobile-toggle span:nth-child(3) {
+  transform: translateY(-8px) rotate(-45deg);
+}
+
+.mobile-nav {
+  position: fixed;
+  inset: 0;
+  background: rgba(5, 5, 5, 0.98);
+  z-index: 1050;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.mobile-nav-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  width: 100%;
+}
+
+.mobile-nav a {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--text);
+  padding: 10px;
+}
+
+.mobile-cta {
+  margin-top: 20px;
+  width: 100%;
+  max-width: 280px;
+}
+
+/* Transitions */
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.3s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+
+.site-footer {
+  padding: 80px 0 40px;
+  background: #080808;
+  border-top: 1px solid var(--line);
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 40px;
+  margin-bottom: 60px;
+}
+
+@media (min-width: 768px) {
+  .footer-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.footer-grid strong {
+  display: block;
+  margin-bottom: 16px;
+  font-size: 1.1rem;
+  color: var(--text);
+}
+
+.footer-grid p {
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+.footer-bottom {
+  padding-top: 40px;
+  border-top: 1px solid var(--line);
+  text-align: center;
+  color: #555;
+  font-size: 0.85rem;
+}
+</style>
