@@ -2,7 +2,7 @@ import { defineEventHandler, createError } from 'h3'
 import { MongoClient } from 'mongodb'
 
 export default defineEventHandler(async (event) => {
-  const config = useRuntimeConfig() // Auto-importato in Nuxt 3 server
+  const config = useRuntimeConfig(event) // Auto-importato in Nuxt 3 server
   
   if (!config.mongodbUri) {
     console.error('ERRORE: MONGODB_URI non definita nelle variabili d\'ambiente!')
