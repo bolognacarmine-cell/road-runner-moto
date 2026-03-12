@@ -35,15 +35,21 @@ export default defineEventHandler(async (event) => {
     const imageUrls = []
     if (body.imagesBase64 && Array.isArray(body.imagesBase64)) {
       console.log(`Tentativo di upload di ${body.imagesBase64.length} immagini su Cloudinary...`)
-      for (const base64 of body.imagesBase64) {
+      for (const [index, base64] of body.imagesBase64.entries()) {
         try {
           const uploadResponse = await cloudinary.uploader.upload(base64, {
-            folder: 'road-runner-motos'
+            folder: 'road-runner-motos',
+            resource_type: 'auto'
           })
           imageUrls.push(uploadResponse.secure_url)
-        } catch (cloudinaryErr) {
-          console.error('Errore durante l\'upload su Cloudinary:', cloudinaryErr)
-          throw createError({ statusCode: 500, statusMessage: 'Errore durante l\'upload delle immagini su Cloudinary.', data: cloudinaryErr.message })
+          console.log(`Immagine ${index + 1} caricata: ${uploadResponse.secure_url}`)
+        } catch (cloudinaryError) {
+          console.error(`Errore Cloudinary sull'immagine ${index + 1}:`, cloudinaryError.message)
+          throw createError({
+            statusCode: 500,
+            statusMessage: 'Errore durante l\'upload su Cloudinary.',
+            message: cloudinaryError.message
+          })
         }
       }
     }
@@ -83,8 +89,12 @@ export default defineEventHandler(async (event) => {
     if (error.statusCode) throw error
     throw createError({
       statusCode: 500,
-      statusMessage: 'Errore durante il salvataggio sul database.',
-      data: error.message
+      statusMessage: 'Errore di connessione al database.',
+      message: error.message.includes('querySrv') 
+        ? 'Problema DNS locale: Non riesco a risolvere l\'indirizzo di MongoDB Atlas. Prova a cambiare i DNS del tuo PC in 8.8.8.8 o 1.1.1.1.'
+        : error.message.includes('Authentication failed')
+          ? 'ERRORE DI AUTENTICAZIONE: La password o lo username del Database User in Atlas sono errati. Controlla il file .env.'
+          : error.message
     })
   } finally {
     await client.close()

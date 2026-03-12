@@ -52,6 +52,15 @@ export default defineNuxtConfig({
     optimizeDeps: { include: ['gsap'] }
   },
 
+  // ✅ Configurazione Nitro per gestire file grandi (immagini)
+  nitro: {
+    runtimeConfig: {
+      nitro: {
+        bodySizeLimit: '20mb'
+      }
+    }
+  },
+
   // ✅ Moduli opzionali (immagini e sitemap)
   modules: [
     '@nuxt/image',

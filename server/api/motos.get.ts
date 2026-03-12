@@ -41,8 +41,12 @@ export default defineEventHandler(async (event) => {
     })
     throw createError({
       statusCode: 500,
-      statusMessage: 'Errore durante il recupero dei dati dal database.',
-      data: error.message
+      statusMessage: 'Errore di connessione al database.',
+      message: error.message.includes('querySrv') 
+        ? 'Problema DNS locale: Non riesco a risolvere l\'indirizzo di MongoDB Atlas. Prova a cambiare i DNS del tuo PC in 8.8.8.8 o 1.1.1.1.'
+        : error.message.includes('Authentication failed')
+          ? 'ERRORE DI AUTENTICAZIONE: La password o lo username del Database User in Atlas sono errati. Controlla il file .env.'
+          : error.message
     })
   } finally {
     await client.close()
