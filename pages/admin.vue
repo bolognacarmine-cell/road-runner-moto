@@ -70,7 +70,7 @@
           <div v-else class="motos-grid">
             <div v-for="m in motos" :key="m._id" class="moto-card-admin">
               <div class="moto-img-admin">
-                <img :src="m.immagini?.[0] || '/logo-road-runner.jpg'" alt="Moto" />
+                <MotoCarousel :images="m.immagini" :altText="`${m.marca} ${m.modello}`" />
               </div>
               <div class="moto-info-admin">
                 <h3>{{ m.marca }} {{ m.modello }}</h3>
@@ -169,6 +169,7 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useRuntimeConfig } from '#imports'
+import MotoCarousel from '~/components/moto/MotoCarousel.vue'
 
 // --- Auth State ---
 const config = useRuntimeConfig()
@@ -249,14 +250,38 @@ const editMoto = (m) => {
 
 const handleImageUpload = (event) => {
   const files = Array.from(event.target.files)
+  
+  // Aggiungiamo i file alla lista dei file da caricare
   selectedFiles.value = [...selectedFiles.value, ...files]
-  const newPreviews = files.map(file => URL.createObjectURL(file))
-  imagePreviews.value = [...imagePreviews.value, ...newPreviews]
+  
+  // Creiamo le anteprime per i nuovi file
+  files.forEach(file => {
+    const reader = new FileReader()
+    reader.onload = (e) => {
+      imagePreviews.value.push(e.target.result)
+    }
+    reader.readAsDataURL(file)
+  })
 }
 
 const removeImage = (index) => {
+  // Se l'immagine è già sul server (URL completo), la rimuoviamo da motoForm.immagini
+  const imageToRemove = imagePreviews.value[index]
+  if (typeof imageToRemove === 'string' && imageToRemove.startsWith('http')) {
+    motoForm.value.immagini = motoForm.value.immagini.filter(img => img !== imageToRemove)
+  } else {
+    // Altrimenti è un file appena selezionato, lo rimuoviamo da selectedFiles
+    // Dobbiamo trovare l'indice corretto in selectedFiles
+    // Poiché imagePreviews contiene [immagini_esistenti, nuove_immagini]
+    const existingCount = motoForm.value.immagini ? motoForm.value.immagini.length : 0
+    const fileIndex = index - existingCount
+    if (fileIndex >= 0) {
+      selectedFiles.value.splice(fileIndex, 1)
+    }
+  }
+  
+  // Rimuoviamo l'anteprima in ogni caso
   imagePreviews.value.splice(index, 1)
-  // Qui dovremmo gestire anche la rimozione dal database se in fase di editing
 }
 
 const handleSubmit = async () => {
@@ -278,13 +303,17 @@ const handleSubmit = async () => {
     const method = editingId.value ? 'PUT' : 'POST'
     const url = editingId.value ? `/api/motos/${editingId.value}` : '/api/motos'
     
-    // 2. Inviamo i dati con le immagini in Base64
+    // 2. Prepariamo il body: uniamo le immagini esistenti che sono rimaste con le nuove (Base64)
+    const body = {
+      ...motoForm.value,
+      imagesBase64,
+      // Passiamo solo le immagini che l'utente NON ha rimosso
+      immagini: motoForm.value.immagini 
+    }
+
     const response = await $fetch(url, {
       method,
-      body: {
-        ...motoForm.value,
-        imagesBase64
-      }
+      body
     })
 
     isSuccess.value = true
@@ -484,10 +513,11 @@ onMounted(() => {
   transform: translateY(-5px);
 }
 
-.moto-img-admin img {
+.moto-img-admin {
   width: 100%;
-  height: 180px;
-  object-fit: cover;
+  height: 200px;
+  overflow: hidden;
+  border-bottom: 1px solid #222;
 }
 
 .moto-info-admin {

@@ -2,6 +2,7 @@
 import { computed } from 'vue'
 import { gsap } from 'gsap'
 import { onMounted, onUnmounted, nextTick } from 'vue'
+import MotoCarousel from '~/components/moto/MotoCarousel.vue'
 
 // Props: veicoli dinamici e filtri
 const props = defineProps({
@@ -20,18 +21,14 @@ const formatPrice = (price) => {
 
 const formatYear = (moto) => moto.annoImmatricolazione || moto.anno || 'N/D'
 
-const formatImage = (moto) => {
-  // Supporto per array di stringhe o array di oggetti
-  let raw = '/logo-road-runner.jpg'
-  
-  if (moto?.immagini && moto.immagini.length > 0) {
-    const firstImg = moto.immagini[0]
-    raw = typeof firstImg === 'string' ? firstImg : (firstImg?.url || raw)
-  } else if (moto?.immagine) {
-    raw = moto.immagine
+const formatImages = (moto) => {
+  if (moto?.immagini && Array.isArray(moto.immagini) && moto.immagini.length > 0) {
+    return moto.immagini.map(img => {
+      const url = typeof img === 'string' ? img : (img?.url || '/logo-road-runner.jpg')
+      return url.replace('/upload/', '/upload/f_auto,q_auto/')
+    })
   }
-  
-  return typeof raw === 'string' ? raw.replace('/upload/', '/upload/f_auto,q_auto/') : '/logo-road-runner.jpg'
+  return ['/logo-road-runner.jpg']
 }
 
 // Animazioni GSAP
@@ -57,7 +54,7 @@ onMounted(async () => {
 
       <div v-else class="featured-grid">
         <article v-for="moto in featuredMotos" :key="moto._id" class="moto-card">
-          <img :src="formatImage(moto)" :alt="`${moto.marca} ${moto.modello}`" class="moto-image" loading="lazy" />
+          <MotoCarousel :images="formatImages(moto)" :altText="`${moto.marca} ${moto.modello}`" height="240px" />
           <div class="moto-body">
             <p class="moto-kicker">{{ moto.marca || 'Moto' }}</p>
             <h3>{{ moto.modello || 'Modello disponibile' }}</h3>
