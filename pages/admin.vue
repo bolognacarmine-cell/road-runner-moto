@@ -48,6 +48,13 @@
           >
             <span class="icon">➕</span> Aggiungi Nuovo
           </button>
+          <button 
+            :class="{ active: currentTab === 'leads' }" 
+            @click="currentTab = 'leads'; fetchLeads()"
+          >
+            <span class="icon">📩</span> Preventivi 
+            <span v-if="leads.length" class="badge-count">{{ leads.length }}</span>
+          </button>
         </nav>
         <button @click="logout" class="btn-logout">Esci</button>
       </aside>
@@ -150,6 +157,51 @@
             </div>
           </form>
         </section>
+
+        <!-- Leads View -->
+        <section v-if="currentTab === 'leads'" class="content-section">
+          <div class="section-header">
+            <h2>Richieste Preventivo</h2>
+            <p>Gestisci i contatti dai potenziali clienti</p>
+          </div>
+
+          <div v-if="loading" class="loading-state">Caricamento richieste...</div>
+          
+          <div v-else-if="leads.length === 0" class="empty-state">
+            <p>Non ci sono ancora richieste di preventivo.</p>
+          </div>
+
+          <div v-else class="leads-list">
+            <div v-for="l in leads" :key="l._id" class="lead-card">
+              <div class="lead-header">
+                <span class="lead-date">{{ new Date(l.createdAt).toLocaleDateString('it-IT') }}</span>
+                <span class="lead-status" :class="l.status">{{ l.status }}</span>
+              </div>
+              <div class="lead-body">
+                <div class="lead-info">
+                  <h4>{{ l.nome }}</h4>
+                  <p>📧 {{ l.email }}</p>
+                  <p>📞 {{ l.telefono }}</p>
+                  <p>📍 {{ l.citta || 'N/D' }}</p>
+                </div>
+                <div class="lead-moto">
+                  <strong>Interesse:</strong>
+                  <p>{{ l.marca }} {{ l.modello }} ({{ l.nuovaUsata }})</p>
+                  <p>Tipo: {{ l.tipo }}</p>
+                </div>
+                <div class="lead-payment">
+                  <strong>Acquisto:</strong>
+                  <p>{{ l.metodoAcquisto }}</p>
+                  <p v-if="l.valutazionePermuta === 'si'">🔄 Permuta: {{ l.permutaModello }} ({{ l.permutaAnno }})</p>
+                </div>
+              </div>
+              <div v-if="l.messaggio" class="lead-message">
+                <strong>Messaggio:</strong>
+                <p>{{ l.messaggio }}</p>
+              </div>
+            </div>
+          </div>
+        </section>
       </main>
     </div>
 
@@ -199,6 +251,7 @@ const logout = () => {
 // --- Data State ---
 const currentTab = ref('list')
 const motos = ref([])
+const leads = ref([])
 const loading = ref(false)
 const submitting = ref(false)
 const formMessage = ref('')
@@ -227,10 +280,21 @@ const fetchMotos = async () => {
   try {
     const res = await $fetch('/api/motos')
     motos.value = res.motos
+    // Fetch leads count also
+    fetchLeads()
   } catch (e) {
     console.error(e)
   } finally {
     loading.value = false
+  }
+}
+
+const fetchLeads = async () => {
+  try {
+    const res = await $fetch('/api/leads')
+    leads.value = res.leads || []
+  } catch (e) {
+    console.error('Errore caricamento leads:', e)
   }
 }
 
@@ -573,6 +637,99 @@ onMounted(() => {
 
 .btn-edit:hover, .btn-delete:hover {
   opacity: 0.8;
+}
+
+.btn-logout:hover {
+  background: rgba(215, 24, 42, 0.1);
+  color: var(--primary-2);
+}
+
+.badge-count {
+  background: var(--primary);
+  color: #fff;
+  font-size: 0.7rem;
+  padding: 2px 8px;
+  border-radius: 10px;
+  margin-left: auto;
+}
+
+/* Leads List Styles */
+.leads-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.lead-card {
+  background: var(--panel-2);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 24px;
+}
+
+.lead-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid var(--line);
+}
+
+.lead-date {
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.lead-status {
+  text-transform: uppercase;
+  font-size: 0.7rem;
+  font-weight: 800;
+  padding: 4px 10px;
+  border-radius: 4px;
+}
+
+.lead-status.nuovo {
+  background: rgba(255, 193, 7, 0.15);
+  color: #ffc107;
+}
+
+.lead-body {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px;
+}
+
+@media (max-width: 768px) {
+  .lead-body {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+}
+
+.lead-info h4 {
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+}
+
+.lead-info p, .lead-moto p, .lead-payment p {
+  font-size: 0.9rem;
+  color: var(--muted);
+  margin-bottom: 5px;
+}
+
+.lead-message {
+  margin-top: 20px;
+  padding: 15px;
+  background: rgba(255,255,255,0.03);
+  border-radius: 8px;
+}
+
+.lead-message p {
+  font-size: 0.9rem;
+  color: var(--text);
+  font-style: italic;
+  margin-top: 5px;
 }
 
 /* Form Styles */

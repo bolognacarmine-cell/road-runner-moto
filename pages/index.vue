@@ -6,6 +6,7 @@ import { useRuntimeConfig } from '#imports'
 // Componenti modulari
 import HeroSection from '~/components/home/HeroSection.vue'
 import FeaturedVehicles from '~/components/home/FeaturedVehicles.vue'
+import QuoteSection from '~/components/home/QuoteSection.vue'
 import ServicesSection from '~/components/home/ServicesSection.vue'
 import BrandsSection from '~/components/home/BrandsSection.vue'
 import CTABand from '~/components/home/CTABand.vue'
@@ -62,6 +63,9 @@ fetchVehicles()
 
     <!-- Featured Vehicles dinamico -->
     <FeaturedVehicles :vehicles="vehicles" />
+
+    <!-- Quote Section -->
+    <QuoteSection />
 
     <!-- Services Section -->
     <ServicesSection />
