@@ -1,8 +1,8 @@
-import { defineEventHandler } from 'h3'
+import { defineEventHandler, createError } from 'h3'
 import { MongoClient } from 'mongodb'
 
 export default defineEventHandler(async (event) => {
-  const config = useRuntimeConfig()
+  const config = useRuntimeConfig() // Auto-importato in Nuxt 3 server
   
   if (!config.mongodbUri) {
     console.error('ERRORE: MONGODB_URI non definita nelle variabili d\'ambiente!')
@@ -12,8 +12,9 @@ export default defineEventHandler(async (event) => {
     })
   }
 
-  const client = new MongoClient(config.mongodbUri, {
-    connectTimeoutMS: 10000, // Timeout di 10 secondi
+  const mongodbUri = config.mongodbUri as string
+  const client = new MongoClient(mongodbUri, {
+    connectTimeoutMS: 10000,
     serverSelectionTimeoutMS: 10000
   })
 
@@ -33,16 +34,21 @@ export default defineEventHandler(async (event) => {
       motos
     }
 
-  } catch (error) {
-    console.error('ERRORE CRITICO MONGODB (GET):', {
-      message: error.message,
-      code: error.code,
-      name: error.name
-    })
+  } catch (error: any) {
+    const errorMessage = error?.message || 'Errore sconosciuto'
+    console.error('ERRORE CRITICO MONGODB (GET):', errorMessage)
+    
+    let userFriendlyMessage = errorMessage
+    if (errorMessage.includes('querySrv')) {
+      userFriendlyMessage = 'Problema DNS locale: Non riesco a risolvere l\'indirizzo di MongoDB Atlas. Prova a cambiare i DNS del tuo PC in 8.8.8.8 o 1.1.1.1.'
+    } else if (errorMessage.includes('Authentication failed')) {
+      userFriendlyMessage = 'ERRORE DI AUTENTICAZIONE: La password o lo username del Database User in Atlas sono errati. Controlla il file .env.'
+    }
+    
     throw createError({
       statusCode: 500,
-      statusMessage: 'Errore durante il recupero dei dati dal database.',
-      data: error.message
+      statusMessage: 'Errore di connessione al database.',
+      message: userFriendlyMessage
     })
   } finally {
     await client.close()

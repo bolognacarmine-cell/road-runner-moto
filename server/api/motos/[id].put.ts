@@ -23,7 +23,8 @@ export default defineEventHandler(async (event) => {
     })
   }
 
-  const client = new MongoClient(config.mongodbUri, {
+  const mongodbUri = config.mongodbUri as string
+  const client = new MongoClient(mongodbUri, {
     connectTimeoutMS: 10000,
     serverSelectionTimeoutMS: 10000
   })
@@ -84,7 +85,7 @@ export default defineEventHandler(async (event) => {
     throw createError({
       statusCode: 500,
       statusMessage: 'Errore durante l\'aggiornamento',
-      data: error.message
+      message: error.message
     })
   } finally {
     await client.close()
