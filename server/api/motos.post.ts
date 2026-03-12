@@ -80,21 +80,22 @@ export default defineEventHandler(async (event) => {
       urls: imageUrls
     }
 
-  } catch (error) {
-    console.error('ERRORE CRITICO MONGODB (POST):', {
-      message: error.message,
-      code: error.code,
-      name: error.name
-    })
+  } catch (error: any) {
+    const errorMessage = error?.message || 'Errore sconosciuto'
+    console.error('ERRORE CRITICO MONGODB (POST):', errorMessage)
+    
+    let userFriendlyMessage = errorMessage
+    if (errorMessage.includes('querySrv')) {
+      userFriendlyMessage = 'Problema DNS locale: Non riesco a risolvere l\'indirizzo di MongoDB Atlas. Prova a cambiare i DNS del tuo PC in 8.8.8.8 o 1.1.1.1.'
+    } else if (errorMessage.includes('Authentication failed')) {
+      userFriendlyMessage = 'ERRORE DI AUTENTICAZIONE: La password o lo username del Database User in Atlas sono errati. Controlla il file .env.'
+    }
+    
     if (error.statusCode) throw error
     throw createError({
       statusCode: 500,
       statusMessage: 'Errore di connessione al database.',
-      message: error.message.includes('querySrv') 
-        ? 'Problema DNS locale: Non riesco a risolvere l\'indirizzo di MongoDB Atlas. Prova a cambiare i DNS del tuo PC in 8.8.8.8 o 1.1.1.1.'
-        : error.message.includes('Authentication failed')
-          ? 'ERRORE DI AUTENTICAZIONE: La password o lo username del Database User in Atlas sono errati. Controlla il file .env.'
-          : error.message
+      message: userFriendlyMessage
     })
   } finally {
     await client.close()
