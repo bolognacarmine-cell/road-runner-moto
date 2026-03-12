@@ -74,6 +74,7 @@
               </div>
               <div class="moto-info-admin">
                 <h3>{{ m.marca }} {{ m.modello }}</h3>
+                <p class="description-preview">{{ m.descrizione || 'Nessuna descrizione' }}</p>
                 <p class="price">€ {{ m.prezzo }}</p>
                 <div class="actions-admin">
                   <button @click="editMoto(m)" class="btn-edit">Modifica</button>
@@ -526,6 +527,16 @@ onMounted(() => {
 
 .moto-info-admin h3 {
   margin-bottom: 5px;
+}
+
+.description-preview {
+  font-size: 0.85rem;
+  color: #888;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  margin-bottom: 10px;
 }
 
 .moto-info-admin .price {
