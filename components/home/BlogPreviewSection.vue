@@ -107,6 +107,16 @@ onMounted(() => {
   gap: 30px;
 }
 
+@media (max-width: 640px) {
+  .blog-preview-section {
+    padding: 60px 0;
+  }
+
+  .blog-preview-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
 .loading-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);

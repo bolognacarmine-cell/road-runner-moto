@@ -272,6 +272,35 @@ useHead({
   gap: 30px;
 }
 
+@media (max-width: 640px) {
+  .blog-hero {
+    padding: 100px 0 40px;
+  }
+
+  .hero-content h1 {
+    font-size: 2.5rem;
+  }
+
+  .blog-filters {
+    top: 70px; /* Header mobile più basso */
+    padding: 15px 0;
+  }
+
+  .categories-list {
+    margin: 0 -4%; /* Esci dai bordi del container per lo scroll orizzontale */
+    padding: 0 4% 10px;
+  }
+
+  .search-box {
+    min-width: 0;
+    width: 100%;
+  }
+
+  .blog-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
 .loading-state, .empty-state {
   text-align: center;
   padding: 100px 0;

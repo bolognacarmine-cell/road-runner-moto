@@ -380,6 +380,45 @@ useHead({
   opacity: 0.9;
 }
 
+@media (max-width: 768px) {
+  .post-hero {
+    height: 60vh;
+    min-height: 400px;
+    padding-bottom: 40px;
+  }
+
+  .post-title {
+    font-size: 2.2rem;
+  }
+
+  .article-body {
+    padding: 24px 20px;
+    border-radius: 16px;
+  }
+
+  .markdown-content {
+    font-size: 1.05rem;
+  }
+
+  .markdown-content :deep(h2) {
+    font-size: 1.6rem;
+  }
+
+  .share-box {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .share-links {
+    width: 100%;
+  }
+
+  .share-wa, .share-fb {
+    flex: 1;
+    text-align: center;
+  }
+}
+
 .loading-state {
   text-align: center;
   padding: 150px 0;
