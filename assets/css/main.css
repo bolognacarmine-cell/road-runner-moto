@@ -9,7 +9,10 @@
   --line: rgba(255,255,255,.08);
   --shadow: 0 18px 50px rgba(0,0,0,.32);
   --radius: 12px;
-  --transition: 0.25s ease;
+  --transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  --header-h: 90px;
+  --safe-top: env(safe-area-inset-top);
+  --safe-bottom: env(safe-area-inset-bottom);
 }
 
 /* --------------------- Base --------------------- */
@@ -17,13 +20,22 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+  -webkit-tap-highlight-color: transparent; /* Rimuove il flash grigio su iOS al tocco */
+}
+
+html {
+  scroll-behavior: smooth;
+  overflow-x: hidden; /* Previene scroll orizzontale accidentale */
 }
 
 body {
   background: var(--bg);
   color: var(--text);
-  font-family: 'Inter', sans-serif;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   line-height: 1.6;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 a {
@@ -32,7 +44,7 @@ a {
 }
 
 .container {
-  width: min(1180px, 95%);
+  width: min(1180px, 92%); /* Ridotto leggermente per dare più respiro ai bordi mobile */
   margin: 0 auto;
 }
 
@@ -42,207 +54,58 @@ a {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-height: 48px;
-  padding: 14px 22px;
+  min-height: 48px; /* Target touch minimo 48px secondo Google/Apple */
+  min-width: 48px;
+  padding: 12px 24px;
   border-radius: var(--radius);
   font-weight: 700;
-  transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
+  font-size: 0.95rem;
+  cursor: pointer;
+  border: none;
+  text-align: center;
+  user-select: none;
+  transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition), background var(--transition);
+}
+
+.btn-primary-custom:active,
+.btn-secondary-custom:active {
+  transform: scale(0.96); /* Feedback tattile immediato al tocco */
 }
 
 .btn-primary-custom {
   background: linear-gradient(135deg, var(--primary), var(--primary-2));
   color: white;
-  box-shadow: 0 10px 26px rgba(215, 24, 42, .26);
+  box-shadow: 0 10px 26px rgba(215, 24, 42, .20);
 }
 
-.btn-primary-custom:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 12px 30px rgba(215,24,42,.35);
+@media (hover: hover) {
+  .btn-primary-custom:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 30px rgba(215,24,42,.35);
+  }
 }
 
 .btn-secondary-custom {
-  background: rgba(255,255,255,.04);
-  border: 1px solid rgba(255,255,255,.18);
+  background: rgba(255,255,255,.06);
+  border: 1px solid rgba(255,255,255,.12);
   color: white;
 }
 
-.btn-secondary-custom:hover {
-  transform: translateY(-2px);
-  border-color: rgba(255,91,107,.65);
-  box-shadow: 0 8px 24px rgba(255,91,107,.18);
+@media (hover: hover) {
+  .btn-secondary-custom:hover {
+    transform: translateY(-2px);
+    border-color: rgba(255,91,107,.65);
+    box-shadow: 0 8px 24px rgba(255,91,107,.18);
+  }
 }
 
 .full {
   width: 100%;
 }
 
-/* --------------------- Header --------------------- */
-.site-header {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 100;
-  backdrop-filter: blur(20px);
-  background: rgba(5, 5, 5, 0.7);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-  transition: background 0.3s ease;
-}
-
-.nav-shell {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  height: 120px;
-  padding: 0 50px;
-}
-
-.brand {
-  display: flex;
-  align-items: center;
-  gap: 28px;
-  transform: translateY(25px);
-  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-
-.brand:hover {
-  transform: translateY(28px) scale(1.08);
-}
-
-.brand-logo {
-  width: 145px;
-  height: 145px;
-  object-fit: cover;
-  border-radius: 50%;
-  background: #fff;
-  padding: 10px;
-  box-shadow: 
-    0 15px 45px rgba(0, 0, 0, 0.4),
-    0 0 20px rgba(215, 24, 42, 0.2);
-  border: 5px solid rgba(255, 255, 255, 0.15);
-  position: relative;
-  z-index: 10;
-}
-
-.brand:hover .brand-logo {
-  box-shadow: 
-    0 20px 55px rgba(0, 0, 0, 0.5),
-    0 0 35px rgba(215, 24, 42, 0.4);
-  border-color: var(--primary);
-}
-
-.brand-copy {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.brand-name {
-  font-size: 1.7rem;
-  font-weight: 900;
-  letter-spacing: 0.15em;
-  color: #fff;
-  text-shadow: 0 2px 10px rgba(0,0,0,0.5);
-}
-
-.brand-tagline {
-  font-size: 0.85rem;
-  color: var(--primary);
-  font-weight: 800;
-  letter-spacing: 0.3em;
-  text-transform: uppercase;
-}
-
-.main-nav {
-  display: flex;
-  align-items: center;
-  gap: 40px;
-}
-
-.main-nav a {
-  color: rgba(255, 255, 255, 0.7);
-  font-size: 0.95rem;
-  font-weight: 500;
-  letter-spacing: 0.02em;
-  transition: color 0.3s ease, transform 0.3s ease;
-  position: relative;
-}
-
-.main-nav a::after {
-  content: '';
-  position: absolute;
-  bottom: -4px;
-  left: 0;
-  width: 0;
-  height: 2px;
-  background: var(--primary);
-  transition: width 0.3s ease;
-}
-
-.main-nav a:hover {
-  color: #fff;
-}
-
-.main-nav a:hover::after {
-  width: 100%;
-}
-
-.main-nav .btn-primary-custom {
-  margin-left: 10px;
-  padding: 10px 24px;
-  font-size: 0.85rem;
-}
-
-/* Mobile nav */
-.mobile-toggle {
-  display: none;
-  background: transparent;
-  border: 0;
-  width: 42px;
-  height: 42px;
-  position: relative;
-  cursor: pointer;
-}
-
-.mobile-toggle span {
-  display: block;
-  height: 2px;
-  width: 24px;
-  background: white;
-  margin: 6px auto;
-  border-radius: 999px;
-  transition: 0.3s ease;
-}
-
-.mobile-nav {
-  display: none;
-  flex-direction: column;
-  padding: 20px;
-  background: rgba(5, 5, 5, 0.98);
-  backdrop-filter: blur(20px);
-  position: absolute;
-  top: 120px;
-  left: 0;
-  right: 0;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  animation: slideDown 0.4s ease forwards;
-}
-
-@keyframes slideDown {
-  from { opacity: 0; transform: translateY(-10px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-.mobile-nav a {
-  padding: 15px 0;
-  font-size: 1.1rem;
-  font-weight: 600;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-}
-
-.mobile-cta {
-  margin-top: 20px;
-  text-align: center;
+/* --------------------- Header (Moved to layouts/default.vue) --------------------- */
+.site-header, .nav-shell, .brand, .brand-logo, .brand-copy, .brand-name, .brand-tagline, .main-nav, .mobile-toggle, .mobile-nav {
+  /* Resetting global header styles to let scoped styles in layout handle it */
 }
 
 /* --------------------- Griglie & Cards --------------------- */

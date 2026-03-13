@@ -4,7 +4,7 @@ const brands = ['Honda', 'Piaggio', 'Kymco', 'Suzuki', 'Yamaha', 'Moto Guzzi']
 </script>
 
 <template>
-  <section class="brands-section">
+  <section id="marchi" class="brands-section">
     <div class="container">
       <div class="section-heading">
         <p class="section-kicker">Marchi</p>
@@ -30,6 +30,7 @@ const brands = ['Honda', 'Piaggio', 'Kymco', 'Suzuki', 'Yamaha', 'Moto Guzzi']
   padding: 88px 16px;
   background: #050505;
   color: #f5f5f5;
+  scroll-margin-top: 180px; /* Margine per l'header fisso */
 }
 
 .section-heading {

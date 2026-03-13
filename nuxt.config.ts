@@ -7,16 +7,16 @@ export default defineNuxtConfig({
 
   // ✅ Configurazione runtime per API e URL pubblico
   runtimeConfig: {
-    mongodbUri: process.env.MONGODB_URI,
-    mongodbDbName: process.env.MONGODB_DB_NAME || 'roadrunner_db',
-    adminUser: process.env.ADMIN_USER || 'roadrunner',
-    adminPassword: process.env.ADMIN_PASSWORD || 'runner2026',
+    mongodbUri: process.env.MONGODB_URI || process.env.NUXT_MONGODB_URI,
+    mongodbDbName: process.env.MONGODB_DB_NAME || process.env.NUXT_MONGODB_DB_NAME || 'roadrunner_db',
     cloudinaryCloudName: process.env.CLOUDINARY_CLOUD_NAME,
     cloudinaryApiKey: process.env.CLOUDINARY_API_KEY,
     cloudinaryApiSecret: process.env.CLOUDINARY_API_SECRET,
     public: {
       siteUrl: process.env.NUXT_PUBLIC_SITE_URL || 'https://road-runner-moto.it',
-      apiBase: process.env.NUXT_PUBLIC_API_BASE || 'https://api.road-runner-moto.it'
+      apiBase: process.env.NUXT_PUBLIC_API_BASE || 'https://api.road-runner-moto.it',
+      adminUser: process.env.ADMIN_USER || 'roadrunner',
+      adminPassword: process.env.ADMIN_PASSWORD || 'runner2026'
     }
   },
 

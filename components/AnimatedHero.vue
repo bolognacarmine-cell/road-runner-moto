@@ -2,22 +2,33 @@
 import { onMounted, onUnmounted, nextTick } from 'vue'
 import { gsap } from 'gsap'
 
+let ctx
+
 onMounted(async () => {
   await nextTick()
 
-  const ctx = gsap.context(() => {
-    gsap.from('.hero-badge', { y: 20, opacity: 0, duration: 0.7 })
-    gsap.from('.hero-title', { y: 40, opacity: 0, duration: 0.9, delay: 0.15 })
-    gsap.from('.hero-subtitle, .hero-actions', {
-      y: 24,
-      opacity: 0,
-      duration: 0.8,
-      stagger: 0.15,
-      delay: 0.35
-    })
+  ctx = gsap.context(() => {
+    const badge = document.querySelector('.hero-badge')
+    if (badge) gsap.from(badge, { y: 20, opacity: 0, duration: 0.7 })
+    
+    const title = document.querySelector('.hero-title')
+    if (title) gsap.from(title, { y: 40, opacity: 0, duration: 0.9, delay: 0.15 })
+    
+    const otherElements = document.querySelectorAll('.hero-subtitle, .hero-actions')
+    if (otherElements.length > 0) {
+      gsap.from(otherElements, {
+        y: 24,
+        opacity: 0,
+        duration: 0.8,
+        stagger: 0.15,
+        delay: 0.35
+      })
+    }
   })
+})
 
-  onUnmounted(() => ctx.revert())
+onUnmounted(() => {
+  if (ctx) ctx.revert()
 })
 </script>
 

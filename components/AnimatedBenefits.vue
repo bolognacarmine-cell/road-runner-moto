@@ -2,20 +2,27 @@
 import { onMounted, onUnmounted, nextTick } from 'vue'
 import { gsap } from 'gsap'
 
+let ctx
+
 onMounted(async () => {
   await nextTick()
 
-  const ctx = gsap.context(() => {
-    gsap.from('.benefit-card', {
-      y: 28,
-      opacity: 0,
-      duration: 0.7,
-      stagger: 0.12,
-      delay: 0.2
-    })
+  ctx = gsap.context(() => {
+    const cards = document.querySelectorAll('.benefit-card')
+    if (cards.length > 0) {
+      gsap.from(cards, {
+        y: 28,
+        opacity: 0,
+        duration: 0.7,
+        stagger: 0.12,
+        delay: 0.2
+      })
+    }
   })
+})
 
-  onUnmounted(() => ctx.revert())
+onUnmounted(() => {
+  if (ctx) ctx.revert()
 })
 </script>
 

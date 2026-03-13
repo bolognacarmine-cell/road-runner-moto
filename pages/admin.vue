@@ -48,6 +48,19 @@
           >
             <span class="icon">➕</span> Aggiungi Nuovo
           </button>
+          <button 
+            :class="{ active: currentTab === 'leads' }" 
+            @click="currentTab = 'leads'; fetchLeads()"
+          >
+            <span class="icon">📩</span> Preventivi 
+            <span v-if="leads.length" class="badge-count">{{ leads.length }}</span>
+          </button>
+          <button 
+            :class="{ active: currentTab === 'portal' }" 
+            @click="currentTab = 'portal'; fetchPortalUsers()"
+          >
+            <span class="icon">👤</span> Gestione Portale
+          </button>
         </nav>
         <button @click="logout" class="btn-logout">Esci</button>
       </aside>
@@ -150,6 +163,91 @@
             </div>
           </form>
         </section>
+
+        <!-- Leads View -->
+        <section v-if="currentTab === 'leads'" class="content-section">
+          <div class="section-header">
+            <h2>Richieste Preventivo</h2>
+            <p>Gestisci i contatti dai potenziali clienti</p>
+          </div>
+
+          <div v-if="loading" class="loading-state">Caricamento richieste...</div>
+          
+          <div v-else-if="leads.length === 0" class="empty-state">
+            <p>Non ci sono ancora richieste di preventivo.</p>
+          </div>
+
+          <div v-else class="leads-list">
+            <div v-for="l in leads" :key="l._id" class="lead-card">
+              <div class="lead-header">
+                <span class="lead-date">{{ new Date(l.createdAt).toLocaleDateString('it-IT') }}</span>
+                <span class="lead-status" :class="l.status">{{ l.status }}</span>
+              </div>
+              <div class="lead-body">
+                <div class="lead-info">
+                  <h4>{{ l.nome }}</h4>
+                  <p>📧 {{ l.email }}</p>
+                  <p>📞 {{ l.telefono }}</p>
+                  <p>📍 {{ l.citta || 'N/D' }}</p>
+                </div>
+                <div class="lead-moto">
+                  <strong>Interesse:</strong>
+                  <p>{{ l.marca }} {{ l.modello }} ({{ l.nuovaUsata }})</p>
+                  <p>Tipo: {{ l.tipo }}</p>
+                </div>
+                <div class="lead-payment">
+                  <strong>Acquisto:</strong>
+                  <p>{{ l.metodoAcquisto }}</p>
+                  <p v-if="l.valutazionePermuta === 'si'">🔄 Permuta: {{ l.permutaModello }} ({{ l.permutaAnno }})</p>
+                </div>
+              </div>
+              <div v-if="l.messaggio" class="lead-message">
+                <strong>Messaggio:</strong>
+                <p>{{ l.messaggio }}</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Portal Management View -->
+        <section v-if="currentTab === 'portal'" class="content-section">
+          <div class="section-header">
+            <h2>Gestione Portale Clienti</h2>
+            <p>Crea e gestisci gli accessi privati per i tuoi clienti</p>
+          </div>
+
+          <div v-if="loading" class="loading-state">Caricamento...</div>
+
+          <div v-else class="portal-admin-grid">
+            <div class="portal-users-list">
+              <div v-for="u in portalUsers" :key="u._id" class="user-card-admin">
+                <div class="user-main-info">
+                  <strong>{{ u.nome }} {{ u.cognome }}</strong>
+                  <span>Targa: <code>{{ u.targa }}</code></span>
+                </div>
+                <div class="user-actions">
+                  <button @click="openManageMoto(u)" class="btn-edit-small">Veicolo</button>
+                  <button @click="openMaintenance(u)" class="btn-edit-small">Manutenzione</button>
+                  <button @click="deletePortalUser(u._id)" class="btn-edit-small btn-delete-red">Elimina</button>
+                </div>
+              </div>
+              <div v-if="portalUsers.length === 0" class="empty-state-small">
+                Nessun cliente registrato nel portale.
+              </div>
+            </div>
+
+            <div class="portal-add-user">
+              <h3>Registra Nuovo Cliente</h3>
+              <form @submit.prevent="handleCreatePortalUser" class="mini-form">
+                <input v-model="newUser.nome" placeholder="Nome" required />
+                <input v-model="newUser.cognome" placeholder="Cognome" required />
+                <input v-model="newUser.targa" placeholder="Targa (es: AA123BB)" required />
+                <input v-model="newUser.password" placeholder="Password Temporanea" required />
+                <button type="submit" class="btn-primary-custom full">Crea Account Portale</button>
+              </form>
+            </div>
+          </div>
+        </section>
       </main>
     </div>
 
@@ -164,6 +262,97 @@
         </div>
       </div>
     </div>
+
+    <!-- Portal: Manage Moto Modal -->
+    <div v-if="showPortalMotoModal" class="modal-overlay">
+      <div class="modal large">
+        <h3>Gestisci Veicolo Utente</h3>
+        <p>Targa: <code>{{ selectedUserForAction?.targa }}</code></p>
+        
+        <form @submit.prevent="savePortalVehicle" class="mini-form mt-4">
+          <div class="form-grid">
+            <div class="form-group">
+              <label>Marca</label>
+              <input v-model="portalMotoForm.marca" placeholder="Es: Honda" required />
+            </div>
+            <div class="form-group">
+              <label>Modello</label>
+              <input v-model="portalMotoForm.modello" placeholder="Es: SH 150" required />
+            </div>
+            <div class="form-group">
+              <label>Data Acquisto</label>
+              <input type="date" v-model="portalMotoForm.dataAcquisto" />
+            </div>
+            <div class="form-group">
+              <label>Km Iniziali</label>
+              <input type="number" v-model="portalMotoForm.kmIniziali" />
+            </div>
+            <div class="form-group">
+              <label>Km Attuali</label>
+              <input type="number" v-model="portalMotoForm.kmAttuali" />
+            </div>
+            <div class="form-group">
+              <label>Prossima Manutenzione (Km o Data)</label>
+              <input v-model="portalMotoForm.prossimaManutenzione" placeholder="Es: 10.000 km o 12/2026" />
+            </div>
+            <div class="form-group full-width">
+              <label>Avvisi / Suggerimenti</label>
+              <textarea v-model="portalMotoForm.avvisi" placeholder="Es: Controllare pressione gomme ogni mese"></textarea>
+            </div>
+            <div class="form-group full-width">
+              <label>URL Foto (opzionale)</label>
+              <input v-model="portalMotoForm.photoUrl" placeholder="https://..." />
+            </div>
+          </div>
+          
+          <div class="modal-actions">
+            <button type="button" @click="showPortalMotoModal = false" class="btn-cancel">Annulla</button>
+            <button type="submit" class="btn-primary-custom">Salva Veicolo</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Portal: Maintenance History Modal -->
+    <div v-if="showMaintenanceModal" class="modal-overlay">
+      <div class="modal large max-h-[90vh] flex flex-col">
+        <h3>Storico Interventi</h3>
+        <p>Targa: <code>{{ selectedUserForAction?.targa }}</code></p>
+
+        <div class="existing-history mt-4 overflow-y-auto flex-grow bg-black/30 rounded-xl p-4">
+          <div v-for="rec in maintenanceHistory" :key="rec._id" class="maintenance-record-item mb-4 pb-4 border-b border-white/5">
+            <div class="flex justify-between items-start">
+              <div>
+                <span class="text-xs text-muted block">{{ rec.data }} - {{ rec.km }} km</span>
+                <strong class="text-sm block">{{ rec.descrizione }}</strong>
+                <p v-if="rec.partiSostituite" class="text-xs text-muted mt-1 italic">Parti: {{ rec.partiSostituite }}</p>
+                <p v-if="rec.costo" class="text-xs text-primary mt-1">€ {{ rec.costo }}</p>
+              </div>
+              <button @click="deleteMaintenance(rec._id)" class="btn-delete-icon">×</button>
+            </div>
+          </div>
+          <div v-if="maintenanceHistory.length === 0" class="empty-docs">Nessun intervento registrato.</div>
+        </div>
+
+        <div class="add-maintenance-form mt-6 pt-6 border-t border-white/10">
+          <h4>Aggiungi Intervento</h4>
+          <div class="grid grid-cols-2 gap-3 mt-3">
+            <input type="date" v-model="maintenanceForm.data" class="mini-input" />
+            <input type="number" v-model="maintenanceForm.km" placeholder="Km intervento" class="mini-input" />
+            <input v-model="maintenanceForm.descrizione" placeholder="Descrizione (es: Tagliando)" class="mini-input col-span-2" />
+            <input v-model="maintenanceForm.partiSostituite" placeholder="Parti sostituite" class="mini-input col-span-2" />
+            <input type="number" v-model="maintenanceForm.costo" placeholder="Costo (€)" class="mini-input" />
+            <button @click="addMaintenanceRecord" class="btn-primary-custom">Aggiungi</button>
+          </div>
+        </div>
+
+        <div class="modal-actions mt-4">
+          <button @click="showMaintenanceModal = false" class="btn-cancel full">Chiudi</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Portal: Manage Docs Modal removed -->
   </div>
 </template>
 
@@ -178,8 +367,8 @@ const isAuthenticated = ref(false)
 const usernameInput = ref('')
 const passwordInput = ref('')
 const loginError = ref(false)
-const ADMIN_USER = config.adminUser || 'roadrunner'
-const ADMIN_PASSWORD = config.adminPassword || 'runner2026'
+const ADMIN_USER = config.public.adminUser || 'roadrunner'
+const ADMIN_PASSWORD = config.public.adminPassword || 'runner2026'
 
 const handleLogin = () => {
   if (usernameInput.value === ADMIN_USER && passwordInput.value === ADMIN_PASSWORD) {
@@ -199,6 +388,14 @@ const logout = () => {
 // --- Data State ---
 const currentTab = ref('list')
 const motos = ref([])
+const leads = ref([])
+const portalUsers = ref([])
+const newUser = ref({
+  nome: '',
+  cognome: '',
+  targa: '',
+  password: ''
+})
 const loading = ref(false)
 const submitting = ref(false)
 const formMessage = ref('')
@@ -221,16 +418,222 @@ const selectedFiles = ref([])
 const imagePreviews = ref([])
 const editingId = ref(null)
 
+// --- Portal Management Actions ---
+const selectedUserForAction = ref(null)
+const showPortalMotoModal = ref(false)
+const showPortalDocsModal = ref(false)
+const portalDocs = ref([])
+const portalDocForm = ref({
+  title: '',
+  type: 'Libretto',
+  fileBase64: ''
+})
+const portalMotoForm = ref({
+  marca: '',
+  modello: '',
+  targa: '',
+  dataAcquisto: '',
+  kmIniziali: 0,
+  kmAttuali: 0,
+  prossimaManutenzione: '',
+  avvisi: '',
+  photoUrl: ''
+})
+const maintenanceHistory = ref([])
+const maintenanceForm = ref({
+  data: '',
+  km: 0,
+  descrizione: '',
+  partiSostituite: '',
+  costo: 0
+})
+const showMaintenanceModal = ref(false)
+
+const openManageMoto = async (user) => {
+  selectedUserForAction.value = user
+  portalMotoForm.value = { 
+    marca: '', 
+    modello: '', 
+    targa: user.targa, 
+    dataAcquisto: '',
+    kmIniziali: 0,
+    kmAttuali: 0,
+    prossimaManutenzione: '',
+    avvisi: '',
+    photoUrl: '' 
+  }
+  
+  try {
+    const res = await $fetch(`/api/portal/data?targa=${user.targa}`)
+    if (res.vehicle) {
+      portalMotoForm.value = { ...res.vehicle }
+    }
+  } catch (e) {
+    console.error('Errore recupero veicolo:', e)
+  }
+  
+  showPortalMotoModal.value = true
+}
+
+const openMaintenance = async (user) => {
+  selectedUserForAction.value = user
+  maintenanceHistory.value = []
+  try {
+    const res = await $fetch(`/api/portal/data?targa=${user.targa}`)
+    maintenanceHistory.value = res.maintenance || []
+  } catch (e) {
+    console.error('Errore recupero storico:', e)
+  }
+  showMaintenanceModal.value = true
+}
+
+const addMaintenanceRecord = async () => {
+  try {
+    await $fetch('/api/admin/add-maintenance', {
+      method: 'POST',
+      body: {
+        targa: selectedUserForAction.value.targa,
+        ...maintenanceForm.value
+      }
+    })
+    alert('Intervento aggiunto!')
+    maintenanceForm.value = { data: '', km: 0, descrizione: '', partiSostituite: '', costo: 0 }
+    openMaintenance(selectedUserForAction.value) // Refresh
+  } catch (e) {
+    alert('Errore salvataggio intervento.')
+  }
+}
+
+const deleteMaintenance = async (id) => {
+  if (!confirm('Eliminare questo intervento dallo storico?')) return
+  try {
+    await $fetch(`/api/admin/delete-maintenance?id=${id}`, { method: 'DELETE' })
+    openMaintenance(selectedUserForAction.value)
+  } catch (e) {
+    alert('Errore eliminazione.')
+  }
+}
+
+const openManageDocs = async (user) => {
+  selectedUserForAction.value = user
+  portalDocs.value = []
+  try {
+    const res = await $fetch(`/api/portal/data?targa=${user.targa}`)
+    portalDocs.value = res.documents || []
+  } catch (e) {
+    console.error('Errore recupero documenti:', e)
+  }
+  showPortalDocsModal.value = true
+}
+
+const savePortalVehicle = async () => {
+  try {
+    await $fetch('/api/admin/update-portal-vehicle', {
+      method: 'POST',
+      body: portalMotoForm.value
+    })
+    alert('Veicolo aggiornato con successo!')
+    showPortalMotoModal.value = false
+  } catch (e) {
+    console.error('ERRORE SALVATAGGIO VEICOLO:', e)
+    const errorMsg = e.data?.message || e.message || 'Errore sconosciuto'
+    alert(`Errore durante il salvataggio del veicolo: ${errorMsg}`)
+  }
+}
+
+const handlePortalDocUpload = async (event) => {
+  const file = event.target.files[0]
+  if (!file) return
+  
+  const reader = new FileReader()
+  reader.onload = async (e) => {
+    try {
+      await $fetch('/api/admin/upload-portal-document', {
+        method: 'POST',
+        body: {
+          targa: selectedUserForAction.value.targa,
+          title: portalDocForm.value.title || file.name,
+          type: portalDocForm.value.type,
+          fileBase64: e.target.result
+        }
+      })
+      alert('Documento caricato!')
+      openManageDocs(selectedUserForAction.value) // Refresh
+    } catch (err) {
+      alert('Errore caricamento documento.')
+    }
+  }
+  reader.readAsDataURL(file)
+}
+
+const deletePortalDoc = async (docId) => {
+  if (!confirm('Eliminare questo documento?')) return
+  try {
+    await $fetch(`/api/admin/delete-portal-document?id=${docId}`, { method: 'DELETE' })
+    openManageDocs(selectedUserForAction.value) // Refresh
+  } catch (e) {
+    alert('Errore eliminazione.')
+  }
+}
+
+const deletePortalUser = async (id) => {
+  if (!confirm('Sei sicuro di voler eliminare questo cliente dal portale?')) return
+  try {
+    await $fetch(`/api/admin/delete-portal-user?id=${id}`, { method: 'DELETE' })
+    alert('Cliente rimosso dal portale.')
+    fetchPortalUsers() // Refresh list
+  } catch (e) {
+    alert('Errore durante l\'eliminazione del cliente.')
+  }
+}
+
 // --- Methods ---
 const fetchMotos = async () => {
   loading.value = true
   try {
     const res = await $fetch('/api/motos')
     motos.value = res.motos
+    // Fetch leads count also
+    fetchLeads()
   } catch (e) {
     console.error(e)
   } finally {
     loading.value = false
+  }
+}
+
+const fetchLeads = async () => {
+  try {
+    const res = await $fetch('/api/leads')
+    leads.value = res.leads || []
+  } catch (e) {
+    console.error('Errore caricamento leads:', e)
+  }
+}
+
+const fetchPortalUsers = async () => {
+  loading.value = true
+  try {
+    const res = await $fetch('/api/admin/portal-data')
+    portalUsers.value = res.users || []
+  } catch (e) {
+    console.error('Errore caricamento utenti portale:', e)
+  } finally {
+    loading.value = false
+  }
+}
+
+const handleCreatePortalUser = async () => {
+  try {
+    await $fetch('/api/admin/create-portal-user', {
+      method: 'POST',
+      body: newUser.value
+    })
+    alert('Cliente registrato con successo!')
+    newUser.value = { nome: '', cognome: '', targa: '', password: '' }
+    fetchPortalUsers()
+  } catch (e) {
+    alert('Errore durante la registrazione.')
   }
 }
 
@@ -575,6 +978,193 @@ onMounted(() => {
   opacity: 0.8;
 }
 
+.btn-logout:hover {
+  background: rgba(215, 24, 42, 0.1);
+  color: var(--primary-2);
+}
+
+.badge-count {
+  background: var(--primary);
+  color: #fff;
+  font-size: 0.7rem;
+  padding: 2px 8px;
+  border-radius: 10px;
+  margin-left: auto;
+}
+
+/* Leads List Styles */
+.leads-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.lead-card {
+  background: var(--panel-2);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 24px;
+}
+
+.lead-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid var(--line);
+}
+
+.lead-date {
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.lead-status {
+  text-transform: uppercase;
+  font-size: 0.7rem;
+  font-weight: 800;
+  padding: 4px 10px;
+  border-radius: 4px;
+}
+
+.lead-status.nuovo {
+  background: rgba(255, 193, 7, 0.15);
+  color: #ffc107;
+}
+
+.lead-body {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px;
+}
+
+@media (max-width: 768px) {
+  .lead-body {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+}
+
+.lead-info h4 {
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+}
+
+.lead-info p, .lead-moto p, .lead-payment p {
+  font-size: 0.9rem;
+  color: var(--muted);
+  margin-bottom: 5px;
+}
+
+.lead-message {
+  margin-top: 20px;
+  padding: 15px;
+  background: rgba(255,255,255,0.03);
+  border-radius: 8px;
+}
+
+.lead-message p {
+  font-size: 0.9rem;
+  color: var(--text);
+  font-style: italic;
+  margin-top: 5px;
+}
+
+/* Portal Admin Styles */
+.portal-admin-grid {
+  display: grid;
+  grid-template-columns: 1fr 350px;
+  gap: 40px;
+}
+
+@media (max-width: 1024px) {
+  .portal-admin-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.user-card-admin {
+  background: var(--panel-2);
+  border: 1px solid var(--line);
+  padding: 20px;
+  border-radius: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.user-main-info strong {
+  display: block;
+  font-size: 1.1rem;
+}
+
+.user-main-info code {
+  color: var(--primary-2);
+  font-weight: 800;
+}
+
+.btn-edit-small {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid var(--line);
+  color: #fff;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  margin-left: 8px;
+  transition: all 0.3s ease;
+}
+
+.btn-edit-small:hover {
+  background: var(--primary-2);
+  border-color: var(--primary-2);
+}
+
+.btn-delete-red:hover {
+  background: #ff0000 !important;
+  border-color: #ff0000 !important;
+}
+
+.portal-add-user {
+  background: var(--panel-2);
+  padding: 30px;
+  border-radius: 20px;
+  border: 1px solid var(--line);
+  height: fit-content;
+}
+
+.portal-add-user h3 {
+  margin-bottom: 20px;
+  font-size: 1.25rem;
+}
+
+.mini-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.mini-form input {
+  background: #0a0a0a;
+  border: 1px solid #333;
+  padding: 12px;
+  border-radius: 10px;
+  color: #ffffff;
+  font-size: 1rem;
+  width: 100%;
+}
+
+.mini-form input::placeholder {
+  color: #666;
+}
+
+.mini-form input:focus {
+  border-color: var(--primary-2);
+  outline: none;
+}
+
 /* Form Styles */
 .moto-form {
   background: #1a1a1a;
@@ -669,8 +1259,84 @@ onMounted(() => {
   padding: 30px;
   border-radius: 20px;
   max-width: 400px;
+  width: 90%;
   text-align: center;
   border: 1px solid #333;
+}
+
+.modal.large {
+  max-width: 550px;
+  text-align: left;
+}
+
+.modal.large h3 {
+  margin-bottom: 10px;
+}
+
+.existing-docs {
+  max-height: 200px;
+  overflow-y: auto;
+  background: #0a0a0a;
+  border-radius: 10px;
+  padding: 10px;
+}
+
+.doc-item-admin {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  border-bottom: 1px solid #222;
+  font-size: 0.9rem;
+}
+
+.doc-item-admin:last-child {
+  border-bottom: none;
+}
+
+.btn-delete-icon {
+  background: rgba(215, 24, 42, 0.1);
+  color: var(--primary);
+  border: none;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  font-weight: bold;
+}
+
+.upload-zone {
+  background: #111;
+  padding: 20px;
+  border-radius: 12px;
+  border: 2px dashed #333;
+}
+
+.upload-zone input[type="text"],
+.upload-zone select {
+  background: #0a0a0a;
+  border: 1px solid #333;
+  color: white;
+  padding: 8px;
+  border-radius: 6px;
+  width: 100%;
+}
+
+.mini-input {
+  background: #0a0a0a;
+  border: 1px solid #333;
+  color: white;
+  padding: 10px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  width: 100%;
+}
+
+.mini-input:focus {
+  border-color: var(--primary-2);
+  outline: none;
 }
 
 .modal-actions {

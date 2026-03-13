@@ -29,11 +29,28 @@ const formatPrice = (price) => {
   if (!price) return 'Prezzo su richiesta'
   return new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(price)
 }
+
+const formatImages = (images) => {
+  if (images && Array.isArray(images) && images.length > 0) {
+    return images.map(img => {
+      const url = typeof img === 'string' ? img : (img?.url || '/logo-road-runner.jpg')
+      return url.replace('/upload/', '/upload/f_auto,q_auto/')
+    })
+  }
+  return ['/logo-road-runner.jpg']
+}
 </script>
 
 <template>
   <div class="moto-detail-page">
     <div class="container py-5">
+      <!-- Breadcrumb / Back button -->
+      <div class="back-nav mb-5">
+        <NuxtLink to="/#moto" class="btn-back">
+          <span class="arrow">←</span> Torna al catalogo
+        </NuxtLink>
+      </div>
+
       <!-- Loading State -->
       <div v-if="loading" class="loading-box">
         <div class="spinner"></div>
@@ -50,7 +67,7 @@ const formatPrice = (price) => {
       <div v-else-if="moto" class="moto-detail-grid">
         <!-- Colonna Sinistra: Carosello -->
         <div class="moto-visuals">
-          <MotoCarousel :images="moto.immagini" :altText="`${moto.marca} ${moto.modello}`" height="500px" />
+          <MotoCarousel :images="formatImages(moto.immagini)" :altText="`${moto.marca} ${moto.modello}`" height="500px" />
           
           <div class="moto-description-section mt-5">
             <h3>Descrizione</h3>
@@ -103,6 +120,39 @@ const formatPrice = (price) => {
   color: #fff;
   min-height: 100vh;
   padding-top: 80px;
+}
+
+.back-nav {
+  display: flex;
+  align-items: center;
+}
+
+.btn-back {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: #888;
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  padding: 8px 16px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 100px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.btn-back .arrow {
+  transition: transform 0.3s ease;
+}
+
+.btn-back:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.btn-back:hover .arrow {
+  transform: translateX(-4px);
 }
 
 .moto-detail-grid {

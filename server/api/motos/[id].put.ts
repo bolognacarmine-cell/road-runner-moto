@@ -3,7 +3,7 @@ import { MongoClient, ObjectId } from 'mongodb'
 import { v2 as cloudinary } from 'cloudinary'
 
 export default defineEventHandler(async (event) => {
-  const config = useRuntimeConfig()
+  const config = useRuntimeConfig(event)
   const id = getRouterParam(event, 'id')
   const body = await readBody(event)
   

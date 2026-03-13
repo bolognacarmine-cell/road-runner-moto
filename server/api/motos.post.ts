@@ -4,7 +4,7 @@ import { MongoClient } from 'mongodb'
 import { v2 as cloudinary } from 'cloudinary'
 
 export default defineEventHandler(async (event) => {
-  const config = useRuntimeConfig()
+  const config = useRuntimeConfig(event)
   const body = await readBody(event)
 
   // 0. Verifica configurazione essenziale

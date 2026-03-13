@@ -32,12 +32,20 @@ const formatImages = (moto) => {
 }
 
 // Animazioni GSAP
+let ctx
+
 onMounted(async () => {
   await nextTick()
-  const ctx = gsap.context(() => {
-    gsap.from('.featured-grid .moto-card', { y: 28, opacity: 0, duration: 0.7, stagger: 0.12, delay: 0.2 })
+  ctx = gsap.context(() => {
+    const cards = document.querySelectorAll('.featured-grid .moto-card')
+    if (cards.length > 0) {
+      gsap.from(cards, { y: 28, opacity: 0, duration: 0.7, stagger: 0.12, delay: 0.2 })
+    }
   })
-  onUnmounted(() => ctx.revert())
+})
+
+onUnmounted(() => {
+  if (ctx) ctx.revert()
 })
 </script>
 
@@ -75,160 +83,129 @@ onMounted(async () => {
 </template>
 
 <style scoped>
-/* Qui rimane lo stesso style scoped già fornito per FeaturedVehicles */
-</style>
-<style scoped>
 .featured-section {
-  padding: 88px 16px;
-  background: #050505;
-  color: #f5f5f5;
+  padding: 100px 0;
+  background: var(--bg);
+  position: relative;
+  z-index: 2;
+  margin-top: -2px; /* Piccola sovrapposizione per evitare linee bianche tra sezioni */
+  scroll-margin-top: 180px; /* Margine per l'header fisso quando si scende dal catalogo */
 }
 
 .section-heading {
-  text-align: center;
-  max-width: 760px;
-  margin: 0 auto 40px;
-}
-
-.section-heading h2 {
-  margin: 0 0 12px;
-  font-size: clamp(2rem, 4vw, 3rem);
-  line-height: 1.05;
+  margin-bottom: 48px;
 }
 
 .section-kicker {
-  margin: 0 0 10px;
-  color: #ff5b6b;
+  color: var(--primary-2);
+  font-weight: 900;
   text-transform: uppercase;
-  font-weight: 800;
-  font-size: .85rem;
-  letter-spacing: .12em;
+  letter-spacing: 0.15em;
+  font-size: 1rem;
+  margin-bottom: 16px;
 }
 
-.filters-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 16px;
-  margin-bottom: 28px;
-}
-
-.filter-input {
-  width: 100%;
-  min-height: 52px;
-  border-radius: 12px;
-  border: 1px solid rgba(255,255,255,.08);
-  background: #101010;
-  color: #fff;
-  padding: 14px 16px;
-  outline: none;
-  transition: border 0.3s ease, box-shadow 0.3s ease;
-}
-.filter-input:focus {
-  border-color: rgba(255,91,107,.65);
-  box-shadow: 0 0 0 4px rgba(255,91,107,.12);
+.section-heading h2 {
+  font-size: clamp(2.5rem, 6vw, 4rem);
+  font-weight: 950;
+  margin-bottom: 20px;
+  letter-spacing: -0.02em;
 }
 
 .featured-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: 1fr;
   gap: 24px;
 }
 
-.moto-card {
-  border-radius: 18px;
-  overflow: hidden;
-  background: linear-gradient(180deg, #131313, #0b0b0b);
-  border: 1px solid rgba(255,255,255,.08);
-  box-shadow: 0 18px 50px rgba(0,0,0,.32);
-  display: flex;
-  flex-direction: column;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-.moto-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 22px 60px rgba(0,0,0,.45);
+@media (min-width: 640px) {
+  .featured-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
-.moto-image {
-  width: 100%;
-  height: 240px;
-  object-fit: cover;
-  display: block;
+@media (min-width: 1024px) {
+  .featured-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
+  }
+}
+
+.moto-card {
+  background: var(--panel);
+  border-radius: var(--radius);
+  overflow: hidden;
+  border: 1px solid var(--line);
+  transition: transform var(--transition), border-color var(--transition);
+}
+
+@media (hover: hover) {
+  .moto-card:hover {
+    transform: translateY(-8px);
+    border-color: rgba(255, 255, 255, 0.15);
+  }
 }
 
 .moto-body {
-  padding: 18px;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
+  padding: 24px;
 }
 
 .moto-kicker {
-  color: #ff5b6b;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--primary-2);
   text-transform: uppercase;
-  font-weight: 800;
-  font-size: .8rem;
+  margin-bottom: 8px;
 }
 
 .moto-body h3 {
-  margin: 0;
-  font-size: 1.35rem;
-  font-weight: 700;
+  font-size: 1.25rem;
+  font-weight: 800;
+  margin-bottom: 16px;
 }
 
 .moto-meta {
   list-style: none;
-  padding: 0;
-  margin: 0;
-  display: grid;
-  gap: 6px;
-  color: #bdbdbd;
-  font-size: .9rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 24px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--line);
+}
+
+.moto-meta li {
+  font-size: 0.85rem;
+  color: var(--muted);
+  background: rgba(255, 255, 255, 0.03);
+  padding: 4px 10px;
+  border-radius: 6px;
 }
 
 .moto-footer {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: 12px;
+}
+
+.moto-footer strong {
+  font-size: 1.25rem;
+  color: #fff;
+  font-weight: 900;
 }
 
 .moto-footer a {
-  color: #fff;
   font-weight: 700;
-  text-decoration: none;
-}
-
-.catalog-cta {
-  display: flex;
-  justify-content: center;
-  margin-top: 28px;
+  color: var(--primary-2);
+  font-size: 0.9rem;
 }
 
 .state-box {
   text-align: center;
-  padding: 24px;
-  border-radius: 18px;
-  border: 1px solid rgba(255,255,255,.08);
-  background: linear-gradient(180deg, #131313, #0b0b0b);
-  color: #bdbdbd;
-}
-
-.error {
-  border-color: rgba(255,91,107,.35);
-  color: #ff5b6b;
-}
-
-/* Responsive */
-@media (max-width: 1100px) {
-  .featured-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-@media (max-width: 700px) {
-  .featured-grid,
-  .filters-grid {
-    grid-template-columns: 1fr;
-  }
+  padding: 60px 20px;
+  background: var(--panel);
+  border-radius: var(--radius);
+  color: var(--muted);
+  border: 1px dashed var(--line);
 }
 </style>

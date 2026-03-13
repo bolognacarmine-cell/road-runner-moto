@@ -12,48 +12,64 @@ defineProps({
 
 gsap.registerPlugin(ScrollTrigger)
 
+let ctx
+
 onMounted(async () => {
   await nextTick()
-  const ctx = gsap.context(() => {
+  ctx = gsap.context(() => {
     // Animazione di comparsa fluida ed elegante
-    gsap.to('.hero-text-wrapper', {
-      y: 0,
-      opacity: 1,
-      duration: 1.5,
-      delay: 0.5,
-      ease: 'power4.out'
-    })
+    const textWrapper = document.querySelector('.hero-text-wrapper')
+    if (textWrapper) {
+      gsap.to(textWrapper, {
+        y: 0,
+        opacity: 1,
+        duration: 1.5,
+        delay: 0.5,
+        ease: 'power4.out'
+      })
+    }
 
     // Stagger dei contenuti interni per profondità
-    gsap.to('.hero-badge, .hero-title, .hero-subtitle, .hero-actions', {
-      y: 0,
-      opacity: 1,
-      duration: 1,
-      stagger: 0.1,
-      delay: 0.8,
-      ease: 'power2.out'
-    })
+    const internalContent = document.querySelectorAll('.hero-badge, .hero-title, .hero-subtitle, .hero-actions')
+    if (internalContent.length > 0) {
+      gsap.to(internalContent, {
+        y: 0,
+        opacity: 1,
+        duration: 1,
+        stagger: 0.1,
+        delay: 0.8,
+        ease: 'power2.out'
+      })
+    }
 
-    gsap.to('.scroll-indicator', { 
-      opacity: 0.6, 
-      y: 0,
-      duration: 1.2, 
-      delay: 1.5 
-    })
+    const scrollIndicator = document.querySelector('.scroll-indicator')
+    if (scrollIndicator) {
+      gsap.to(scrollIndicator, { 
+        opacity: 0.6, 
+        y: 0,
+        duration: 1.2, 
+        delay: 1.5 
+      })
+    }
 
     // Parallasse discreto sullo scroll
-    gsap.to('.hero-text-wrapper', {
-      y: -30,
-      opacity: 0.5,
-      scrollTrigger: {
-        trigger: '.hero',
-        start: 'top top',
-        end: 'bottom top',
-        scrub: 1
-      }
-    })
+    if (textWrapper && document.querySelector('.hero')) {
+      gsap.to(textWrapper, {
+        y: -30,
+        opacity: 0.5,
+        scrollTrigger: {
+          trigger: '.hero',
+          start: 'top top',
+          end: 'bottom top',
+          scrub: 1
+        }
+      })
+    }
   })
-  onUnmounted(() => ctx.revert())
+})
+
+onUnmounted(() => {
+  if (ctx) ctx.revert()
 })
 </script>
 
@@ -112,15 +128,16 @@ onMounted(async () => {
 <style scoped>
 .hero {
   position: relative;
-  min-height: 100vh;
+  height: 100vh;
+  height: 100svh; /* Stable Viewport Height per evitare scatti allo scroll */
   width: 100%;
   overflow: hidden;
   background: #000;
-  padding: 0;
-  margin: 0;
+  display: flex;
+  align-items: flex-end;
+  padding-bottom: 80px; /* Padding fisso per stabilità invece di 10vh */
 }
 
-/* Video a tutto schermo */
 .hero-video {
   position: absolute;
   top: 0;
@@ -128,213 +145,116 @@ onMounted(async () => {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  z-index: 0;
+  object-position: center; /* Assicura che il centro del video sia visibile */
+  opacity: 0.5;
 }
 
-/* Overlay scuro molto leggero per dare spazio al video */
+@media (max-width: 768px) {
+  .hero-video {
+    opacity: 0.4; /* Video leggermente più scuro su mobile per leggere meglio i testi */
+  }
+}
+
 .hero-overlay {
   position: absolute;
   inset: 0;
-  z-index: 1;
   background: linear-gradient(to bottom, 
-    rgba(0, 0, 0, 0.2) 0%, 
-    rgba(0, 0, 0, 0.05) 40%, 
-    rgba(0, 0, 0, 0.4) 100%
+    rgba(5, 5, 5, 0.3) 0%, 
+    rgba(5, 5, 5, 0.1) 50%, 
+    rgba(5, 5, 5, 0.9) 100% /* Gradiente più forte verso il basso per sfumare nella sezione successiva */
   );
+  z-index: 1;
 }
 
-.hero-overlay::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.3) 0%, transparent 40%);
-}
-
-/* Contenitore principale per posizionamento al fondo */
 .hero-container {
-  position: absolute;
-  top: auto; /* Forza l'ancoraggio al fondo */
-  bottom: 50px; /* Distanza dal fondo */
-  left: 0;
-  right: 0;
+  position: relative;
+  z-index: 2;
   width: 100%;
-  z-index: 5;
-  display: flex;
-  justify-content: center;
-  pointer-events: none;
-}
-
-.hero-content-wrapper {
-  display: flex;
-  justify-content: center;
-  width: 100%;
-  pointer-events: auto; /* Riabilita i click sul contenuto reale (bottoni) */
-}
-
-/* Contenuto testuale ultra-discreto */
-.hero-content {
-  text-align: center;
-  max-width: 700px;
-  will-change: transform, opacity;
-  overflow: hidden; /* Fondamentale per l'effetto reveal */
-  padding: 10px;
 }
 
 .hero-text-wrapper {
-  padding: 24px 40px;
-  border-radius: 24px;
-  background: rgba(0, 0, 0, 0.1);
-  backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.03);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  opacity: 0; /* Nascondi inizialmente per evitare flicker */
-  transform: translateY(20px); /* Posizione iniziale per l'animazione */
-}
-
-.hero-badge, .hero-title, .hero-subtitle, .hero-actions {
-  opacity: 0; /* Nascondi i figli per l'animazione stagger */
+  max-width: 800px;
+  opacity: 0;
+  transform: translateY(30px);
 }
 
 .hero-badge {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 12px;
-  padding: 4px 16px;
+  display: inline-block;
+  padding: 6px 16px;
+  background: rgba(215, 24, 42, 0.2);
+  border: 1px solid rgba(215, 24, 42, 0.4);
+  color: var(--primary-2);
   border-radius: 100px;
-  background: rgba(215, 24, 42, 0.1);
-  border: 1px solid rgba(215, 24, 42, 0.2);
-  font-size: 0.7rem;
-  font-weight: 600;
-  color: #fff;
-  letter-spacing: 0.15em;
+  font-size: 0.75rem;
+  font-weight: 800;
   text-transform: uppercase;
+  letter-spacing: 0.12em;
+  margin-bottom: 20px;
 }
 
 .hero-title {
-  font-family: 'Inter', sans-serif;
-  font-size: clamp(1.6rem, 4vw, 2.6rem); /* Dimensione ridotta */
-  font-weight: 300;
-  line-height: 1.2;
-  letter-spacing: -0.01em;
+  font-size: clamp(2.5rem, 10vw, 5.5rem); /* Ingrandito */
+  line-height: 1;
+  font-weight: 950; /* Massimo bold */
+  margin-bottom: 24px;
+  letter-spacing: -0.04em;
   color: #fff;
-  text-transform: none;
-  margin-bottom: 8px;
-}
-
-.hero-dynamic {
-  display: inline; /* In riga */
-  font-weight: 700;
-  color: var(--primary);
-  background: none;
-  -webkit-text-fill-color: initial;
-  filter: none;
 }
 
 .hero-subtitle {
-  color: rgba(255, 255, 255, 0.7);
-  max-width: 450px;
-  margin: 0 0 20px;
-  font-size: 0.95rem;
+  font-size: clamp(1.1rem, 3vw, 1.5rem); /* Ingrandito */
+  color: #ccc;
+  margin-bottom: 40px;
+  max-width: 600px;
   line-height: 1.5;
-  font-weight: 400;
 }
 
 .hero-actions {
   display: flex;
-  gap: 12px;
-  justify-content: center;
   flex-wrap: wrap;
+  gap: 16px;
 }
 
-.btn-primary-custom, .btn-secondary-custom {
-  min-height: 38px;
-  padding: 8px 18px;
-  font-size: 0.85rem;
-  font-weight: 600;
+@media (max-width: 480px) {
+  .hero-actions {
+    flex-direction: column;
+  }
+  
+  .hero-actions .btn-primary-custom,
+  .hero-actions .btn-secondary-custom {
+    width: 100%;
+  }
 }
 
-/* Scroll Indicator Styles */
 .scroll-indicator {
   position: absolute;
-  bottom: 40px;
-  right: 40px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;
-  z-index: 3;
-  opacity: 0; /* Nascondi inizialmente */
-  transform: translateY(20px);
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+  opacity: 0;
 }
 
 .mouse {
-  width: 26px;
-  height: 42px;
-  border: 2px solid rgba(255, 255, 255, 0.5);
-  border-radius: 15px;
-  position: relative;
+  width: 24px;
+  height: 38px;
+  border: 2px solid rgba(255, 255, 255, 0.25);
+  border-radius: 20px;
+  display: flex;
+  justify-content: center;
+  padding-top: 6px;
 }
 
 .wheel {
-  width: 4px;
-  height: 8px;
-  background: #fff;
+  width: 3px;
+  height: 6px;
+  background: var(--primary-2);
   border-radius: 2px;
-  position: absolute;
-  top: 8px;
-  left: 50%;
-  transform: translateX(-50%);
-  animation: scroll-wheel 1.5s infinite;
+  animation: scrollWheel 2s infinite;
 }
 
-.arrows span {
-  display: block;
-  width: 10px;
-  height: 10px;
-  border-bottom: 2px solid rgba(255, 255, 255, 0.5);
-  border-right: 2px solid rgba(255, 255, 255, 0.5);
-  transform: rotate(45deg);
-  margin: -4px;
-  animation: scroll-arrows 1.5s infinite;
-}
-
-.arrows span:nth-child(2) { animation-delay: 0.2s; }
-.arrows span:nth-child(3) { animation-delay: 0.4s; }
-
-@keyframes scroll-wheel {
-  0% { opacity: 0; transform: translate(-50%, 0); }
-  30% { opacity: 1; }
-  100% { opacity: 0; transform: translate(-50%, 15px); }
-}
-
-@keyframes scroll-arrows {
-  0% { opacity: 0; transform: rotate(45deg) translate(-5px, -5px); }
-  50% { opacity: 1; }
-  100% { opacity: 0; transform: rotate(45deg) translate(5px, 5px); }
-}
-
-/* Responsive */
-@media (max-width: 900px) {
-  .hero {
-    min-height: 90vh;
-  }
-  .hero-content {
-    padding: 0 16px;
-  }
-  .scroll-indicator {
-    bottom: 20px;
-  }
-  .hero-actions {
-    flex-direction: column;
-    width: 100%;
-    max-width: 300px;
-    margin: 0 auto;
-  }
-  .btn-primary-custom, .btn-secondary-custom {
-    width: 100%;
-  }
+@keyframes scrollWheel {
+  0% { transform: translateY(0); opacity: 1; }
+  100% { transform: translateY(12px); opacity: 0; }
 }
 </style>

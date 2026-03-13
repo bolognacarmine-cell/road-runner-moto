@@ -2,7 +2,7 @@ import { defineEventHandler, getRouterParam } from 'h3'
 import { MongoClient, ObjectId } from 'mongodb'
 
 export default defineEventHandler(async (event) => {
-  const config = useRuntimeConfig()
+  const config = useRuntimeConfig(event)
   const id = getRouterParam(event, 'id')
   
   if (!id) {

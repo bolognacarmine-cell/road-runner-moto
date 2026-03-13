@@ -19,66 +19,67 @@
 </template>
 <style scoped>
 .benefits-section {
-  padding: 88px 16px;
-  background: #050505;
-  color: #f5f5f5;
+  padding: 80px 0;
+  background: var(--bg);
+  scroll-margin-top: 180px; /* Margine per l'header fisso */
 }
 
 .section-heading {
-  text-align: center;
-  max-width: 760px;
-  margin: 0 auto 40px;
-}
-
-.section-heading h2 {
-  margin: 0 0 12px;
-  font-size: clamp(2rem, 4vw, 3rem);
+  margin-bottom: 48px;
 }
 
 .section-kicker {
-  color: #ff5b6b;
-  text-transform: uppercase;
+  color: var(--primary-2);
   font-weight: 800;
-  font-size: .85rem;
-  letter-spacing: .12em;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: 0.85rem;
+  margin-bottom: 12px;
+}
+
+.section-heading h2 {
+  font-size: clamp(2rem, 5vw, 3rem);
+  font-weight: 900;
+  margin-bottom: 16px;
 }
 
 .benefits-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 22px;
+  grid-template-columns: 1fr;
+  gap: 24px;
+}
+
+@media (min-width: 768px) {
+  .benefits-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
+  }
 }
 
 .benefit-card {
-  border-radius: 18px;
-  padding: 24px;
-  background: linear-gradient(180deg, #131313, #0b0b0b);
-  border: 1px solid rgba(255,255,255,.08);
-  box-shadow: 0 18px 50px rgba(0,0,0,.32);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  padding: 32px;
+  background: var(--panel);
+  border-radius: var(--radius);
+  border: 1px solid var(--line);
+  transition: transform var(--transition), border-color var(--transition);
 }
-.benefit-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 22px 60px rgba(0,0,0,.45);
+
+@media (hover: hover) {
+  .benefit-card:hover {
+    transform: translateY(-8px);
+    border-color: rgba(255, 255, 255, 0.15);
+  }
 }
 
 .benefit-card h3 {
-  margin-top: 0;
-  margin-bottom: 10px;
-  color: #ff5b6b;
+  margin-bottom: 16px;
+  color: var(--primary-2);
   font-weight: 800;
+  font-size: 1.25rem;
 }
 
 .benefit-card p {
-  color: #bdbdbd;
-  margin: 0;
-  line-height: 1.6;
-}
-
-/* Responsive */
-@media (max-width: 900px) {
-  .benefits-grid {
-    grid-template-columns: 1fr;
-  }
+  color: var(--muted);
+  font-size: 1rem;
 }
 </style>
