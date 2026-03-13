@@ -50,10 +50,11 @@ onUnmounted(() => {
 
         <!-- Desktop nav -->
         <nav class="main-nav">
-          <a href="#moto">Veicoli</a>
-          <a href="#servizi">Servizi</a>
-          <a href="#marchi">Marchi</a>
-          <a href="#contatti">Contatti</a>
+          <a href="/#moto">Veicoli</a>
+          <a href="/#servizi">Servizi</a>
+          <NuxtLink to="/blog">Blog</NuxtLink>
+          <a href="/#marchi">Marchi</a>
+          <a href="/#contatti">Contatti</a>
           <NuxtLink to="/portale/login" class="portal-link">Area Clienti</NuxtLink>
           <NuxtLink to="/moto" class="btn-primary-custom">Catalogo</NuxtLink>
         </nav>
@@ -75,10 +76,11 @@ onUnmounted(() => {
       <Transition name="fade">
         <div v-if="mobileMenuOpen" class="mobile-nav">
           <div class="mobile-nav-content">
-            <a href="#moto" @click="mobileMenuOpen = false">Veicoli</a>
-            <a href="#servizi" @click="mobileMenuOpen = false">Servizi</a>
-            <a href="#marchi" @click="mobileMenuOpen = false">Marchi</a>
-            <a href="#contatti" @click="mobileMenuOpen = false">Contatti</a>
+            <a href="/#moto" @click="mobileMenuOpen = false">Veicoli</a>
+            <a href="/#servizi" @click="mobileMenuOpen = false">Servizi</a>
+            <NuxtLink to="/blog" @click="mobileMenuOpen = false">Blog</NuxtLink>
+            <a href="/#marchi" @click="mobileMenuOpen = false">Marchi</a>
+            <a href="/#contatti" @click="mobileMenuOpen = false">Contatti</a>
             <NuxtLink to="/portale/login" class="portal-mobile-link" @click="mobileMenuOpen = false">
               Area Clienti 🔑
             </NuxtLink>

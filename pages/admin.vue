@@ -61,6 +61,12 @@
           >
             <span class="icon">👤</span> Gestione Portale
           </button>
+          <button 
+            :class="{ active: currentTab === 'blog' }" 
+            @click="currentTab = 'blog'; fetchBlogPosts()"
+          >
+            <span class="icon">📰</span> Blog
+          </button>
         </nav>
         <button @click="logout" class="btn-logout">Esci</button>
       </aside>
@@ -248,6 +254,91 @@
             </div>
           </div>
         </section>
+
+        <!-- Blog List View -->
+        <section v-if="currentTab === 'blog'" class="content-section">
+          <div class="section-header">
+            <h2>Blog & News</h2>
+            <div class="flex gap-4">
+              <button @click="resetBlogForm(); currentTab = 'add-blog'" class="btn-primary-custom">Scrivi Articolo</button>
+            </div>
+          </div>
+
+          <div v-if="loading" class="loading-state">Caricamento articoli...</div>
+          
+          <div v-else class="blog-admin-list">
+            <div v-for="p in blogPosts" :key="p._id" class="blog-item-admin">
+              <img :src="p.imageCover || '/logo-road-runner.jpg'" class="blog-thumb" />
+              <div class="blog-info">
+                <h3>{{ p.title }}</h3>
+                <span class="blog-meta">{{ p.category }} • {{ new Date(p.date).toLocaleDateString() }}</span>
+              </div>
+              <div class="blog-actions">
+                <button @click="editBlog(p)" class="btn-edit-small">Modifica</button>
+                <button @click="deleteBlog(p._id)" class="btn-edit-small btn-delete-red">Elimina</button>
+              </div>
+            </div>
+            <div v-if="blogPosts.length === 0" class="empty-state">Nessun articolo presente.</div>
+          </div>
+        </section>
+
+        <!-- Blog Add/Edit View -->
+        <section v-if="currentTab === 'add-blog'" class="content-section">
+          <div class="section-header">
+            <h2>{{ editingBlogId ? 'Modifica Articolo' : 'Nuovo Articolo' }}</h2>
+            <button @click="currentTab = 'blog'" class="btn-secondary-custom">Annulla</button>
+          </div>
+
+          <form @submit.prevent="handleBlogSubmit" class="moto-form">
+            <div class="form-grid">
+              <div class="form-group">
+                <label>Titolo</label>
+                <input v-model="blogForm.title" placeholder="Titolo articolo" required />
+              </div>
+              <div class="form-group">
+                <label>Slug (URL)</label>
+                <input v-model="blogForm.slug" placeholder="es: novita-honda-2026" required />
+              </div>
+              <div class="form-group">
+                <label>Categoria</label>
+                <select v-model="blogForm.category">
+                  <option v-for="c in ['Novità Moto', 'Manutenzione', 'Consigli Guida', 'Offerte', 'Eventi']" :key="c">{{ c }}</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>URL Immagine Copertina</label>
+                <input v-model="blogForm.imageCover" placeholder="https://cloudinary..." />
+              </div>
+              <div class="form-group full-width">
+                <label>Estratto (breve descrizione)</label>
+                <textarea v-model="blogForm.excerpt" placeholder="Breve sintesi per l'elenco..."></textarea>
+              </div>
+              <div class="form-group full-width">
+                <label>Collega Moto (Seleziona veicoli correlati)</label>
+                <div class="related-motos-selector">
+                  <div v-for="m in motos" :key="m._id" class="moto-check">
+                    <input 
+                      type="checkbox" 
+                      :id="`rel-${m._id}`" 
+                      :value="m._id" 
+                      v-model="blogForm.relatedMotos" 
+                    />
+                    <label :for="`rel-${m._id}`">{{ m.marca }} {{ m.modello }}</label>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group full-width">
+                <label>Contenuto (Markdown)</label>
+                <textarea v-model="blogForm.content" placeholder="Scrivi il tuo articolo qui..." class="content-editor" required></textarea>
+              </div>
+            </div>
+            <div class="form-actions mt-6">
+              <button type="submit" class="btn-primary-custom" :disabled="submitting">
+                {{ submitting ? 'Salvataggio...' : 'Salva Articolo' }}
+              </button>
+            </div>
+          </form>
+        </section>
       </main>
     </div>
 
@@ -390,11 +481,21 @@ const currentTab = ref('list')
 const motos = ref([])
 const leads = ref([])
 const portalUsers = ref([])
+const blogPosts = ref([])
 const newUser = ref({
   nome: '',
   cognome: '',
   targa: '',
   password: ''
+})
+const blogForm = ref({
+  title: '',
+  slug: '',
+  category: 'Novità Moto',
+  imageCover: '',
+  content: '',
+  excerpt: '',
+  relatedMotos: []
 })
 const loading = ref(false)
 const submitting = ref(false)
@@ -636,6 +737,74 @@ const handleCreatePortalUser = async () => {
     alert('Errore durante la registrazione.')
   }
 }
+
+// --- Blog Methods ---
+const fetchBlogPosts = async () => {
+  loading.value = true
+  try {
+    const res = await $fetch('/api/blog')
+    blogPosts.value = res.posts || []
+  } catch (e) {
+    console.error('Errore caricamento blog:', e)
+  } finally {
+    loading.value = false
+  }
+}
+
+const handleBlogSubmit = async () => {
+  submitting.value = true
+  try {
+    const url = editingBlogId.value 
+      ? `/api/blog/${editingBlogId.value}` 
+      : '/api/blog'
+    const method = editingBlogId.value ? 'PUT' : 'POST'
+    
+    await $fetch(url, {
+      method,
+      body: blogForm.value
+    })
+    
+    alert(editingBlogId.value ? 'Articolo aggiornato!' : 'Articolo creato!')
+    resetBlogForm()
+    fetchBlogPosts()
+    currentTab.value = 'blog'
+  } catch (e) {
+    alert('Errore durante il salvataggio dell\'articolo.')
+  } finally {
+    submitting.value = false
+  }
+}
+
+const editBlog = (post) => {
+  blogForm.value = { ...post }
+  editingBlogId.value = post._id
+  currentTab.value = 'add-blog'
+}
+
+const deleteBlog = async (id) => {
+  if (!confirm('Sei sicuro di voler eliminare questo articolo?')) return
+  try {
+    await $fetch(`/api/blog/${id}`, { method: 'DELETE' })
+    fetchBlogPosts()
+  } catch (e) {
+    alert('Errore durante l\'eliminazione.')
+  }
+}
+
+const resetBlogForm = () => {
+  blogForm.value = {
+    title: '',
+    slug: '',
+    category: 'Novità Moto',
+    imageCover: '',
+    content: '',
+    excerpt: '',
+    relatedMotos: []
+  }
+  editingBlogId.value = null
+}
+
+const editingBlogId = ref(null)
 
 const openAddForm = () => {
   motoForm.value = { ...initialForm }
@@ -1123,9 +1292,13 @@ onMounted(() => {
   border-color: var(--primary-2);
 }
 
+.btn-delete-red {
+  color: var(--primary-2);
+  border-color: rgba(215, 24, 42, 0.3);
+}
+
 .btn-delete-red:hover {
-  background: #ff0000 !important;
-  border-color: #ff0000 !important;
+  background: rgba(215, 24, 42, 0.1);
 }
 
 .portal-add-user {
@@ -1164,6 +1337,73 @@ onMounted(() => {
 .mini-form input:focus {
   border-color: var(--primary-2);
   outline: none;
+}
+
+/* Blog Admin Styles */
+.blog-admin-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.blog-item-admin {
+  background: var(--panel-2);
+  border: 1px solid var(--line);
+  padding: 15px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.blog-thumb {
+  width: 80px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.blog-info {
+  flex: 1;
+}
+
+.blog-info h3 {
+  font-size: 1.1rem;
+  margin-bottom: 4px;
+}
+
+.blog-meta {
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+.content-editor {
+  min-height: 400px;
+  font-family: 'Courier New', Courier, monospace;
+  line-height: 1.6;
+}
+
+.related-motos-selector {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 10px;
+  max-height: 200px;
+  overflow-y: auto;
+  background: var(--bg);
+  padding: 15px;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+}
+
+.moto-check {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.85rem;
+}
+
+.moto-check input {
+  width: auto;
 }
 
 /* Form Styles */

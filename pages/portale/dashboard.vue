@@ -7,7 +7,8 @@ const user = ref(null)
 const data = ref({
   vehicle: null,
   maintenance: [],
-  documents: []
+  documents: [],
+  blogPosts: []
 })
 const loading = ref(true)
 const activeTab = ref('profile')
@@ -15,11 +16,22 @@ const activeTab = ref('profile')
 const fetchPortalData = async (targa) => {
   try {
     const res = await $fetch(`/api/portal/data?targa=${targa}`)
-    data.value = res
+    data.value = { ...res, blogPosts: [] }
+    // Carica anche articoli di manutenzione dal blog
+    fetchMaintenanceArticles()
   } catch (err) {
     console.error('Errore caricamento dati:', err)
   } finally {
     loading.value = false
+  }
+}
+
+const fetchMaintenanceArticles = async () => {
+  try {
+    const res = await $fetch('/api/blog/maintenance')
+    data.value.blogPosts = res.posts || []
+  } catch (e) {
+    console.error('Errore caricamento articoli manutenzione:', e)
   }
 }
 
@@ -127,6 +139,20 @@ const formatDate = (d) => new Date(d).toLocaleDateString('it-IT')
                   <strong>Nota del Meccanico</strong>
                   <p>{{ data.vehicle.avvisi }}</p>
                 </div>
+              </div>
+            </div>
+
+            <!-- Articoli Manutenzione Correlati -->
+            <div v-if="data.blogPosts.length > 0" class="portal-blog-section">
+              <h3>Consigli di Manutenzione per te</h3>
+              <div class="portal-blog-grid">
+                <NuxtLink v-for="post in data.blogPosts" :key="post._id" :to="`/blog/${post.slug}`" class="portal-blog-card">
+                  <img :src="post.imageCover || '/logo-road-runner.jpg'" alt="Blog" />
+                  <div class="p-blog-info">
+                    <h4>{{ post.title }}</h4>
+                    <span class="p-read-more">Leggi articolo</span>
+                  </div>
+                </NuxtLink>
               </div>
             </div>
           </div>
@@ -536,6 +562,60 @@ const formatDate = (d) => new Date(d).toLocaleDateString('it-IT')
 .rem-icon { font-size: 1.5rem; }
 .rem-info strong { display: block; margin-bottom: 4px; }
 .rem-info p { font-size: 0.85rem; color: var(--muted); }
+
+/* Portal Blog Styles */
+.portal-blog-section {
+  margin-top: 60px;
+  padding-top: 40px;
+  border-top: 1px solid var(--line);
+}
+
+.portal-blog-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.portal-blog-card {
+  display: flex;
+  background: rgba(255,255,255,0.02);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.portal-blog-card:hover {
+  background: rgba(255,255,255,0.05);
+  border-color: var(--primary-2);
+}
+
+.portal-blog-card img {
+  width: 100px;
+  height: 100%;
+  object-fit: cover;
+}
+
+.p-blog-info {
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.p-blog-info h4 {
+  font-size: 0.95rem;
+  line-height: 1.4;
+  margin-bottom: 8px;
+}
+
+.p-read-more {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--primary-2);
+  text-transform: uppercase;
+}
 
 .loading-state {
   text-align: center;
