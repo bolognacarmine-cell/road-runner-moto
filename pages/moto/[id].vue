@@ -44,6 +44,13 @@ const formatImages = (images) => {
 <template>
   <div class="moto-detail-page">
     <div class="container py-5">
+      <!-- Breadcrumb / Back button -->
+      <div class="back-nav mb-5">
+        <NuxtLink to="/#moto" class="btn-back">
+          <span class="arrow">←</span> Torna al catalogo
+        </NuxtLink>
+      </div>
+
       <!-- Loading State -->
       <div v-if="loading" class="loading-box">
         <div class="spinner"></div>
@@ -113,6 +120,39 @@ const formatImages = (images) => {
   color: #fff;
   min-height: 100vh;
   padding-top: 80px;
+}
+
+.back-nav {
+  display: flex;
+  align-items: center;
+}
+
+.btn-back {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: #888;
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  padding: 8px 16px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 100px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.btn-back .arrow {
+  transition: transform 0.3s ease;
+}
+
+.btn-back:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.btn-back:hover .arrow {
+  transform: translateX(-4px);
 }
 
 .moto-detail-grid {

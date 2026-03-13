@@ -12,9 +12,11 @@ defineProps({
 
 gsap.registerPlugin(ScrollTrigger)
 
+let ctx
+
 onMounted(async () => {
   await nextTick()
-  const ctx = gsap.context(() => {
+  ctx = gsap.context(() => {
     // Animazione di comparsa fluida ed elegante
     const textWrapper = document.querySelector('.hero-text-wrapper')
     if (textWrapper) {
@@ -64,7 +66,10 @@ onMounted(async () => {
       })
     }
   })
-  onUnmounted(() => ctx.revert())
+})
+
+onUnmounted(() => {
+  if (ctx) ctx.revert()
 })
 </script>
 
@@ -123,14 +128,15 @@ onMounted(async () => {
 <style scoped>
 .hero {
   position: relative;
-  height: 100vh; /* Fallback */
+  height: 100vh;
   height: 100svh; /* Stable Viewport Height per evitare scatti allo scroll */
   width: 100%;
   overflow: hidden;
   background: #000;
   display: flex;
-  align-items: flex-end; /* Riporta il testo verso il basso per un look più pulito */
-  padding-bottom: 10vh;
+  align-items: center; /* Centrato per evitare coperture dall'header */
+  padding-top: 100px; /* Spazio per l'header */
+  padding-bottom: 50px;
 }
 
 .hero-video {
@@ -188,19 +194,19 @@ onMounted(async () => {
 }
 
 .hero-title {
-  font-size: clamp(2.2rem, 8vw, 4.5rem);
-  line-height: 1.05;
-  font-weight: 900;
-  margin-bottom: 20px;
-  letter-spacing: -0.03em;
+  font-size: clamp(2.5rem, 10vw, 5.5rem); /* Ingrandito */
+  line-height: 1;
+  font-weight: 950; /* Massimo bold */
+  margin-bottom: 24px;
+  letter-spacing: -0.04em;
   color: #fff;
 }
 
 .hero-subtitle {
-  font-size: clamp(1rem, 2vw, 1.2rem);
-  color: rgba(255, 255, 255, 0.8);
-  margin-bottom: 35px;
-  max-width: 550px;
+  font-size: clamp(1.1rem, 3vw, 1.5rem); /* Ingrandito */
+  color: #ccc;
+  margin-bottom: 40px;
+  max-width: 600px;
   line-height: 1.5;
 }
 

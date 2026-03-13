@@ -32,15 +32,20 @@ const formatImages = (moto) => {
 }
 
 // Animazioni GSAP
+let ctx
+
 onMounted(async () => {
   await nextTick()
-  const ctx = gsap.context(() => {
+  ctx = gsap.context(() => {
     const cards = document.querySelectorAll('.featured-grid .moto-card')
     if (cards.length > 0) {
       gsap.from(cards, { y: 28, opacity: 0, duration: 0.7, stagger: 0.12, delay: 0.2 })
     }
   })
-  onUnmounted(() => ctx.revert())
+})
+
+onUnmounted(() => {
+  if (ctx) ctx.revert()
 })
 </script>
 
@@ -84,6 +89,7 @@ onMounted(async () => {
   position: relative;
   z-index: 2;
   margin-top: -2px; /* Piccola sovrapposizione per evitare linee bianche tra sezioni */
+  scroll-margin-top: 180px; /* Margine per l'header fisso quando si scende dal catalogo */
 }
 
 .section-heading {
@@ -92,17 +98,18 @@ onMounted(async () => {
 
 .section-kicker {
   color: var(--primary-2);
-  font-weight: 800;
+  font-weight: 900;
   text-transform: uppercase;
-  letter-spacing: 0.1em;
-  font-size: 0.85rem;
-  margin-bottom: 12px;
+  letter-spacing: 0.15em;
+  font-size: 1rem;
+  margin-bottom: 16px;
 }
 
 .section-heading h2 {
-  font-size: clamp(2rem, 5vw, 3rem);
-  font-weight: 900;
-  margin-bottom: 16px;
+  font-size: clamp(2.5rem, 6vw, 4rem);
+  font-weight: 950;
+  margin-bottom: 20px;
+  letter-spacing: -0.02em;
 }
 
 .featured-grid {

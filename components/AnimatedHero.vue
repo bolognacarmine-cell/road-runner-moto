@@ -2,10 +2,12 @@
 import { onMounted, onUnmounted, nextTick } from 'vue'
 import { gsap } from 'gsap'
 
+let ctx
+
 onMounted(async () => {
   await nextTick()
 
-  const ctx = gsap.context(() => {
+  ctx = gsap.context(() => {
     const badge = document.querySelector('.hero-badge')
     if (badge) gsap.from(badge, { y: 20, opacity: 0, duration: 0.7 })
     
@@ -23,8 +25,10 @@ onMounted(async () => {
       })
     }
   })
+})
 
-  onUnmounted(() => ctx.revert())
+onUnmounted(() => {
+  if (ctx) ctx.revert()
 })
 </script>
 

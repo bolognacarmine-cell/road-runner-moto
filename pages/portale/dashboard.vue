@@ -82,9 +82,6 @@ const formatDate = (d) => new Date(d).toLocaleDateString('it-IT')
             <button :class="{ active: activeTab === 'history' }" @click="activeTab = 'history'">
               <span class="icon">🔧</span> Manutenzioni
             </button>
-            <button :class="{ active: activeTab === 'docs' }" @click="activeTab = 'docs'">
-              <span class="icon">📄</span> Documenti
-            </button>
             <button :class="{ active: activeTab === 'booking' }" @click="activeTab = 'booking'">
               <span class="icon">📅</span> Prenota Officina
             </button>
@@ -98,45 +95,37 @@ const formatDate = (d) => new Date(d).toLocaleDateString('it-IT')
           <div v-if="activeTab === 'profile'" class="tab-pane">
             <div class="content-header">
               <h2>Il tuo Veicolo</h2>
-              <span class="warranty-badge" :class="{ expired: false }">Garanzia Attiva</span>
+              <span v-if="data.vehicle.avvisi" class="warranty-badge warning">{{ data.vehicle.avvisi }}</span>
+              <span v-else class="warranty-badge">Dati Aggiornati</span>
             </div>
             
             <div class="info-grid">
               <div class="info-card">
-                <label>Dettagli Tecnici</label>
+                <label>Dati Iniziali</label>
                 <ul>
-                  <li><span>Versione:</span> {{ data.vehicle.versione }}</li>
-                  <li><span>Cilindrata:</span> {{ data.vehicle.cc }} cc</li>
-                  <li><span>Colore:</span> {{ data.vehicle.colore }}</li>
-                  <li><span>Anno:</span> {{ data.vehicle.year }}</li>
+                  <li><span>Marca:</span> {{ data.vehicle.marca }}</li>
+                  <li><span>Modello:</span> {{ data.vehicle.modello }}</li>
+                  <li><span>Data Acquisto:</span> {{ data.vehicle.dataAcquisto ? formatDate(data.vehicle.dataAcquisto) : 'N.D.' }}</li>
+                  <li><span>Km Iniziali:</span> {{ data.vehicle.kmIniziali || 0 }} km</li>
                 </ul>
               </div>
               <div class="info-card">
-                <label>Identificazione</label>
+                <label>Stato Attuale</label>
                 <ul>
-                  <li><span>Telaio:</span> <code>{{ data.vehicle.vin }}</code></li>
                   <li><span>Targa:</span> {{ data.vehicle.targa }}</li>
-                  <li><span>Data Acquisto:</span> {{ formatDate(data.vehicle.purchaseDate) }}</li>
+                  <li><span>Km Attuali:</span> <strong>{{ data.vehicle.kmAttuali || 0 }} km</strong></li>
+                  <li><span>Prossima Manutenzione:</span> <code class="next-maint">{{ data.vehicle.prossimaManutenzione || 'Da definire' }}</code></li>
                 </ul>
               </div>
             </div>
 
-            <div class="reminders-section">
-              <h3>Promemoria Scadenze</h3>
-              <div class="reminders-grid">
-                <div class="reminder-item">
-                  <span class="rem-icon">📑</span>
-                  <div class="rem-info">
-                    <strong>Prossimo Tagliando</strong>
-                    <p>Scadenza tra 45 giorni</p>
-                  </div>
-                </div>
-                <div class="reminder-item">
-                  <span class="rem-icon">🛡️</span>
-                  <div class="rem-info">
-                    <strong>Assicurazione</strong>
-                    <p>Rinnovo il 12/05/2026</p>
-                  </div>
+            <div class="reminders-section" v-if="data.vehicle.avvisi">
+              <h3>Avvisi e Suggerimenti</h3>
+              <div class="reminder-item highlight">
+                <span class="rem-icon">⚠️</span>
+                <div class="rem-info">
+                  <strong>Nota del Meccanico</strong>
+                  <p>{{ data.vehicle.avvisi }}</p>
                 </div>
               </div>
             </div>
@@ -157,37 +146,20 @@ const formatDate = (d) => new Date(d).toLocaleDateString('it-IT')
                 <div class="time-point"></div>
                 <div class="timeline-card">
                   <div class="tm-header">
-                    <span class="tm-date">{{ formatDate(item.date) }}</span>
-                    <span class="tm-cost">{{ formatPrice(item.cost) }}</span>
+                    <span class="tm-date">{{ formatDate(item.data) }}</span>
+                    <span class="tm-cost" v-if="item.costo">{{ formatPrice(item.costo) }}</span>
                   </div>
-                  <h4>{{ item.type }}</h4>
-                  <p class="tm-desc">{{ item.description }}</p>
-                  <div class="tm-footer">
-                    <span>📍 {{ item.workshop }}</span>
-                    <a v-if="item.invoiceUrl" :href="item.invoiceUrl" target="_blank" class="btn-text">Scarica Fattura</a>
+                  <h4>{{ item.descrizione }}</h4>
+                  <div class="tm-details">
+                    <p class="km-label">🏁 {{ item.km }} km</p>
+                    <p v-if="item.partiSostituite" class="parts-list">📦 Parti: {{ item.partiSostituite }}</p>
                   </div>
                 </div>
               </div>
             </div>
           </div>
 
-          <!-- TAB: DOCUMENTI -->
-          <div v-if="activeTab === 'docs'" class="tab-pane">
-            <div class="content-header">
-              <h2>Area Documentazione</h2>
-            </div>
-            
-            <div class="docs-grid">
-              <div v-for="doc in data.documents" :key="doc._id" class="doc-card">
-                <div class="doc-icon">PDF</div>
-                <div class="doc-info">
-                  <h4>{{ doc.title }}</h4>
-                  <span>{{ doc.type }} • {{ formatDate(doc.date) }}</span>
-                </div>
-                <a :href="doc.fileUrl" target="_blank" class="btn-download">Download</a>
-              </div>
-            </div>
-          </div>
+          <!-- TAB: DOCUMENTI REMOVED -->
 
           <!-- TAB: PRENOTAZIONE -->
           <div v-if="activeTab === 'booking'" class="tab-pane">

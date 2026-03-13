@@ -22,13 +22,6 @@ export default defineEventHandler(async (event) => {
     // 1. Dati Veicolo
     const vehicle = await db.collection('portal_vehicles').findOne({ targa: targa.toUpperCase() })
     
-    if (!vehicle) {
-      throw createError({
-        statusCode: 404,
-        statusMessage: 'Dati veicolo non trovati.'
-      })
-    }
-
     // 2. Storico Manutenzioni
     const maintenance = await db.collection('portal_maintenance')
       .find({ targa: targa.toUpperCase() })
@@ -43,9 +36,9 @@ export default defineEventHandler(async (event) => {
 
     return {
       success: true,
-      vehicle,
-      maintenance,
-      documents
+      vehicle: vehicle || null,
+      maintenance: maintenance || [],
+      documents: documents || []
     }
 
   } catch (error: any) {
