@@ -165,13 +165,12 @@ onUnmounted(() => {
   width: 90px;
   flex-shrink: 0; /* Impedisce al cerchio di schiacciarsi */
   border-radius: 50%;
-  border: 4px solid var(--primary-2);
   background: white;
   overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 6px 25px rgba(215, 24, 42, 0.4);
+  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.4);
   transition: transform 0.3s ease;
 }
 
@@ -196,7 +195,6 @@ onUnmounted(() => {
   .logo-wrapper {
     height: 140px;
     width: 140px;
-    border-width: 6px;
   }
   .brand {
     gap: 24px;

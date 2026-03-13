@@ -798,7 +798,8 @@ onMounted(() => {
   height: 80px;
   border-radius: 50%;
   margin-bottom: 20px;
-  border: 2px solid var(--primary);
+  background: white;
+  padding: 5px;
 }
 
 .error-msg {

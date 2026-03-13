@@ -134,8 +134,9 @@ onUnmounted(() => {
   overflow: hidden;
   background: #000;
   display: flex;
-  align-items: flex-end;
-  padding-bottom: 80px; /* Padding fisso per stabilità invece di 10vh */
+  align-items: center; /* Centrato per evitare coperture dall'header */
+  padding-top: 100px; /* Spazio per l'header */
+  padding-bottom: 50px;
 }
 
 .hero-video {
