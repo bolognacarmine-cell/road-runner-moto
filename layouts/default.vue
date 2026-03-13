@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, nextTick } from 'vue'
+import { ref, onMounted, onUnmounted, nextTick } from 'vue'
 import { gsap } from 'gsap'
 
 const mobileMenuOpen = ref(false)
@@ -8,30 +8,28 @@ const toggleMenu = () => {
   mobileMenuOpen.value = !mobileMenuOpen.value
 }
 
+let ctx
+
 onMounted(async () => {
   await nextTick()
-  // Animazione d'ingresso header
-  const header = document.querySelector('.site-header')
-  if (header) {
-    gsap.from(header, {
-      y: -100,
-      opacity: 0,
-      duration: 1,
-      ease: 'power4.out'
-    })
-  }
-  
-  const navElements = document.querySelectorAll('.brand, .main-nav a, .btn-primary-custom')
-  if (navElements.length > 0) {
-    gsap.from(navElements, {
-      y: -20,
-      opacity: 0,
-      duration: 0.8,
-      stagger: 0.1,
-      delay: 0.4,
-      ease: 'power2.out'
-    })
-  }
+  ctx = gsap.context(() => {
+    // Animazione degli elementi interni (senza far muovere l'intero header)
+    const navElements = document.querySelectorAll('.brand, .main-nav a, .btn-primary-custom, .mobile-toggle')
+    if (navElements.length > 0) {
+      gsap.from(navElements, {
+        y: -30,
+        opacity: 0,
+        duration: 1,
+        stagger: 0.1,
+        delay: 0.2,
+        ease: 'expo.out'
+      })
+    }
+  })
+})
+
+onUnmounted(() => {
+  if (ctx) ctx.revert()
 })
 </script>
 
@@ -41,7 +39,9 @@ onMounted(async () => {
     <header class="site-header">
       <div class="container nav-shell">
         <NuxtLink to="/" class="brand" aria-label="Road Runner Moto home">
-          <img src="/logo-road-runner.jpg" alt="Road Runner Moto logo" class="brand-logo" />
+          <div class="logo-wrapper">
+            <img src="/logo-road-runner.jpg" alt="Road Runner Moto logo" class="brand-logo" />
+          </div>
           <div class="brand-copy">
             <span class="brand-name">ROAD RUNNER</span>
             <span class="brand-tagline">MOTO</span>
@@ -134,48 +134,101 @@ onMounted(async () => {
 
 .site-header {
   height: auto;
+  background: rgba(5, 5, 5, 0.95);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  border-bottom: 1px solid var(--line);
+  padding-top: 0; /* Rimosso per alzare tutto al limite */
 }
 
 .nav-shell {
   max-width: 1400px;
   margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px 5px 5px 20px; /* Ridotto ulteriormente padding a destra (5px) */
 }
 
 .brand {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 24px;
+  margin-top: 0; /* Rimosso margine per alzare al massimo */
+}
+
+.logo-wrapper {
+  height: 90px; /* Ridotto leggermente per mobile per evitare deformazioni */
+  width: 90px;
+  flex-shrink: 0; /* Impedisce al cerchio di schiacciarsi */
+  border-radius: 50%;
+  background: white;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.4);
+  transition: transform 0.3s ease;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px; /* Ridotto gap su mobile */
+  margin-top: 0;
+  flex-shrink: 0;
+  min-width: 0; /* Previene overflow */
 }
 
 .brand-logo {
-  height: 60px;
-  width: auto;
-  border-radius: 10px;
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+  flex-shrink: 0;
+  transform: scale(1.4);
 }
 
 @media (min-width: 1024px) {
-  .brand-logo {
-    height: 70px;
+  .logo-wrapper {
+    height: 140px;
+    width: 140px;
+  }
+  .brand {
+    gap: 24px;
   }
 }
 
 .brand-copy {
   display: flex;
   flex-direction: column;
+  align-items: center; /* Centra orizzontalmente le scritte */
+  text-align: center;
   line-height: 1;
 }
 
 .brand-name {
-  font-weight: 900;
-  font-size: 1.25rem;
-  letter-spacing: -0.02em;
+  font-weight: 950;
+  font-size: 1.4rem; /* Leggermente più piccola su mobile per far stare tutto */
+  letter-spacing: -0.01em;
 }
 
 .brand-tagline {
-  font-size: 0.8rem;
+  font-size: 0.9rem; /* Leggermente più piccola su mobile */
   color: var(--primary-2);
-  font-weight: 800;
-  letter-spacing: 0.25em;
+  font-weight: 900;
+  letter-spacing: 0.35em;
+}
+
+@media (min-width: 1024px) {
+  .brand-name {
+    font-size: 1.8rem;
+  }
+  .brand-tagline {
+    font-size: 1.2rem;
+  }
 }
 
 .main-nav {
@@ -190,8 +243,8 @@ onMounted(async () => {
   }
   
   .main-nav a {
-    font-size: 0.9rem;
-    font-weight: 600;
+    font-size: 1.1rem; /* Ingrandito da 0.9rem */
+    font-weight: 700; /* Più bold */
     color: var(--muted);
     transition: color var(--transition);
   }
@@ -202,11 +255,11 @@ onMounted(async () => {
 }
 
 .portal-link {
-  font-size: 0.9rem;
-  font-weight: 700;
+  font-size: 1.1rem; /* Ingrandito da 0.9rem */
+  font-weight: 800;
   color: var(--primary-2) !important;
   background: rgba(215, 24, 42, 0.1);
-  padding: 8px 16px;
+  padding: 10px 20px; /* Aumentato padding */
   border-radius: 8px;
   border: 1px solid rgba(215, 24, 42, 0.2);
 }
@@ -225,12 +278,23 @@ onMounted(async () => {
 .mobile-toggle {
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  align-items: center;
   gap: 6px;
-  background: none;
-  border: none;
-  padding: 10px;
+  background: var(--primary);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 0;
+  width: 46px;
+  height: 46px;
   cursor: pointer;
-  z-index: 1100;
+  z-index: 2000;
+  border-radius: 12px;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  box-shadow: 0 8px 25px rgba(215, 24, 42, 0.5);
+}
+
+.mobile-toggle:active {
+  transform: scale(0.9);
 }
 
 @media (min-width: 1024px) {
@@ -241,11 +305,19 @@ onMounted(async () => {
 
 .mobile-toggle span {
   display: block;
-  width: 32px;
+  width: 26px;
   height: 3px;
-  background: #fff;
+  background: #ffffff;
   border-radius: 4px;
-  transition: transform 0.3s ease, opacity 0.3s ease;
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), 
+              opacity 0.3s ease,
+              background-color 0.3s ease;
+}
+
+[aria-expanded="true"].mobile-toggle {
+  background: #222;
+  border-color: var(--primary-2);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
 }
 
 /* Animazione toggle quando aperto */
@@ -254,6 +326,7 @@ onMounted(async () => {
 }
 [aria-expanded="true"].mobile-toggle span:nth-child(2) {
   opacity: 0;
+  transform: translateX(-10px);
 }
 [aria-expanded="true"].mobile-toggle span:nth-child(3) {
   transform: translateY(-9px) rotate(-45deg);
@@ -262,29 +335,38 @@ onMounted(async () => {
 .mobile-nav {
   position: fixed;
   inset: 0;
-  background: rgba(5, 5, 5, 0.98);
+  background: #050505;
   z-index: 1050;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
-  padding: 20px;
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  justify-content: flex-start;
+  padding: 110px 24px 60px; /* Ridotto il padding per l'header ora molto sottile */
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  overflow-y: auto;
 }
 
 .mobile-nav-content {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 24px;
+  gap: 24px; /* Ridotto gap tra le voci */
   width: 100%;
 }
 
 .mobile-nav a {
-  font-size: 1.5rem;
-  font-weight: 800;
-  color: var(--text);
-  padding: 10px;
+  font-size: 1.5rem; /* Ridotto da 2rem */
+  font-weight: 800; /* Leggermente meno bold */
+  color: #ffffff;
+  text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  transition: color 0.3s ease;
+}
+
+.mobile-nav a:hover {
+  color: var(--primary-2);
 }
 
 .mobile-cta {
