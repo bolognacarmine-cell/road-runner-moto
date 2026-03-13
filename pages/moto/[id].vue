@@ -50,7 +50,6 @@ const formatImages = (images) => {
           <span class="arrow">←</span> Torna al catalogo
         </NuxtLink>
       </div>
-
       <!-- Loading State -->
       <div v-if="loading" class="loading-box">
         <div class="spinner"></div>
@@ -154,7 +153,6 @@ const formatImages = (images) => {
 .btn-back:hover .arrow {
   transform: translateX(-4px);
 }
-
 .moto-detail-grid {
   display: grid;
   grid-template-columns: 1.5fr 1fr;
