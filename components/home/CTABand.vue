@@ -12,6 +12,7 @@
     <div class="cta-actions">
       <a href="tel:0823516087" class="btn-secondary-custom">0823 516087</a>
       <a href="https://wa.me/393391581997" target="_blank" rel="noopener noreferrer" class="btn-primary-custom">WhatsApp</a>
+      <NuxtLink to="/blog" class="btn-blog-custom">Leggi di più</NuxtLink>
     </div>
   </div>
 </section>
@@ -85,6 +86,27 @@
 .btn-secondary-custom:hover {
   transform: translateY(-2px);
   background: rgba(255,255,255,.08);
+}
+
+.btn-blog-custom {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  padding: 14px 22px;
+  border-radius: 12px;
+  font-weight: 700;
+  text-decoration: none;
+  color: #fff;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.3s ease;
+}
+
+.btn-blog-custom:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: var(--primary-2);
+  transform: translateY(-2px);
 }
 
 /* Responsive */

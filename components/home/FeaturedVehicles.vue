@@ -78,6 +78,12 @@ onUnmounted(() => {
           </div>
         </article>
       </div>
+
+      <div class="section-footer mt-5">
+        <NuxtLink to="/blog?category=Novità%20Moto" class="btn-read-more-section">
+          Leggi di più sulle novità →
+        </NuxtLink>
+      </div>
     </div>
   </section>
 </template>
@@ -208,4 +214,37 @@ onUnmounted(() => {
   color: var(--muted);
   border: 1px dashed var(--line);
 }
+
+.moto-footer a:hover {
+  color: #fff;
+}
+
+.section-footer {
+  display: flex;
+  justify-content: center;
+  margin-top: 60px;
+}
+
+.btn-read-more-section {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 32px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--line);
+  color: #fff;
+  border-radius: 100px;
+  font-weight: 700;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.btn-read-more-section:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: var(--primary-2);
+  transform: translateY(-3px);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+}
+
+.mt-5 { margin-top: 3rem; }
 </style>

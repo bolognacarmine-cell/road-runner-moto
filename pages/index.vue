@@ -11,6 +11,7 @@ import QuoteSection from '~/components/home/QuoteSection.vue'
 import ServicesSection from '~/components/home/ServicesSection.vue'
 import BrandsSection from '~/components/home/BrandsSection.vue'
 import CTABand from '~/components/home/CTABand.vue'
+import BlogPreviewSection from '~/components/home/BlogPreviewSection.vue'
 import ContactSection from '~/components/home/ContactSection.vue'
 
 // Config runtime
@@ -79,6 +80,9 @@ fetchVehicles()
 
     <!-- CTA Band -->
     <CTABand />
+
+    <!-- Blog Preview dinamico -->
+    <BlogPreviewSection />
 
     <!-- Contact Section -->
     <ContactSection />

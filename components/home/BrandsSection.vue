@@ -21,6 +21,12 @@ const brands = ['Honda', 'Piaggio', 'Kymco', 'Suzuki', 'Yamaha', 'Moto Guzzi']
           {{ brand }}
         </div>
       </div>
+
+      <div class="brands-footer">
+        <NuxtLink to="/blog?category=Novità%20Moto" class="btn-read-more">
+          Leggi di più sulle novità dei marchi →
+        </NuxtLink>
+      </div>
     </div>
   </section>
 </template>
@@ -76,6 +82,34 @@ const brands = ['Honda', 'Piaggio', 'Kymco', 'Suzuki', 'Yamaha', 'Moto Guzzi']
 .brand-pill:hover {
   transform: translateY(-3px);
   box-shadow: 0 12px 28px rgba(0,0,0,.3);
+}
+
+.brands-footer {
+  margin-top: 60px;
+  display: flex;
+  justify-content: center;
+}
+
+.btn-read-more {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 28px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #fff;
+  border-radius: 100px;
+  font-weight: 700;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  font-size: 0.9rem;
+}
+
+.btn-read-more:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: #ff5b6b;
+  transform: translateY(-3px);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.2);
 }
 
 /* Responsive */

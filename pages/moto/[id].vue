@@ -6,6 +6,8 @@ import MotoCarousel from '~/components/moto/MotoCarousel.vue'
 
 const route = useRoute()
 const moto = ref(null)
+const relatedMotos = ref([]) // In caso servissero altre moto correlate
+const relatedPosts = ref([])
 const loading = ref(true)
 const error = ref(null)
 
@@ -13,11 +15,22 @@ const fetchMoto = async () => {
   try {
     const res = await $fetch(`/api/motos/${route.params.id}`)
     moto.value = res.moto
+    // Carica anche articoli blog correlati
+    fetchRelatedPosts()
   } catch (err) {
     console.error('Errore nel caricamento del veicolo:', err)
     error.value = 'Impossibile caricare i dettagli di questo veicolo.'
   } finally {
     loading.value = false
+  }
+}
+
+const fetchRelatedPosts = async () => {
+  try {
+    const res = await $fetch(`/api/blog/related?motoId=${route.params.id}`)
+    relatedPosts.value = res.posts || []
+  } catch (e) {
+    console.error('Errore caricamento articoli correlati:', e)
   }
 }
 
@@ -108,6 +121,21 @@ const formatImages = (images) => {
               </a>
             </div>
           </div>
+        </div>
+      </div>
+
+      <!-- Articoli Blog Correlati -->
+      <div v-if="relatedPosts.length > 0" class="related-posts-section mt-10">
+        <h3 class="section-title">Dal nostro Blog</h3>
+        <div class="blog-mini-grid">
+          <NuxtLink v-for="post in relatedPosts" :key="post._id" :to="`/blog/${post.slug}`" class="mini-blog-card">
+            <img :src="post.imageCover || '/logo-road-runner.jpg'" :alt="post.title" />
+            <div class="mini-blog-info">
+              <span class="mini-badge">{{ post.category }}</span>
+              <h4>{{ post.title }}</h4>
+              <span class="mini-read-more">Leggi di più →</span>
+            </div>
+          </NuxtLink>
         </div>
       </div>
     </div>
@@ -209,7 +237,7 @@ const formatImages = (images) => {
 
 .spec-item .value {
   font-weight: 700;
-  font-size: 1.1rem;
+  color: #fff;
 }
 
 .description-text {
@@ -260,6 +288,84 @@ const formatImages = (images) => {
 .sticky-panel {
   position: sticky;
   top: 100px;
+}
+
+.related-posts-section {
+  padding-top: 60px;
+  border-top: 1px solid var(--line);
+}
+
+.section-title {
+  font-size: 1.75rem;
+  font-weight: 900;
+  margin-bottom: 30px;
+}
+
+.blog-mini-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.mini-blog-card {
+  display: flex;
+  gap: 15px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  padding: 12px;
+  border-radius: 16px;
+  transition: all 0.3s ease;
+}
+
+.mini-blog-card:hover {
+  border-color: var(--primary-2);
+  transform: translateY(-5px);
+}
+
+.mini-blog-card img {
+  width: 100px;
+  height: 75px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.mini-blog-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.mini-badge {
+  font-size: 0.65rem;
+  font-weight: 800;
+  color: var(--primary-2);
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.mini-blog-info h4 {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+.mini-read-more {
+  display: block;
+  margin-top: 8px;
+  font-size: 0.75rem;
+  font-weight: 800;
+  color: var(--primary-2);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  opacity: 0;
+  transform: translateX(-10px);
+  transition: all 0.3s ease;
+}
+
+.mini-blog-card:hover .mini-read-more {
+  opacity: 1;
+  transform: translateX(0);
 }
 
 .loading-box, .error-box {
