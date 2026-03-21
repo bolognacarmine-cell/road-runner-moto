@@ -5,7 +5,6 @@ import { useRuntimeConfig } from '#imports'
 
 // Componenti modulari
 import HeroSection from '~/components/home/HeroSection.vue'
-import PremiumHeader from '~/components/layout/PremiumHeader.vue'
 import FeaturedVehicles from '~/components/home/FeaturedVehicles.vue'
 import PortalCTA from '~/components/home/PortalCTA.vue'
 import QuoteSection from '~/components/home/QuoteSection.vue'
@@ -64,9 +63,6 @@ fetchVehicles()
       title="La tua concessionaria di riferimento"
       subtitle="Vendita plurimarche, assistenza qualificata e ricambi originali"
     />
-
-    <!-- Premium Header per la ricerca dei veicoli -->
-    <PremiumHeader class="in-section-header" />
 
     <!-- Featured Vehicles dinamico -->
     <FeaturedVehicles :vehicles="vehicles" />

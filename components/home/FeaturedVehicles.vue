@@ -10,7 +10,20 @@ const props = defineProps({
 })
 
 // Stato globale della ricerca
-const { searchQuery } = useSearch()
+const { searchQuery, setSearchQuery } = useSearch()
+const localSearchQuery = ref(searchQuery.value)
+
+// Sincronizza l'input locale con lo stato globale
+watch(localSearchQuery, (newVal) => {
+  setSearchQuery(newVal)
+})
+
+// Sincronizza lo stato globale con l'input locale (se resettato altrove)
+watch(searchQuery, (newVal) => {
+  if (newVal !== localSearchQuery.value) {
+    localSearchQuery.value = newVal
+  }
+})
 
 // Stato filtro attivo
 const activeFilter = ref('tutti')
@@ -135,6 +148,29 @@ onUnmounted(() => {
 <template>
   <section id="moto" class="featured-section">
     <div class="container">
+      <div class="section-heading-row">
+        <div class="heading-left">
+          <p class="section-kicker">Catalogo</p>
+          <h2>Moto e scooter in evidenza</h2>
+        </div>
+        
+        <!-- Premium Search Bar Integrata -->
+        <div class="search-bar-container">
+          <div class="search-wrapper">
+            <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <input 
+              v-model="localSearchQuery"
+              type="text" 
+              placeholder="Cerca modello, marca o categoria..." 
+              class="search-input"
+            />
+          </div>
+        </div>
+      </div>
+
       <div class="section-filters-only">
         <!-- Filtri Veicoli -->
         <div class="filters-container">
@@ -252,8 +288,18 @@ onUnmounted(() => {
   scroll-margin-top: 20px;
 }
 
-.section-heading {
+.section-heading-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 32px;
   margin-bottom: 48px;
+  flex-wrap: wrap;
+}
+
+.heading-left {
+  flex: 1;
+  min-width: 300px;
 }
 
 .section-kicker {
@@ -262,21 +308,76 @@ onUnmounted(() => {
   text-transform: uppercase;
   letter-spacing: 0.15em;
   font-size: 1rem;
-  margin-bottom: 16px;
+  margin-bottom: 12px;
 }
 
-.section-heading h2 {
-  font-size: clamp(2.5rem, 6vw, 4rem);
+.heading-left h2 {
+  font-size: clamp(2rem, 5vw, 3.5rem);
   font-weight: 950;
-  margin-bottom: 20px;
   letter-spacing: -0.02em;
+  line-height: 1.1;
+  margin: 0;
+}
+
+/* --- Search Bar Style --- */
+.search-bar-container {
+  width: 100%;
+  max-width: 450px;
+}
+
+.search-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.search-icon {
+  position: absolute;
+  left: 18px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 18px;
+  height: 18px;
+  color: rgba(255, 255, 255, 0.3);
+  transition: color 0.3s ease;
+}
+
+.search-input {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 100px;
+  padding: 14px 20px 14px 50px;
+  color: #fff;
+  font-size: 0.95rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.search-input:focus {
+  outline: none;
+  background: rgba(255, 255, 255, 0.08);
+  border-color: var(--primary-2);
+  box-shadow: 0 0 20px rgba(225, 29, 72, 0.15);
+}
+
+.search-input:focus + .search-icon {
+  color: var(--primary-2);
 }
 
 .filters-container {
   display: flex;
   flex-direction: column;
   gap: 24px;
-  margin-top: 32px;
+}
+
+@media (max-width: 768px) {
+  .section-heading-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .search-bar-container {
+    max-width: 100%;
+  }
 }
 
 .extra-filters {

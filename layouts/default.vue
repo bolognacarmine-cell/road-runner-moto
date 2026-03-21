@@ -1,7 +1,6 @@
 <script setup>
 import { ref, onMounted, onUnmounted, nextTick } from 'vue'
 import { gsap } from 'gsap'
-import PremiumHeader from '~/components/layout/PremiumHeader.vue'
 
 const mobileMenuOpen = ref(false)
 
