@@ -13,7 +13,7 @@ const lifestyleItems = [
     title: 'Caschi & Accessori',
     desc: 'Dagli integrali racing ai jet urbani, scopri la nostra selezione dei migliori brand per la tua sicurezza.',
     icon: '🪖',
-    image: 'https://images.unsplash.com/photo-1595079676339-1534802ad6cf?auto=format&fit=crop&q=80&w=800',
+    image: 'https://images.unsplash.com/photo-1620939511593-299312d1945a?auto=format&fit=crop&q=80&w=800',
     link: '#accessori'
   },
   {
@@ -62,7 +62,13 @@ onMounted(async () => {
       <div class="lifestyle-grid">
         <div v-for="item in lifestyleItems" :key="item.title" class="lifestyle-card">
           <div class="card-image-wrapper">
-            <img :src="item.image" :alt="item.title" class="card-image" />
+            <img 
+              :src="item.image" 
+              :alt="item.title" 
+              class="card-image"
+              loading="lazy"
+              @error="(e) => e.target.src = 'https://images.unsplash.com/photo-1558981403-c5f9899a28bc?auto=format&fit=crop&q=80&w=800'"
+            />
             <div class="card-overlay"></div>
             <div class="lifestyle-icon-badge">{{ item.icon }}</div>
           </div>
@@ -135,6 +141,7 @@ onMounted(async () => {
   position: relative;
   height: 250px;
   overflow: hidden;
+  background: #111;
 }
 
 .card-image {
