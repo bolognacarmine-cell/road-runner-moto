@@ -86,40 +86,52 @@ let ctx
 onMounted(async () => {
   await nextTick()
   ctx = gsap.context(() => {
-    gsap.from('.trade-header > *', {
-      scrollTrigger: {
-        trigger: '.trade-section',
-        start: 'top 80%',
-      },
-      y: 30,
-      opacity: 0,
-      duration: 1,
-      stagger: 0.2,
-      ease: 'power3.out'
-    })
+    gsap.fromTo('.trade-header > *', 
+      { y: 30, opacity: 0 },
+      {
+        scrollTrigger: {
+          trigger: '.trade-section',
+          start: 'top 80%',
+        },
+        y: 0,
+        opacity: 1,
+        duration: 1,
+        stagger: 0.2,
+        ease: 'power3.out',
+        clearProps: 'all'
+      }
+    )
 
-    gsap.from('.benefit-item', {
-      scrollTrigger: {
-        trigger: '.benefits-row',
-        start: 'top 85%',
-      },
-      y: 20,
-      opacity: 0,
-      duration: 0.8,
-      stagger: 0.1,
-      ease: 'power2.out'
-    })
+    gsap.fromTo('.benefit-item', 
+      { y: 20, opacity: 0 },
+      {
+        scrollTrigger: {
+          trigger: '.benefits-row',
+          start: 'top 85%',
+        },
+        y: 0,
+        opacity: 1,
+        duration: 0.8,
+        stagger: 0.1,
+        ease: 'power2.out',
+        clearProps: 'all'
+      }
+    )
 
-    gsap.from('.trade-form-container', {
-      scrollTrigger: {
-        trigger: '.trade-form-container',
-        start: 'top 75%',
-      },
-      y: 50,
-      opacity: 0,
-      duration: 1.2,
-      ease: 'power4.out'
-    })
+    gsap.fromTo('.trade-form-container', 
+      { y: 50, opacity: 0 },
+      {
+        scrollTrigger: {
+          trigger: '.trade-form-container',
+          start: 'top 75%',
+        },
+        y: 0,
+        opacity: 1,
+        duration: 1.2,
+        ease: 'power4.out',
+        clearProps: 'all'
+      }
+    )
   })
 })
 </script>

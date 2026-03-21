@@ -122,7 +122,15 @@ const animateCards = () => {
     if (cards.length > 0) {
       gsap.fromTo(cards, 
         { y: 28, opacity: 0 },
-        { y: 0, opacity: 1, duration: 0.7, stagger: 0.12, delay: 0.2, ease: 'power2.out' }
+        { 
+          y: 0, 
+          opacity: 1, 
+          duration: 0.7, 
+          stagger: 0.12, 
+          delay: 0.2, 
+          ease: 'power2.out',
+          clearProps: 'opacity,transform'
+        }
       )
     }
   })
@@ -150,8 +158,9 @@ onUnmounted(() => {
     <div class="container">
       <div class="section-heading-row">
         <div class="heading-left">
-          <p class="section-kicker">Catalogo</p>
-          <h2>Moto e scooter in evidenza</h2>
+          <p class="section-kicker">Showroom</p>
+          <h2>Nuovo & Usato Garantito</h2>
+          <p class="section-description">Esplora la nostra selezione di moto e scooter plurimarche, pronti per la strada.</p>
         </div>
         
         <!-- Premium Search Bar Integrata -->
@@ -164,7 +173,7 @@ onUnmounted(() => {
             <input 
               v-model="localSearchQuery"
               type="text" 
-              placeholder="Cerca modello, marca o categoria..." 
+              placeholder="Cerca per marca o modello..." 
               class="search-input"
             />
           </div>
@@ -172,67 +181,79 @@ onUnmounted(() => {
       </div>
 
       <div class="section-filters-only">
-        <!-- Filtri Veicoli -->
-        <div class="filters-container">
-          <div class="filter-group">
-            <span class="filter-label">Stato:</span>
-            <div class="filter-tabs">
-              <button 
-                v-for="filter in ['tutti', 'nuovo', 'usato', 'promozioni']" 
-                :key="filter"
-                @click="activeFilter = filter"
-                :class="{ active: activeFilter === filter }"
-                class="filter-btn"
-              >
-                {{ filter.charAt(0).toUpperCase() + filter.slice(1) }}
-              </button>
-            </div>
-          </div>
+        <!-- Filtri Veicoli Premium - Grandi e Ben Visibili -->
+        <div class="main-filter-tabs">
+          <button 
+            @click="activeFilter = 'tutti'"
+            :class="{ active: activeFilter === 'tutti' }"
+            class="main-tab-btn"
+          >
+            <span class="tab-label">TUTTI</span>
+            <span class="tab-count">{{ props.vehicles.length }}</span>
+          </button>
+          
+          <button 
+            @click="activeFilter = 'nuovo'"
+            :class="{ active: activeFilter === 'nuovo' }"
+            class="main-tab-btn"
+          >
+            <span class="tab-icon">✨</span>
+            <span class="tab-label">NUOVO</span>
+            <span class="tab-count">
+              {{ props.vehicles.filter(m => m.nuovaUsata === 'nuova' || m.stato === 'nuovo').length }}
+            </span>
+          </button>
 
+          <button 
+            @click="activeFilter = 'usato'"
+            :class="{ active: activeFilter === 'usato' }"
+            class="main-tab-btn"
+          >
+            <span class="tab-icon">🏁</span>
+            <span class="tab-label">USATO</span>
+            <span class="tab-count">
+              {{ props.vehicles.filter(m => m.nuovaUsata === 'usata' || m.stato === 'usato').length }}
+            </span>
+          </button>
+
+          <button 
+            @click="activeFilter = 'promozioni'"
+            :class="{ active: activeFilter === 'promozioni' }"
+            class="main-tab-btn promo-tab"
+          >
+            <span class="tab-icon">🔥</span>
+            <span class="tab-label">OFFERTE</span>
+            <span class="tab-count">
+              {{ props.vehicles.filter(m => m.nuovaUsata === 'promozione' || m.isPromotion || m.prezzoScontato).length }}
+            </span>
+          </button>
+        </div>
+
+        <div class="secondary-filters-row">
           <div v-if="dynamicCategories.length" class="filter-group">
-            <span class="filter-label">Categoria:</span>
-            <div class="filter-tabs">
-              <button 
-                @click="activeCategory = 'tutte'"
-                :class="{ active: activeCategory === 'tutte' }"
-                class="filter-btn"
-              >
-                Tutte
-              </button>
-              <button 
-                v-for="cat in dynamicCategories" 
-                :key="cat"
-                @click="activeCategory = cat"
-                :class="{ active: activeCategory === cat }"
-                class="filter-btn"
-              >
-                {{ cat }}
-              </button>
-            </div>
+            <select v-model="activeCategory" class="premium-select">
+              <option value="tutte">Tutte le Categorie</option>
+              <option v-for="cat in dynamicCategories" :key="cat" :value="cat">{{ cat }}</option>
+            </select>
           </div>
 
-          <!-- Nuovi filtri: KM e Ordinamento -->
-          <div class="extra-filters">
-            <div v-if="activeFilter === 'usato' || activeFilter === 'tutti'" class="filter-group">
-              <span class="filter-label">Chilometraggio:</span>
-              <select v-model="maxKm" class="filter-select">
-                <option :value="null">Qualsiasi km</option>
-                <option :value="5000">Fino a 5.000 km</option>
-                <option :value="10000">Fino a 10.000 km</option>
-                <option :value="20000">Fino a 20.000 km</option>
-                <option :value="50000">Fino a 50.000 km</option>
-              </select>
-            </div>
+          <div v-if="activeFilter === 'usato' || activeFilter === 'tutti'" class="filter-group">
+            <select v-model="maxKm" class="premium-select">
+              <option :value="null">Qualsiasi Chilometraggio</option>
+              <option :value="5000">Fino a 5.000 km</option>
+              <option :value="10000">Fino a 10.000 km</option>
+              <option :value="20000">Fino a 20.000 km</option>
+              <option :value="50000">Fino a 50.000 km</option>
+            </select>
+          </div>
 
-            <div class="filter-group">
-              <span class="filter-label">Ordina per:</span>
-              <select v-model="sortBy" class="filter-select">
-                <option value="recente">Ultimi arrivi</option>
-                <option value="alfabetico">A-Z (Marca/Modello)</option>
-                <option value="anno">Anno (Più recente)</option>
-                <option value="prezzo_asc">Prezzo (Crescente)</option>
-              </select>
-            </div>
+          <div class="filter-group">
+            <select v-model="sortBy" class="premium-select">
+              <option value="recente">Ultimi Arrivi</option>
+              <option value="alfabetico">Marca e Modello (A-Z)</option>
+              <option value="anno">Anno (Più Recente)</option>
+              <option value="prezzo_asc">Prezzo (Crescente)</option>
+            </select>
           </div>
         </div>
       </div>
@@ -246,7 +267,11 @@ onUnmounted(() => {
             <div class="card-overlay-actions">
               <NuxtLink :to="`/moto/${moto.slug || moto._id}`" class="btn-view-quick">Dettagli</NuxtLink>
             </div>
-            <div v-if="moto.nuovaUsata === 'promozione' || moto.prezzoScontato" class="badge-promo-card">PROMO</div>
+            <div class="card-badges-top">
+              <div v-if="moto.nuovaUsata === 'nuova' || moto.stato === 'nuovo'" class="badge-status-card new">NUOVO</div>
+              <div v-else-if="moto.nuovaUsata === 'usata' || moto.stato === 'usato'" class="badge-status-card used">USATO</div>
+              <div v-if="moto.nuovaUsata === 'promozione' || moto.prezzoScontato" class="badge-promo-card">PROMO</div>
+            </div>
           </div>
 
           <div class="moto-body">
@@ -381,23 +406,134 @@ onUnmounted(() => {
   color: var(--primary-2);
 }
 
-.filters-container {
+/* --- Filter Section Premium --- */
+.section-filters-only {
+  margin-bottom: 60px;
+}
+
+.section-description {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 1.1rem;
+  margin-top: 8px;
+}
+
+.main-filter-tabs {
   display: flex;
-  flex-direction: column;
-  gap: 24px;
+  gap: 16px;
+  margin-bottom: 32px;
+  flex-wrap: wrap;
 }
 
-@media (max-width: 768px) {
-  .section-heading-row {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-  .search-bar-container {
-    max-width: 100%;
-  }
+.main-tab-btn {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 16px 28px;
+  border-radius: 20px;
+  color: white;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  position: relative;
+  overflow: hidden;
 }
 
-.extra-filters {
+.main-tab-btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, var(--primary), var(--primary-2));
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  z-index: 0;
+}
+
+.main-tab-btn:hover {
+  background: rgba(255, 255, 255, 0.06);
+  transform: translateY(-4px);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.main-tab-btn.active {
+  border-color: transparent;
+  box-shadow: 0 10px 30px -10px rgba(225, 29, 72, 0.5);
+}
+
+.main-tab-btn.active::before {
+  opacity: 1;
+}
+
+.main-tab-btn.active .tab-label,
+.main-tab-btn.active .tab-count,
+.main-tab-btn.active .tab-icon {
+  color: white;
+  position: relative;
+  z-index: 1;
+}
+
+.tab-icon {
+  font-size: 1.2rem;
+}
+
+.tab-label {
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.tab-count {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 2px 10px;
+  border-radius: 100px;
+  font-size: 0.75rem;
+  font-weight: 900;
+  color: var(--primary-2);
+}
+
+.main-tab-btn.active .tab-count {
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+}
+
+.promo-tab.active::before {
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+}
+
+.promo-tab.active {
+  box-shadow: 0 10px 30px -10px rgba(245, 158, 11, 0.5);
+}
+
+.promo-tab .tab-count {
+  color: #f59e0b;
+}
+
+.secondary-filters-row {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.premium-select {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 12px 20px;
+  color: #fff;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+.premium-select:focus {
+  border-color: var(--primary-2);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.featured-grid {
   display: flex;
   gap: 32px;
   flex-wrap: wrap;
@@ -537,19 +673,45 @@ onUnmounted(() => {
   transform: translateY(0);
 }
 
-.badge-promo-card {
+.card-badges-top {
   position: absolute;
-  top: 20px;
-  right: 20px;
-  background: var(--primary);
-  color: #fff;
-  padding: 6px 14px;
-  border-radius: 8px;
-  font-weight: 900;
-  font-size: 0.7rem;
-  letter-spacing: 0.1em;
+  top: 16px;
+  left: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
   z-index: 6;
-  box-shadow: 0 10px 20px rgba(225, 29, 72, 0.4);
+}
+
+.badge-status-card {
+  padding: 4px 12px;
+  border-radius: 6px;
+  font-size: 0.65rem;
+  font-weight: 900;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: white;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.badge-status-card.new {
+  background: var(--primary);
+}
+
+.badge-status-card.used {
+  background: #333;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.badge-promo-card {
+  background: #f59e0b;
+  color: white;
+  padding: 4px 12px;
+  border-radius: 6px;
+  font-size: 0.65rem;
+  font-weight: 900;
+  letter-spacing: 0.05em;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
 }
 
 .moto-body {

@@ -7,14 +7,12 @@ import { useRuntimeConfig } from '#imports'
 import HeroSection from '~/components/home/HeroSection.vue'
 import AboutSection from '~/components/home/AboutSection.vue'
 import FeaturedVehicles from '~/components/home/FeaturedVehicles.vue'
-import AccessoriesSection from '~/components/home/AccessoriesSection.vue'
-import BikerWorldSection from '~/components/home/BikerWorldSection.vue'
 import TradeInSection from '~/components/home/TradeInSection.vue'
+import LifestyleSection from '~/components/home/LifestyleSection.vue'
+import ServiceSection from '~/components/home/ServiceSection.vue'
 import PortalCTA from '~/components/home/PortalCTA.vue'
 import QuoteSection from '~/components/home/QuoteSection.vue'
-import ServicesSection from '~/components/home/ServicesSection.vue'
 import BrandsSection from '~/components/home/BrandsSection.vue'
-import SupportSection from '~/components/home/SupportSection.vue'
 import CTABand from '~/components/home/CTABand.vue'
 import BlogPreviewSection from '~/components/home/BlogPreviewSection.vue'
 import ContactSection from '~/components/home/ContactSection.vue'
@@ -71,29 +69,23 @@ fetchVehicles()
     <!-- About Section -->
     <AboutSection />
 
-    <!-- Featured Vehicles dinamico -->
+    <!-- Featured Vehicles dinamico (Nuovo & Usato incorporati) -->
     <FeaturedVehicles :vehicles="vehicles" />
 
-    <!-- Accessories Section -->
-    <AccessoriesSection />
-
-    <!-- Mondo Biker Section -->
-    <BikerWorldSection />
+    <!-- Lifestyle (Accessori & Mondo Biker) -->
+    <LifestyleSection />
 
     <!-- Trade-In (Permute) Section -->
     <TradeInSection />
+
+    <!-- Service & Support (Officina & Ricambi) -->
+    <ServiceSection />
 
     <!-- Portal CTA -->
     <PortalCTA />
 
     <!-- Quote Section -->
     <QuoteSection :vehicles="vehicles" />
-
-    <!-- Services Section -->
-    <ServicesSection />
-
-    <!-- Assistenza Section -->
-    <SupportSection />
 
     <!-- Brands Section -->
     <BrandsSection />

@@ -50,12 +50,16 @@ onMounted(async () => {
 
     const scrollIndicator = document.querySelector('.scroll-indicator')
     if (scrollIndicator) {
-      gsap.to(scrollIndicator, { 
-        opacity: 0.6, 
-        y: 0,
-        duration: 1.2, 
-        delay: 1.5 
-      })
+      gsap.fromTo(scrollIndicator, 
+        { opacity: 0, y: 20 },
+        { 
+          opacity: 0.6, 
+          y: 0,
+          duration: 1.2, 
+          delay: 1.5,
+          clearProps: 'transform'
+        }
+      )
     }
 
     // Parallasse discreto sullo scroll
@@ -234,7 +238,7 @@ onUnmounted(() => {
   flex-direction: column;
   align-items: center;
   gap: 12px;
-  opacity: 0;
+  opacity: 0.6;
 }
 
 .scroll-indicator span {

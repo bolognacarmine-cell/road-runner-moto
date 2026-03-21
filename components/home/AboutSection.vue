@@ -14,46 +14,58 @@ onMounted(async () => {
   await nextTick()
   ctx = gsap.context(() => {
     // Reveal Titolo e Sottotitolo
-    gsap.from('.about-header > *', {
-      scrollTrigger: {
-        trigger: '.about-section',
-        start: 'top 80%',
-      },
-      y: 40,
-      opacity: 0,
-      duration: 1.2,
-      stagger: 0.15,
-      ease: 'power4.out'
-    })
+    gsap.fromTo('.about-header > *', 
+      { y: 40, opacity: 0 },
+      {
+        scrollTrigger: {
+          trigger: '.about-section',
+          start: 'top 80%',
+        },
+        y: 0,
+        opacity: 1,
+        duration: 1.2,
+        stagger: 0.15,
+        ease: 'power4.out',
+        clearProps: 'all'
+      }
+    )
 
     // Reveal Paragrafi Testo con Stagger
-    gsap.from('.about-text p', {
-      scrollTrigger: {
-        trigger: '.about-text',
-        start: 'top 85%',
-      },
-      y: 30,
-      opacity: 0,
-      duration: 1,
-      stagger: 0.2,
-      ease: 'power3.out'
-    })
+    gsap.fromTo('.about-text p', 
+      { y: 30, opacity: 0 },
+      {
+        scrollTrigger: {
+          trigger: '.about-text',
+          start: 'top 85%',
+        },
+        y: 0,
+        opacity: 1,
+        duration: 1,
+        stagger: 0.2,
+        ease: 'power3.out',
+        clearProps: 'all'
+      }
+    )
 
     // Animazione Visual Layered (Effetto Parallasse)
     const visualElements = document.querySelectorAll('.visual-layer')
     visualElements.forEach((el, i) => {
-      gsap.from(el, {
-        scrollTrigger: {
-          trigger: '.about-visual-container',
-          start: 'top 75%',
-        },
-        y: 60 * (i + 1),
-        opacity: 0,
-        scale: 0.9,
-        duration: 1.5,
-        delay: i * 0.2,
-        ease: 'expo.out'
-      })
+      gsap.fromTo(el, 
+        { y: 60 * (i + 1), opacity: 0, scale: 0.9 },
+        {
+          scrollTrigger: {
+            trigger: '.about-visual-container',
+            start: 'top 75%',
+          },
+          y: 0,
+          opacity: 1,
+          scale: 1,
+          duration: 1.5,
+          delay: i * 0.2,
+          ease: 'expo.out',
+          clearProps: 'all'
+        }
+      )
     })
 
     // Parallasse continuo al movimento dello scroll
@@ -78,17 +90,21 @@ onMounted(async () => {
     })
 
     // Hover sulle icone valori
-    gsap.from('.value-card', {
-      scrollTrigger: {
-        trigger: '.about-values',
-        start: 'top 90%',
-      },
-      scale: 0.9,
-      opacity: 0,
-      duration: 0.8,
-      stagger: 0.1,
-      ease: 'back.out(1.7)'
-    })
+    gsap.fromTo('.value-card', 
+      { scale: 0.9, opacity: 0 },
+      {
+        scrollTrigger: {
+          trigger: '.about-values',
+          start: 'top 90%',
+        },
+        scale: 1,
+        opacity: 1,
+        duration: 0.8,
+        stagger: 0.1,
+        ease: 'back.out(1.7)',
+        clearProps: 'all'
+      }
+    )
   })
 })
 </script>

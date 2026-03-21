@@ -25,14 +25,18 @@ onMounted(async () => {
     // Animazione degli elementi interni (senza far muovere l'intero header)
     const navElements = document.querySelectorAll('.brand, .main-nav a, .btn-primary-custom, .mobile-toggle')
     if (navElements.length > 0) {
-      gsap.from(navElements, {
-        y: -30,
-        opacity: 0,
-        duration: 1,
-        stagger: 0.1,
-        delay: 0.2,
-        ease: 'expo.out'
-      })
+      gsap.fromTo(navElements, 
+        { y: -30, opacity: 0 },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 1,
+          stagger: 0.1,
+          delay: 0.2,
+          ease: 'expo.out',
+          clearProps: 'all'
+        }
+      )
     }
   })
 })
