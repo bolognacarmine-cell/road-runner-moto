@@ -8,6 +8,7 @@ import HeroSection from '~/components/home/HeroSection.vue'
 import AboutSection from '~/components/home/AboutSection.vue'
 import FeaturedVehicles from '~/components/home/FeaturedVehicles.vue'
 import AccessoriesSection from '~/components/home/AccessoriesSection.vue'
+import TradeInSection from '~/components/home/TradeInSection.vue'
 import PortalCTA from '~/components/home/PortalCTA.vue'
 import QuoteSection from '~/components/home/QuoteSection.vue'
 import ServicesSection from '~/components/home/ServicesSection.vue'
@@ -74,6 +75,9 @@ fetchVehicles()
 
     <!-- Accessories Section -->
     <AccessoriesSection />
+
+    <!-- Trade-In (Permute) Section -->
+    <TradeInSection />
 
     <!-- Portal CTA -->
     <PortalCTA />
