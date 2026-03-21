@@ -5,6 +5,7 @@ import { useRuntimeConfig } from '#imports'
 
 // Componenti modulari
 import HeroSection from '~/components/home/HeroSection.vue'
+import AboutSection from '~/components/home/AboutSection.vue'
 import FeaturedVehicles from '~/components/home/FeaturedVehicles.vue'
 import PortalCTA from '~/components/home/PortalCTA.vue'
 import QuoteSection from '~/components/home/QuoteSection.vue'
@@ -63,6 +64,9 @@ fetchVehicles()
       title="Dove la qualità incontra la strada"
       subtitle="Vendita plurimarche, assistenza qualificata e ricambi originali"
     />
+
+    <!-- About Section -->
+    <AboutSection />
 
     <!-- Featured Vehicles dinamico -->
     <FeaturedVehicles :vehicles="vehicles" />

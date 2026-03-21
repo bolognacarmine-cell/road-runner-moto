@@ -57,6 +57,7 @@ onUnmounted(() => {
           </div>
         </NuxtLink>
         <nav class="minimal-nav">
+          <NuxtLink to="/#chi-samo">Chi Siamo</NuxtLink>
           <NuxtLink to="/#moto" @click="setFilter('nuovo')">Nuovo</NuxtLink>
           <NuxtLink to="/#moto" @click="setFilter('usato')">Usato</NuxtLink>
           <NuxtLink to="/#moto" @click="setFilter('promozioni')">Promozioni</NuxtLink>
