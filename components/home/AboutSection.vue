@@ -10,12 +10,25 @@ if (process.client) {
 
 onMounted(async () => {
   await nextTick()
-  const ctx = gsap.context(() => {
-    // Animazione testo
-    gsap.from('.about-content > *', {
+  ctx = gsap.context(() => {
+    // Reveal Titolo e Sottotitolo
+    gsap.from('.about-header > *', {
       scrollTrigger: {
         trigger: '.about-section',
-        start: 'top 70%',
+        start: 'top 80%',
+      },
+      y: 40,
+      opacity: 0,
+      duration: 1.2,
+      stagger: 0.15,
+      ease: 'power4.out'
+    })
+
+    // Reveal Paragrafi Testo con Stagger
+    gsap.from('.about-text p', {
+      scrollTrigger: {
+        trigger: '.about-text',
+        start: 'top 85%',
       },
       y: 30,
       opacity: 0,
@@ -24,16 +37,55 @@ onMounted(async () => {
       ease: 'power3.out'
     })
 
-    // Animazione immagine
-    gsap.from('.about-image-wrapper', {
+    // Animazione Visual Layered (Effetto Parallasse)
+    const visualElements = document.querySelectorAll('.visual-layer')
+    visualElements.forEach((el, i) => {
+      gsap.from(el, {
+        scrollTrigger: {
+          trigger: '.about-visual-container',
+          start: 'top 75%',
+        },
+        y: 60 * (i + 1),
+        opacity: 0,
+        scale: 0.9,
+        duration: 1.5,
+        delay: i * 0.2,
+        ease: 'expo.out'
+      })
+    })
+
+    // Parallasse continuo al movimento dello scroll
+    gsap.to('.layer-bg', {
+      y: -50,
       scrollTrigger: {
         trigger: '.about-section',
-        start: 'top 70%',
+        start: 'top bottom',
+        end: 'bottom top',
+        scrub: true
+      }
+    })
+    
+    gsap.to('.layer-main', {
+      y: 30,
+      scrollTrigger: {
+        trigger: '.about-section',
+        start: 'top bottom',
+        end: 'bottom top',
+        scrub: true
+      }
+    })
+
+    // Hover sulle icone valori
+    gsap.from('.value-card', {
+      scrollTrigger: {
+        trigger: '.about-values',
+        start: 'top 90%',
       },
-      x: 50,
+      scale: 0.9,
       opacity: 0,
-      duration: 1.2,
-      ease: 'power2.out'
+      duration: 0.8,
+      stagger: 0.1,
+      ease: 'back.out(1.7)'
     })
   })
 })
@@ -46,9 +98,11 @@ onMounted(async () => {
         
         <!-- Parte Testuale -->
         <div class="about-content">
-          <p class="section-kicker">La nostra storia</p>
-          <h2 class="about-title">ROAD RUNNER: Dove la passione diventa strada</h2>
-          <p class="about-subtitle">Dall'officina al sogno, l'esperienza di Pasquale al tuo servizio.</p>
+          <div class="about-header">
+            <p class="section-kicker">La nostra storia</p>
+            <h2 class="about-title">ROAD RUNNER: Dove la passione diventa strada</h2>
+            <p class="about-subtitle">Dall'officina al sogno, l'esperienza di Pasquale al tuo servizio.</p>
+          </div>
           
           <div class="about-text">
             <p>
@@ -63,14 +117,14 @@ onMounted(async () => {
           </div>
 
           <div class="about-values">
-            <div class="value-item">
+            <div class="value-card">
               <span class="value-icon">🛠️</span>
               <div class="value-info">
                 <strong>Esperienza Reale</strong>
                 <p>Nati come meccanici, conosciamo ogni segreto delle moto che vendiamo.</p>
               </div>
             </div>
-            <div class="value-item">
+            <div class="value-card">
               <span class="value-icon">🤝</span>
               <div class="value-info">
                 <strong>Serietà e Fiducia</strong>
@@ -85,16 +139,23 @@ onMounted(async () => {
           </div>
         </div>
 
-        <!-- Parte Visuale -->
-        <div class="about-image-wrapper">
-          <div class="image-stack">
-            <div class="main-image">
+        <!-- Parte Visuale (Layered Animation) -->
+        <div class="about-visual-container">
+          <div class="visual-wrapper">
+            <!-- Sfondo astratto o decorativo -->
+            <div class="visual-layer layer-bg"></div>
+            <!-- Cornice principale -->
+            <div class="visual-layer layer-frame"></div>
+            <!-- Immagine principale -->
+            <div class="visual-layer layer-main">
               <img src="/logo-road-runner.jpg" alt="ROAD RUNNER Brand" />
             </div>
-            <div class="accent-box"></div>
-            <div class="experience-badge">
-              <span class="years">20+</span>
-              <span class="label">Anni di Passione</span>
+            <!-- Badge esperienza -->
+            <div class="visual-layer layer-badge">
+              <div class="experience-badge-content">
+                <span class="years">20+</span>
+                <span class="label">Anni di Passione</span>
+              </div>
             </div>
           </div>
         </div>
@@ -120,9 +181,125 @@ onMounted(async () => {
 
 .about-grid {
   display: grid;
-  grid-template-columns: 1.2fr 0.8fr;
-  gap: 80px;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 100px;
   align-items: center;
+}
+
+/* Visual Layered Styles */
+.about-visual-container {
+  position: relative;
+  height: 600px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.visual-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.visual-layer {
+  position: absolute;
+  border-radius: 30px;
+  transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.layer-bg {
+  top: 10%;
+  right: 0;
+  width: 80%;
+  height: 70%;
+  background: linear-gradient(135deg, rgba(225, 29, 72, 0.05) 0%, rgba(225, 29, 72, 0) 100%);
+  border: 1px solid rgba(225, 29, 72, 0.1);
+  z-index: 1;
+}
+
+.layer-frame {
+  top: 15%;
+  left: 5%;
+  width: 75%;
+  height: 75%;
+  border: 2px solid rgba(255, 255, 255, 0.05);
+  z-index: 2;
+}
+
+.layer-main {
+  top: 12%;
+  left: 10%;
+  width: 80%;
+  height: 80%;
+  background: #fff;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 40px 80px rgba(0, 0, 0, 0.6);
+  padding: 40px;
+}
+
+.layer-main img {
+  width: 90%;
+  height: auto;
+  object-fit: contain;
+}
+
+.layer-badge {
+  bottom: 5%;
+  right: -5%;
+  z-index: 4;
+}
+
+.experience-badge-content {
+  background: var(--primary-2);
+  padding: 30px;
+  border-radius: 25px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-shadow: 0 20px 40px rgba(225, 29, 72, 0.4);
+  transform: rotate(5deg);
+}
+
+.experience-badge-content .years {
+  font-size: 3rem;
+  font-weight: 900;
+  line-height: 1;
+  color: #fff;
+}
+
+.experience-badge-content .label {
+  font-size: 0.8rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-top: 6px;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+/* Content Styles Refinement */
+.value-card {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.03);
+  padding: 24px;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  transition: all 0.4s ease;
+}
+
+.value-card:hover {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(225, 29, 72, 0.3);
+  transform: translateY(-5px);
+}
+
+@media (max-width: 1200px) {
+  .about-grid { gap: 60px; }
+  .layer-badge { right: 0; }
 }
 
 .section-kicker {
@@ -172,10 +349,16 @@ onMounted(async () => {
   margin-bottom: 48px;
 }
 
-.value-item {
-  display: flex;
-  gap: 16px;
-  align-items: flex-start;
+.value-info strong {
+  display: block;
+  font-size: 1.1rem;
+  margin-bottom: 4px;
+}
+
+.value-info p {
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.5);
+  line-height: 1.5;
 }
 
 .value-icon {
@@ -188,18 +371,6 @@ onMounted(async () => {
   justify-content: center;
   border-radius: 12px;
   border: 1px solid rgba(225, 29, 72, 0.2);
-}
-
-.value-info strong {
-  display: block;
-  font-size: 1.1rem;
-  margin-bottom: 4px;
-}
-
-.value-info p {
-  font-size: 0.9rem;
-  color: rgba(255, 255, 255, 0.5);
-  line-height: 1.5;
 }
 
 .about-actions {
@@ -222,89 +393,10 @@ onMounted(async () => {
   border-color: #fff;
 }
 
-/* Visual Stack */
-.about-image-wrapper {
-  position: relative;
-}
-
-.image-stack {
-  position: relative;
-  padding: 20px;
-}
-
-.main-image {
-  position: relative;
-  z-index: 2;
-  border-radius: 24px;
-  overflow: hidden;
-  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
-  background: #fff;
-  aspect-ratio: 4/5;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.main-image img {
-  width: 80%;
-  height: auto;
-  object-fit: contain;
-}
-
-.accent-box {
-  position: absolute;
-  top: -20px;
-  right: -20px;
-  width: 100%;
-  height: 100%;
-  border: 2px solid var(--primary-2);
-  border-radius: 24px;
-  z-index: 1;
-}
-
-.experience-badge {
-  position: absolute;
-  bottom: 40px;
-  left: -30px;
-  background: var(--primary-2);
-  padding: 24px;
-  border-radius: 20px;
-  z-index: 3;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  box-shadow: 0 15px 30px rgba(225, 29, 72, 0.3);
-}
-
-.experience-badge .years {
-  font-size: 2.5rem;
-  font-weight: 900;
-  line-height: 1;
-}
-
-.experience-badge .label {
-  font-size: 0.75rem;
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  margin-top: 4px;
-  text-align: center;
-}
-
 @media (max-width: 1024px) {
-  .about-grid {
-    grid-template-columns: 1fr;
-    gap: 60px;
-  }
-  .about-image-wrapper {
-    order: -1;
-    max-width: 500px;
-    margin: 0 auto;
-  }
-  .experience-badge {
-    left: 20px;
-    bottom: -20px;
-  }
+  .about-grid { grid-template-columns: 1fr; }
+  .about-visual-container { height: 500px; order: -1; }
+  .layer-main { padding: 30px; }
 }
 
 @media (max-width: 640px) {
