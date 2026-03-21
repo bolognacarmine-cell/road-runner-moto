@@ -42,10 +42,12 @@ const dynamicCategories = computed(() => {
 
 // Computed: veicoli filtrati
 const featuredMotos = computed(() => {
+  if (!props.vehicles || !Array.isArray(props.vehicles)) return []
+  
   let filtered = [...props.vehicles]
   
   // 0. Filtro per ricerca globale (Header)
-  const query = searchQuery.value.toLowerCase().trim()
+  const query = (searchQuery.value || '').toString().toLowerCase().trim()
   if (query) {
     filtered = filtered.filter(m => 
       `${m.marca || ''} ${m.modello || ''} ${m.categoria || ''}`.toLowerCase().includes(query)
@@ -53,15 +55,26 @@ const featuredMotos = computed(() => {
   }
 
   // 1. Filtro per stato (nuovo/usato/promozione)
-  if (activeFilter.value === 'nuovo') {
-    filtered = filtered.filter(m => m.nuovaUsata === 'nuova' || m.stato === 'nuovo')
-  } else if (activeFilter.value === 'usato') {
-    filtered = filtered.filter(m => m.nuovaUsata === 'usata' || m.stato === 'usato')
-  } else if (activeFilter.value === 'promozioni') {
-    filtered = filtered.filter(m => m.nuovaUsata === 'promozione' || m.isPromotion || m.prezzoScontato || m.offerta === true)
+  const filterVal = (activeFilter.value || 'tutti').toLowerCase()
+  
+  if (filterVal === 'nuovo') {
+    filtered = filtered.filter(m => 
+      (m.nuovaUsata || '').toLowerCase().includes('nuov') || 
+      (m.stato || '').toLowerCase().includes('nuov')
+    )
+  } else if (filterVal === 'usato') {
+    filtered = filtered.filter(m => 
+      (m.nuovaUsata || '').toLowerCase().includes('usat') || 
+      (m.stato || '').toLowerCase().includes('usat')
+    )
+  } else if (filterVal === 'promozioni') {
+    filtered = filtered.filter(m => 
+      (m.nuovaUsata || '').toLowerCase().includes('promozion') || 
+      m.isPromotion || m.prezzoScontato || m.offerta === true
+    )
   }
 
-  // 2. Filtro per categoria
+  // 2. Filtro per categoria locale (Select)
   if (activeCategory.value !== 'tutte') {
     filtered = filtered.filter(m => m.categoria === activeCategory.value)
   }
@@ -93,7 +106,7 @@ const featuredMotos = computed(() => {
     }
   })
   
-  return filtered.slice(0, 12) // Aumentato a 12 per dare più respiro ai filtri
+  return filtered.slice(0, 12)
 })
 
 const formatPrice = (price) => {
@@ -201,7 +214,7 @@ onUnmounted(() => {
             <span class="tab-icon">✨</span>
             <span class="tab-label">NUOVO</span>
             <span class="tab-count">
-              {{ props.vehicles.filter(m => m.nuovaUsata === 'nuova' || m.stato === 'nuovo').length }}
+              {{ props.vehicles.filter(m => (m.nuovaUsata || '').toLowerCase().includes('nuov') || (m.stato || '').toLowerCase().includes('nuov')).length }}
             </span>
           </button>
 
@@ -213,7 +226,7 @@ onUnmounted(() => {
             <span class="tab-icon">🏁</span>
             <span class="tab-label">USATO</span>
             <span class="tab-count">
-              {{ props.vehicles.filter(m => m.nuovaUsata === 'usata' || m.stato === 'usato').length }}
+              {{ props.vehicles.filter(m => (m.nuovaUsata || '').toLowerCase().includes('usat') || (m.stato || '').toLowerCase().includes('usat')).length }}
             </span>
           </button>
 
@@ -225,7 +238,7 @@ onUnmounted(() => {
             <span class="tab-icon">🔥</span>
             <span class="tab-label">OFFERTE</span>
             <span class="tab-count">
-              {{ props.vehicles.filter(m => m.nuovaUsata === 'promozione' || m.isPromotion || m.prezzoScontato).length }}
+              {{ props.vehicles.filter(m => (m.nuovaUsata || '').toLowerCase().includes('promozion') || m.isPromotion || m.prezzoScontato).length }}
             </span>
           </button>
         </div>
@@ -264,14 +277,14 @@ onUnmounted(() => {
       <div v-else class="featured-grid">
         <article v-for="moto in featuredMotos" :key="moto._id" class="moto-card">
           <div class="card-visual">
-            <MotoCarousel :images="formatImages(moto.immagini)" :altText="`Moto ${moto.marca} ${moto.modello} in vendita a Capodrise`" height="260px" />
+            <MotoCarousel :images="formatImages(moto)" :altText="`Moto ${moto.marca} ${moto.modello} in vendita a Capodrise`" height="260px" />
             <div class="card-overlay-actions">
               <NuxtLink :to="`/moto/${moto.slug || moto._id}`" class="btn-view-quick">Dettagli</NuxtLink>
             </div>
             <div class="card-badges-top">
               <div v-if="moto.nuovaUsata === 'nuova' || moto.stato === 'nuovo'" class="badge-status-card new">NUOVO</div>
               <div v-else-if="moto.nuovaUsata === 'usata' || moto.stato === 'usato'" class="badge-status-card used">USATO</div>
-              <div v-if="moto.nuovaUsata === 'promozione' || moto.prezzoScontato" class="badge-promo-card">PROMO</div>
+              <div v-if="moto.nuovaUsata === 'promozione' || moto.isPromotion || moto.prezzoScontato || moto.offerta === true" class="badge-promo-card">PROMO</div>
             </div>
           </div>
 
@@ -619,14 +632,14 @@ onUnmounted(() => {
 }
 
 .moto-card {
-  background: var(--panel);
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 24px;
   overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
+  position: relative;
   display: flex;
   flex-direction: column;
-  position: relative;
 }
 
 .moto-card:hover {

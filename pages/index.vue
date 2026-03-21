@@ -125,7 +125,9 @@ fetchVehicles()
     <AboutSection />
 
     <!-- Featured Vehicles dinamico (Nuovo & Usato incorporati) -->
-    <FeaturedVehicles :vehicles="vehicles" />
+    <div v-if="loading" class="state-box">Caricamento veicoli...</div>
+    <div v-else-if="error" class="state-box error">Impossibile caricare i veicoli.</div>
+    <FeaturedVehicles v-else :vehicles="vehicles" />
 
     <!-- Lifestyle (Accessori & Mondo Biker) -->
     <LifestyleSection />
