@@ -60,7 +60,7 @@ fetchVehicles()
     <!-- Hero dinamico -->
     <HeroSection
       badge="Concessionaria moto e scooter a Capodrise"
-      title="La tua concessionaria di riferimento"
+      title="Dove la qualità incontra la strada"
       subtitle="Vendita plurimarche, assistenza qualificata e ricambi originali"
     />
 

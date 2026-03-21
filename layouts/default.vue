@@ -1,6 +1,15 @@
 <script setup>
 import { ref, onMounted, onUnmounted, nextTick } from 'vue'
 import { gsap } from 'gsap'
+import { useSearch } from '~/composables/useSearch'
+
+const { setSearchQuery } = useSearch()
+
+const setFilter = (filter) => {
+  // Se siamo nella home, scrolliamo alla sezione moto e impostiamo il filtro
+  // Nota: FeaturedVehicles.vue dovrà essere aggiornato per reagire a questi click se necessario
+  // Per ora impostiamo solo la query di ricerca o usiamo un evento globale se serve
+}
 
 const mobileMenuOpen = ref(false)
 
@@ -39,14 +48,22 @@ onUnmounted(() => {
     <header class="minimal-header">
       <div class="container header-content">
         <NuxtLink to="/" class="minimal-logo">
-          <img src="/logo-road-runner.jpg" alt="Logo" />
-          <span>ROAD RUNNER</span>
+          <div class="logo-box">
+            <img src="/logo-road-runner.jpg" alt="Logo" />
+          </div>
+          <div class="brand-info">
+            <span class="brand-title">ROAD RUNNER</span>
+            <span class="brand-subtitle">Concessionaria Moto Nuove & Usate</span>
+          </div>
         </NuxtLink>
         <nav class="minimal-nav">
-          <NuxtLink to="/#moto">Veicoli</NuxtLink>
-          <NuxtLink to="/#servizi">Servizi</NuxtLink>
+          <NuxtLink to="/#moto" @click="setFilter('nuovo')">Nuovo</NuxtLink>
+          <NuxtLink to="/#moto" @click="setFilter('usato')">Usato</NuxtLink>
+          <NuxtLink to="/#moto" @click="setFilter('promozioni')">Promozioni</NuxtLink>
+          <NuxtLink to="/#assistenza">Assistenza</NuxtLink>
           <NuxtLink to="/blog">Blog</NuxtLink>
           <NuxtLink to="/#contatti">Contatti</NuxtLink>
+          <NuxtLink to="/portale/login" class="portal-link-minimal">Area Clienti</NuxtLink>
         </nav>
       </div>
     </header>
@@ -88,9 +105,9 @@ onUnmounted(() => {
   top: 0;
   left: 0;
   width: 100%;
-  padding: 1rem 0;
+  padding: 1.5rem 0;
   z-index: 1000;
-  background: transparent;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.8) 0%, transparent 100%);
 }
 
 .header-content {
@@ -102,42 +119,97 @@ onUnmounted(() => {
 .minimal-logo {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 16px;
   text-decoration: none;
-  color: #fff;
-  font-weight: 900;
-  font-size: 1.2rem;
 }
 
-.minimal-logo img {
-  width: 32px;
-  height: 32px;
+.logo-box {
+  width: 60px;
+  height: 60px;
+  background: #fff;
   border-radius: 50%;
+  padding: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+  overflow: hidden;
+}
+
+.logo-box img {
+  width: 100%;
+  height: 100%;
   object-fit: cover;
+  transform: scale(1.1);
+}
+
+.brand-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.brand-title {
+  color: #fff;
+  font-weight: 950;
+  font-size: 1.5rem;
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+
+.brand-subtitle {
+  color: var(--primary-2);
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  margin-top: 4px;
 }
 
 .minimal-nav {
   display: flex;
-  gap: 1.5rem;
+  align-items: center;
+  gap: 2rem;
 }
 
 .minimal-nav a {
-  color: rgba(255, 255, 255, 0.7);
+  color: rgba(255, 255, 255, 0.85);
   text-decoration: none;
-  font-size: 0.9rem;
+  font-size: 0.95rem;
   font-weight: 700;
-  transition: color 0.3s;
+  transition: all 0.3s;
 }
 
 .minimal-nav a:hover {
-  color: #fff;
+  color: var(--primary-2);
+  transform: translateY(-1px);
+}
+
+.portal-link-minimal {
+  background: rgba(225, 29, 72, 0.15);
+  padding: 8px 18px;
+  border-radius: 100px;
+  border: 1px solid rgba(225, 29, 72, 0.3);
+  color: var(--primary-2) !important;
+}
+
+.portal-link-minimal:hover {
+  background: var(--primary-2);
+  color: #fff !important;
 }
 
 .main-content {
   min-height: 100vh;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1100px) {
+  .minimal-nav {
+    gap: 1rem;
+  }
+  .brand-subtitle {
+    display: none;
+  }
+}
+
+@media (max-width: 850px) {
   .minimal-nav {
     display: none;
   }
