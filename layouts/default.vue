@@ -61,6 +61,7 @@ onUnmounted(() => {
           <NuxtLink to="/#moto" @click="setFilter('nuovo')">Nuovo</NuxtLink>
           <NuxtLink to="/#moto" @click="setFilter('usato')">Usato</NuxtLink>
           <NuxtLink to="/#moto" @click="setFilter('promozioni')">Promozioni</NuxtLink>
+          <NuxtLink to="/#accessori">Accessori</NuxtLink>
           <NuxtLink to="/#assistenza">Assistenza</NuxtLink>
           <NuxtLink to="/blog">Blog</NuxtLink>
           <NuxtLink to="/#contatti">Contatti</NuxtLink>

@@ -7,6 +7,7 @@ import { useRuntimeConfig } from '#imports'
 import HeroSection from '~/components/home/HeroSection.vue'
 import AboutSection from '~/components/home/AboutSection.vue'
 import FeaturedVehicles from '~/components/home/FeaturedVehicles.vue'
+import AccessoriesSection from '~/components/home/AccessoriesSection.vue'
 import PortalCTA from '~/components/home/PortalCTA.vue'
 import QuoteSection from '~/components/home/QuoteSection.vue'
 import ServicesSection from '~/components/home/ServicesSection.vue'
@@ -70,6 +71,9 @@ fetchVehicles()
 
     <!-- Featured Vehicles dinamico -->
     <FeaturedVehicles :vehicles="vehicles" />
+
+    <!-- Accessories Section -->
+    <AccessoriesSection />
 
     <!-- Portal CTA -->
     <PortalCTA />
