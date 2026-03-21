@@ -8,6 +8,7 @@ import HeroSection from '~/components/home/HeroSection.vue'
 import AboutSection from '~/components/home/AboutSection.vue'
 import FeaturedVehicles from '~/components/home/FeaturedVehicles.vue'
 import AccessoriesSection from '~/components/home/AccessoriesSection.vue'
+import BikerWorldSection from '~/components/home/BikerWorldSection.vue'
 import TradeInSection from '~/components/home/TradeInSection.vue'
 import PortalCTA from '~/components/home/PortalCTA.vue'
 import QuoteSection from '~/components/home/QuoteSection.vue'
@@ -75,6 +76,9 @@ fetchVehicles()
 
     <!-- Accessories Section -->
     <AccessoriesSection />
+
+    <!-- Mondo Biker Section -->
+    <BikerWorldSection />
 
     <!-- Trade-In (Permute) Section -->
     <TradeInSection />
