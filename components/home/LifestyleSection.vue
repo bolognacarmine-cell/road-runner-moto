@@ -13,12 +13,14 @@ const lifestyleItems = [
     title: 'Caschi & Accessori',
     desc: 'Dagli integrali racing ai jet urbani, scopri la nostra selezione dei migliori brand per la tua sicurezza.',
     icon: '🪖',
+    image: 'https://images.unsplash.com/photo-1595079676339-1534802ad6cf?auto=format&fit=crop&q=80&w=800',
     link: '#accessori'
   },
   {
     title: 'Mondo Biker',
     desc: 'Resta aggiornato su motoraduni, community, codice della strada e consigli per la vita su due ruote.',
     icon: '🏁',
+    image: 'https://images.unsplash.com/photo-1558981403-c5f9899a28bc?auto=format&fit=crop&q=80&w=800',
     link: '#mondo-biker'
   }
 ]
@@ -59,7 +61,11 @@ onMounted(async () => {
 
       <div class="lifestyle-grid">
         <div v-for="item in lifestyleItems" :key="item.title" class="lifestyle-card">
-          <div class="lifestyle-icon">{{ item.icon }}</div>
+          <div class="card-image-wrapper">
+            <img :src="item.image" :alt="item.title" class="card-image" />
+            <div class="card-overlay"></div>
+            <div class="lifestyle-icon-badge">{{ item.icon }}</div>
+          </div>
           <div class="lifestyle-info">
             <h3>{{ item.title }}</h3>
             <p>{{ item.desc }}</p>
@@ -110,13 +116,12 @@ onMounted(async () => {
 
 .lifestyle-card {
   background: rgba(255, 255, 255, 0.03);
-  padding: 60px 40px;
+  padding: 0;
   border-radius: 40px;
   border: 1px solid rgba(255, 255, 255, 0.05);
   display: flex;
   flex-direction: column;
-  align-items: center;
-  text-align: center;
+  overflow: hidden;
   transition: all 0.4s ease;
 }
 
@@ -126,9 +131,48 @@ onMounted(async () => {
   transform: translateY(-10px);
 }
 
-.lifestyle-icon {
-  font-size: 4rem;
-  margin-bottom: 32px;
+.card-image-wrapper {
+  position: relative;
+  height: 250px;
+  overflow: hidden;
+}
+
+.card-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.lifestyle-card:hover .card-image {
+  transform: scale(1.1);
+}
+
+.card-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, transparent 40%, rgba(5, 5, 5, 0.8));
+}
+
+.lifestyle-icon-badge {
+  position: absolute;
+  bottom: 20px;
+  right: 24px;
+  font-size: 2.5rem;
+  background: rgba(225, 29, 72, 0.1);
+  backdrop-filter: blur(10px);
+  width: 70px;
+  height: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.lifestyle-info {
+  padding: 40px;
+  text-align: center;
 }
 
 .lifestyle-info h3 {
