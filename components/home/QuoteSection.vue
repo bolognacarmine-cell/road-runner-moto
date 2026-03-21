@@ -146,7 +146,10 @@ const handleSubmit = async () => {
       body: form.value
     })
     isSubmitted.value = true
-    gsap.from('.success-content', { scale: 0.8, opacity: 0, duration: 0.5, ease: 'back.out' })
+    gsap.fromTo('.success-content', 
+      { scale: 0.8, opacity: 0 },
+      { scale: 1, opacity: 1, duration: 0.5, ease: 'back.out' }
+    )
   } catch (err) {
     alert('Errore durante l\'invio. Riprova più tardi.')
   } finally {

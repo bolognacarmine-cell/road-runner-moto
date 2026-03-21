@@ -9,17 +9,23 @@ if (process.client) {
 
 onMounted(() => {
   const ctx = gsap.context(() => {
-    gsap.from('.support-card', {
-      scrollTrigger: {
-        trigger: '.support-grid',
-        start: 'top 80%',
-      },
-      y: 50,
-      opacity: 0,
-      duration: 0.8,
-      stagger: 0.2,
-      ease: 'power3.out'
-    })
+    const cards = document.querySelectorAll('.support-card')
+    if (cards.length > 0) {
+      gsap.fromTo(cards, 
+        { opacity: 0, y: 50 },
+        {
+          scrollTrigger: {
+            trigger: '.support-grid',
+            start: 'top 80%',
+          },
+          y: 0,
+          opacity: 1,
+          duration: 0.8,
+          stagger: 0.2,
+          ease: 'power3.out'
+        }
+      )
+    }
   })
 })
 
@@ -33,16 +39,6 @@ const services = [
     title: 'Ricambi Originali',
     desc: 'Utilizziamo solo componenti ufficiali per garantire la massima affidabilità e durata nel tempo.',
     icon: '⚙️'
-  },
-  {
-    title: 'Gommista',
-    desc: 'Sostituzione e bilanciatura pneumatici delle migliori marche per la tua sicurezza su strada.',
-    icon: '🏍️'
-  },
-  {
-    title: 'Revisioni',
-    desc: 'Centro autorizzato per la revisione periodica ministeriale obbligatoria del tuo veicolo.',
-    icon: '✅'
   }
 ]
 </script>

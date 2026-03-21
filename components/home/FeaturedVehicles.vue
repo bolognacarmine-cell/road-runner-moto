@@ -1,7 +1,6 @@
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted, onUnmounted, nextTick, watch } from 'vue'
 import { gsap } from 'gsap'
-import { onMounted, onUnmounted, nextTick } from 'vue'
 import MotoCarousel from '~/components/moto/MotoCarousel.vue'
 
 // Props: veicoli dinamici e filtri
@@ -91,14 +90,29 @@ const formatImages = (moto) => {
 // Animazioni GSAP
 let ctx
 
-onMounted(async () => {
-  await nextTick()
+const animateCards = () => {
+  if (ctx) ctx.revert()
   ctx = gsap.context(() => {
     const cards = document.querySelectorAll('.featured-grid .moto-card')
     if (cards.length > 0) {
-      gsap.from(cards, { y: 28, opacity: 0, duration: 0.7, stagger: 0.12, delay: 0.2 })
+      gsap.fromTo(cards, 
+        { y: 28, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.7, stagger: 0.12, delay: 0.2, ease: 'power2.out' }
+      )
     }
   })
+}
+
+// Watch per riattivare l'animazione quando cambiano i veicoli filtrati
+watch(featuredMotos, () => {
+  nextTick(() => {
+    animateCards()
+  })
+}, { deep: true })
+
+onMounted(async () => {
+  await nextTick()
+  animateCards()
 })
 
 onUnmounted(() => {

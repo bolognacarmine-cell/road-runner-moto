@@ -20,26 +20,32 @@ onMounted(async () => {
     // Animazione di comparsa fluida ed elegante
     const textWrapper = document.querySelector('.hero-text-wrapper')
     if (textWrapper) {
-      gsap.to(textWrapper, {
-        y: 0,
-        opacity: 1,
-        duration: 1.5,
-        delay: 0.5,
-        ease: 'power4.out'
-      })
+      gsap.fromTo(textWrapper, 
+        { opacity: 0, y: 30 },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 1.5,
+          delay: 0.5,
+          ease: 'power4.out'
+        }
+      )
     }
 
     // Stagger dei contenuti interni per profondità
     const internalContent = document.querySelectorAll('.hero-badge, .hero-title, .hero-subtitle, .hero-actions')
     if (internalContent.length > 0) {
-      gsap.to(internalContent, {
-        y: 0,
-        opacity: 1,
-        duration: 1,
-        stagger: 0.1,
-        delay: 0.8,
-        ease: 'power2.out'
-      })
+      gsap.fromTo(internalContent,
+        { opacity: 0, y: 20 },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 1,
+          stagger: 0.1,
+          delay: 0.8,
+          ease: 'power2.out'
+        }
+      )
     }
 
     const scrollIndicator = document.querySelector('.scroll-indicator')
@@ -174,8 +180,7 @@ onUnmounted(() => {
 
 .hero-text-wrapper {
   max-width: 800px;
-  opacity: 0;
-  transform: translateY(30px);
+  /* Rimossa opacity per evitare card invisibili se GSAP non carica */
 }
 
 .hero-badge-wrapper {
