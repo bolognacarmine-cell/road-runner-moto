@@ -12,14 +12,14 @@ const lifestyleItems = [
   {
     title: 'Caschi & Accessori',
     desc: 'Dagli integrali racing ai jet urbani, scopri la nostra selezione dei migliori brand per la tua sicurezza.',
-    icon: '🪖',
-    image: 'https://images.unsplash.com/photo-1620939511593-299312d1945a?auto=format&fit=crop&q=80&w=800',
+    icon: '🛡️',
+    image: 'https://images.unsplash.com/photo-1599819811279-d5ad9cccf838?auto=format&fit=crop&q=80&w=800',
     link: '#accessori'
   },
   {
     title: 'Mondo Biker',
     desc: 'Resta aggiornato su motoraduni, community, codice della strada e consigli per la vita su due ruote.',
-    icon: '🏁',
+    icon: '⚡',
     image: 'https://images.unsplash.com/photo-1558981403-c5f9899a28bc?auto=format&fit=crop&q=80&w=800',
     link: '#mondo-biker'
   }
