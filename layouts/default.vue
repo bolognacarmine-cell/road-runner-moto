@@ -36,8 +36,21 @@ onUnmounted(() => {
 
 <template>
   <div class="page-shell">
-    <!-- Header Premium -->
-    <PremiumHeader />
+    <!-- Header Standard Minimale -->
+    <header class="minimal-header">
+      <div class="container header-content">
+        <NuxtLink to="/" class="minimal-logo">
+          <img src="/logo-road-runner.jpg" alt="Logo" />
+          <span>ROAD RUNNER</span>
+        </NuxtLink>
+        <nav class="minimal-nav">
+          <NuxtLink to="/#moto">Veicoli</NuxtLink>
+          <NuxtLink to="/#servizi">Servizi</NuxtLink>
+          <NuxtLink to="/blog">Blog</NuxtLink>
+          <NuxtLink to="/#contatti">Contatti</NuxtLink>
+        </nav>
+      </div>
+    </header>
 
     <!-- Main content -->
     <main class="main-content">
@@ -71,20 +84,63 @@ onUnmounted(() => {
 </template>
 
 <style scoped>
+.minimal-header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 1rem 0;
+  z-index: 1000;
+  background: transparent;
+}
+
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.minimal-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  color: #fff;
+  font-weight: 900;
+  font-size: 1.2rem;
+}
+
+.minimal-logo img {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.minimal-nav {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.minimal-nav a {
+  color: rgba(255, 255, 255, 0.7);
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 700;
+  transition: color 0.3s;
+}
+
+.minimal-nav a:hover {
+  color: #fff;
+}
+
 .main-content {
-  padding-top: 100px; /* Spazio per l'header fisso */
   min-height: 100vh;
 }
 
-@media (max-width: 1024px) {
-  .main-content {
-    padding-top: 90px;
-  }
-}
-
 @media (max-width: 768px) {
-  .main-content {
-    padding-top: 80px;
+  .minimal-nav {
+    display: none;
   }
 }
 

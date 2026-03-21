@@ -135,11 +135,7 @@ onUnmounted(() => {
 <template>
   <section id="moto" class="featured-section">
     <div class="container">
-      <div class="section-heading">
-        <p class="section-kicker">Catalogo</p>
-        <h2>Moto e scooter in evidenza</h2>
-        <p>Esplora una selezione di veicoli disponibili in concessionaria.</p>
-        
+      <div class="section-filters-only">
         <!-- Filtri Veicoli -->
         <div class="filters-container">
           <div class="filter-group">
@@ -248,12 +244,12 @@ onUnmounted(() => {
 
 <style scoped>
 .featured-section {
-  padding: 100px 0;
+  padding: 60px 0 100px;
   background: var(--bg);
   position: relative;
   z-index: 2;
-  margin-top: -2px; /* Piccola sovrapposizione per evitare linee bianche tra sezioni */
-  scroll-margin-top: 180px; /* Margine per l'header fisso quando si scende dal catalogo */
+  margin-top: 0;
+  scroll-margin-top: 20px;
 }
 
 .section-heading {

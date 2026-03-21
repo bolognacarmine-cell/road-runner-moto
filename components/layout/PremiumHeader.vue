@@ -25,31 +25,24 @@ const toggleMenu = () => {
   mobileMenuOpen.value = !mobileMenuOpen.value
 }
 
-const handleScroll = () => {
-  isScrolled.value = window.scrollY > 20
-}
-
 let ctx
 onMounted(async () => {
-  window.addEventListener('scroll', handleScroll)
   await nextTick()
   
   ctx = gsap.context(() => {
-    // Reveal iniziale elegante
+    // Reveal elegante per la sezione
     const elements = document.querySelectorAll('.logo-container, .search-bar-container, .nav-item, .social-links, .mobile-toggle')
     gsap.from(elements, {
-      y: -20,
+      y: 20,
       opacity: 0,
-      duration: 0.8,
-      stagger: 0.05,
-      ease: 'power3.out',
-      delay: 0.2
+      duration: 1,
+      stagger: 0.1,
+      ease: 'power3.out'
     })
   })
 })
 
 onUnmounted(() => {
-  window.removeEventListener('scroll', handleScroll)
   if (ctx) ctx.revert()
 })
 </script>
@@ -132,23 +125,20 @@ onUnmounted(() => {
 
 <style scoped>
 .premium-header {
-  position: fixed;
-  top: 0;
-  left: 0;
+  position: relative;
   width: 100%;
-  height: 100px;
-  z-index: 1000;
-  background: rgba(3, 3, 3, 0.7);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  height: auto;
+  min-height: 100px;
+  padding: 40px 0;
+  z-index: 10;
+  background: #050505;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
   border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  margin-top: 0;
 }
 
 .premium-header.is-scrolled {
-  height: 85px;
-  background: rgba(5, 5, 5, 0.95);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  /* In-section header typically doesn't need scroll change unless sticky */
 }
 
 .header-inner {
