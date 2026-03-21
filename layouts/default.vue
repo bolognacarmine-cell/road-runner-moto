@@ -73,11 +73,18 @@ onUnmounted(() => {
 <style scoped>
 .main-content {
   padding-top: 100px; /* Spazio per l'header fisso */
+  min-height: 100vh;
+}
+
+@media (max-width: 1024px) {
+  .main-content {
+    padding-top: 90px;
+  }
 }
 
 @media (max-width: 768px) {
   .main-content {
-    padding-top: 90px;
+    padding-top: 80px;
   }
 }
 

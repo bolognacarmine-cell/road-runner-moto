@@ -1,12 +1,16 @@
 <script setup>
 import { ref, computed, onMounted, onUnmounted, nextTick, watch } from 'vue'
 import { gsap } from 'gsap'
+import { useSearch } from '~/composables/useSearch'
 import MotoCarousel from '~/components/moto/MotoCarousel.vue'
 
 // Props: veicoli dinamici e filtri
 const props = defineProps({
   vehicles: { type: Array, default: () => [] }
 })
+
+// Stato globale della ricerca
+const { searchQuery } = useSearch()
 
 // Stato filtro attivo
 const activeFilter = ref('tutti')
@@ -26,6 +30,14 @@ const dynamicCategories = computed(() => {
 const featuredMotos = computed(() => {
   let filtered = [...props.vehicles]
   
+  // 0. Filtro per ricerca globale (Header)
+  const query = searchQuery.value.toLowerCase().trim()
+  if (query) {
+    filtered = filtered.filter(m => 
+      `${m.marca || ''} ${m.modello || ''} ${m.categoria || ''}`.toLowerCase().includes(query)
+    )
+  }
+
   // 1. Filtro per stato (nuovo/usato/promozione)
   if (activeFilter.value === 'nuovo') {
     filtered = filtered.filter(m => m.nuovaUsata === 'nuova' || m.stato === 'nuovo')
@@ -104,7 +116,7 @@ const animateCards = () => {
 }
 
 // Watch per riattivare l'animazione quando cambiano i veicoli filtrati
-watch(featuredMotos, () => {
+watch([featuredMotos, searchQuery], () => {
   nextTick(() => {
     animateCards()
   })

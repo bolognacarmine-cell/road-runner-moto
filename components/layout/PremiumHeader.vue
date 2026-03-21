@@ -1,11 +1,25 @@
 
 <script setup>
-import { ref, onMounted, onUnmounted, nextTick } from 'vue'
+import { ref, onMounted, onUnmounted, nextTick, watch } from 'vue'
 import { gsap } from 'gsap'
+import { useSearch } from '~/composables/useSearch'
 
 const isScrolled = ref(false)
 const mobileMenuOpen = ref(false)
-const searchQuery = ref('')
+const { searchQuery, setSearchQuery } = useSearch()
+const internalSearchQuery = ref(searchQuery.value)
+
+// Sincronizza l'input interno con lo stato globale
+watch(internalSearchQuery, (newVal) => {
+  setSearchQuery(newVal)
+})
+
+// Sincronizza lo stato globale con l'input interno (es. se resettato altrove)
+watch(searchQuery, (newVal) => {
+  if (newVal !== internalSearchQuery.value) {
+    internalSearchQuery.value = newVal
+  }
+})
 
 const toggleMenu = () => {
   mobileMenuOpen.value = !mobileMenuOpen.value
@@ -63,7 +77,7 @@ onUnmounted(() => {
             <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
           </svg>
           <input 
-            v-model="searchQuery"
+            v-model="internalSearchQuery"
             type="text" 
             placeholder="Cerca modello, marca o categoria..." 
             class="search-input"
