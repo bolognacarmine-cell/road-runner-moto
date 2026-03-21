@@ -36,8 +36,23 @@ const form = ref({
 })
 
 const submitted = ref(false)
+const showForm = ref(false)
 const loading = ref(false)
 const imagesBase64 = ref({})
+
+const toggleForm = () => {
+  showForm.value = true
+  nextTick(() => {
+    const el = document.querySelector('.trade-form-container')
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      gsap.fromTo(el, 
+        { opacity: 0, y: 30 },
+        { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' }
+      )
+    }
+  })
+}
 
 const handleFileUpload = (event, type) => {
   const file = event.target.files[0]
@@ -118,17 +133,17 @@ onMounted(async () => {
       }
     )
 
-    gsap.fromTo('.trade-form-container', 
-      { y: 50, opacity: 0 },
+    gsap.fromTo('.trade-cta-wrapper', 
+      { y: 30, opacity: 0 },
       {
         scrollTrigger: {
-          trigger: '.trade-form-container',
-          start: 'top 75%',
+          trigger: '.trade-cta-wrapper',
+          start: 'top 85%',
         },
         y: 0,
         opacity: 1,
-        duration: 1.2,
-        ease: 'power4.out',
+        duration: 1,
+        ease: 'power3.out',
         clearProps: 'all'
       }
     )
@@ -174,8 +189,17 @@ onMounted(async () => {
         </div>
       </div>
 
+      <!-- Pulsante per mostrare il form -->
+      <div v-if="!showForm && !submitted" class="trade-cta-wrapper">
+        <button @click="toggleForm" class="btn-start-trade">
+          Inizia Valutazione Permuta
+          <span class="icon">📝</span>
+        </button>
+        <p class="cta-hint">Compila il form con i dati della tua moto per ricevere una quotazione.</p>
+      </div>
+
       <!-- Container Form -->
-      <div class="trade-form-container">
+      <div v-if="showForm || submitted" class="trade-form-container">
         <div v-if="!submitted" class="form-wrapper">
           <form @submit.prevent="submitForm" class="trade-form">
             
@@ -655,6 +679,58 @@ onMounted(async () => {
 .btn-outline-custom:hover {
   background: rgba(255, 255, 255, 0.05);
   border-color: #fff;
+}
+
+/* Nuova Sezione CTA Permuta */
+.trade-cta-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 0;
+  text-align: center;
+  background: rgba(225, 29, 72, 0.03);
+  border: 1px dashed rgba(225, 29, 72, 0.15);
+  border-radius: 40px;
+  margin: 40px 0;
+  transition: all 0.4s ease;
+}
+
+.trade-cta-wrapper:hover {
+  background: rgba(225, 29, 72, 0.05);
+  border-color: rgba(225, 29, 72, 0.3);
+}
+
+.btn-start-trade {
+  background: linear-gradient(135deg, var(--primary), var(--primary-2));
+  color: white;
+  border: none;
+  padding: 20px 48px;
+  font-size: 1.25rem;
+  font-weight: 900;
+  border-radius: 100px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  box-shadow: 0 15px 35px -10px rgba(225, 29, 72, 0.5);
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.btn-start-trade:hover {
+  transform: translateY(-5px) scale(1.02);
+  box-shadow: 0 20px 45px -12px rgba(225, 29, 72, 0.6);
+}
+
+.btn-start-trade .icon {
+  font-size: 1.5rem;
+}
+
+.cta-hint {
+  margin-top: 24px;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 1rem;
+  font-weight: 600;
 }
 
 @media (max-width: 1024px) {
