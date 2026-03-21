@@ -2,6 +2,7 @@
 import { ref, computed, onMounted, onUnmounted, nextTick, watch } from 'vue'
 import { gsap } from 'gsap'
 import { useSearch } from '~/composables/useSearch'
+import { useFilter } from '~/composables/useFilter'
 import MotoCarousel from '~/components/moto/MotoCarousel.vue'
 
 // Props: veicoli dinamici e filtri
@@ -11,6 +12,7 @@ const props = defineProps({
 
 // Stato globale della ricerca
 const { searchQuery, setSearchQuery } = useSearch()
+const { activeFilter } = useFilter()
 const localSearchQuery = ref(searchQuery.value)
 
 // Sincronizza l'input locale con lo stato globale
@@ -26,7 +28,6 @@ watch(searchQuery, (newVal) => {
 })
 
 // Stato filtro attivo
-const activeFilter = ref('tutti')
 const activeCategory = ref('tutte')
 const maxKm = ref(null) // Nuovo: filtro chilometri
 const sortBy = ref('recente') // Nuovo: ordinamento (recente, alfabetico, anno)
