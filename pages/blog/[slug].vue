@@ -14,6 +14,20 @@ const fetchPost = async () => {
     const res = await $fetch(`/api/blog/${route.params.slug}`)
     post.value = res.post
     relatedMotos.value = res.relatedMotos
+
+    // SEO Dinamica
+    if (post.value) {
+      useHead({
+        title: `${post.value.title} | Road Runner Moto Blog`,
+        meta: [
+          { name: 'description', content: post.value.excerpt || `Leggi l'articolo ${post.value.title} sul blog di Road Runner Moto.` },
+          { property: 'og:title', content: `${post.value.title} | Road Runner Moto Blog` },
+          { property: 'og:description', content: post.value.excerpt },
+          { property: 'og:image', content: post.value.imageCover || '/logo-road-runner.jpg' },
+          { property: 'og:type', content: 'article' }
+        ]
+      })
+    }
   } catch (err) {
     console.error('ERRORE FETCH POST:', err)
     error.value = err.data?.statusMessage || 'Articolo non trovato o errore nel caricamento.'
@@ -45,15 +59,6 @@ const formatDate = (d) => new Date(d).toLocaleDateString('it-IT', {
   day: 'numeric',
   month: 'long',
   year: 'numeric'
-})
-
-useHead({
-  title: post.value?.title || 'Articolo Blog',
-  meta: [
-    { name: 'description', content: post.value?.excerpt || '' },
-    { property: 'og:title', content: post.value?.title },
-    { property: 'og:image', content: post.value?.imageCover }
-  ]
 })
 </script>
 

@@ -17,6 +17,19 @@ const fetchMoto = async () => {
     moto.value = res.moto
     // Carica anche articoli blog correlati
     fetchRelatedPosts()
+    
+    // SEO Dinamica
+    if (moto.value) {
+      useHead({
+        title: `${moto.value.marca} ${moto.value.modello} | Road Runner Moto`,
+        meta: [
+          { name: 'description', content: `Scopri ${moto.value.marca} ${moto.value.modello} presso Road Runner Moto. ${moto.value.chilometri} km, anno ${moto.value.anno}. Prezzo: ${formatPrice(moto.value.prezzo)}.` },
+          { property: 'og:title', content: `${moto.value.marca} ${moto.value.modello} | Road Runner Moto` },
+          { property: 'og:description', content: `Dettagli e prezzo per ${moto.value.marca} ${moto.value.modello}. Vieni a trovarci a Capodrise.` },
+          { property: 'og:image', content: formatImages(moto.value.immagini)[0] }
+        ]
+      })
+    }
   } catch (err) {
     console.error('Errore nel caricamento del veicolo:', err)
     error.value = 'Impossibile caricare i dettagli di questo veicolo.'

@@ -17,7 +17,7 @@
             </div>
             <div class="info-content">
               <h4>Indirizzo</h4>
-              <p>Via Retella 65, Capodrise (CE)</p>
+              <p>Via San Francesco 13, Capodrise (CE)</p>
             </div>
           </div>
           <div class="info-item">
@@ -48,7 +48,7 @@
           <a href="https://wa.me/393391581997" target="_blank" rel="noopener noreferrer" class="btn-primary-custom">
             Invia un Messaggio WhatsApp
           </a>
-          <a href="https://maps.google.com/?q=Via+Retella+65,+Capodrise" target="_blank" rel="noopener noreferrer" class="btn-secondary-custom">
+          <a href="https://maps.google.com/?q=Via+San+Francesco+13,+Capodrise" target="_blank" rel="noopener noreferrer" class="btn-secondary-custom">
             Ottieni Indicazioni Stradali
           </a>
         </div>

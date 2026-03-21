@@ -361,7 +361,7 @@ onMounted(async () => {
             <div class="form-footer">
               <label class="privacy-checkbox">
                 <input type="checkbox" v-model="form.privacy" required />
-                <span>Acconsento al trattamento dei dati personali secondo la <NuxtLink to="/privacy">Privacy Policy</NuxtLink> *</span>
+                <span>Acconsento al trattamento dei dati personali secondo la <NuxtLink to="/privacy-policy">Privacy Policy</NuxtLink> *</span>
               </label>
               
               <div class="submit-wrapper">
@@ -370,7 +370,7 @@ onMounted(async () => {
                   <span v-else>Invio in corso...</span>
                 </button>
                 <p class="disclaimer-note">
-                  La valutazione online è indicativa. La quotazione finale verrà confermata dopo controllo del veicolo presso la concessionaria.
+                  La valutazione online è indicativa e soggetta a conferma fisica presso la nostra sede di Capodrise.
                 </p>
               </div>
             </div>

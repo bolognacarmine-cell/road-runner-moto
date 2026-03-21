@@ -3,6 +3,7 @@ import { ref, onMounted, onUnmounted, nextTick } from 'vue'
 import { gsap } from 'gsap'
 import { useSearch } from '~/composables/useSearch'
 import { useFilter } from '~/composables/useFilter'
+import CookieBanner from '~/components/layout/CookieBanner.vue'
 
 const { setSearchQuery } = useSearch()
 const { setFilter } = useFilter()
@@ -54,7 +55,7 @@ onUnmounted(() => {
       <div class="container header-content">
         <NuxtLink to="/" class="minimal-logo">
           <div class="logo-box">
-            <img src="/logo-road-runner.jpg" alt="Logo" />
+            <img src="/logo-road-runner.jpg" alt="Logo Road Runner Moto - Concessionaria Capodrise" />
           </div>
           <div class="brand-info">
             <span class="brand-title">ROAD RUNNER</span>
@@ -145,26 +146,53 @@ onUnmounted(() => {
     <!-- Footer -->
     <footer class="site-footer">
       <div class="container footer-grid">
-        <div>
-          <strong>Road Runner Moto</strong>
-          <p>Concessionaria moto e scooter a Capodrise.</p>
+        <div class="footer-info">
+          <NuxtLink to="/" class="footer-logo">ROAD RUNNER</NuxtLink>
+          <p class="company-name">ROAD RUNNER DI TARTAGLIONE PASQUALE</p>
+          <p class="company-address">Via San Francesco 13, 81020 Capodrise (CE)</p>
+          <div class="legal-details">
+            <p>Partita IVA: 04335610616</p>
+            <p>Codice Fiscale: TRTPQL*****E932E</p>
+            <p>REA: 318460</p>
+          </div>
         </div>
-        <div>
+        
+        <div class="footer-links">
+          <strong>Navigazione</strong>
+          <nav>
+            <NuxtLink to="/#chi-samo">Chi Siamo</NuxtLink>
+            <NuxtLink to="/#moto">Moto & Scooter</NuxtLink>
+            <NuxtLink to="/#lifestyle">Lifestyle</NuxtLink>
+            <NuxtLink to="/#assistenza">Assistenza</NuxtLink>
+            <NuxtLink to="/blog">Blog</NuxtLink>
+          </nav>
+        </div>
+
+        <div class="footer-contact">
           <strong>Contatti</strong>
-          <p>0823 516087</p>
-          <p>+39 339 158 1997</p>
-          <p>inforoadrunner@libero.it</p>
-        </div>
-        <div>
-          <strong>Sede</strong>
-          <p>Via Retella 65</p>
-          <p>Capodrise (CE)</p>
+          <p>📞 0823 516087</p>
+          <p>📱 +39 339 158 1997</p>
+          <p>✉️ inforoadrunner@libero.it</p>
+          <div class="social-links-footer">
+            <a href="#" target="_blank">Facebook</a>
+            <a href="#" target="_blank">Instagram</a>
+          </div>
         </div>
       </div>
+
       <div class="container footer-bottom">
-        <p>&copy; 2026 Road Runner Moto. Tutti i diritti riservati.</p>
+        <div class="bottom-flex">
+          <p>&copy; 2026 Road Runner Moto. Tutti i diritti riservati.</p>
+          <div class="privacy-links">
+            <NuxtLink to="/privacy-policy">Privacy Policy</NuxtLink>
+            <NuxtLink to="/cookie-policy">Cookie Policy</NuxtLink>
+          </div>
+        </div>
       </div>
     </footer>
+
+    <!-- Cookie Consent Banner -->
+    <CookieBanner />
   </div>
 </template>
 
@@ -466,41 +494,148 @@ onUnmounted(() => {
 /* Header Styles Rimossi in favore di PremiumHeader.vue */
 
 .site-footer {
-  padding: 80px 0 40px;
-  background: #080808;
-  border-top: 1px solid var(--line);
+  padding: 100px 0 40px;
+  background: #050505;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .footer-grid {
   display: grid;
-  grid-template-columns: 1fr;
-  gap: 40px;
-  margin-bottom: 60px;
+  grid-template-columns: 1.5fr 1fr 1fr;
+  gap: 60px;
+  margin-bottom: 80px;
 }
 
-@media (min-width: 768px) {
-  .footer-grid {
-    grid-template-columns: repeat(3, 1fr);
-  }
+.footer-logo {
+  display: inline-block;
+  font-size: 1.8rem;
+  font-weight: 950;
+  color: #fff;
+  text-decoration: none;
+  margin-bottom: 24px;
+  letter-spacing: -0.02em;
 }
 
-.footer-grid strong {
-  display: block;
-  margin-bottom: 16px;
-  font-size: 1.1rem;
-  color: var(--text);
-}
-
-.footer-grid p {
-  color: var(--muted);
+.company-name {
+  font-weight: 800;
+  color: #fff;
+  margin-bottom: 8px;
   font-size: 0.95rem;
+}
+
+.company-address, .legal-details p {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+.legal-details {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.footer-links strong, .footer-contact strong {
+  display: block;
+  margin-bottom: 24px;
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: #fff;
+}
+
+.footer-links nav {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.footer-links a {
+  color: rgba(255, 255, 255, 0.6);
+  text-decoration: none;
+  font-size: 0.95rem;
+  transition: color 0.3s;
+}
+
+.footer-links a:hover {
+  color: var(--primary-2);
+}
+
+.footer-contact p {
+  color: rgba(255, 255, 255, 0.6);
+  margin-bottom: 12px;
+  font-size: 0.95rem;
+}
+
+.social-links-footer {
+  display: flex;
+  gap: 16px;
+  margin-top: 24px;
+}
+
+.social-links-footer a {
+  color: #fff;
+  text-decoration: none;
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  opacity: 0.6;
+  transition: opacity 0.3s;
+}
+
+.social-links-footer a:hover {
+  opacity: 1;
+  color: var(--primary-2);
 }
 
 .footer-bottom {
   padding-top: 40px;
-  border-top: 1px solid var(--line);
-  text-align: center;
-  color: #555;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.bottom-flex {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.footer-bottom p {
+  color: rgba(255, 255, 255, 0.3);
   font-size: 0.85rem;
+}
+
+.privacy-links {
+  display: flex;
+  gap: 24px;
+}
+
+.privacy-links a {
+  color: rgba(255, 255, 255, 0.4);
+  text-decoration: none;
+  font-size: 0.85rem;
+  transition: color 0.3s;
+}
+
+.privacy-links a:hover {
+  color: #fff;
+}
+
+@media (max-width: 992px) {
+  .footer-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .footer-grid {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+  .bottom-flex {
+    flex-direction: column;
+    text-align: center;
+  }
 }
 </style>

@@ -22,17 +22,72 @@ const config = useRuntimeConfig()
 const siteUrl = config.public.siteUrl || 'http://localhost:3000'
 const apiBase = config.public.apiBase || 'http://localhost:3001'
 
-// SEO
+// SEO Avanzata & Dati Strutturati
 useHead({
   htmlAttrs: { lang: 'it' },
-  title: 'Road Runner Moto | Moto e scooter nuovi e usati a Capodrise',
+  title: 'Road Runner Moto | Concessionaria Moto Nuove & Usate a Capodrise (CE)',
   meta: [
-    { name: 'description', content: 'Road Runner è concessionaria moto e scooter a Capodrise, plurimarche con assistenza qualificata e ricambi originali.' },
+    { name: 'description', content: 'Road Runner di Tartaglione Pasquale: la tua concessionaria di fiducia a Capodrise per moto e scooter nuovi e usati. Assistenza tecnica, ricambi originali e permute garantite.' },
+    { name: 'keywords', content: 'concessionaria moto capodrise, moto usate caserta, scooter nuovi caserta, assistenza moto capodrise, ricambi originali moto, permuta moto usato' },
     { name: 'robots', content: 'index,follow' },
-    { property: 'og:title', content: 'Road Runner Moto | Concessionaria moto e scooter a Capodrise' },
-    { property: 'og:description', content: 'Moto e scooter nuovi e usati plurimarche, assistenza qualificata e ricambi originali a Capodrise.' },
+    { name: 'author', content: 'Road Runner Moto' },
+    // Open Graph
+    { property: 'og:type', content: 'website' },
+    { property: 'og:title', content: 'Road Runner Moto | Concessionaria Moto Nuove & Usate a Capodrise' },
+    { property: 'og:description', content: 'Vieni a scoprire la nostra gamma di moto e scooter. Qualità, professionalità e assistenza dedicata a Capodrise.' },
     { property: 'og:url', content: siteUrl },
-    { property: 'og:image', content: `${siteUrl}/logo-road-runner.jpg` }
+    { property: 'og:image', content: `${siteUrl}/logo-road-runner.jpg` },
+    { property: 'og:site_name', content: 'Road Runner Moto' },
+    // Twitter Card
+    { name: 'twitter:card', content: 'summary_large_image' },
+    { name: 'twitter:title', content: 'Road Runner Moto | Concessionaria Moto Nuove & Usate' },
+    { name: 'twitter:description', content: 'Moto e scooter nuovi e usati a Capodrise. Assistenza e ricambi originali.' },
+    { name: 'twitter:image', content: `${siteUrl}/logo-road-runner.jpg` }
+  ],
+  script: [
+    {
+      type: 'application/ld+json',
+      children: JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "AutoDealer",
+        "name": "Road Runner Moto",
+        "image": `${siteUrl}/logo-road-runner.jpg`,
+        "@id": siteUrl,
+        "url": siteUrl,
+        "telephone": "+390823516087",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "Via San Francesco 13",
+          "addressLocality": "Capodrise",
+          "postalCode": "81020",
+          "addressRegion": "CE",
+          "addressCountry": "IT"
+        },
+        "geo": {
+          "@type": "GeoCoordinates",
+          "latitude": 41.0425,
+          "longitude": 14.3056
+        },
+        "openingHoursSpecification": [
+          {
+            "@type": "OpeningHoursSpecification",
+            "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+            "opens": "09:00",
+            "closes": "19:30"
+          },
+          {
+            "@type": "OpeningHoursSpecification",
+            "dayOfWeek": "Saturday",
+            "opens": "09:00",
+            "closes": "13:00"
+          }
+        ],
+        "sameAs": [
+          "https://www.facebook.com/roadrunnermoto",
+          "https://www.instagram.com/roadrunnermoto"
+        ]
+      })
+    }
   ]
 })
 

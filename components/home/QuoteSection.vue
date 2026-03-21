@@ -317,7 +317,7 @@ const tipi = ['Sportiva', 'Naked', 'Touring', 'Scooter', 'Enduro', 'Custom', 'Hy
             <div class="consensi">
               <label class="checkbox-label">
                 <input type="checkbox" v-model="form.privacy" required />
-                <span>Accetto la Privacy Policy (GDPR) *</span>
+                <span>Accetto la <NuxtLink to="/privacy-policy" target="_blank">Privacy Policy</NuxtLink> (GDPR) *</span>
               </label>
               <label class="checkbox-label">
                 <input type="checkbox" v-model="form.offerte" />

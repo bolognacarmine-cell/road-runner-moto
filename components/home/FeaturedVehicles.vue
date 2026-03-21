@@ -264,7 +264,7 @@ onUnmounted(() => {
       <div v-else class="featured-grid">
         <article v-for="moto in featuredMotos" :key="moto._id" class="moto-card">
           <div class="card-visual">
-            <MotoCarousel :images="formatImages(moto)" :altText="`${moto.marca} ${moto.modello}`" height="260px" />
+            <MotoCarousel :images="formatImages(moto.immagini)" :altText="`Moto ${moto.marca} ${moto.modello} in vendita a Capodrise`" height="260px" />
             <div class="card-overlay-actions">
               <NuxtLink :to="`/moto/${moto.slug || moto._id}`" class="btn-view-quick">Dettagli</NuxtLink>
             </div>
