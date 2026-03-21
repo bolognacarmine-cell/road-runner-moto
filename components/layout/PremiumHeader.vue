@@ -122,7 +122,7 @@ onUnmounted(() => {
   top: 0;
   left: 0;
   width: 100%;
-  height: 90px;
+  height: 100px;
   z-index: 1000;
   background: rgba(3, 3, 3, 0.7);
   backdrop-filter: blur(20px);
@@ -132,7 +132,7 @@ onUnmounted(() => {
 }
 
 .premium-header.is-scrolled {
-  height: 75px;
+  height: 85px;
   background: rgba(5, 5, 5, 0.95);
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
 }
@@ -155,26 +155,30 @@ onUnmounted(() => {
 }
 
 .logo-box {
-  width: 48px;
-  height: 48px;
+  width: 64px;
+  height: 64px;
   background: #fff;
-  border-radius: 12px;
-  padding: 6px;
+  border-radius: 50%;
+  padding: 2px;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: transform 0.3s ease;
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+  border: 2px solid var(--primary-2);
+  overflow: hidden;
 }
 
 .logo-container:hover .logo-box {
-  transform: scale(1.05) rotate(-3deg);
+  transform: scale(1.1);
+  box-shadow: 0 12px 35px rgba(225, 29, 72, 0.3);
 }
 
 .main-logo {
   width: 100%;
   height: 100%;
-  object-fit: contain;
+  object-fit: cover;
+  transform: scale(1.2);
 }
 
 .brand-info {
@@ -184,7 +188,7 @@ onUnmounted(() => {
 
 .brand-title {
   color: #fff;
-  font-size: 1.25rem;
+  font-size: 1.4rem;
   font-weight: 950;
   letter-spacing: -0.02em;
   line-height: 1;
@@ -192,7 +196,7 @@ onUnmounted(() => {
 
 .brand-subtitle {
   color: var(--primary-2);
-  font-size: 0.65rem;
+  font-size: 0.75rem;
   font-weight: 800;
   letter-spacing: 0.25em;
   margin-top: 4px;
