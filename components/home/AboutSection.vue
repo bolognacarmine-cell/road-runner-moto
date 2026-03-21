@@ -8,6 +8,8 @@ if (process.client) {
   gsap.registerPlugin(ScrollTrigger)
 }
 
+let ctx
+
 onMounted(async () => {
   await nextTick()
   ctx = gsap.context(() => {
