@@ -241,29 +241,46 @@ onUnmounted(() => {
 
       <div v-else class="featured-grid">
         <article v-for="moto in featuredMotos" :key="moto._id" class="moto-card">
-          <MotoCarousel :images="formatImages(moto)" :altText="`${moto.marca} ${moto.modello}`" height="240px" />
+          <div class="card-visual">
+            <MotoCarousel :images="formatImages(moto)" :altText="`${moto.marca} ${moto.modello}`" height="260px" />
+            <div class="card-overlay-actions">
+              <NuxtLink :to="`/moto/${moto.slug || moto._id}`" class="btn-view-quick">Dettagli</NuxtLink>
+            </div>
+            <div v-if="moto.nuovaUsata === 'promozione' || moto.prezzoScontato" class="badge-promo-card">PROMO</div>
+          </div>
+
           <div class="moto-body">
-            <div class="moto-tags">
-              <span class="moto-kicker">{{ moto.marca || 'Moto' }}</span>
-              <div class="tag-group">
-                <span v-if="moto.nuovaUsata === 'promozione'" class="tag promo-tag">PROMO</span>
-                <span v-if="moto.categoria" class="tag">{{ moto.categoria }}</span>
+            <div class="moto-header-main">
+              <span class="brand-tag">{{ moto.marca || 'Moto' }}</span>
+              <span class="category-tag" v-if="moto.categoria">{{ moto.categoria }}</span>
+            </div>
+            
+            <h3 class="moto-title-display">{{ moto.modello || 'Modello disponibile' }}</h3>
+            
+            <div class="moto-spec-grid">
+              <div class="spec-item">
+                <span class="spec-icon">📅</span>
+                <span class="spec-value">{{ formatYear(moto) }}</span>
+              </div>
+              <div class="spec-item">
+                <span class="spec-icon">🛣️</span>
+                <span class="spec-value">{{ moto.chilometri?.toLocaleString('it-IT') || '0' }} km</span>
+              </div>
+              <div class="spec-item">
+                <span class="spec-icon">⚡</span>
+                <span class="spec-value">{{ moto.cilindrata ? `${moto.cilindrata} cc` : 'N/D' }}</span>
               </div>
             </div>
-            <h3>{{ moto.modello || 'Modello disponibile' }}</h3>
-            <ul class="moto-meta">
-              <li>Anno: {{ formatYear(moto) }}</li>
-              <li>Km: {{ moto.chilometri?.toLocaleString('it-IT') || 'N/D' }}</li>
-              <li>Cilindrata: {{ moto.cilindrata ? `${moto.cilindrata} cc` : 'N/D' }}</li>
-            </ul>
-            <div class="moto-footer">
-              <div class="price-box">
-                <strong>{{ formatPrice(moto.prezzo) }}</strong>
+
+            <div class="moto-footer-premium">
+              <div class="price-display-wrapper">
+                <span class="price-label">Prezzo</span>
+                <strong class="main-price">{{ formatPrice(moto.prezzo) }}</strong>
               </div>
-              <div class="action-links">
-                <NuxtLink :to="`/moto/${moto.slug || moto._id}`" class="link-details">Dettagli</NuxtLink>
-                <NuxtLink :to="{ path: '/', query: { moto: moto._id }, hash: '#preventivo' }" class="btn-quote-mini">Preventivo</NuxtLink>
-              </div>
+              <NuxtLink :to="{ path: '/', query: { moto: moto._id }, hash: '#preventivo' }" class="btn-quote-minimal">
+                <span class="icon">✉️</span>
+                Preventivo
+              </NuxtLink>
             </div>
           </div>
         </article>
@@ -459,153 +476,189 @@ onUnmounted(() => {
 
 .featured-grid {
   display: grid;
-  grid-template-columns: 1fr;
-  gap: 24px;
-}
-
-@media (min-width: 640px) {
-  .featured-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (min-width: 1024px) {
-  .featured-grid {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 32px;
-  }
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 32px;
+  margin-top: 40px;
 }
 
 .moto-card {
   background: var(--panel);
-  border-radius: var(--radius);
+  border-radius: 24px;
   overflow: hidden;
-  border: 1px solid var(--line);
-  transition: transform var(--transition), border-color var(--transition);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  flex-direction: column;
+  position: relative;
 }
 
-@media (hover: hover) {
-  .moto-card:hover {
-    transform: translateY(-8px);
-    border-color: rgba(255, 255, 255, 0.15);
-  }
+.moto-card:hover {
+  transform: translateY(-12px);
+  border-color: rgba(225, 29, 72, 0.3);
+  box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.7);
+}
+
+.card-visual {
+  position: relative;
+  overflow: hidden;
+}
+
+.card-overlay-actions {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  backdrop-filter: blur(4px);
+  z-index: 5;
+}
+
+.moto-card:hover .card-overlay-actions {
+  opacity: 1;
+}
+
+.btn-view-quick {
+  background: #fff;
+  color: #000;
+  padding: 12px 32px;
+  border-radius: 100px;
+  font-weight: 800;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+  letter-spacing: 0.05em;
+  transform: translateY(20px);
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.moto-card:hover .btn-view-quick {
+  transform: translateY(0);
+}
+
+.badge-promo-card {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: var(--primary);
+  color: #fff;
+  padding: 6px 14px;
+  border-radius: 8px;
+  font-weight: 900;
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  z-index: 6;
+  box-shadow: 0 10px 20px rgba(225, 29, 72, 0.4);
 }
 
 .moto-body {
-  padding: 24px;
+  padding: 28px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 }
 
-.moto-tags {
+.moto-header-main {
   display: flex;
-  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.brand-tag {
+  color: var(--primary-2);
+  font-weight: 900;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+}
+
+.category-tag {
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.moto-title-display {
+  font-size: 1.5rem;
+  font-weight: 900;
+  margin-bottom: 24px;
+  color: #fff;
+  line-height: 1.2;
+}
+
+.moto-spec-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  padding: 16px 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  margin-bottom: 24px;
+}
+
+.spec-item {
+  display: flex;
+  flex-direction: column;
   align-items: center;
-  margin-bottom: 8px;
-}
-
-.tag-group {
-  display: flex;
   gap: 6px;
 }
 
-.moto-kicker {
-  font-size: 0.75rem;
-  font-weight: 700;
-  color: var(--primary-2);
-  text-transform: uppercase;
+.spec-icon {
+  font-size: 1rem;
+  opacity: 0.7;
 }
 
-.tag {
-  font-size: 0.65rem;
-  font-weight: 800;
-  text-transform: uppercase;
-  background: rgba(225, 29, 72, 0.1);
-  color: var(--primary-2);
-  padding: 2px 8px;
-  border-radius: 4px;
-  border: 1px solid rgba(225, 29, 72, 0.2);
-}
-
-.tag.promo-tag {
-  background: var(--primary);
-  color: white;
-  border-color: var(--primary);
-}
-
-.moto-body h3 {
-  font-size: 1.25rem;
-  font-weight: 800;
-  margin-bottom: 16px;
-}
-
-.moto-meta {
-  list-style: none;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-  margin-bottom: 24px;
-  padding-bottom: 24px;
-  border-bottom: 1px solid var(--line);
-}
-
-.moto-meta li {
+.spec-value {
   font-size: 0.85rem;
-  color: var(--muted);
-  background: rgba(255, 255, 255, 0.03);
-  padding: 4px 10px;
-  border-radius: 6px;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.9);
 }
 
-.moto-footer {
+.moto-footer-premium {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: auto;
+}
+
+.price-display-wrapper {
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  padding-top: 16px;
-  border-top: 1px solid var(--line);
 }
 
-.price-box strong {
-  font-size: 1.25rem;
+.price-label {
+  font-size: 0.7rem;
+  color: rgba(255, 255, 255, 0.4);
+  font-weight: 700;
+  text-transform: uppercase;
+  margin-bottom: 2px;
+}
+
+.main-price {
+  font-size: 1.4rem;
+  font-weight: 950;
   color: #fff;
-  font-weight: 900;
 }
 
-.action-links {
+.btn-quote-minimal {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-}
-
-.link-details {
-  font-weight: 700;
-  color: var(--muted);
-  font-size: 0.875rem;
-  text-decoration: none;
-  transition: color 0.3s ease;
-}
-
-.link-details:hover {
-  color: #fff;
-}
-
-.btn-quote-mini {
-  background: var(--primary);
-  color: white;
-  padding: 8px 16px;
-  border-radius: 8px;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 10px 18px;
+  border-radius: 12px;
   font-size: 0.85rem;
   font-weight: 800;
-  text-decoration: none;
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.1);
   transition: all 0.3s ease;
-  box-shadow: 0 4px 12px rgba(225, 29, 72, 0.2);
-  opacity: 1 !important;
-  visibility: visible !important;
 }
 
-.btn-quote-mini:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 15px rgba(225, 29, 72, 0.3);
-  filter: brightness(1.1);
+.btn-quote-minimal:hover {
+  background: var(--primary);
+  border-color: var(--primary);
+  transform: scale(1.05);
 }
 
 .state-box {
