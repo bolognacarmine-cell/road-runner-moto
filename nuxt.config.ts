@@ -2,18 +2,25 @@ export default defineNuxtConfig({
   // ✅ Compatibilità Nuxt
   compatibilityDate: '2026-03-09',
 
-  // ✅ CSS globale
-  css: ['./assets/css/main.css'],
+  // CSS globale
+  css: ['~/assets/css/main.css'],
 
   // ✅ Configurazione runtime per API e URL pubblico
   runtimeConfig: {
+    mongodbUri: process.env.MONGODB_URI || process.env.NUXT_MONGODB_URI,
+    mongodbDbName: process.env.MONGODB_DB_NAME || process.env.NUXT_MONGODB_DB_NAME || 'roadrunner_db',
+    cloudinaryCloudName: process.env.CLOUDINARY_CLOUD_NAME,
+    cloudinaryApiKey: process.env.CLOUDINARY_API_KEY,
+    cloudinaryApiSecret: process.env.CLOUDINARY_API_SECRET,
     public: {
-      siteUrl: 'https://road-runner-moto.it',
-      apiBase: 'https://api.road-runner-moto.it'
+      siteUrl: process.env.NUXT_PUBLIC_SITE_URL || 'https://road-runner-moto.it',
+      apiBase: process.env.NUXT_PUBLIC_API_BASE || 'https://api.road-runner-moto.it',
+      adminUser: process.env.ADMIN_USER || 'roadrunner',
+      adminPassword: process.env.ADMIN_PASSWORD || 'runner2026'
     }
   },
 
-  // ✅ Configurazione dell'app (head globale)
+  // Configurazione dell'app (head globale)
   app: {
     head: {
       titleTemplate: '%s | Road Runner Moto',
@@ -45,6 +52,12 @@ export default defineNuxtConfig({
     optimizeDeps: { include: ['gsap'] }
   },
 
+  // ✅ Configurazione Nitro per gestire file grandi (immagini)
+  nitro: {
+    experimental: {
+      bodySizeLimit: '20mb'
+    }
+  },
   // ✅ Moduli opzionali (immagini e sitemap)
   modules: [
     '@nuxt/image',
