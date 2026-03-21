@@ -37,27 +37,49 @@ const form = ref({
 
 const submitted = ref(false)
 const loading = ref(false)
+const imagesBase64 = ref({})
 
 const handleFileUpload = (event, type) => {
-  // Logica placeholder per upload
-  console.log(`File caricato per: ${type}`)
+  const file = event.target.files[0]
+  if (!file) return
+
+  const reader = new FileReader()
+  reader.onload = (e) => {
+    imagesBase64.value[type] = e.target.result
+  }
+  reader.readAsDataURL(file)
 }
 
 const submitForm = async () => {
   loading.value = true
-  // Simulazione invio
-  await new Promise(resolve => setTimeout(resolve, 1500))
-  loading.value = false
-  submitted.value = true
-  
-  nextTick(() => {
-    gsap.from('.success-message', {
-      scale: 0.9,
-      opacity: 0,
-      duration: 0.5,
-      ease: 'back.out(1.7)'
+  try {
+    const payload = {
+      ...form.value,
+      imagesBase64: Object.values(imagesBase64.value)
+    }
+
+    const res = await $fetch('/api/trade-ins', {
+      method: 'POST',
+      body: payload
     })
-  })
+
+    if (res.success) {
+      submitted.value = true
+      nextTick(() => {
+        gsap.from('.success-message', {
+          scale: 0.9,
+          opacity: 0,
+          duration: 0.5,
+          ease: 'back.out(1.7)'
+        })
+      })
+    }
+  } catch (err) {
+    console.error('Errore invio permuta:', err)
+    alert('Si è verificato un errore durante l\'invio. Riprova più tardi.')
+  } finally {
+    loading.value = false
+  }
 }
 
 let ctx

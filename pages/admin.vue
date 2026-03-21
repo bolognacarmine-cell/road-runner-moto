@@ -56,6 +56,13 @@
             <span v-if="leads.length" class="badge-count">{{ leads.length }}</span>
           </button>
           <button 
+            :class="{ active: currentTab === 'tradeIns' }" 
+            @click="currentTab = 'tradeIns'; fetchTradeIns()"
+          >
+            <span class="icon">🔄</span> Permute 
+            <span v-if="tradeIns.length" class="badge-count">{{ tradeIns.length }}</span>
+          </button>
+          <button 
             :class="{ active: currentTab === 'portal' }" 
             @click="currentTab = 'portal'; fetchPortalUsers()"
           >
@@ -242,6 +249,79 @@
               <div v-if="l.messaggio" class="lead-message">
                 <strong>Messaggio:</strong>
                 <p>{{ l.messaggio }}</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Trade-Ins View -->
+        <section v-if="currentTab === 'tradeIns'" class="content-section">
+          <div class="section-header">
+            <h2>Richieste Permuta</h2>
+            <p>Gestisci le valutazioni dell'usato inviate dai clienti</p>
+          </div>
+
+          <div v-if="loading" class="loading-state">Caricamento richieste...</div>
+          
+          <div v-else-if="tradeIns.length === 0" class="empty-state">
+            <p>Non ci sono ancora richieste di permuta.</p>
+          </div>
+
+          <div v-else class="leads-list">
+            <div v-for="t in tradeIns" :key="t._id" class="lead-card trade-in-card">
+              <div class="lead-header">
+                <span class="lead-date">{{ new Date(t.createdAt).toLocaleDateString('it-IT') }}</span>
+                <span class="lead-status" :class="t.status">{{ t.status }}</span>
+              </div>
+              <div class="lead-body">
+                <div class="lead-info">
+                  <h4>{{ t.nome }}</h4>
+                  <p>📧 {{ t.email }}</p>
+                  <p>📞 {{ t.telefono }}</p>
+                  <p>📍 {{ t.citta }}</p>
+                </div>
+                <div class="lead-moto">
+                  <strong>Veicolo da permutare:</strong>
+                  <p>{{ t.marca }} {{ t.modello }} {{ t.versione }}</p>
+                  <p>Anno: {{ t.anno }} | Km: {{ t.km }}</p>
+                  <p>Cilindrata: {{ t.cilindrata }} cc | Targa: {{ t.targa }}</p>
+                </div>
+                <div class="lead-payment">
+                  <strong>Stato & Richiesta:</strong>
+                  <p>Stato: {{ t.stato }}</p>
+                  <p>Prezzo desiderato: <strong>€ {{ t.prezzoDesiderato }}</strong></p>
+                  <p v-if="t.motoInteresse">Interesse per: <em>{{ t.motoInteresse }}</em></p>
+                </div>
+              </div>
+              <div class="lead-details-grid">
+                <div class="detail-item">
+                  <strong>Incidentata:</strong> {{ t.incidentato }}
+                </div>
+                <div class="detail-item">
+                  <strong>Tagliandata:</strong> {{ t.tagliandi }}
+                </div>
+                <div class="detail-item">
+                  <strong>Revisionata:</strong> {{ t.revisione }}
+                </div>
+                <div class="detail-item">
+                  <strong>Proprietari:</strong> {{ t.proprietari }}
+                </div>
+              </div>
+              <div v-if="t.descrizione" class="lead-message">
+                <strong>Descrizione:</strong>
+                <p>{{ t.descrizione }}</p>
+              </div>
+              <div v-if="t.difetti" class="lead-message warning-msg">
+                <strong>Difetti segnalati:</strong>
+                <p>{{ t.difetti }}</p>
+              </div>
+              <div v-if="t.images && t.images.length" class="lead-images">
+                <strong>Foto allegate:</strong>
+                <div class="images-preview-grid">
+                  <a v-for="(img, idx) in t.images" :key="idx" :href="img" target="_blank">
+                    <img :src="img" alt="Foto permuta" />
+                  </a>
+                </div>
               </div>
             </div>
           </div>
@@ -576,8 +656,23 @@ const logout = () => {
 const currentTab = ref('list')
 const motos = ref([])
 const leads = ref([])
-const portalUsers = ref([])
+const tradeIns = ref([])
 const blogPosts = ref([])
+const portalUsers = ref([])
+
+const fetchTradeIns = async () => {
+  loading.value = true
+  try {
+    const res = await $fetch('/api/admin/trade-ins')
+    if (res.success) {
+      tradeIns.value = res.tradeIns
+    }
+  } catch (err) {
+    console.error('Errore fetch permute:', err)
+  } finally {
+    loading.value = false
+  }
+}
 const portalVehicles = ref([]) // Nuovo: per tracciare i dati dei veicoli dei clienti
 
 const newUser = ref({
@@ -800,8 +895,9 @@ const fetchMotos = async () => {
   try {
     const res = await $fetch('/api/motos')
     motos.value = res.motos
-    // Fetch leads count also
+    // Fetch leads and trade-ins count also
     fetchLeads()
+    fetchTradeIns()
   } catch (e) {
     console.error(e)
   } finally {
@@ -1450,6 +1546,59 @@ onMounted(() => {
 .lead-info h4 {
   font-size: 1.2rem;
   margin-bottom: 10px;
+}
+
+/* Trade-In Specific Styles */
+.trade-in-card {
+  border-left: 4px solid var(--primary-2) !important;
+}
+
+.lead-details-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  padding: 16px;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 12px;
+  margin-top: 16px;
+}
+
+.detail-item {
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.detail-item strong {
+  color: #fff;
+}
+
+.warning-msg {
+  border-left: 4px solid #facc15 !important;
+  background: rgba(250, 204, 21, 0.05) !important;
+}
+
+.lead-images {
+  margin-top: 20px;
+}
+
+.images-preview-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  gap: 12px;
+  margin-top: 10px;
+}
+
+.images-preview-grid img {
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: transform 0.3s;
+}
+
+.images-preview-grid img:hover {
+  transform: scale(1.05);
 }
 
 .lead-info p, .lead-moto p, .lead-payment p {
