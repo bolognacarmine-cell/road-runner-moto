@@ -139,7 +139,7 @@ onMounted(async () => {
 
 .card-image-wrapper {
   position: relative;
-  height: 250px;
+  height: 400px;
   overflow: hidden;
   background: #111;
 }
@@ -148,6 +148,7 @@ onMounted(async () => {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: center top;
   transition: transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
 }
 

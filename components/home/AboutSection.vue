@@ -166,7 +166,7 @@ onMounted(async () => {
             <div class="visual-layer layer-frame"></div>
             <!-- Immagine principale -->
             <div class="visual-layer layer-main">
-              <img src="/logo-road-runner.jpg" alt="ROAD RUNNER Brand" />
+              <img src="https://images.unsplash.com/photo-1599819811279-d5ad9cccf838?auto=format&fit=crop&q=80&w=1000" alt="Pasquale - Fondatore ROAD RUNNER" class="founder-img" />
             </div>
             <!-- Badge esperienza -->
             <div class="visual-layer layer-badge">
@@ -259,9 +259,11 @@ onMounted(async () => {
 }
 
 .layer-main img {
-  width: 90%;
-  height: auto;
-  object-fit: contain;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  border-radius: 20px;
 }
 
 .layer-badge {
