@@ -25,22 +25,27 @@ useHead({
           <h2 class="text-2xl font-bold mb-4">2. Tipologia di dati raccolti</h2>
           <p>Attraverso questo sito web raccogliamo i seguenti dati personali:</p>
           <ul class="list-disc pl-6 mt-4 space-y-2">
-            <li>Dati identificativi (Nome, Cognome)</li>
-            <li>Dati di contatto (Email, Telefono)</li>
-            <li>Dati relativi al veicolo (per il servizio di permuta e preventivi)</li>
-            <li>Dati di navigazione (tramite cookie tecnici e analitici)</li>
+            <li><strong>Dati identificativi:</strong> Nome, Cognome, Indirizzo (per valutazioni permuta).</li>
+            <li><strong>Dati di contatto:</strong> Email, numero di telefono (WhatsApp incluso).</li>
+            <li><strong>Dati del veicolo:</strong> Marca, modello, anno, km, condizioni d'uso e immagini caricate dall'utente per il servizio di permuta.</li>
+            <li><strong>Dati di navigazione:</strong> Indirizzo IP, tipo di browser, dati di log tramite cookie tecnici e analitici anonimizzati.</li>
           </ul>
         </section>
 
         <section class="mb-10">
           <h2 class="text-2xl font-bold mb-4">3. Finalità del trattamento</h2>
-          <p>I dati vengono trattati per le seguenti finalità:</p>
+          <p>I dati vengono trattati esclusivamente per le seguenti finalità:</p>
           <ul class="list-disc pl-6 mt-4 space-y-2">
-            <li>Rispondere alle richieste di preventivo o informazioni.</li>
-            <li>Valutare le richieste di permuta moto.</li>
-            <li>Gestire l'area riservata clienti.</li>
-            <li>Adempiere agli obblighi di legge.</li>
+            <li><strong>Gestione Richieste:</strong> Fornire preventivi personalizzati e consulenza su moto nuove e usate.</li>
+            <li><strong>Servizio Permuta:</strong> Valutazione tecnica del veicolo usato proposto in permuta, inclusa l'analisi delle foto caricate.</li>
+            <li><strong>Assistenza Clienti:</strong> Supporto tramite form contatti o pulsanti rapidi WhatsApp.</li>
+            <li><strong>Obblighi Legali:</strong> Adempimento di obblighi fiscali, contabili e normativi (es. normativa anti-riciclaggio per compravendita veicoli).</li>
           </ul>
+        </section>
+
+        <section class="mb-10">
+          <h2 class="text-2xl font-bold mb-4">7. Proprietà Intellettuale e Marchi</h2>
+          <p>Tutti i contenuti presenti sul sito (testi, grafiche, loghi, icone, immagini) sono di proprietà di <strong>Road Runner Moto</strong> o dei rispettivi proprietari dei marchi citati (es. marchi motociclistici). È vietata la riproduzione, anche parziale, senza autorizzazione scritta. Le immagini dei veicoli caricate dagli utenti nel form permuta rimangono di proprietà degli stessi ma vengono concesse in uso temporaneo per la sola finalità di valutazione tecnica.</p>
         </section>
 
         <section class="mb-10">

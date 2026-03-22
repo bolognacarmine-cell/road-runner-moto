@@ -57,8 +57,14 @@ useHead({
         </section>
 
         <section class="mb-10">
-          <h2 class="text-2xl font-bold mb-4">5. Titolare del Trattamento</h2>
-          <p>Il Titolare del Trattamento è <strong>ROAD RUNNER DI TARTAGLIONE PASQUALE</strong>. Per ogni chiarimento, scrivere a inforoadrunner@libero.it.</p>
+          <h2 class="text-2xl font-bold mb-4">5. Titolare del Trattamento e Dati Fiscali</h2>
+          <p>Il Titolare del Trattamento è <strong>ROAD RUNNER DI TARTAGLIONE PASQUALE</strong>.</p>
+          <ul class="list-disc pl-6 mt-4 space-y-1">
+            <li><strong>Sede Legale:</strong> Via San Francesco 13, 81020 Capodrise (CE)</li>
+            <li><strong>P.IVA:</strong> 04335610616</li>
+            <li><strong>REA:</strong> 318460</li>
+            <li><strong>Email:</strong> inforoadrunner@libero.it</li>
+          </ul>
         </section>
       </div>
     </div>
