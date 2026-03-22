@@ -6,6 +6,12 @@ useHead({
     { name: 'robots', content: 'noindex, follow' }
   ]
 })
+
+const openConsentManager = () => {
+  if (window.silktideCookieBannerManager) {
+    window.silktideCookieBannerManager.toggleModal(true);
+  }
+}
 </script>
 
 <template>
@@ -143,14 +149,6 @@ useHead({
     </div>
   </div>
 </template>
-
-<script setup>
-const openConsentManager = () => {
-  if (window.silktideCookieBannerManager) {
-    window.silktideCookieBannerManager.toggleModal(true);
-  }
-}
-</script>
 
 <style scoped>
 .legal-page {
