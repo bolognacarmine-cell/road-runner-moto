@@ -10,16 +10,16 @@
  -------------------------------- */ 
  /* Wrapper (Global) */ 
  #silktide-wrapper { 
-               --focus: 0 0 0 2px #ffffff, 0 0 0 4px #000000, 0 0 0 6px #ffffff; 
-               --boxShadow: -5px 5px 10px 0px #00000012, 0px 0px 50px 0px #0000001a; 
-               --fontFamily: Helvetica Neue, Segoe UI, Arial, sans-serif; 
-               --primaryColor: #3B62E2; 
-               --backgroundColor: #FFFFFF; 
-               --textColor: #253B48; 
-               --backdropBackgroundColor: #00000033; 
-               --backdropBackgroundBlur: 0px; 
-               --cookieIconColor: #FFFFFF; 
-               --cookieIconBackgroundColor: #253B48; 
+               --focus: 0 0 0 2px #ffffff, 0 0 0 4px #e11d48, 0 0 0 6px #ffffff; 
+               --boxShadow: 0 20px 50px -12px rgba(0, 0, 0, 0.5); 
+               --fontFamily: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; 
+               --primaryColor: #e11d48; 
+               --backgroundColor: #0a0a0a; 
+               --textColor: #fdfdfd; 
+               --backdropBackgroundColor: rgba(0, 0, 0, 0.7); 
+               --backdropBackgroundBlur: 10px; 
+               --cookieIconColor: #e11d48; 
+               --cookieIconBackgroundColor: rgba(15, 15, 15, 0.8); 
                position: fixed; 
    bottom: 0; 
    right: 0; 
@@ -81,35 +81,39 @@
  -------------------------------- */ 
   
  #silktide-wrapper .st-button { 
-   color: var(--backgroundColor); 
-   background-color: var(--primaryColor); 
-   border: 2px solid var(--primaryColor); 
-   padding: 10px 20px; 
+   color: #ffffff; 
+   background: linear-gradient(135deg, #e11d48, #fb7185); 
+   border: none; 
+   padding: 12px 24px; 
    text-decoration: none; 
    text-align: center; 
    display: inline-block; 
-   font-size: 16px; 
+   font-size: 15px; 
+   font-weight: 700;
    line-height: 24px; 
    cursor: pointer; 
-   border-radius: 5px; 
- } 
-  
- #silktide-wrapper .st-button--primary { 
+   border-radius: 12px; 
+   transition: all 0.3s ease;
+   box-shadow: 0 10px 20px -10px rgba(225, 29, 72, 0.5);
  } 
   
  #silktide-wrapper .st-button--primary:hover { 
-   background-color: var(--backgroundColor); 
-   color: var(--primaryColor); 
+   transform: translateY(-2px);
+   box-shadow: 0 15px 30px -10px rgba(225, 29, 72, 0.6);
+   filter: brightness(1.1);
  } 
   
  #silktide-wrapper .st-button--secondary { 
-   background-color: var(--backgroundColor); 
-   color: var(--primaryColor); 
+   background: rgba(255, 255, 255, 0.05); 
+   color: #ffffff; 
+   border: 1px solid rgba(255, 255, 255, 0.1);
+   box-shadow: none;
  } 
   
  #silktide-wrapper .st-button--secondary:hover { 
-   background-color: var(--primaryColor); 
-   color: var(--backgroundColor); 
+   background: rgba(255, 255, 255, 0.1); 
+   border-color: rgba(255, 255, 255, 0.2);
+   transform: translateY(-2px);
  } 
   
  /* -------------------------------- 
@@ -121,20 +125,22 @@
    background-color: var(--backgroundColor); 
    box-sizing: border-box; 
    padding: 32px; 
-   border-radius: 5px; 
+   border-radius: 20px; 
    pointer-events: auto; 
-   border: 0px; 
+   border: 1px solid rgba(255, 255, 255, 0.05); 
    position: fixed; 
-   bottom: 16px; 
-   right: 16px; 
+   bottom: 24px; 
+   right: 24px; 
    width: 600px; 
    overflow: auto; 
-   max-width: calc(100% - 32px); 
-   max-height: calc(100vh - 32px); 
+   max-width: calc(100% - 48px); 
+   max-height: calc(100vh - 48px); 
    transform: translate(0, 0); 
    opacity: 1; 
    z-index: 100000;
-   box-shadow: -5px 5px 10px 0px #00000012, 0px 0px 50px 0px #0000001a; 
+   box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.8); 
+   backdrop-filter: blur(20px);
+   -webkit-backdrop-filter: blur(20px);
  } 
   
  #silktide-banner.animate {
@@ -257,20 +263,22 @@
    pointer-events: auto; 
    overflow: auto; 
    width: 800px; 
-   max-width: 100%; 
-   max-height: 100%; 
-   border: 0px; 
-   transform: translate(0px, -20px); 
-   opacity: 0; 
+   max-width: 95%; 
+   max-height: 90vh; 
+   border: 1px solid rgba(255, 255, 255, 0.05); 
+   transform: translate(0px, 0px); 
+   opacity: 1; 
    animation: silktide-slideInUp-center 350ms ease-out forwards; 
-   box-shadow: -5px 5px 10px 0px #00000012, 0px 0px 50px 0px #0000001a; 
+   box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.8); 
    font-family: var(--fontFamily); 
    color: var(--textColor); 
    flex-direction: column; 
-   padding: 30px; 
+   padding: 40px; 
    background-color: var(--backgroundColor); 
-   border-radius: 5px; 
+   border-radius: 24px; 
    box-sizing: border-box; 
+   backdrop-filter: blur(20px);
+   -webkit-backdrop-filter: blur(20px);
  } 
   
  /* -------------------------------- 
@@ -390,8 +398,9 @@
    display: block; 
    height: 34px; 
    width: 74px; 
-   background: var(--textColor); 
+   background: rgba(255, 255, 255, 0.1); 
    border-radius: 25px; 
+   border: 1px solid rgba(255, 255, 255, 0.05);
  } 
   
  #silktide-modal .switch__dot { 
@@ -429,6 +438,7 @@
  /* Checked Switch Styles */ 
  #silktide-modal .switch input:checked + .switch__pill { 
    background: var(--primaryColor); 
+   border-color: var(--primaryColor);
  } 
   
  #silktide-modal .switch input:checked ~ .switch__dot { 
@@ -477,31 +487,47 @@
  #silktide-cookie-icon { 
    display: none; 
    position: fixed; 
-   bottom: 10px; 
-   left: 10px; 
+   bottom: 24px; 
+   left: 24px; 
    justify-content: center; 
    align-items: center; 
-   width: 60px; 
-   height: 60px; 
-   border-radius: 50%; 
+   width: 52px; 
+   height: 52px; 
+   border-radius: 16px; 
    padding: 0px; 
-   border: none; 
-   background-color: var(--cookieIconColor); 
+   border: 1px solid rgba(255, 255, 255, 0.1); 
+   background-color: var(--cookieIconBackgroundColor); 
+   backdrop-filter: blur(12px);
+   -webkit-backdrop-filter: blur(12px);
    cursor: pointer; 
-   box-shadow: 0px 0px 6px 0px #0000001a; 
+   box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5); 
    pointer-events: auto; 
-   animation: silktide-fadeIn 0.3s ease-in-out forwards; 
+   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+   animation: silktide-fadeIn 0.5s ease-in-out forwards; 
+   z-index: 99999;
  } 
   
+ #silktide-cookie-icon:hover {
+   transform: scale(1.1) translateY(-2px);
+   border-color: var(--primaryColor);
+   box-shadow: 0 15px 35px -10px rgba(225, 29, 72, 0.3);
+ }
+
  #silktide-cookie-icon.bottomRight { 
    left: auto; 
-   right: 10px; 
+   right: 24px; 
  } 
   
  #silktide-cookie-icon svg { 
-   fill: var(--cookieIconBackgroundColor); 
- } 
-  
+   fill: var(--cookieIconColor); 
+   width: 24px;
+   height: 24px;
+   transition: transform 0.3s ease;
+ }
+
+ #silktide-cookie-icon:hover svg {
+   transform: rotate(15deg);
+ }  
  /* -------------------------------- 
    Backdrop 
  -------------------------------- */ 
