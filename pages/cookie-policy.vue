@@ -22,20 +22,54 @@ useHead({
         </section>
 
         <section class="mb-10">
-          <h2 class="text-2xl font-bold mb-4">2. Tipologia di cookie utilizzati da questo sito</h2>
-          <p>Questo sito utilizza le seguenti categorie di cookie:</p>
-          <ul class="list-disc pl-6 mt-4 space-y-4">
+          <h2 class="text-2xl font-bold mb-4">2. Tipologia di cookie utilizzati</h2>
+          <p class="mb-4">In conformità alle Linee Guida Garante Privacy 2021, questo sito utilizza cookie granulari classificati come segue:</p>
+          
+          <div class="overflow-x-auto mb-8">
+            <table class="w-full text-sm border-collapse border border-white/10">
+              <thead>
+                <tr class="bg-white/5">
+                  <th class="border border-white/10 p-3 text-left">Nome Cookie</th>
+                  <th class="border border-white/10 p-3 text-left">Fornitore</th>
+                  <th class="border border-white/10 p-3 text-left">Finalità</th>
+                  <th class="border border-white/10 p-3 text-left">Durata</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="border border-white/10 p-3">cookie-consent</td>
+                  <td class="border border-white/10 p-3">Proprio (Road Runner)</td>
+                  <td class="border border-white/10 p-3">Memorizza le preferenze sul consenso cookie</td>
+                  <td class="border border-white/10 p-3">1 anno</td>
+                </tr>
+                <tr>
+                  <td class="border border-white/10 p-3">_ga, _gid</td>
+                  <td class="border border-white/10 p-3">Google Analytics</td>
+                  <td class="border border-white/10 p-3">Analitici (IP Anonimizzato)</td>
+                  <td class="border border-white/10 p-3">2 anni / 24 ore</td>
+                </tr>
+                <tr>
+                  <td class="border border-white/10 p-3">NID, CONSENT</td>
+                  <td class="border border-white/10 p-3">Google (Maps/YouTube)</td>
+                  <td class="border border-white/10 p-3">Preferenze e profilazione (previo consenso)</td>
+                  <td class="border border-white/10 p-3">6 mesi</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <ul class="list-disc pl-6 space-y-4">
             <li>
-              <strong>Cookie Tecnici:</strong>
-              <p>Necessari per il corretto funzionamento del sito (es. gestione della sessione, login all'area clienti). Non richiedono il preventivo consenso dell'utente.</p>
+              <strong>Cookie Tecnici e di Sessione:</strong>
+              <p>Strettamente necessari per il funzionamento del sito. Non richiedono consenso preventivo (es. gestione login, sicurezza).</p>
             </li>
             <li>
-              <strong>Cookie Analitici:</strong>
-              <p>Utilizzati per raccogliere informazioni in forma aggregata e anonima sul numero degli utenti e su come questi visitano il sito, al fine di migliorarne le prestazioni.</p>
+              <strong>Cookie Analitici (Google Analytics 4):</strong>
+              <p>Utilizzati con <strong>IP Masking</strong> attivo (anonimizzazione) e senza incrocio di dati con altre proprietà Google. Sono equiparati ai tecnici secondo le attuali interpretazioni del Garante se configurati correttamente.</p>
             </li>
             <li>
-              <strong>Cookie di Terze Parti:</strong>
-              <p>Alcuni servizi (come le mappe di Google o i video YouTube incorporati) potrebbero installare cookie di terze parti per finalità di profilazione o tracciamento se l'utente vi acconsente.</p>
+              <strong>Cookie di Terze Parti (Social/Maps):</strong>
+              <p>Installati solo dopo click esplicito su "Accetta tutto" o interazione con il componente. <a href="https://policies.google.com/technologies/cookies" target="_blank" class="underline">Policy Google</a>.</p>
             </li>
           </ul>
         </section>

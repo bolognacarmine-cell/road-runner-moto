@@ -49,8 +49,9 @@ useHead({
         </section>
 
         <section class="mb-10">
-          <h2 class="text-2xl font-bold mb-4">4. Base giuridica</h2>
-          <p>Il trattamento si fonda sul consenso dell'interessato (per i moduli di contatto) e sull'esecuzione di misure precontrattuali o contrattuali richieste dall'utente.</p>
+          <h2 class="text-2xl font-bold mb-4">4. Base giuridica e Trasferimenti extra-UE</h2>
+          <p>Il trattamento si fonda sul consenso dell'interessato e sull'esecuzione di misure precontrattuali o contrattuali.</p>
+          <p class="mt-4">Per quanto riguarda i servizi di terze parti (es. Google Analytics 4, Google Maps), informiamo che i dati potrebbero essere trasferiti verso server situati negli Stati Uniti (USA). Tali trasferimenti sono disciplinati dal <strong>Data Privacy Framework (DPF)</strong> e dalle <strong>Clausole Contrattuali Standard (SCC)</strong>, unitamente all'adozione di misure tecniche quali l'<strong>IP Masking</strong> (anonimizzazione dell'indirizzo IP) per minimizzare l'identificabilità dell'utente fuori dallo Spazio Economico Europeo (SEE).</p>
         </section>
 
         <section class="mb-10">

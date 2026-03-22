@@ -32,8 +32,8 @@ onMounted(() => {
           <p>Utilizziamo cookie tecnici e analitici per migliorare la tua esperienza sul nostro sito. Puoi scegliere quali accettare o consultare la nostra <NuxtLink to="/cookie-policy">Cookie Policy</NuxtLink> per maggiori dettagli.</p>
         </div>
         <div class="banner-actions">
-          <button @click="declineCookies" class="btn-decline">Rifiuta</button>
-          <button @click="acceptCookies" class="btn-accept">Accetta Tutti</button>
+          <button @click="declineCookies" class="btn-decline">Rifiuta Tutto</button>
+          <button @click="acceptCookies" class="btn-accept">Accetta Tutto</button>
         </div>
       </div>
     </div>
