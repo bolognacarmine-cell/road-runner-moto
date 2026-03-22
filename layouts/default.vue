@@ -19,10 +19,10 @@ const toggleMenu = () => {
   mobileMenuOpen.value = !mobileMenuOpen.value
 }
 
-// Silktide Consent Manager - Official CDN Configuration
+// Silktide Consent Manager - Local Implementation
 useHead({
   script: [
-    { src: 'https://cdn.silktide.com/cookie-banner.js', defer: true }
+    { src: '/silktide-consent-manager.js', defer: true }
   ]
 })
 
@@ -32,12 +32,6 @@ onMounted(async () => {
   // Inizializzazione Silktide
   const initSilktide = () => {
     if (window.silktideCookieBannerManager) {
-      // Controlla se è già stato inizializzato
-      if (window.silktideCookieBannerManager.instance) {
-        console.log('Silktide: Già inizializzato');
-        return;
-      }
-
       window.silktideCookieBannerManager.init({
         "background": {
           "showBackground": true
@@ -51,6 +45,10 @@ onMounted(async () => {
             "acceptAllButtonText": "Accetta tutto",
             "rejectNonEssentialButtonText": "Solo essenziali",
             "preferencesButtonText": "Preferenze"
+          },
+          "preferences": {
+            "title": "Personalizza le tue preferenze sui cookie",
+            "description": "<p>Rispettiamo il tuo diritto alla privacy. Puoi scegliere di non consentire alcuni tipi di cookie. Le tue preferenze sui cookie saranno applicate a tutto il nostro sito web.</p>"
           }
         },
         "cookieTypes": [
