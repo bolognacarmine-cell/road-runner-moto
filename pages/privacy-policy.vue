@@ -124,9 +124,17 @@ useHead({
             <h2>I tuoi Diritti</h2>
             <div class="section-body">
               <p>Ai sensi del GDPR, hai il diritto di accedere, rettificare, cancellare o limitare il trattamento dei tuoi dati.</p>
-              <div class="contact-card">
-                <p>Per esercitare tali diritti, scrivi a:</p>
-                <a href="mailto:inforoadrunner@libero.it" class="btn-email">inforoadrunner@libero.it</a>
+              
+              <div class="legal-actions">
+                <div class="contact-card">
+                  <p>Per esercitare tali diritti, scrivi a:</p>
+                  <a href="mailto:inforoadrunner@libero.it" class="btn-email">inforoadrunner@libero.it</a>
+                </div>
+
+                <div class="consent-card">
+                  <p>Vuoi modificare le tue preferenze sui cookie?</p>
+                  <button @click="openConsentManager" class="btn-consent">Gestisci Consenso</button>
+                </div>
               </div>
             </div>
           </section>
@@ -135,6 +143,14 @@ useHead({
     </div>
   </div>
 </template>
+
+<script setup>
+const openConsentManager = () => {
+  if (window.silktideCookieBannerManager) {
+    window.silktideCookieBannerManager.toggleModal(true);
+  }
+}
+</script>
 
 <style scoped>
 .legal-page {
@@ -355,13 +371,46 @@ useHead({
   margin-top: 24px;
 }
 
-.contact-card {
+.legal-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+  margin-top: 40px;
+}
+
+@media (max-width: 768px) {
+  .legal-actions {
+    grid-template-columns: 1fr;
+  }
+}
+
+.contact-card, .consent-card {
   background: var(--panel);
   padding: 40px;
   border-radius: 32px;
   border: 1px solid rgba(255, 255, 255, 0.05);
-  margin-top: 40px;
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.btn-consent {
+  margin-top: 16px;
+  padding: 12px 32px;
+  background: var(--primary-2);
+  color: #fff;
+  border: none;
+  border-radius: 100px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-consent:hover {
+  transform: scale(1.05);
+  box-shadow: 0 10px 20px rgba(225, 29, 72, 0.2);
 }
 
 .btn-email {

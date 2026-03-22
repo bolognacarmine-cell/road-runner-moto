@@ -6,6 +6,12 @@ useHead({
     { name: 'robots', content: 'noindex, follow' }
   ]
 })
+
+const openConsentManager = () => {
+  if (window.silktideCookieBannerManager) {
+    window.silktideCookieBannerManager.toggleModal(true);
+  }
+}
 </script>
 
 <template>
@@ -111,6 +117,12 @@ useHead({
             <h2>Gestione del consenso</h2>
             <div class="section-body">
               <p>Tramite il banner presente al primo accesso, puoi scegliere quali categorie accettare. Puoi resettare le tue scelte in ogni momento tramite il pulsante delle preferenze o cancellando i cookie del browser.</p>
+              
+              <div class="consent-box" style="margin-top: 24px;">
+                <button @click="openConsentManager" class="browser-link" style="cursor: pointer; width: auto; padding: 12px 24px;">
+                  Gestisci Preferenze Cookie
+                </button>
+              </div>
             </div>
           </section>
 

@@ -19,10 +19,10 @@ const toggleMenu = () => {
   mobileMenuOpen.value = !mobileMenuOpen.value
 }
 
-// Silktide Consent Manager Configuration
+// Silktide Consent Manager - Official CDN Configuration
 useHead({
   script: [
-    { src: '/silktide-consent.js', defer: true }
+    { src: 'https://cdn.silktide.com/cookie-banner.js', defer: true }
   ]
 })
 
@@ -32,94 +32,45 @@ onMounted(async () => {
   // Inizializzazione Silktide
   const initSilktide = () => {
     if (window.silktideCookieBannerManager) {
-      // Check if already initialized to avoid multiple banners
-      if (!window.silktideCookieBannerManager.instance) {
-        window.silktideCookieBannerManager.init({
-          background: {
-            showBackground: true
-          },
-          cookieIcon: {
-            position: "bottom-left"
+      window.silktideCookieBannerManager.init({
+        "background": {
+          "showBackground": true
+        },
+        "cookieIcon": {
+          "position": "bottom-left"
+        },
+        "text": {
+          "banner": {
+            "description": "<p>Utilizziamo i cookie per migliorare la tua esperienza su ROAD RUNNER. Alcuni sono essenziali, altri ci aiutano ad analizzare il traffico. <a href='/cookie-policy' target='_blank'>Informativa sui cookie.</a></p>",
+            "acceptAllButtonText": "Accetta tutto",
+            "rejectNonEssentialButtonText": "Solo essenziali",
+            "preferencesButtonText": "Preferenze"
           }
-        })
-      }
-      window.silktideCookieBannerManager.updateCookieBannerConfig({
-        background: {
-          showBackground: true
         },
-        cookieIcon: {
-          position: "bottom-left"
-        },
-        cookieTypes: [
+        "cookieTypes": [
           {
-            id: "necessary",
-            name: "Necessario",
-            description: "<p>Questi cookie sono necessari per il corretto funzionamento del sito web e non possono essere disattivati. Aiutano in attività come l'accesso e l'impostazione delle preferenze sulla privacy.</p>",
-            required: true
+            "id": "necessary",
+            "name": "Essenziali",
+            "description": "Cookie necessari per il funzionamento del sito e della sicurezza.",
+            "required": true
           },
           {
-            id: "analytics",
-            name: "Analisi",
-            description: "<p>Questi cookie ci aiutano a migliorare il sito monitorando quali pagine sono più popolari e come i visitatori navigano sul sito.</p>",
-            defaultValue: true,
-            onAccept: function() {
+            "id": "analytics",
+            "name": "Analitici",
+            "description": "Ci aiutano a capire come gli utenti interagiscono con il sito.",
+            "defaultValue": true,
+            "onAccept": () => {
               if (typeof gtag === 'function') {
                 gtag('consent', 'update', { 'analytics_storage': 'granted' });
               }
-              if (typeof dataLayer !== 'undefined') {
-                dataLayer.push({ 'event': 'consenso_analitico_accettato' });
-              }
             },
-            onReject: function() {
+            "onReject": () => {
               if (typeof gtag === 'function') {
                 gtag('consent', 'update', { 'analytics_storage': 'denied' });
               }
             }
-          },
-          {
-            id: "advertising",
-            name: "Pubblicità",
-            description: "<p>Questi cookie forniscono funzionalità aggiuntive e personalizzazione per migliorare la tua esperienza. Possono essere impostati da noi o da partner di cui utilizziamo i servizi.</p>",
-            onAccept: function() {
-              if (typeof gtag === 'function') {
-                gtag('consent', 'update', {
-                  'ad_storage': 'granted',
-                  'ad_user_data': 'granted',
-                  'ad_personalization': 'granted'
-                });
-              }
-              if (typeof dataLayer !== 'undefined') {
-                dataLayer.push({ 'event': 'consenso_accettato_alla_pubblicità' });
-              }
-            },
-            onReject: function() {
-              if (typeof gtag === 'function') {
-                gtag('consent', 'update', {
-                  'ad_storage': 'denied',
-                  'ad_user_data': 'denied',
-                  'ad_personalization': 'denied'
-                });
-              }
-            }
           }
-        ],
-        text: {
-          banner: {
-            description: "<p>Utilizziamo i cookie sul nostro sito per migliorare la tua esperienza utente, fornire contenuti personalizzati e analizzare il nostro traffico. <a href='/cookie-policy' target='_blank'>Informativa sui cookie.</a></p>",
-            acceptAllButtonText: "Accetta tutto",
-            acceptAllButtonAccessibleLabel: "Accetta tutti i cookie",
-            rejectNonEssentialButtonText: "Rifiuta i non essenziali",
-            rejectNonEssentialButtonAccessibleLabel: "Rifiuta i non essenziali",
-            preferencesButtonText: "Preferenze",
-            preferencesButtonAccessibleLabel: "Attiva/disattiva le preferenze"
-          },
-          preferences: {
-            title: "Personalizza le tue preferenze sui cookie",
-            description: "<p>Rispettiamo il tuo diritto alla privacy. Puoi scegliere di non consentire alcuni tipi di cookie. Le tue preferenze sui cookie saranno applicate a tutto il nostro sito web.</p>",
-            creditLinkText: "Ottieni questo banner gratuitamente",
-            creditLinkAccessibleLabel: "Ottieni questo banner gratuitamente"
-          }
-        }
+        ]
       });
     } else {
       setTimeout(initSilktide, 300);
