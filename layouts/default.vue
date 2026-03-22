@@ -32,6 +32,12 @@ onMounted(async () => {
   // Inizializzazione Silktide
   const initSilktide = () => {
     if (window.silktideCookieBannerManager) {
+      // Controlla se è già stato inizializzato
+      if (window.silktideCookieBannerManager.instance) {
+        console.log('Silktide: Già inizializzato');
+        return;
+      }
+
       window.silktideCookieBannerManager.init({
         "background": {
           "showBackground": true
