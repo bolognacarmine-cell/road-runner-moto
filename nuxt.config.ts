@@ -3,7 +3,10 @@ export default defineNuxtConfig({
   compatibilityDate: '2026-03-09',
 
   // CSS globale
-  css: ['~/assets/css/main.css'],
+  css: [
+    '~/assets/css/main.css',
+    '~/assets/css/silktide-consent.css'
+  ],
 
   // ✅ Configurazione runtime per API e URL pubblico
   runtimeConfig: {
