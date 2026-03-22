@@ -13,7 +13,7 @@ const lifestyleItems = [
     title: 'Caschi & Accessori',
     desc: 'Dagli integrali racing ai jet urbani, scopri la nostra selezione dei migliori brand per la tua sicurezza.',
     icon: '🛡️',
-    image: 'https://images.unsplash.com/photo-1551028719-00167b16eac5?auto=format&fit=crop&q=80&w=800',
+    image: 'https://images.unsplash.com/photo-1595079676339-1534802ad6cf?auto=format&fit=crop&q=80&w=800',
     link: '#accessori'
   },
   {
