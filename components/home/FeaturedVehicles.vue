@@ -336,7 +336,7 @@ onUnmounted(() => {
 
 <style scoped>
 .featured-section {
-  padding: 60px 0 100px;
+  padding: 40px 0 60px;
   background: var(--bg);
   position: relative;
   z-index: 2;

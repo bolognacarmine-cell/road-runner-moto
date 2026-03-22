@@ -356,7 +356,7 @@ const tipi = ['Sportiva', 'Naked', 'Touring', 'Scooter', 'Enduro', 'Custom', 'Hy
   margin-top: 3rem;
 }
 .quote-section {
-  padding: 120px 0;
+  padding: 60px 0;
   background: #050505;
   position: relative;
   z-index: 10; /* Aumentato per evitare sovrapposizioni */

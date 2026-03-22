@@ -392,7 +392,7 @@ onMounted(async () => {
 
 <style scoped>
 .trade-section {
-  padding: 120px 0;
+  padding: 60px 0;
   background: var(--bg);
   position: relative;
 }

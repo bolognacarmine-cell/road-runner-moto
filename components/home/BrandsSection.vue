@@ -33,7 +33,7 @@ const brands = ['Honda', 'Piaggio', 'Kymco', 'Suzuki', 'Yamaha', 'Moto Guzzi']
 
 <style scoped>
 .brands-section {
-  padding: 88px 16px;
+  padding: 40px 16px;
   background: #050505;
   color: #f5f5f5;
   scroll-margin-top: 180px; /* Margine per l'header fisso */

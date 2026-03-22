@@ -40,7 +40,7 @@
 
 <style scoped>
 .cta-band {
-  padding: 60px 0 120px;
+  padding: 30px 0 60px;
   background: #030303;
 }
 

@@ -51,7 +51,7 @@ onMounted(() => {
 
 <style scoped>
 .blog-preview-section {
-  padding: 100px 0;
+  padding: 60px 0;
   background: var(--bg);
   border-top: 1px solid var(--line);
 }

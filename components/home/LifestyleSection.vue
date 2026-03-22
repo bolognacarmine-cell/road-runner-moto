@@ -85,7 +85,7 @@ onMounted(async () => {
 
 <style scoped>
 .lifestyle-section {
-  padding: 100px 0;
+  padding: 60px 0;
   background: #080808;
   border-top: 1px solid rgba(255, 255, 255, 0.05);
 }

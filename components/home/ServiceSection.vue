@@ -113,7 +113,7 @@ onMounted(async () => {
 
 <style scoped>
 .combined-services-section {
-  padding: 120px 0;
+  padding: 60px 0;
   background: #050505;
   position: relative;
 }
