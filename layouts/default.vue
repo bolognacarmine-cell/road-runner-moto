@@ -3,10 +3,105 @@ import { ref, onMounted, onUnmounted, nextTick } from 'vue'
 import { gsap } from 'gsap'
 import { useSearch } from '~/composables/useSearch'
 import { useFilter } from '~/composables/useFilter'
-import CookieBanner from '~/components/layout/CookieBanner.vue'
 
 const { setSearchQuery } = useSearch()
 const { setFilter } = useFilter()
+
+// Silktide Consent Manager Configuration
+useHead({
+  link: [
+    { rel: 'stylesheet', href: 'https://cdn.silktide.com/cookie-banner.css' }
+  ],
+  script: [
+    { src: 'https://cdn.silktide.com/cookie-banner.js', defer: true },
+    {
+      innerHTML: `
+        window.addEventListener('load', function() {
+          if (window.silktideCookieBannerManager) {
+            window.silktideCookieBannerManager.updateCookieBannerConfig({
+              background: {
+                showBackground: true
+              },
+              cookieIcon: {
+                position: "bottom-left"
+              },
+              cookieTypes: [
+                {
+                  id: "necessary",
+                  name: "Necessario",
+                  description: "<p>Questi cookie sono necessari per il corretto funzionamento del sito web e non possono essere disattivati. Aiutano in attività come l'accesso e l'impostazione delle preferenze sulla privacy.</p>",
+                  required: true
+                },
+                {
+                  id: "analytics",
+                  name: "Analisi",
+                  description: "<p>Questi cookie ci aiutano a migliorare il sito monitorando quali pagine sono più popolari e come i visitatori navigano sul sito.</p>",
+                  defaultValue: true,
+                  onAccept: function() {
+                    if (typeof gtag === 'function') {
+                      gtag('consent', 'update', { 'analytics_storage': 'granted' });
+                    }
+                    if (typeof dataLayer !== 'undefined') {
+                      dataLayer.push({ 'event': 'consenso_analitico_accettato' });
+                    }
+                  },
+                  onReject: function() {
+                    if (typeof gtag === 'function') {
+                      gtag('consent', 'update', { 'analytics_storage': 'denied' });
+                    }
+                  }
+                },
+                {
+                  id: "advertising",
+                  name: "Pubblicità",
+                  description: "<p>Questi cookie forniscono funzionalità aggiuntive e personalizzazione per migliorare la tua esperienza. Possono essere impostati da noi o da partner di cui utilizziamo i servizi.</p>",
+                  onAccept: function() {
+                    if (typeof gtag === 'function') {
+                      gtag('consent', 'update', {
+                        'ad_storage': 'granted',
+                        'ad_user_data': 'granted',
+                        'ad_personalization': 'granted'
+                      });
+                    }
+                    if (typeof dataLayer !== 'undefined') {
+                      dataLayer.push({ 'event': 'consenso_accettato_alla_pubblicità' });
+                    }
+                  },
+                  onReject: function() {
+                    if (typeof gtag === 'function') {
+                      gtag('consent', 'update', {
+                        'ad_storage': 'denied',
+                        'ad_user_data': 'denied',
+                        'ad_personalization': 'denied'
+                      });
+                    }
+                  }
+                }
+              ],
+              text: {
+                banner: {
+                  description: "<p>Utilizziamo i cookie sul nostro sito per migliorare la tua esperienza utente, fornire contenuti personalizzati e analizzare il nostro traffico. <a href='/cookie-policy' target='_blank'>Informativa sui cookie.</a></p>",
+                  acceptAllButtonText: "Accetta tutto",
+                  acceptAllButtonAccessibleLabel: "Accetta tutti i cookie",
+                  rejectNonEssentialButtonText: "Rifiuta i non essenziali",
+                  rejectNonEssentialButtonAccessibleLabel: "Rifiuta i non essenziali",
+                  preferencesButtonText: "Preferenze",
+                  preferencesButtonAccessibleLabel: "Attiva/disattiva le preferenze"
+                },
+                preferences: {
+                  title: "Personalizza le tue preferenze sui cookie",
+                  description: "<p>Rispettiamo il tuo diritto alla privacy. Puoi scegliere di non consentire alcuni tipi di cookie. Le tue preferenze sui cookie saranno applicate a tutto il nostro sito web.</p>",
+                  creditLinkText: "Ottieni questo banner gratuitamente",
+                  creditLinkAccessibleLabel: "Ottieni questo banner gratuitamente"
+                }
+              }
+            });
+          }
+        });
+      `
+    }
+  ]
+})
 
 const selectFilter = (filter) => {
   setFilter(filter)
@@ -190,9 +285,6 @@ onUnmounted(() => {
         </div>
       </div>
     </footer>
-
-    <!-- Cookie Consent Banner -->
-    <CookieBanner />
   </div>
 </template>
 
