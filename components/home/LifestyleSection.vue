@@ -13,7 +13,7 @@ const lifestyleItems = [
     title: 'Caschi & Accessori',
     desc: 'Dagli integrali racing ai jet urbani, scopri la nostra selezione dei migliori brand per la tua sicurezza.',
     icon: '🛡️',
-    image: 'https://images.unsplash.com/photo-1591637333184-19aa84b3e01f?auto=format&fit=crop&q=80&w=800',
+    image: 'https://images.unsplash.com/photo-1595079676339-1534802ad6cf?auto=format&fit=crop&q=80&w=800',
     link: '#accessori'
   },
   {
@@ -67,7 +67,7 @@ onMounted(async () => {
               :alt="item.title" 
               class="card-image"
               loading="lazy"
-              @error="(e) => e.target.src = 'https://images.unsplash.com/photo-1558981403-c5f9899a28bc?auto=format&fit=crop&q=80&w=800'"
+              @error="(e) => e.target.src = 'https://images.unsplash.com/photo-1595079676339-1534802ad6cf?auto=format&fit=crop&q=80&w=800'"
             />
             <div class="card-overlay"></div>
             <div class="lifestyle-icon-badge">{{ item.icon }}</div>
