@@ -249,16 +249,47 @@ onMounted(async () => {
 .btn-whatsapp {
   padding: 14px 32px;
   border-radius: 100px;
-  background: #25d366;
+  background: linear-gradient(135deg, #25D366, #128C7E);
   color: #fff;
   text-decoration: none;
   font-weight: 800;
-  transition: all 0.3s ease;
+  transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+  position: relative;
+  overflow: hidden;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn-whatsapp::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: 0.5s;
 }
 
 .btn-whatsapp:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 10px 20px rgba(37, 211, 102, 0.3);
+  transform: translateY(-5px) scale(1.03);
+  box-shadow: 0 15px 30px rgba(37, 211, 102, 0.4);
+  filter: brightness(1.1);
+}
+
+.btn-whatsapp:hover::after {
+  left: 100%;
+}
+
+.btn-primary-custom {
+  transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-primary-custom:hover {
+  transform: translateY(-5px) scale(1.03);
 }
 
 @media (max-width: 1100px) {

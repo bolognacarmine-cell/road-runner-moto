@@ -135,8 +135,47 @@
   font-weight: 800;
   font-size: 1rem;
   text-decoration: none;
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
   gap: 12px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Shine effect base */
+.btn-primary-custom::after,
+.btn-whatsapp-custom::after,
+.btn-blog-custom::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
+  transition: 0.5s;
+}
+
+.btn-primary-custom:hover::after,
+.btn-whatsapp-custom:hover::after,
+.btn-blog-custom:hover::after {
+  left: 100%;
+}
+
+.btn-primary-custom {
+  background: var(--primary-gradient);
+  color: white;
+  box-shadow: 0 10px 20px -10px rgba(225, 29, 72, 0.5);
+}
+
+.btn-primary-custom:hover {
+  transform: translateY(-5px) scale(1.03);
+  box-shadow: 0 20px 40px -15px rgba(225, 29, 72, 0.6);
+  filter: brightness(1.1);
 }
 
 .btn-whatsapp-custom {
@@ -146,8 +185,8 @@
 }
 
 .btn-whatsapp-custom:hover {
-  transform: translateY(-4px) scale(1.02);
-  box-shadow: 0 20px 40px -10px rgba(37, 211, 102, 0.4);
+  transform: translateY(-5px) scale(1.03);
+  box-shadow: 0 20px 40px -15px rgba(37, 211, 102, 0.4);
   filter: brightness(1.1);
 }
 
@@ -159,27 +198,32 @@
 }
 
 .btn-secondary-custom:hover {
-  transform: translateY(-4px) scale(1.02);
+  transform: translateY(-5px) scale(1.03);
   background: rgba(255, 255, 255, 0.08);
-  border-color: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.3);
+  box-shadow: 0 15px 30px -10px rgba(0, 0, 0, 0.5);
 }
 
 .btn-blog-custom {
-  color: #fff;
-  background: transparent;
   border: 1px solid var(--primary);
   color: var(--primary-2);
+  background: transparent;
 }
 
 .btn-blog-custom:hover {
   background: var(--primary);
   color: white;
-  transform: translateY(-4px) scale(1.02);
-  box-shadow: 0 10px 30px -10px rgba(225, 29, 72, 0.4);
+  transform: translateY(-5px) scale(1.03);
+  box-shadow: 0 20px 40px -15px rgba(225, 29, 72, 0.4);
 }
 
 .btn-icon {
-  opacity: 0.8;
+  transition: transform 0.3s ease;
+}
+
+.btn-secondary-custom:hover .btn-icon,
+.btn-whatsapp-custom:hover .btn-icon {
+  transform: rotate(-10deg) scale(1.1);
 }
 
 .btn-icon-right {
@@ -187,7 +231,7 @@
 }
 
 .btn-blog-custom:hover .btn-icon-right {
-  transform: translateX(4px);
+  transform: translateX(6px);
 }
 
 .desktop-only {
