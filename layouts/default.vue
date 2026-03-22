@@ -13,6 +13,7 @@ const selectFilter = (filter) => {
 }
 
 const mobileMenuOpen = ref(false)
+let ctx;
 
 const toggleMenu = () => {
   mobileMenuOpen.value = !mobileMenuOpen.value
