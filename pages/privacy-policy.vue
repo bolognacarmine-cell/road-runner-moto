@@ -10,67 +10,127 @@ useHead({
 
 <template>
   <div class="legal-page">
-    <div class="container py-20">
-      <h1 class="text-4xl font-black mb-12">Privacy Policy</h1>
-      
-      <div class="legal-content">
-        <p class="mb-6">Ultimo aggiornamento: 22 Marzo 2026</p>
+    <!-- Header Decorativo con Gradiente -->
+    <div class="legal-hero">
+      <div class="container">
+        <span class="legal-badge">Trasparenza & Sicurezza</span>
+        <h1 class="legal-title">Privacy Policy</h1>
+        <p class="legal-subtitle">Informativa sul trattamento dei dati personali ai sensi del GDPR.</p>
+      </div>
+      <div class="hero-glow"></div>
+    </div>
 
-        <section class="mb-10">
-          <h2 class="text-2xl font-bold mb-4">1. Titolare del Trattamento</h2>
-          <p>Il Titolare del Trattamento dei dati è <strong>ROAD RUNNER DI TARTAGLIONE PASQUALE</strong>, con sede legale in VIA SAN FRANCESCO 13 - 81020 - CAPODRISE (CE). P.IVA: 04335610616. Email: inforoadrunner@libero.it.</p>
-        </section>
+    <div class="container legal-container">
+      <div class="legal-layout">
+        <!-- Sidebar Indice (Desktop) -->
+        <aside class="legal-sidebar">
+          <div class="index-card">
+            <h3>Indice</h3>
+            <ul>
+              <li><a href="#titolare">1. Titolare</a></li>
+              <li><a href="#dati">2. Dati Raccolti</a></li>
+              <li><a href="#finalita">3. Finalità</a></li>
+              <li><a href="#proprieta">4. Proprietà Intellettuale</a></li>
+              <li><a href="#basi">5. Basi Giuridiche</a></li>
+              <li><a href="#conservazione">6. Conservazione</a></li>
+              <li><a href="#diritti">7. I tuoi Diritti</a></li>
+            </ul>
+          </div>
+        </aside>
 
-        <section class="mb-10">
-          <h2 class="text-2xl font-bold mb-4">2. Tipologia di dati raccolti</h2>
-          <p>Attraverso questo sito web raccogliamo i seguenti dati personali:</p>
-          <ul class="list-disc pl-6 mt-4 space-y-2">
-            <li><strong>Dati identificativi:</strong> Nome, Cognome, Indirizzo (per valutazioni permuta).</li>
-            <li><strong>Dati di contatto:</strong> Email, numero di telefono (WhatsApp incluso).</li>
-            <li><strong>Dati del veicolo:</strong> Marca, modello, anno, km, condizioni d'uso e immagini caricate dall'utente per il servizio di permuta.</li>
-            <li><strong>Dati di navigazione:</strong> Indirizzo IP, tipo di browser, dati di log tramite cookie tecnici e analitici anonimizzati.</li>
-          </ul>
-        </section>
+        <!-- Contenuto Principale -->
+        <main class="legal-content">
+          <div class="update-info">
+            <span>Ultimo aggiornamento: 22 Marzo 2026</span>
+          </div>
 
-        <section class="mb-10">
-          <h2 class="text-2xl font-bold mb-4">3. Finalità del trattamento</h2>
-          <p>I dati vengono trattati esclusivamente per le seguenti finalità:</p>
-          <ul class="list-disc pl-6 mt-4 space-y-2">
-            <li><strong>Gestione Richieste:</strong> Fornire preventivi personalizzati e consulenza su moto nuove e usate.</li>
-            <li><strong>Servizio Permuta:</strong> Valutazione tecnica del veicolo usato proposto in permuta, inclusa l'analisi delle foto caricate.</li>
-            <li><strong>Assistenza Clienti:</strong> Supporto tramite form contatti o pulsanti rapidi WhatsApp.</li>
-            <li><strong>Obblighi Legali:</strong> Adempimento di obblighi fiscali, contabili e normativi (es. normativa anti-riciclaggio per compravendita veicoli).</li>
-          </ul>
-        </section>
+          <section id="titolare" class="legal-section">
+            <div class="section-number">01</div>
+            <h2>Titolare del Trattamento</h2>
+            <div class="section-body">
+              <p>Il Titolare del Trattamento dei dati è <strong>ROAD RUNNER DI TARTAGLIONE PASQUALE</strong>, con sede legale in VIA SAN FRANCESCO 13 - 81020 - CAPODRISE (CE). P.IVA: 04335610616. Email: <a href="mailto:inforoadrunner@libero.it">inforoadrunner@libero.it</a>.</p>
+            </div>
+          </section>
 
-        <section class="mb-10">
-          <h2 class="text-2xl font-bold mb-4">7. Proprietà Intellettuale e Marchi</h2>
-          <p>Tutti i contenuti presenti sul sito (testi, grafiche, loghi, icone, immagini) sono di proprietà di <strong>Road Runner Moto</strong> o dei rispettivi proprietari dei marchi citati (es. marchi motociclistici). È vietata la riproduzione, anche parziale, senza autorizzazione scritta. Le immagini dei veicoli caricate dagli utenti nel form permuta rimangono di proprietà degli stessi ma vengono concesse in uso temporaneo per la sola finalità di valutazione tecnica.</p>
-        </section>
+          <section id="dati" class="legal-section">
+            <div class="section-number">02</div>
+            <h2>Tipologia di dati raccolti</h2>
+            <div class="section-body">
+              <p>Attraverso questo sito web raccogliamo i seguenti dati personali:</p>
+              <div class="data-grid">
+                <div class="data-item">
+                  <strong>Dati identificativi</strong>
+                  <p>Nome, Cognome, Indirizzo (per valutazioni permuta).</p>
+                </div>
+                <div class="data-item">
+                  <strong>Dati di contatto</strong>
+                  <p>Email, numero di telefono (WhatsApp incluso).</p>
+                </div>
+                <div class="data-item">
+                  <strong>Dati del veicolo</strong>
+                  <p>Marca, modello, anno, km, condizioni e immagini.</p>
+                </div>
+                <div class="data-item">
+                  <strong>Dati di navigazione</strong>
+                  <p>Indirizzo IP, tipo di browser, dati di log anonimizzati.</p>
+                </div>
+              </div>
+            </div>
+          </section>
 
-        <section class="mb-10">
-          <h2 class="text-2xl font-bold mb-4">4. Base giuridica e Trasferimenti extra-UE</h2>
-          <p>Il trattamento si fonda sul consenso dell'interessato e sull'esecuzione di misure precontrattuali o contrattuali.</p>
-          <p class="mt-4">Per quanto riguarda i servizi di terze parti (es. Google Analytics 4, Google Maps), informiamo che i dati potrebbero essere trasferiti verso server situati negli Stati Uniti (USA). Tali trasferimenti sono disciplinati dal <strong>Data Privacy Framework (DPF)</strong> e dalle <strong>Clausole Contrattuali Standard (SCC)</strong>, unitamente all'adozione di misure tecniche quali l'<strong>IP Masking</strong> (anonimizzazione dell'indirizzo IP) per minimizzare l'identificabilità dell'utente fuori dallo Spazio Economico Europeo (SEE).</p>
-        </section>
+          <section id="finalita" class="legal-section">
+            <div class="section-number">03</div>
+            <h2>Finalità del trattamento</h2>
+            <div class="section-body">
+              <p>I dati vengono trattati esclusivamente per le seguenti finalità:</p>
+              <ul class="feature-list">
+                <li><strong>Gestione Richieste:</strong> Fornire preventivi personalizzati e consulenza.</li>
+                <li><strong>Servizio Permuta:</strong> Valutazione tecnica del veicolo usato.</li>
+                <li><strong>Assistenza Clienti:</strong> Supporto tramite form contatti o WhatsApp.</li>
+                <li><strong>Obblighi Legali:</strong> Adempimento di obblighi fiscali e normativi.</li>
+              </ul>
+            </div>
+          </section>
 
-        <section class="mb-10">
-          <h2 class="text-2xl font-bold mb-4">5. Periodo di conservazione</h2>
-          <p>I dati saranno conservati per il tempo strettamente necessario a gestire la richiesta dell'utente o secondo i termini previsti dalla legge italiana.</p>
-        </section>
+          <section id="proprieta" class="legal-section">
+            <div class="section-number">04</div>
+            <h2>Proprietà Intellettuale e Marchi</h2>
+            <div class="section-body">
+              <p>Tutti i contenuti presenti sul sito (testi, grafiche, loghi, icone, immagini) sono di proprietà di <strong>Road Runner Moto</strong> o dei rispettivi proprietari dei marchi citati. È vietata la riproduzione senza autorizzazione scritta.</p>
+            </div>
+          </section>
 
-        <section class="mb-10">
-          <h2 class="text-2xl font-bold mb-4">6. Diritti dell'interessato</h2>
-          <p>Ai sensi del GDPR (Regolamento UE 2016/679), l'utente ha il diritto di:</p>
-          <ul class="list-disc pl-6 mt-4 space-y-2">
-            <li>Accedere ai propri dati.</li>
-            <li>Chiederne la rettifica o la cancellazione.</li>
-            <li>Opporsi al trattamento.</li>
-            <li>Chiedere la limitazione del trattamento.</li>
-            <li>Chiedere la portabilità dei dati.</li>
-          </ul>
-          <p class="mt-4">Per esercitare tali diritti, è possibile scrivere a inforoadrunner@libero.it.</p>
-        </section>
+          <section id="basi" class="legal-section">
+            <div class="section-number">05</div>
+            <h2>Base giuridica e Trasferimenti extra-UE</h2>
+            <div class="section-body">
+              <p>Il trattamento si fonda sul consenso dell'interessato e sull'esecuzione di misure precontrattuali.</p>
+              <div class="info-box">
+                <p>I dati potrebbero essere trasferiti verso server USA (es. Google). Tali trasferimenti sono disciplinati dal <strong>Data Privacy Framework (DPF)</strong> e dalle <strong>Clausole Contrattuali Standard (SCC)</strong>.</p>
+              </div>
+            </div>
+          </section>
+
+          <section id="conservazione" class="legal-section">
+            <div class="section-number">06</div>
+            <h2>Periodo di conservazione</h2>
+            <div class="section-body">
+              <p>I dati saranno conservati per il tempo strettamente necessario a gestire la richiesta dell'utente o secondo i termini previsti dalla legge italiana.</p>
+            </div>
+          </section>
+
+          <section id="diritti" class="legal-section">
+            <div class="section-number">07</div>
+            <h2>I tuoi Diritti</h2>
+            <div class="section-body">
+              <p>Ai sensi del GDPR, hai il diritto di accedere, rettificare, cancellare o limitare il trattamento dei tuoi dati.</p>
+              <div class="contact-card">
+                <p>Per esercitare tali diritti, scrivi a:</p>
+                <a href="mailto:inforoadrunner@libero.it" class="btn-email">inforoadrunner@libero.it</a>
+              </div>
+            </div>
+          </section>
+        </main>
       </div>
     </div>
   </div>
@@ -78,23 +138,243 @@ useHead({
 
 <style scoped>
 .legal-page {
-  background: #050505;
+  background: #030303;
   color: #fff;
   min-height: 100vh;
-  padding-top: 120px;
 }
 
-.legal-content {
-  max-width: 800px;
+/* Hero Section */
+.legal-hero {
+  padding: 160px 0 80px;
+  background: linear-gradient(to bottom, #0a0a0a, #030303);
+  position: relative;
+  overflow: hidden;
+  text-align: center;
+}
+
+.hero-glow {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle at 50% 0%, rgba(225, 29, 72, 0.15) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.legal-badge {
+  display: inline-block;
+  padding: 6px 16px;
+  background: rgba(225, 29, 72, 0.1);
+  color: var(--primary-2);
+  border-radius: 100px;
+  font-size: 0.8rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 24px;
+  border: 1px solid rgba(225, 29, 72, 0.2);
+}
+
+.legal-title {
+  font-size: clamp(3rem, 8vw, 5rem);
+  font-weight: 950;
+  margin-bottom: 16px;
+  letter-spacing: -0.02em;
+  background: linear-gradient(to bottom, #fff, #888);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.legal-subtitle {
+  font-size: 1.25rem;
+  color: rgba(255, 255, 255, 0.5);
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* Layout */
+.legal-container {
+  padding-bottom: 120px;
+}
+
+.legal-layout {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 80px;
+}
+
+@media (max-width: 1024px) {
+  .legal-layout {
+    grid-template-columns: 1fr;
+  }
+  .legal-sidebar {
+    display: none;
+  }
+}
+
+/* Sidebar */
+.index-card {
+  position: sticky;
+  top: 120px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 24px;
+  padding: 32px;
+}
+
+.index-card h3 {
+  font-size: 1.1rem;
+  font-weight: 800;
+  margin-bottom: 20px;
+  color: var(--primary-2);
+}
+
+.index-card ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.index-card a {
+  color: rgba(255, 255, 255, 0.5);
+  text-decoration: none;
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+}
+
+.index-card a:hover {
+  color: #fff;
+  padding-left: 5px;
+}
+
+/* Content Sections */
+.update-info {
+  margin-bottom: 60px;
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.3);
+  font-weight: 600;
+}
+
+.legal-section {
+  margin-bottom: 80px;
+  position: relative;
+}
+
+.section-number {
+  font-size: 4rem;
+  font-weight: 900;
+  color: rgba(255, 255, 255, 0.03);
+  position: absolute;
+  top: -20px;
+  left: -20px;
+  z-index: 0;
+}
+
+.legal-section h2 {
+  font-size: 2rem;
+  font-weight: 800;
+  margin-bottom: 24px;
+  position: relative;
+  z-index: 1;
+}
+
+.section-body {
+  color: rgba(255, 255, 255, 0.6);
   line-height: 1.8;
-  color: rgba(255, 255, 255, 0.7);
+  font-size: 1.1rem;
 }
 
-.legal-content strong {
+.section-body strong {
   color: #fff;
 }
 
-.legal-content h2 {
-  color: #fff;
+/* Grids & Boxes */
+.data-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 24px;
+  margin-top: 32px;
+}
+
+.data-item {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.01) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  padding: 24px;
+  border-radius: 20px;
+  transition: transform 0.3s ease;
+}
+
+.data-item:hover {
+  transform: translateY(-5px);
+  border-color: rgba(225, 29, 72, 0.2);
+}
+
+.data-item strong {
+  display: block;
+  margin-bottom: 8px;
+  color: var(--primary-2);
+}
+
+.data-item p {
+  font-size: 0.95rem;
+  margin: 0;
+}
+
+.feature-list {
+  list-style: none;
+  padding: 0;
+  margin-top: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.feature-list li {
+  padding-left: 28px;
+  position: relative;
+}
+
+.feature-list li::before {
+  content: '→';
+  position: absolute;
+  left: 0;
+  color: var(--primary-2);
+  font-weight: 900;
+}
+
+.info-box {
+  background: rgba(225, 29, 72, 0.05);
+  border-left: 4px solid var(--primary);
+  padding: 24px;
+  border-radius: 0 16px 16px 0;
+  margin-top: 24px;
+}
+
+.contact-card {
+  background: var(--panel);
+  padding: 40px;
+  border-radius: 32px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  margin-top: 40px;
+  text-align: center;
+}
+
+.btn-email {
+  display: inline-block;
+  margin-top: 16px;
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--primary-2);
+  text-decoration: none;
+  transition: opacity 0.3s ease;
+}
+
+.btn-email:hover {
+  opacity: 0.8;
 }
 </style>

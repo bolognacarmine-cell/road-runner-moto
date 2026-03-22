@@ -14,6 +14,7 @@ class SilktideCookieBanner {
   }
 
   init() {
+    console.log('Silktide: Initializing...');
     this.createWrapper();
 
     if (this.shouldShowBackdrop()) {
@@ -24,9 +25,11 @@ class SilktideCookieBanner {
     this.createModal();
 
     if (this.shouldShowBanner()) {
+      console.log('Silktide: Showing banner');
       this.createBanner();
       this.showBackdrop();
     } else {
+      console.log('Silktide: Banner already accepted, showing icon');
       this.showCookieIcon();
     }
 
@@ -240,9 +243,18 @@ class SilktideCookieBanner {
 
   createBanner() {
     this.banner = this.createWrapperChild(this.getBannerContent(), 'silktide-banner');
+    
+    // Add positioning class
     if (this.banner && this.config.position?.banner) {
       this.banner.classList.add(this.config.position.banner);
     }
+    
+    // Ensure visibility
+    if (this.banner) {
+      this.banner.style.opacity = '1';
+      this.banner.style.display = 'block';
+    }
+
     if (this.banner && typeof this.config.onBannerOpen === 'function') {
       this.config.onBannerOpen();
     }

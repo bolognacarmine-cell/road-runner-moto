@@ -131,13 +131,18 @@
    overflow: auto; 
    max-width: calc(100% - 32px); 
    max-height: calc(100vh - 32px); 
-   transform: translate(0, -20px); 
-   opacity: 0; 
-   animation: silktide-slideInDown 350ms ease-out forwards; 
-   animation-delay: 0.3s; 
+   transform: translate(0, 0); 
+   opacity: 1; 
+   z-index: 100000;
    box-shadow: -5px 5px 10px 0px #00000012, 0px 0px 50px 0px #0000001a; 
  } 
   
+ #silktide-banner.animate {
+   animation: silktide-slideInDown 350ms ease-out forwards; 
+   animation-delay: 0.3s; 
+   opacity: 0;
+   transform: translate(0, -20px);
+ }  
  #silktide-banner:focus { 
    border-radius: 50%; 
  } 

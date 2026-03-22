@@ -32,6 +32,17 @@ onMounted(async () => {
   // Inizializzazione Silktide
   const initSilktide = () => {
     if (window.silktideCookieBannerManager) {
+      // Check if already initialized to avoid multiple banners
+      if (!window.silktideCookieBannerManager.instance) {
+        window.silktideCookieBannerManager.init({
+          background: {
+            showBackground: true
+          },
+          cookieIcon: {
+            position: "bottom-left"
+          }
+        })
+      }
       window.silktideCookieBannerManager.updateCookieBannerConfig({
         background: {
           showBackground: true
@@ -111,7 +122,7 @@ onMounted(async () => {
         }
       });
     } else {
-      setTimeout(initSilktide, 200);
+      setTimeout(initSilktide, 300);
     }
   }
 
