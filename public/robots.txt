@@ -1,4 +1,7 @@
 User-agent: *
 Allow: /
+Disallow: /admin
+Disallow: /portale/dashboard
+Disallow: /testsiti.txt
 
 Sitemap: https://road-runner-moto.it/sitemap.xml
