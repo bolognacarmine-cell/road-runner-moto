@@ -146,7 +146,7 @@ onUnmounted(() => {
           </div>
         </NuxtLink>
         <nav class="minimal-nav">
-          <NuxtLink to="/#chi-samo">Chi Siamo</NuxtLink>
+          <NuxtLink to="/#chi-siamo">Chi Siamo</NuxtLink>
           
           <div class="nav-dropdown">
             <span class="dropdown-trigger">Moto <span class="arrow">▼</span></span>
@@ -192,7 +192,7 @@ onUnmounted(() => {
       <Transition name="drawer">
         <div v-if="mobileMenuOpen" class="mobile-drawer">
           <nav class="mobile-nav">
-            <NuxtLink to="/#chi-samo" @click="toggleMenu">Chi Siamo</NuxtLink>
+            <NuxtLink to="/#chi-siamo" @click="toggleMenu">Chi Siamo</NuxtLink>
             
             <div class="mobile-group">
               <span class="group-title">Moto</span>
@@ -235,7 +235,7 @@ onUnmounted(() => {
           <p class="company-address">Via San Francesco 13, 81020 Capodrise (CE)</p>
           <div class="legal-details">
             <p>Partita IVA: 04335610616</p>
-            <p>Codice Fiscale: TRTPQL*****E932E</p>
+            <p>Codice Fiscale: TRTPQL76E12E932E</p>
             <p>REA: 318460</p>
           </div>
         </div>
@@ -243,7 +243,7 @@ onUnmounted(() => {
         <div class="footer-links">
           <strong>Navigazione</strong>
           <nav>
-            <NuxtLink to="/#chi-samo">Chi Siamo</NuxtLink>
+            <NuxtLink to="/#chi-siamo">Chi Siamo</NuxtLink>
             <NuxtLink to="/#moto">Moto & Scooter</NuxtLink>
             <NuxtLink to="/#lifestyle">Lifestyle</NuxtLink>
             <NuxtLink to="/#assistenza">Assistenza</NuxtLink>
@@ -269,6 +269,7 @@ onUnmounted(() => {
           <div class="privacy-links">
             <NuxtLink to="/privacy-policy">Privacy Policy</NuxtLink>
             <NuxtLink to="/cookie-policy">Cookie Policy</NuxtLink>
+            <NuxtLink to="/legal-notes">Note Legali</NuxtLink>
           </div>
         </div>
       </div>

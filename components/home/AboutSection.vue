@@ -110,7 +110,7 @@ onMounted(async () => {
 </script>
 
 <template>
-  <section id="chi-samo" class="about-section">
+  <section id="chi-siamo" class="about-section">
     <div class="container about-container">
       <div class="about-grid">
         

@@ -2,8 +2,7 @@
 useHead({
   title: 'Privacy Policy | Road Runner Moto',
   meta: [
-    { name: 'description', content: 'Informativa sulla privacy di Road Runner Moto. Scopri come trattiamo i tuoi dati personali in conformità al GDPR.' },
-    { name: 'robots', content: 'noindex, follow' }
+    { name: 'description', content: 'Informativa sulla privacy di Road Runner Moto. Scopri come trattiamo i tuoi dati personali in conformità al GDPR.' }
   ]
 })
 
@@ -36,10 +35,9 @@ const openConsentManager = () => {
               <li><a href="#titolare">1. Titolare</a></li>
               <li><a href="#dati">2. Dati Raccolti</a></li>
               <li><a href="#finalita">3. Finalità</a></li>
-              <li><a href="#proprieta">4. Proprietà Intellettuale</a></li>
-              <li><a href="#basi">5. Basi Giuridiche</a></li>
-              <li><a href="#conservazione">6. Conservazione</a></li>
-              <li><a href="#diritti">7. I tuoi Diritti</a></li>
+              <li><a href="#basi">4. Trasferimenti</a></li>
+              <li><a href="#conservazione">5. Conservazione</a></li>
+              <li><a href="#diritti">6. I tuoi Diritti</a></li>
             </ul>
           </div>
         </aside>
@@ -86,47 +84,45 @@ const openConsentManager = () => {
 
           <section id="finalita" class="legal-section">
             <div class="section-number">03</div>
-            <h2>Finalità del trattamento</h2>
+            <h2>Finalità e Basi Giuridiche</h2>
             <div class="section-body">
-              <p>I dati vengono trattati esclusivamente per le seguenti finalità:</p>
+              <p>I dati vengono trattati per le seguenti finalità, basate su specifiche basi giuridiche:</p>
               <ul class="feature-list">
-                <li><strong>Gestione Richieste:</strong> Fornire preventivi personalizzati e consulenza.</li>
-                <li><strong>Servizio Permuta:</strong> Valutazione tecnica del veicolo usato.</li>
-                <li><strong>Assistenza Clienti:</strong> Supporto tramite form contatti o WhatsApp.</li>
-                <li><strong>Obblighi Legali:</strong> Adempimento di obblighi fiscali e normativi.</li>
+                <li><strong>Gestione Richieste & Preventivi:</strong> Esecuzione di misure precontrattuali su richiesta dell'interessato.</li>
+                <li><strong>Valutazione Permuta:</strong> Necessaria per la formulazione di un'offerta commerciale tecnica.</li>
+                <li><strong>Assistenza WhatsApp:</strong> Il contatto tramite WhatsApp (Meta Platforms, Inc.) avviene su iniziativa dell'utente. I dati sono trattati per fornire il supporto richiesto.</li>
+                <li><strong>Obblighi Fiscali:</strong> Adempimento di obblighi di legge (es. fatturazione, registri vendita veicoli).</li>
+                <li><strong>Analisi Statistica:</strong> Legittimo interesse del titolare (tramite cookie tecnici o analitici anonimizzati).</li>
               </ul>
             </div>
           </section>
 
-          <section id="proprieta" class="legal-section">
-            <div class="section-number">04</div>
-            <h2>Proprietà Intellettuale e Marchi</h2>
-            <div class="section-body">
-              <p>Tutti i contenuti presenti sul sito (testi, grafiche, loghi, icone, immagini) sono di proprietà di <strong>Road Runner Moto</strong> o dei rispettivi proprietari dei marchi citati. È vietata la riproduzione senza autorizzazione scritta.</p>
-            </div>
-          </section>
-
           <section id="basi" class="legal-section">
-            <div class="section-number">05</div>
-            <h2>Base giuridica e Trasferimenti extra-UE</h2>
+            <div class="section-number">04</div>
+            <h2>Trasferimenti extra-UE</h2>
             <div class="section-body">
-              <p>Il trattamento si fonda sul consenso dell'interessato e sull'esecuzione di misure precontrattuali.</p>
+              <p>Per l'erogazione di alcuni servizi (es. Google Analytics, Google Maps, WhatsApp), i dati potrebbero essere trasferiti verso server situati negli Stati Uniti.</p>
               <div class="info-box">
-                <p>I dati potrebbero essere trasferiti verso server USA (es. Google). Tali trasferimenti sono disciplinati dal <strong>Data Privacy Framework (DPF)</strong> e dalle <strong>Clausole Contrattuali Standard (SCC)</strong>.</p>
+                <p>Tali trasferimenti sono garantiti dall'adesione dei fornitori al <strong>Data Privacy Framework (DPF)</strong> o dalla sottoscrizione di <strong>Clausole Contrattuali Standard (SCC)</strong> approvate dalla Commissione Europea.</p>
               </div>
             </div>
           </section>
 
           <section id="conservazione" class="legal-section">
-            <div class="section-number">06</div>
-            <h2>Periodo di conservazione</h2>
+            <div class="section-number">05</div>
+            <h2>Tempi di conservazione</h2>
             <div class="section-body">
-              <p>I dati saranno conservati per il tempo strettamente necessario a gestire la richiesta dell'utente o secondo i termini previsti dalla legge italiana.</p>
+              <p>I dati personali saranno conservati secondo i seguenti criteri:</p>
+              <ul class="feature-list">
+                <li><strong>Dati di contatto/richieste:</strong> fino a 24 mesi dalla conclusione della gestione della richiesta, salvo instaurazione di un rapporto contrattuale.</li>
+                <li><strong>Dati fiscali/contrattuali:</strong> per 10 anni come previsto dalla normativa civile e fiscale italiana.</li>
+                <li><strong>Dati di navigazione:</strong> rimossi entro 12 mesi, salvo necessità di accertamento di reati.</li>
+              </ul>
             </div>
           </section>
 
           <section id="diritti" class="legal-section">
-            <div class="section-number">07</div>
+            <div class="section-number">06</div>
             <h2>I tuoi Diritti</h2>
             <div class="section-body">
               <p>Ai sensi del GDPR, hai il diritto di accedere, rettificare, cancellare o limitare il trattamento dei tuoi dati.</p>
