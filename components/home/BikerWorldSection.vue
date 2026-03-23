@@ -10,52 +10,52 @@ if (process.client) {
 
 const categories = [
   {
-    id: 'motoraduni',
-    title: 'Motoraduni',
-    desc: 'Resta aggiornato sui principali incontri e raduni nazionali e locali. La passione si vive insieme.',
-    icon: '🏁',
-    link: 'https://www.motoraduni.it/',
-    label: 'Vedi Calendario'
-  },
-  {
-    id: 'convenzioni',
-    title: 'Partner & Convenzioni',
-    desc: 'Scopri le nostre collaborazioni attive e le iniziative dedicate ai clienti ROAD RUNNER.',
-    icon: '🤝',
-    link: '/#contatti',
-    label: 'Scopri di più'
-  },
-  {
-    id: 'guida-sicura',
-    title: 'Guida Sicura',
-    desc: 'Contenuti e approfondimenti per migliorare la tua tecnica di guida e viaggiare in sicurezza.',
-    icon: '🛡️',
-    link: 'https://www.motociclismo.it/sicurezza',
-    label: 'Leggi Consigli'
+    id: 'notizie',
+    title: 'Nuove Moto',
+    desc: 'Le ultime anteprime dal mondo delle due ruote: nuovi modelli, innovazioni tecnologiche e anteprime di mercato.',
+    icon: '🏍️',
+    link: '/blog?category=Nuove Moto',
+    label: 'Esplora Novità'
   },
   {
     id: 'codice-strada',
     title: 'Codice della Strada',
-    desc: 'Aggiornamenti normativi e notizie utili per essere sempre in regola su due ruote.',
+    desc: 'Resta sempre in regola: aggiornamenti normativi, regole di circolazione e consigli per guidare sereni.',
     icon: '📜',
-    link: 'https://www.aci.it/i-servizi/normative/codice-della-strada.html',
+    link: '/blog?category=Codice della Strada',
     label: 'Aggiornamenti'
   },
   {
-    id: 'vita-biker',
-    title: 'Vita da Motociclista',
-    desc: 'Consigli pratici per la manutenzione, viaggi epici e la scelta dell\'abbigliamento tecnico.',
-    icon: '🛣️',
-    link: '/blog',
-    label: 'Esplora Blog'
+    id: 'sicurezza',
+    title: 'Sicurezza & Manutenzione',
+    desc: 'Tutto quello che devi sapere per viaggiare protetto e mantenere la tua moto in condizioni perfette.',
+    icon: '🛡️',
+    link: '/blog?category=Sicurezza e Manutenzione',
+    label: 'Leggi Consigli'
   },
   {
-    id: 'community',
+    id: 'motoraduni',
     title: 'Eventi & Community',
-    desc: 'Unisciti alla nostra community sui social e partecipa agli eventi esclusivi in concessionaria.',
-    icon: '👥',
-    link: 'https://instagram.com',
-    label: 'Seguici'
+    desc: 'Resta aggiornato sui raduni nazionali e locali. La passione si vive insieme, dentro e fuori la concessionaria.',
+    icon: '🏁',
+    link: '/blog?category=Eventi',
+    label: 'Vedi Eventi'
+  },
+  {
+    id: 'guide',
+    title: 'Guide per Motociclisti',
+    desc: 'Consigli pratici su abbigliamento, viaggi e tecnica di guida per ogni tipo di motociclista.',
+    icon: '🛣️',
+    link: '/blog?category=Guide per Motociclisti',
+    label: 'Scopri di più'
+  },
+  {
+    id: 'scooter',
+    title: 'Mobilità Urbana',
+    desc: 'Soluzioni e consigli per chi vive la città su due ruote, dagli scooter alle moto elettriche.',
+    icon: '🛵',
+    link: '/blog?category=Scooter e Mobilità Urbana',
+    label: 'Vai alla Guida'
   }
 ]
 

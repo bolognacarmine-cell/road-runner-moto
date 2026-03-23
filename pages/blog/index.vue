@@ -12,7 +12,7 @@ const loading = ref(true)
 const selectedCategory = ref(route.query.category || 'Tutti')
 const searchQuery = ref(route.query.search || '')
 
-const categories = ['Tutti', 'Novità Moto', 'Manutenzione', 'Consigli Guida', 'Offerte', 'Eventi']
+const categories = ['Tutti', 'Nuove Moto', 'Codice della Strada', 'Sicurezza e Manutenzione', 'Guide per Motociclisti', 'Scooter e Mobilità Urbana', 'Eventi']
 
 const fetchPosts = async () => {
   loading.value = true
