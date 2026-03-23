@@ -80,7 +80,7 @@ La conoscenza della norma è il primo passo per una guida serena. Rispetta sempr
   },
   {
     title: "Sicurezza in Moto: Consigli di Guida e Manutenzione Essenziale",
-    slug: "sicurezza-moto-guida-manutenzione",
+    slug: "sicurezza-e-manutenzione-moto-guida",
     category: "Sicurezza e Manutenzione",
     imageCover: "https://images.unsplash.com/photo-1444858291040-58f756a3bdd6?q=80&w=2000&auto=format&fit=crop",
     excerpt: "La sicurezza inizia dal box. Scopri i controlli pre-partenza e le abitudini di guida che salvano la vita.",
@@ -123,7 +123,7 @@ La prevenzione è il segreto per godersi la strada per molti anni. Ti aspettiamo
   },
   {
     title: "Guide per Motociclisti: Come Scegliere l'Abbigliamento Tecnico",
-    slug: "guida-abbigliamento-tecnico-moto",
+    slug: "guide-per-motociclisti-abbigliamento",
     category: "Guide per Motociclisti",
     imageCover: "https://images.unsplash.com/photo-1568772585407-9361f9bf3a87?q=80&w=2070&auto=format&fit=crop",
     excerpt: "Pelle o tessuto? Casco integrale o modulare? La nostra guida alla scelta dell'equipaggiamento perfetto.",
@@ -151,7 +151,7 @@ Passa nel nostro store per provare le ultime collezioni e farti consigliare dai 
   },
   {
     title: "Mobilità Urbana: Perché Scegliere uno Scooter Elettrico nel 2026",
-    slug: "mobilita-urbana-scooter-elettrici-2026",
+    slug: "scooter-e-mobilita-urbana-elettrico",
     category: "Scooter e Mobilità Urbana",
     imageCover: "https://images.unsplash.com/photo-1515777315835-281b94c9589f?q=80&w=2024&auto=format&fit=crop",
     excerpt: "Vantaggi, autonomia e incentivi: tutto quello che devi sapere sulla rivoluzione elettrica in città.",

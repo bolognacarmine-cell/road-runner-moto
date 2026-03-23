@@ -10,52 +10,58 @@ if (process.client) {
 
 const categories = [
   {
-    id: 'notizie',
+    id: 'nuove-moto',
     title: 'Nuove Moto',
     desc: 'Le ultime anteprime dal mondo delle due ruote: nuovi modelli, innovazioni tecnologiche e anteprime di mercato.',
     icon: '🏍️',
     link: '/blog?category=Nuove Moto',
-    label: 'Esplora Novità'
+    label: 'Esplora Novità',
+    order: 1
   },
   {
-    id: 'codice-strada',
+    id: 'codice-della-strada',
     title: 'Codice della Strada',
     desc: 'Resta sempre in regola: aggiornamenti normativi, regole di circolazione e consigli per guidare sereni.',
     icon: '📜',
     link: '/blog?category=Codice della Strada',
-    label: 'Aggiornamenti'
+    label: 'Aggiornamenti',
+    order: 2
   },
   {
-    id: 'sicurezza',
-    title: 'Sicurezza & Manutenzione',
+    id: 'sicurezza-e-manutenzione',
+    title: 'Sicurezza e Manutenzione',
     desc: 'Tutto quello che devi sapere per viaggiare protetto e mantenere la tua moto in condizioni perfette.',
     icon: '🛡️',
     link: '/blog?category=Sicurezza e Manutenzione',
-    label: 'Leggi Consigli'
+    label: 'Leggi Consigli',
+    order: 3
   },
   {
-    id: 'motoraduni',
-    title: 'Eventi & Community',
-    desc: 'Resta aggiornato sui raduni nazionali e locali. La passione si vive insieme, dentro e fuori la concessionaria.',
-    icon: '🏁',
-    link: '/blog?category=Eventi',
-    label: 'Vedi Eventi'
-  },
-  {
-    id: 'guide',
+    id: 'guide-per-motociclisti',
     title: 'Guide per Motociclisti',
     desc: 'Consigli pratici su abbigliamento, viaggi e tecnica di guida per ogni tipo di motociclista.',
     icon: '🛣️',
     link: '/blog?category=Guide per Motociclisti',
-    label: 'Scopri di più'
+    label: 'Scopri di più',
+    order: 4
   },
   {
-    id: 'scooter',
-    title: 'Mobilità Urbana',
+    id: 'scooter-e-mobilita-urbana',
+    title: 'Scooter e Mobilità Urbana',
     desc: 'Soluzioni e consigli per chi vive la città su due ruote, dagli scooter alle moto elettriche.',
     icon: '🛵',
     link: '/blog?category=Scooter e Mobilità Urbana',
-    label: 'Vai alla Guida'
+    label: 'Vai alla Guida',
+    order: 5
+  },
+  {
+    id: 'eventi',
+    title: 'Eventi',
+    desc: 'Resta aggiornato sui raduni nazionali e locali. La passione si vive insieme, dentro e fuori la concessionaria.',
+    icon: '🏁',
+    link: '/blog?category=Eventi',
+    label: 'Vedi Eventi',
+    order: 6
   }
 ]
 
@@ -125,10 +131,10 @@ onMounted(async () => {
           <div class="card-content">
             <h3>{{ cat.title }}</h3>
             <p>{{ cat.desc }}</p>
-            <a :href="cat.link" target="_blank" class="card-link">
+            <NuxtLink :to="cat.link" class="card-link">
               {{ cat.label }}
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12h14M12 5l7 7-7 7"></path></svg>
-            </a>
+            </NuxtLink>
           </div>
         </div>
       </div>
