@@ -180,7 +180,7 @@ onMounted(async () => {
 
 <style scoped>
 .biker-world-section {
-  padding: 120px 0;
+  padding: 80px 0;
   background: #050505;
   color: #fff;
   position: relative;
@@ -219,49 +219,49 @@ onMounted(async () => {
 .categories-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 30px;
-  margin-bottom: 100px;
+  gap: 20px;
+  margin-bottom: 60px;
 }
 
 .category-card {
   background: rgba(255, 255, 255, 0.03);
   border: 1px solid rgba(255, 255, 255, 0.05);
-  border-radius: 24px;
-  padding: 40px;
+  border-radius: 20px;
+  padding: 25px;
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 16px;
 }
 
 .category-card:hover {
   background: rgba(255, 255, 255, 0.06);
   border-color: rgba(225, 29, 72, 0.3);
-  transform: translateY(-10px);
+  transform: translateY(-5px);
 }
 
 .card-icon-box {
-  font-size: 2.5rem;
-  width: 64px;
-  height: 64px;
+  font-size: 1.75rem;
+  width: 52px;
+  height: 52px;
   background: rgba(225, 29, 72, 0.1);
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 16px;
+  border-radius: 12px;
 }
 
 .card-content h3 {
-  font-size: 1.5rem;
+  font-size: 1.25rem;
   font-weight: 800;
-  margin-bottom: 12px;
+  margin-bottom: 8px;
 }
 
 .card-content p {
-  font-size: 0.95rem;
+  font-size: 0.85rem;
   color: rgba(255, 255, 255, 0.5);
-  line-height: 1.6;
-  margin-bottom: 24px;
+  line-height: 1.5;
+  margin-bottom: 16px;
 }
 
 .card-link {
