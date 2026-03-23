@@ -131,7 +131,7 @@ onMounted(async () => {
           <div class="card-content">
             <h3>{{ cat.title }}</h3>
             <p>{{ cat.desc }}</p>
-            <NuxtLink :to="cat.link" class="card-link">
+            <NuxtLink :to="{ path: '/blog', query: { category: cat.title } }" class="card-link">
               {{ cat.label }}
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12h14M12 5l7 7-7 7"></path></svg>
             </NuxtLink>

@@ -9,8 +9,18 @@ const total = ref(0)
 const page = ref(1)
 const totalPages = ref(1)
 const loading = ref(true)
-const selectedCategory = ref(route.query.category || 'Tutti')
-const searchQuery = ref(route.query.search || '')
+const selectedCategory = ref('Tutti')
+const searchQuery = ref('')
+
+// Funzione per inizializzare dai parametri URL
+const initFromQuery = () => {
+  if (route.query.category) {
+    selectedCategory.value = route.query.category as string
+  }
+  if (route.query.search) {
+    searchQuery.value = route.query.search as string
+  }
+}
 
 const categories = ['Tutti', 'Nuove Moto', 'Codice della Strada', 'Sicurezza e Manutenzione', 'Guide per Motociclisti', 'Scooter e Mobilità Urbana', 'Eventi']
 
@@ -40,13 +50,16 @@ watch([selectedCategory, page], () => {
   fetchPosts()
 })
 
-// Gestione dei parametri URL
+// Gestione dei parametri URL per navigazione "back" o link diretti
 watch(() => route.query, (newQuery) => {
   if (newQuery.category && newQuery.category !== selectedCategory.value) {
-    selectedCategory.value = newQuery.category
+    selectedCategory.value = newQuery.category as string
+  } else if (!newQuery.category && selectedCategory.value !== 'Tutti') {
+    selectedCategory.value = 'Tutti'
   }
+  
   if (newQuery.search !== undefined && newQuery.search !== searchQuery.value) {
-    searchQuery.value = newQuery.search
+    searchQuery.value = newQuery.search as string
   }
 }, { deep: true })
 
@@ -61,6 +74,7 @@ watch(searchQuery, () => {
 })
 
 onMounted(() => {
+  initFromQuery()
   fetchPosts()
 })
 
