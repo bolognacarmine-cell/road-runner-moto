@@ -17,11 +17,11 @@ const lifestyleItems = [
     link: '#accessori'
   },
   {
-    title: 'Mondo Biker',
-    desc: 'Resta aggiornato su motoraduni, community, codice della strada e consigli per la vita su due ruote.',
+    title: 'Mondo Road Runner',
+    desc: 'News & Insights: resta aggiornato su motoraduni, community, codice della strada e consigli per la vita su due ruote.',
     icon: '⚡',
     image: 'https://images.unsplash.com/photo-1558981403-c5f9899a28bc?auto=format&fit=crop&q=80&w=800',
-    link: '#mondo-biker'
+    link: '/blog'
   }
 ]
 
