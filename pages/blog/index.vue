@@ -15,10 +15,10 @@ const searchQuery = ref('')
 // Funzione per inizializzare dai parametri URL
 const initFromQuery = () => {
   if (route.query.category) {
-    selectedCategory.value = route.query.category as string
+    selectedCategory.value = route.query.category
   }
   if (route.query.search) {
-    searchQuery.value = route.query.search as string
+    searchQuery.value = route.query.search
   }
 }
 
@@ -53,13 +53,13 @@ watch([selectedCategory, page], () => {
 // Gestione dei parametri URL per navigazione "back" o link diretti
 watch(() => route.query, (newQuery) => {
   if (newQuery.category && newQuery.category !== selectedCategory.value) {
-    selectedCategory.value = newQuery.category as string
+    selectedCategory.value = newQuery.category
   } else if (!newQuery.category && selectedCategory.value !== 'Tutti') {
     selectedCategory.value = 'Tutti'
   }
   
   if (newQuery.search !== undefined && newQuery.search !== searchQuery.value) {
-    searchQuery.value = newQuery.search as string
+    searchQuery.value = newQuery.search
   }
 }, { deep: true })
 
