@@ -353,6 +353,15 @@ onUnmounted(() => {
   flex-wrap: wrap;
 }
 
+@media (max-width: 768px) {
+  .section-heading-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+    margin-bottom: 32px;
+  }
+}
+
 .heading-left {
   flex: 1;
   min-width: 300px;
@@ -381,6 +390,13 @@ onUnmounted(() => {
   max-width: 450px;
 }
 
+@media (max-width: 768px) {
+  .search-bar-container {
+    max-width: 100%;
+    margin-top: 10px;
+  }
+}
+
 .search-wrapper {
   position: relative;
   width: 100%;
@@ -407,6 +423,7 @@ onUnmounted(() => {
   font-size: 0.95rem;
   font-weight: 500;
   transition: all 0.3s ease;
+  -webkit-appearance: none; /* iOS fix */
 }
 
 .search-input:focus {
@@ -425,6 +442,12 @@ onUnmounted(() => {
   margin-bottom: 60px;
 }
 
+@media (max-width: 768px) {
+  .section-filters-only {
+    margin-bottom: 40px;
+  }
+}
+
 .section-description {
   color: rgba(255, 255, 255, 0.5);
   font-size: 1.1rem;
@@ -433,24 +456,41 @@ onUnmounted(() => {
 
 .main-filter-tabs {
   display: flex;
-  gap: 16px;
+  gap: 12px;
   margin-bottom: 32px;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  padding-bottom: 12px;
+  -webkit-overflow-scrolling: touch; /* Smooth scroll on iOS */
+  scrollbar-width: none; /* Hide scrollbar Firefox */
+}
+
+.main-filter-tabs::-webkit-scrollbar {
+  display: none; /* Hide scrollbar Chrome/Safari */
 }
 
 .main-tab-btn {
   background: rgba(255, 255, 255, 0.03);
   border: 1px solid rgba(255, 255, 255, 0.08);
-  padding: 16px 28px;
-  border-radius: 20px;
+  padding: 14px 24px;
+  border-radius: 18px;
   color: white;
   cursor: pointer;
   transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
   position: relative;
   overflow: hidden;
+  white-space: nowrap; /* Keep label on one line */
+  flex-shrink: 0;
+}
+
+@media (max-width: 414px) {
+  .main-tab-btn {
+    padding: 12px 20px;
+    border-radius: 16px;
+  }
 }
 
 .main-tab-btn::before {
@@ -529,6 +569,16 @@ onUnmounted(() => {
   flex-wrap: wrap;
 }
 
+@media (max-width: 640px) {
+  .secondary-filters-row {
+    flex-direction: column;
+    gap: 12px;
+  }
+  .filter-select {
+    min-width: 100%;
+  }
+}
+
 .premium-select {
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.1);
@@ -548,11 +598,25 @@ onUnmounted(() => {
 }
 
 .featured-grid {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
   gap: 32px;
-  flex-wrap: wrap;
   padding-top: 24px;
   border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+@media (max-width: 1024px) {
+  .featured-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+  }
+}
+
+@media (max-width: 640px) {
+  .featured-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
 }
 
 .filter-group {
