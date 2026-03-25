@@ -642,6 +642,10 @@ import { ref, onMounted } from 'vue'
 import { useRuntimeConfig } from '#imports'
 import MotoCarousel from '~/components/moto/MotoCarousel.vue'
 
+definePageMeta({
+  layout: 'admin-layout'
+})
+
 // --- Auth State ---
 const config = useRuntimeConfig()
 const isAuthenticated = ref(false)
