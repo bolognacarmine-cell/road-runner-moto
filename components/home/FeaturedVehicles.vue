@@ -649,11 +649,12 @@ onUnmounted(() => {
 }
 
 .filter-label {
-  font-size: 0.875rem;
-  font-weight: 800;
+  font-size: 0.8rem;
+  font-weight: 900;
   text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: var(--muted);
+  letter-spacing: 0.15em;
+  color: var(--primary-2);
+  opacity: 0.8;
 }
 
 .filter-tabs {
@@ -663,22 +664,33 @@ onUnmounted(() => {
 }
 
 .filter-select {
-  padding: 10px 20px;
-  border-radius: 12px;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid var(--line);
-  color: #fff;
-  font-weight: 700;
-  font-size: 0.9rem;
+  padding: 12px 24px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+  font-weight: 800;
+  font-size: 0.95rem;
   cursor: pointer;
-  transition: all 0.3s ease;
-  min-width: 200px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  min-width: 220px;
   outline: none;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  -webkit-appearance: none;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23e11d48' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 16px center;
+  background-size: 16px;
+  padding-right: 48px;
 }
 
-.filter-select:hover {
-  background: rgba(255, 255, 255, 0.08);
+.filter-select:hover, .filter-select:focus {
+  background: rgba(255, 255, 255, 0.1);
   border-color: var(--primary-2);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(225, 29, 72, 0.2);
+  color: #ffffff;
 }
 
 .filter-select option {
