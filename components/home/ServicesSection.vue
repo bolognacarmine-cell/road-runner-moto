@@ -51,13 +51,13 @@ onMounted(() => {
         <NuxtLink to="/blog?category=Manutenzione" class="read-more">Leggi di più →</NuxtLink>
       </div>
       <div class="benefit-card">
-        <h3>Ricambi originali</h3>
-        <p>Disponibilità di ricambi originali di qualità.</p>
-        <div v-if="latestMaintenance" class="latest-article-tip">
-          <span>Info:</span>
-          <NuxtLink :to="`/blog/${latestMaintenance.slug}`">Guida alla manutenzione</NuxtLink>
+        <h3>Finanziamenti</h3>
+        <p>Soluzioni di pagamento flessibili e personalizzate per ogni esigenza.</p>
+        <div class="latest-article-tip">
+          <span>Novità:</span>
+          <span>Tassi agevolati in sede</span>
         </div>
-        <NuxtLink to="/blog?category=Manutenzione" class="read-more">Leggi di più →</NuxtLink>
+        <a href="https://wa.me/393391581997" target="_blank" rel="noopener noreferrer" class="read-more">Chiedi info →</a>
       </div>
     </div>
   </div>
