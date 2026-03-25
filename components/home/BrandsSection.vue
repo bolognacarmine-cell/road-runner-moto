@@ -1,6 +1,13 @@
 <script setup>
 // Nessun dato dinamico per ora, i marchi sono statici
-const brands = ['Honda', 'Piaggio', 'Kymco', 'Suzuki', 'Yamaha', 'Moto Guzzi']
+const brands = [
+  { name: 'Honda', image: '/brands/honda.jpg' },
+  { name: 'Piaggio', image: '/brands/piaggio.jpg' },
+  { name: 'Kymco', image: '/brands/kymco.jpg' },
+  { name: 'Suzuki', image: '/brands/suzuki.jpg' },
+  { name: 'Yamaha', image: '/brands/yamaha.jpg' },
+  { name: 'Moto Guzzi', image: '/brands/motoguzzi.jpg' }
+]
 </script>
 
 <template>
@@ -9,16 +16,18 @@ const brands = ['Honda', 'Piaggio', 'Kymco', 'Suzuki', 'Yamaha', 'Moto Guzzi']
       <div class="section-heading">
         <p class="section-kicker">Marchi</p>
         <h2>Marchi trattati</h2>
-        <p>Trattiamo marchi prestigiosi come Honda, Piaggio, Kymco e molti altri ancora.</p>
+        <p>I migliori motocicli delle marche più prestigiose, scelti per te.</p>
       </div>
 
       <div class="brands-grid">
         <div
           v-for="brand in brands"
-          :key="brand"
+          :key="brand.name"
           class="brand-pill"
+          :style="{ backgroundImage: `url(${brand.image})` }"
         >
-          {{ brand }}
+          <div class="brand-overlay"></div>
+          <span class="brand-name">{{ brand.name }}</span>
         </div>
       </div>
 
@@ -66,22 +75,45 @@ const brands = ['Honda', 'Piaggio', 'Kymco', 'Suzuki', 'Yamaha', 'Moto Guzzi']
 }
 
 .brand-pill {
-  min-height: 78px;
+  position: relative;
+  min-height: 120px;
   display: grid;
   place-items: center;
-  font-weight: 800;
-  color: #fff;
-  text-align: center;
-  padding: 14px;
-  border-radius: 12px;
-  background: linear-gradient(135deg, rgba(215,24,42,.14), rgba(255,91,107,.06));
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  border-radius: 16px;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
   cursor: default;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.brand-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.8) 100%);
+  z-index: 1;
+}
+
+.brand-name {
+  position: relative;
+  z-index: 2;
+  font-weight: 900;
+  color: #fff;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-size: 1.1rem;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
 }
 
 .brand-pill:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 12px 28px rgba(0,0,0,.3);
+  transform: translateY(-5px) scale(1.02);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+  border-color: rgba(255, 255, 255, 0.2);
 }
 
 .brands-footer {
