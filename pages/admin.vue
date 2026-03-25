@@ -220,8 +220,11 @@
         <!-- Leads View -->
         <section v-if="currentTab === 'leads'" class="content-section">
           <div class="section-header">
-            <h2>Richieste Preventivo</h2>
-            <p>Gestisci i contatti dai potenziali clienti</p>
+            <div>
+              <h2>Richieste Preventivo</h2>
+              <p>Gestisci i contatti dai potenziali clienti</p>
+            </div>
+            <button @click="currentTab = 'list'" class="btn-back">← Torna alla lista</button>
           </div>
 
           <div v-if="loading" class="loading-state">Caricamento richieste...</div>
@@ -268,8 +271,11 @@
         <!-- Trade-Ins View -->
         <section v-if="currentTab === 'tradeIns'" class="content-section">
           <div class="section-header">
-            <h2>Richieste Permuta</h2>
-            <p>Gestisci le valutazioni dell'usato inviate dai clienti</p>
+            <div>
+              <h2>Richieste Permuta</h2>
+              <p>Gestisci le valutazioni dell'usato inviate dai clienti</p>
+            </div>
+            <button @click="currentTab = 'list'" class="btn-back">← Torna alla lista</button>
           </div>
 
           <div v-if="loading" class="loading-state">Caricamento richieste...</div>
@@ -344,8 +350,11 @@
         <!-- Portal Management View -->
         <section v-if="currentTab === 'portal'" class="content-section">
           <div class="section-header">
-            <h2>Gestione Portale Clienti</h2>
-            <p>Crea e gestisci gli accessi privati per i tuoi clienti</p>
+            <div>
+              <h2>Gestione Portale Clienti</h2>
+              <p>Crea e gestisci gli accessi privati per i tuoi clienti</p>
+            </div>
+            <button @click="currentTab = 'list'" class="btn-back">← Torna alla lista</button>
           </div>
 
           <div v-if="loading" class="loading-state">Caricamento...</div>
@@ -384,8 +393,11 @@
         <!-- Deadlines Alert View -->
         <section v-if="currentTab === 'deadlines'" class="content-section">
           <div class="section-header">
-            <h2>Alert Scadenze 🔔</h2>
-            <p>Veicoli con scadenze imminenti o superate</p>
+            <div>
+              <h2>Alert Scadenze 🔔</h2>
+              <p>Veicoli con scadenze imminenti o superate</p>
+            </div>
+            <button @click="currentTab = 'list'" class="btn-back">← Torna alla lista</button>
           </div>
 
           <div v-if="loading" class="loading-state">Analisi scadenze in corso...</div>
@@ -436,9 +448,13 @@
         <!-- Blog List View -->
         <section v-if="currentTab === 'blog'" class="content-section">
           <div class="section-header">
-            <h2>Blog & News</h2>
+            <div>
+              <h2>Blog & News</h2>
+              <p>Gestisci gli articoli del sito</p>
+            </div>
             <div class="flex gap-4">
               <button @click="resetBlogForm(); currentTab = 'add-blog'" class="btn-primary-custom">Scrivi Articolo</button>
+              <button @click="currentTab = 'list'" class="btn-back">← Torna alla lista</button>
             </div>
           </div>
 
@@ -464,7 +480,7 @@
         <section v-if="currentTab === 'add-blog'" class="content-section">
           <div class="section-header">
             <h2>{{ editingBlogId ? 'Modifica Articolo' : 'Nuovo Articolo' }}</h2>
-            <button @click="currentTab = 'blog'" class="btn-secondary-custom">Annulla</button>
+            <button @click="currentTab = 'blog'" class="btn-back">← Torna al blog</button>
           </div>
 
           <form @submit.prevent="handleBlogSubmit" class="moto-form">
@@ -2191,6 +2207,25 @@ onMounted(() => {
 .btn-delete-small:hover {
   background: #e11d48;
   color: white;
+}
+
+.btn-back {
+  background: rgba(255, 255, 255, 0.05);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 8px 16px;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  height: fit-content;
+}
+
+.btn-back:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.2);
+  transform: translateX(-3px);
 }
 
 .tag.sold {
