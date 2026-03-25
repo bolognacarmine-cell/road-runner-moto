@@ -99,8 +99,13 @@ const error = ref(false)
 
 // Filtraggio veicoli per brand
 const filteredVehicles = computed(() => {
-  if (!selectedBrand.value) return vehicles.value
-  return vehicles.value.filter(v => 
+  let list = vehicles.value
+  
+  // Escludi i veicoli venduti dallo showroom pubblico
+  list = list.filter(v => !v.venduta)
+  
+  if (!selectedBrand.value) return list
+  return list.filter(v => 
     v.marca && v.marca.toLowerCase() === selectedBrand.value.toLowerCase()
   )
 })

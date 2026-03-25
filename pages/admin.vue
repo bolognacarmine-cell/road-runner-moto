@@ -115,6 +115,7 @@
                   <span class="tag status" :class="m.nuovaUsata">
                     {{ m.nuovaUsata === 'nuova' ? 'Nuova' : (m.nuovaUsata === 'promozione' ? 'Promozione' : 'Usata') }}
                   </span>
+                  <span v-if="m.venduta" class="tag sold">VENDUTA</span>
                 </div>
                 <p class="description-preview">{{ m.descrizione || 'Nessuna descrizione' }}</p>
                 <p class="price">€ {{ m.prezzo }}</p>
@@ -173,6 +174,13 @@
                   <option value="nuova">Nuova</option>
                   <option value="usata">Usata</option>
                   <option value="promozione">Promozione</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Stato Vendita</label>
+                <select v-model="motoForm.venduta">
+                  <option :value="false">Disponibile</option>
+                  <option :value="true">Venduta</option>
                 </select>
               </div>
               <div class="form-group">
@@ -706,6 +714,7 @@ const motoForm = ref({
   tipo: 'moto',
   categoria: 'Naked',
   nuovaUsata: 'nuova',
+  venduta: false,
   immagini: []
 })
 
@@ -2132,4 +2141,9 @@ onMounted(() => {
 }
 
 /* ... existing styles ... */
+.tag.sold {
+  background: #ff0000;
+  color: white;
+  font-weight: bold;
+}
 </style>
