@@ -149,17 +149,17 @@ fetchVehicles()
     <!-- About Section -->
     <AboutSection />
 
-    <BrandsSection 
-      :selected-brand="selectedBrand" 
-      @select-brand="handleBrandSelect" 
-    />
-
     <!-- Featured Vehicles dinamico (Nuovo & Usato incorporati) -->
     <FeaturedVehicles 
       id="moto"
       :vehicles="filteredVehicles" 
       :loading="loading" 
       :error="error" 
+    />
+
+    <BrandsSection 
+      :selected-brand="selectedBrand" 
+      @select-brand="handleBrandSelect" 
     />
 
     <!-- Lifestyle (Accessori & Mondo Biker) -->
