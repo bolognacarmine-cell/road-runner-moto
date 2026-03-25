@@ -33,9 +33,12 @@ const brands = [
           :key="brand.name"
           class="brand-pill"
           :class="{ active: selectedBrand === brand.name }"
-          :style="{ backgroundImage: `url(${brand.image})` }"
           @click="$emit('select-brand', brand.name)"
         >
+          <div 
+            class="brand-image" 
+            :style="{ backgroundImage: `url(${brand.image})` }"
+          ></div>
           <div class="brand-overlay"></div>
           <span class="brand-name">{{ brand.name }}</span>
         </div>
@@ -92,16 +95,26 @@ const brands = [
   justify-content: flex-end;
   padding: 20px;
   border-radius: 20px;
-  background-size: 85%;
-  background-position: center 20%;
-  background-repeat: no-repeat;
   overflow: hidden;
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   cursor: pointer;
   border: 1px solid rgba(255, 255, 255, 0.08);
-  background-color: rgba(255, 255, 255, 0.02);
+  background-color: #1a1a1a;
+}
+
+.brand-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-size: 85%;
+  background-position: center 20%;
+  background-repeat: no-repeat;
   filter: grayscale(1);
-  opacity: 0.6;
+  opacity: 0;
+  transition: all 0.5s ease;
+  z-index: 0;
 }
 
 .brand-overlay {
@@ -126,12 +139,16 @@ const brands = [
   width: 100%;
 }
 
+.brand-pill.active .brand-image,
+.brand-pill:hover .brand-image {
+  opacity: 1;
+  filter: grayscale(0);
+  background-size: 90%;
+}
+
 .brand-pill.active,
 .brand-pill:hover {
-  filter: grayscale(0);
-  opacity: 1;
-  background-size: 90%;
-  transform: translateY(-5px);
+  background-color: #252525;
   border-color: #ff5b6b;
   box-shadow: 0 15px 35px rgba(215, 24, 42, 0.2);
 }
