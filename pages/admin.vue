@@ -253,6 +253,9 @@
                   <p>{{ l.metodoAcquisto }}</p>
                   <p v-if="l.valutazionePermuta === 'si'">🔄 Permuta: {{ l.permutaModello }} ({{ l.permutaAnno }})</p>
                 </div>
+                <div class="lead-actions-side">
+                  <button @click="deleteLead(l._id)" class="btn-delete-small">Elimina</button>
+                </div>
               </div>
               <div v-if="l.messaggio" class="lead-message">
                 <strong>Messaggio:</strong>
@@ -299,6 +302,9 @@
                   <p>Stato: {{ t.stato }}</p>
                   <p>Prezzo desiderato: <strong>€ {{ t.prezzoDesiderato }}</strong></p>
                   <p v-if="t.motoInteresse">Interesse per: <em>{{ t.motoInteresse }}</em></p>
+                </div>
+                <div class="lead-actions-side">
+                  <button @click="deleteTradeIn(t._id)" class="btn-delete-small">Elimina</button>
                 </div>
               </div>
               <div class="lead-details-grid">
@@ -920,6 +926,26 @@ const fetchLeads = async () => {
     leads.value = res.leads || []
   } catch (e) {
     console.error('Errore caricamento leads:', e)
+  }
+}
+
+const deleteLead = async (id) => {
+  if (!confirm('Sei sicuro di voler eliminare questo preventivo?')) return
+  try {
+    await $fetch(`/api/admin/delete-lead?id=${id}`, { method: 'DELETE' })
+    fetchLeads()
+  } catch (e) {
+    alert('Errore durante l\'eliminazione del preventivo.')
+  }
+}
+
+const deleteTradeIn = async (id) => {
+  if (!confirm('Sei sicuro di voler eliminare questa richiesta di permuta?')) return
+  try {
+    await $fetch(`/api/admin/delete-trade-in?id=${id}`, { method: 'DELETE' })
+    fetchTradeIns()
+  } catch (e) {
+    alert('Errore durante l\'eliminazione della permuta.')
   }
 }
 
@@ -2141,6 +2167,28 @@ onMounted(() => {
 }
 
 /* ... existing styles ... */
+.lead-actions-side {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.btn-delete-small {
+  background: rgba(225, 29, 72, 0.1);
+  color: #e11d48;
+  border: 1px solid rgba(225, 29, 72, 0.2);
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.btn-delete-small:hover {
+  background: #e11d48;
+  color: white;
+}
+
 .tag.sold {
   background: #ff0000;
   color: white;
