@@ -42,15 +42,6 @@ onMounted(() => {
         <NuxtLink to="/blog?category=Novità%20Moto" class="read-more">Leggi di più →</NuxtLink>
       </div>
       <div class="benefit-card">
-        <h3>Assistenza qualificata</h3>
-        <p>Servizi di manutenzione e assistenza specializzata.</p>
-        <div v-if="latestMaintenance" class="latest-article-tip">
-          <span>Consiglio:</span>
-          <NuxtLink :to="`/blog/${latestMaintenance.slug}`">{{ latestMaintenance.title }}</NuxtLink>
-        </div>
-        <NuxtLink to="/blog?category=Manutenzione" class="read-more">Leggi di più →</NuxtLink>
-      </div>
-      <div class="benefit-card">
         <h3>Finanziamenti</h3>
         <p>Soluzioni di pagamento flessibili e personalizzate per ogni esigenza.</p>
         <div class="latest-article-tip">
@@ -58,6 +49,15 @@ onMounted(() => {
           <span>Tassi agevolati in sede</span>
         </div>
         <a href="https://wa.me/393391581997" target="_blank" rel="noopener noreferrer" class="read-more">Chiedi info →</a>
+      </div>
+      <div class="benefit-card">
+        <h3>Officina specializzata</h3>
+        <p>Servizi di manutenzione, diagnosi e assistenza specializzata.</p>
+        <div v-if="latestMaintenance" class="latest-article-tip">
+          <span>Consiglio:</span>
+          <NuxtLink :to="`/blog/${latestMaintenance.slug}`">{{ latestMaintenance.title }}</NuxtLink>
+        </div>
+        <NuxtLink to="/blog?category=Manutenzione" class="read-more">Leggi di più →</NuxtLink>
       </div>
     </div>
   </div>
