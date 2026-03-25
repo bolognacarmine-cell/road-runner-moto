@@ -7,7 +7,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 defineProps({
   badge: { type: String, default: 'Concessionaria a Capodrise' },
   title: { type: String, default: 'Il tuo mondo in moto' },
-  subtitle: { type: String, default: 'Vendita, assistenza e ricambi originali.' }
+  subtitle: { type: String, default: 'Vendita, finanziamenti e assistenza specializzata.' }
 })
 
 gsap.registerPlugin(ScrollTrigger)

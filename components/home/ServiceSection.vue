@@ -16,16 +16,16 @@ const services = [
     type: 'sales'
   },
   {
+    title: 'Finanziamenti',
+    desc: 'Piani di pagamento personalizzati e flessibili per l\'acquisto della tua nuova moto.',
+    icon: '💳',
+    type: 'finance'
+  },
+  {
     title: 'Officina Specializzata',
     desc: 'Assistenza tecnica qualificata, tagliandi, riparazioni e diagnosi computerizzata professionale.',
     icon: '🔧',
     type: 'service'
-  },
-  {
-    title: 'Ricambi Originali',
-    desc: 'Utilizziamo solo componenti ufficiali e ricambi di qualità per la massima affidabilità.',
-    icon: '⚙️',
-    type: 'parts'
   }
 ]
 
@@ -98,8 +98,8 @@ onMounted(async () => {
       <div class="support-cta-box">
         <div class="cta-content">
           <div class="cta-text">
-            <h3>Hai bisogno di assistenza o ricambi?</h3>
-            <p>Il nostro team tecnico è a tua disposizione per appuntamenti e consulenze veloci.</p>
+            <h3>Hai bisogno di assistenza o finanziamenti?</h3>
+            <p>Il nostro team è a tua disposizione per preventivi su misura e consulenze veloci.</p>
           </div>
           <div class="cta-actions">
             <a href="tel:0823516087" class="btn-primary-custom">Chiama Officina</a>

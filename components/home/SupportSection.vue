@@ -36,9 +36,9 @@ const services = [
     icon: '🔧'
   },
   {
-    title: 'Ricambi Originali',
-    desc: 'Utilizziamo solo componenti ufficiali per garantire la massima affidabilità e durata nel tempo.',
-    icon: '⚙️'
+    title: 'Finanziamenti',
+    desc: 'Piani di pagamento personalizzati e flessibili per l\'acquisto della tua nuova moto.',
+    icon: '💳'
   }
 ]
 </script>

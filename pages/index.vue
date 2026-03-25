@@ -27,8 +27,8 @@ useHead({
   htmlAttrs: { lang: 'it' },
   title: 'Road Runner Moto | Concessionaria Moto Nuove & Usate a Capodrise (CE)',
   meta: [
-    { name: 'description', content: 'Road Runner di Tartaglione Pasquale: la tua concessionaria di fiducia a Capodrise per moto e scooter nuovi e usati. Assistenza tecnica, ricambi originali e permute garantite.' },
-    { name: 'keywords', content: 'concessionaria moto capodrise, moto usate caserta, scooter nuovi caserta, assistenza moto capodrise, ricambi originali moto, permuta moto usato' },
+    { name: 'description', content: 'Road Runner di Tartaglione Pasquale: la tua concessionaria di fiducia a Capodrise per moto e scooter nuovi e usati. Assistenza tecnica, finanziamenti personalizzati e permute garantite.' },
+    { name: 'keywords', content: 'concessionaria moto capodrise, moto usate caserta, scooter nuovi caserta, assistenza moto capodrise, finanziamenti moto, permuta moto usato' },
     { name: 'robots', content: 'index,follow' },
     { name: 'author', content: 'Road Runner Moto' },
     // Open Graph
@@ -41,7 +41,7 @@ useHead({
     // Twitter Card
     { name: 'twitter:card', content: 'summary_large_image' },
     { name: 'twitter:title', content: 'Road Runner Moto | Concessionaria Moto Nuove & Usate' },
-    { name: 'twitter:description', content: 'Moto e scooter nuovi e usati a Capodrise. Assistenza e ricambi originali.' },
+    { name: 'twitter:description', content: 'Moto e scooter nuovi e usati a Capodrise. Assistenza e finanziamenti personalizzati.' },
     { name: 'twitter:image', content: `${siteUrl}/logo-road-runner.jpg` }
   ],
   script: [
@@ -143,7 +143,7 @@ fetchVehicles()
     <HeroSection
       badge="Concessionaria moto e scooter a Capodrise"
       title="Dove la qualità incontra la strada"
-      subtitle="Vendita plurimarche, assistenza qualificata e ricambi originali"
+      subtitle="Vendita plurimarche, finanziamenti su misura e assistenza specializzata"
     />
 
     <!-- About Section -->
@@ -168,7 +168,7 @@ fetchVehicles()
     <!-- Trade-In (Permute) Section -->
     <TradeInSection />
 
-    <!-- Service & Support (Officina & Ricambi) -->
+    <!-- Service & Support (Officina & Finanziamenti) -->
     <ServiceSection />
 
     <!-- Portal CTA -->
