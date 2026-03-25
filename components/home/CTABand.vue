@@ -10,7 +10,7 @@
       
       <div class="cta-content">
         <p class="section-kicker">Road Runner Moto</p>
-        <h2>Competenza e passione <br class="desktop-only" /> al tuo servizio</h2>
+        <h2>Competenze e passione <br class="desktop-only" /> al tuo servizio</h2>
         <p class="cta-desc">Vieni in concessionaria per scoprire moto, scooter e accessori originali. Il nostro team è pronto a guidarti nella scelta migliore.</p>
       </div>
       
@@ -53,10 +53,9 @@
   padding: 64px;
   border-radius: 40px;
   border: 1px solid rgba(255, 255, 255, 0.08);
-  background: 
-    linear-gradient(135deg, rgba(225, 29, 72, 0.12), transparent 50%),
-    linear-gradient(225deg, rgba(255, 91, 107, 0.05), transparent 50%),
-    #0a0a0a;
+  background:
+    linear-gradient(135deg, rgba(5, 5, 5, 0.95), rgba(5, 5, 5, 0.7)),
+    url('/cta-bg.jpg') center/cover no-repeat;
   box-shadow: 0 40px 100px -20px rgba(0, 0, 0, 0.8);
   overflow: hidden;
 }
