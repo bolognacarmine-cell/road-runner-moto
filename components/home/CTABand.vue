@@ -5,9 +5,6 @@
 <section class="cta-band">
   <div class="container">
     <div class="cta-band-shell">
-      <!-- Background effects -->
-      <div class="glow-effect"></div>
-      
       <div class="cta-content">
         <p class="section-kicker">Road Runner Moto</p>
         <h2>Competenze e passione <br class="desktop-only" /> al tuo servizio</h2>
@@ -52,23 +49,12 @@
   align-items: center;
   padding: 64px;
   border-radius: 40px;
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
   background:
-    linear-gradient(135deg, rgba(5, 5, 5, 0.95), rgba(5, 5, 5, 0.7)),
+    linear-gradient(135deg, rgba(5, 5, 5, 0.8), rgba(5, 5, 5, 0.4)),
     url('/cta-bg.jpg') center/cover no-repeat;
   box-shadow: 0 40px 100px -20px rgba(0, 0, 0, 0.8);
   overflow: hidden;
-}
-
-.glow-effect {
-  position: absolute;
-  top: -50%;
-  right: -20%;
-  width: 500px;
-  height: 500px;
-  background: radial-gradient(circle, rgba(225, 29, 72, 0.15) 0%, transparent 70%);
-  pointer-events: none;
-  z-index: 0;
 }
 
 .cta-content {
