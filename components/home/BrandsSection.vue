@@ -76,17 +76,20 @@ const brands = [
 
 .brand-pill {
   position: relative;
-  min-height: 120px;
-  display: grid;
-  place-items: center;
-  border-radius: 16px;
-  background-size: cover;
-  background-position: center;
+  min-height: 140px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 20px;
+  border-radius: 20px;
+  background-size: 85%;
+  background-position: center 20%;
   background-repeat: no-repeat;
   overflow: hidden;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition: all 0.3s ease;
   cursor: default;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background-color: rgba(255, 255, 255, 0.02);
 }
 
 .brand-overlay {
@@ -95,7 +98,7 @@ const brands = [
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(180deg, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.8) 100%);
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.8) 100%);
   z-index: 1;
 }
 
@@ -106,14 +109,16 @@ const brands = [
   color: #fff;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  font-size: 1.1rem;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  font-size: 1rem;
+  text-align: center;
+  width: 100%;
 }
 
 .brand-pill:hover {
-  transform: translateY(-5px) scale(1.02);
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+  transform: translateY(-5px);
+  background-size: 90%;
   border-color: rgba(255, 255, 255, 0.2);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
 }
 
 .brands-footer {
