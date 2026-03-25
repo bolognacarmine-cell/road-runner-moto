@@ -665,10 +665,10 @@ onUnmounted(() => {
 
 .filter-select {
   padding: 12px 24px;
-  border-radius: 16px;
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  color: #ffffff;
+  border-radius: 100px;
+  background: rgba(225, 29, 72, 0.15);
+  border: 1px solid rgba(225, 29, 72, 0.3);
+  color: var(--primary-2);
   font-weight: 800;
   font-size: 0.95rem;
   cursor: pointer;
@@ -686,11 +686,12 @@ onUnmounted(() => {
 }
 
 .filter-select:hover, .filter-select:focus {
-  background: rgba(255, 255, 255, 0.1);
+  background: var(--primary-2);
   border-color: var(--primary-2);
   transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(225, 29, 72, 0.2);
+  box-shadow: 0 8px 20px rgba(225, 29, 72, 0.3);
   color: #ffffff;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
 }
 
 .filter-select option {
