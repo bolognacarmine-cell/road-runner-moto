@@ -7,12 +7,14 @@ import MotoCarousel from '~/components/moto/MotoCarousel.vue'
 
 // Props: veicoli dinamici e filtri
 const props = defineProps({
-  vehicles: { type: Array, default: () => [] }
+  vehicles: { type: Array, default: () => [] },
+  loading: { type: Boolean, default: false },
+  error: { type: Boolean, default: false }
 })
 
 // Stato globale della ricerca
 const { searchQuery, setSearchQuery } = useSearch()
-const { activeFilter } = useFilter()
+const { activeFilter, setFilter } = useFilter()
 const localSearchQuery = ref(searchQuery.value)
 
 // Sincronizza l'input locale con lo stato globale
@@ -31,6 +33,14 @@ watch(searchQuery, (newVal) => {
 const activeCategory = ref('tutte')
 const maxKm = ref(null) // Nuovo: filtro chilometri
 const sortBy = ref('recente') // Nuovo: ordinamento (recente, alfabetico, anno)
+
+const resetFilters = () => {
+  localSearchQuery.value = ''
+  setFilter('tutti')
+  activeCategory.value = 'tutte'
+  maxKm.value = null
+  sortBy.value = 'recente'
+}
 
 // Computed: categorie uniche dai veicoli caricate nel database
 const dynamicCategories = computed(() => {
@@ -272,7 +282,20 @@ onUnmounted(() => {
         </div>
       </div>
 
-      <div v-if="!props.vehicles.length" class="state-box">Nessun veicolo disponibile.</div>
+      <div v-if="loading" class="state-container loading">
+        <div class="loader"></div>
+        <p>Caricamento veicoli in corso...</p>
+      </div>
+
+      <div v-else-if="error" class="state-container error">
+        <p>Si è verificato un errore nel caricamento dei veicoli.</p>
+        <button @click="$emit('retry')" class="retry-btn">Riprova</button>
+      </div>
+
+      <div v-else-if="featuredMotos.length === 0" class="state-container empty">
+        <p>Nessun veicolo trovato per i criteri selezionati.</p>
+        <button @click="resetFilters" class="reset-btn">Resetta filtri</button>
+      </div>
 
       <div v-else class="featured-grid">
         <article v-for="moto in featuredMotos" :key="moto._id" class="moto-card">
@@ -693,6 +716,53 @@ onUnmounted(() => {
   grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
   gap: 32px;
   margin-top: 40px;
+}
+
+.state-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 20px;
+  text-align: center;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 24px;
+  border: 1px dashed rgba(255, 255, 255, 0.1);
+  margin-top: 40px;
+}
+
+.state-container p {
+  font-size: 1.1rem;
+  color: var(--text-muted);
+  margin-bottom: 24px;
+}
+
+.loader {
+  width: 48px;
+  height: 48px;
+  border: 4px solid rgba(225, 29, 72, 0.1);
+  border-left-color: #e11d48;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 20px;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.retry-btn, .reset-btn {
+  padding: 12px 24px;
+  background: #e11d48;
+  color: #fff;
+  border-radius: 12px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.retry-btn:hover, .reset-btn:hover {
+  background: #be123c;
+  transform: translateY(-2px);
 }
 
 .moto-card {

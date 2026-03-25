@@ -1,5 +1,13 @@
 <script setup>
-// Nessun dato dinamico per ora, i marchi sono statici
+defineProps({
+  selectedBrand: {
+    type: String,
+    default: null
+  }
+})
+
+defineEmits(['select-brand'])
+
 const brands = [
   { name: 'Honda', image: '/brands/honda.jpg' },
   { name: 'Piaggio', image: '/brands/piaggio.jpg' },
@@ -16,7 +24,7 @@ const brands = [
       <div class="section-heading">
         <p class="section-kicker">Marchi</p>
         <h2>Marchi trattati</h2>
-        <p>I migliori motocicli delle marche più prestigiose, scelti per te.</p>
+        <p>Seleziona un marchio per scoprire i veicoli disponibili.</p>
       </div>
 
       <div class="brands-grid">
@@ -24,7 +32,9 @@ const brands = [
           v-for="brand in brands"
           :key="brand.name"
           class="brand-pill"
+          :class="{ active: selectedBrand === brand.name }"
           :style="{ backgroundImage: `url(${brand.image})` }"
+          @click="$emit('select-brand', brand.name)"
         >
           <div class="brand-overlay"></div>
           <span class="brand-name">{{ brand.name }}</span>
@@ -86,10 +96,12 @@ const brands = [
   background-position: center 20%;
   background-repeat: no-repeat;
   overflow: hidden;
-  transition: all 0.3s ease;
-  cursor: default;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
   border: 1px solid rgba(255, 255, 255, 0.08);
   background-color: rgba(255, 255, 255, 0.02);
+  filter: grayscale(1);
+  opacity: 0.6;
 }
 
 .brand-overlay {
@@ -114,11 +126,18 @@ const brands = [
   width: 100%;
 }
 
+.brand-pill.active,
 .brand-pill:hover {
-  transform: translateY(-5px);
+  filter: grayscale(0);
+  opacity: 1;
   background-size: 90%;
-  border-color: rgba(255, 255, 255, 0.2);
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+  transform: translateY(-5px);
+  border-color: #ff5b6b;
+  box-shadow: 0 15px 35px rgba(215, 24, 42, 0.2);
+}
+
+.brand-pill.active {
+  background-color: rgba(215, 24, 42, 0.05);
 }
 
 .brands-footer {

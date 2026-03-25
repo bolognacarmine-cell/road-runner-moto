@@ -93,8 +93,28 @@ useHead({
 
 // Stato dei veicoli
 const vehicles = ref([])
+const selectedBrand = ref(null)
 const loading = ref(true)
 const error = ref(false)
+
+// Filtraggio veicoli per brand
+const filteredVehicles = computed(() => {
+  if (!selectedBrand.value) return vehicles.value
+  return vehicles.value.filter(v => 
+    v.marca && v.marca.toLowerCase() === selectedBrand.value.toLowerCase()
+  )
+})
+
+const handleBrandSelect = (brandName) => {
+  if (selectedBrand.value === brandName) {
+    selectedBrand.value = null // Deseleziona se già attivo
+  } else {
+    selectedBrand.value = brandName
+    // Scroll fluido alla sezione veicoli per mostrare il risultato
+    const el = document.getElementById('moto')
+    if (el) el.scrollIntoView({ behavior: 'smooth' })
+  }
+}
 
 // Recupero veicoli dal backend
 const fetchVehicles = async () => {
@@ -124,10 +144,18 @@ fetchVehicles()
     <!-- About Section -->
     <AboutSection />
 
+    <BrandsSection 
+      :selected-brand="selectedBrand" 
+      @select-brand="handleBrandSelect" 
+    />
+
     <!-- Featured Vehicles dinamico (Nuovo & Usato incorporati) -->
-    <div v-if="loading" class="state-box">Caricamento veicoli...</div>
-    <div v-else-if="error" class="state-box error">Impossibile caricare i veicoli.</div>
-    <FeaturedVehicles v-else :vehicles="vehicles" />
+    <FeaturedVehicles 
+      id="moto"
+      :vehicles="filteredVehicles" 
+      :loading="loading" 
+      :error="error" 
+    />
 
     <!-- Lifestyle (Accessori & Mondo Biker) -->
     <LifestyleSection />
@@ -144,9 +172,6 @@ fetchVehicles()
     <!-- Quote Section -->
     <QuoteSection :vehicles="vehicles" />
 
-    <!-- Brands Section -->
-    <BrandsSection />
-
     <!-- CTA Band -->
     <CTABand />
 
@@ -156,9 +181,6 @@ fetchVehicles()
     <!-- Contact Section -->
     <ContactSection />
 
-    <!-- Stato caricamento / errore -->
-    <div v-if="loading" class="state-box">Caricamento veicoli...</div>
-    <div v-else-if="error" class="state-box error">Impossibile caricare i veicoli.</div>
   </div>
 </template>
 
