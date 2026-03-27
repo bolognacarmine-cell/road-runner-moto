@@ -37,7 +37,7 @@ const services = [
   },
   {
     title: 'Finanziamenti',
-    desc: 'Piani di pagamento personalizzati e flessibili per l\'acquisto della tua nuova moto.',
+    desc: 'Piani di pagamento personalizzati e flessibili per l\'acquisto della tua moto, nuova o usata.',
     icon: '💳'
   }
 ]
