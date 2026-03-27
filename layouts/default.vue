@@ -267,7 +267,7 @@ onUnmounted(() => {
           <p>✉️ inforoadrunner@libero.it</p>
           <div class="social-links-footer">
             <a href="https://www.facebook.com/RoadRunnerconcessionariomoto/?locale=it_IT" target="_blank" rel="noopener noreferrer">Facebook</a>
-            <a href="https://www.instagram.com/roadrunner_moto_capodrise/" target="_blank" rel="noopener noreferrer">Instagram</a>
+            <a href="https://www.instagram.com/roadrunner_moto/" target="_blank" rel="noopener noreferrer">Instagram</a>
           </div>
         </div>
       </div>
