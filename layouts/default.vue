@@ -3,6 +3,12 @@ import { ref, onMounted, onUnmounted, nextTick } from 'vue'
 import { gsap } from 'gsap'
 import { useSearch } from '~/composables/useSearch'
 import { useFilter } from '~/composables/useFilter'
+import { useRoute } from 'vue-router'
+
+const route = useRoute()
+const isExcludedPage = computed(() => {
+  return route.path.startsWith('/admin') || route.path.startsWith('/portale')
+})
 
 const { setSearchQuery } = useSearch()
 const { setFilter } = useFilter()
@@ -134,7 +140,7 @@ onUnmounted(() => {
 <template>
   <div class="page-shell">
     <!-- Header Standard Minimale -->
-    <header class="minimal-header">
+    <header v-if="!isExcludedPage" class="minimal-header">
       <div class="container header-content">
         <NuxtLink to="/" class="minimal-logo">
           <div class="logo-box">
@@ -222,12 +228,12 @@ onUnmounted(() => {
     </header>
 
     <!-- Main content -->
-    <main class="main-content">
+    <main class="main-content" :class="{ 'admin-main': isExcludedPage }">
       <NuxtPage />
     </main>
 
     <!-- Footer -->
-    <footer class="site-footer">
+    <footer v-if="!isExcludedPage" class="site-footer">
       <div class="container footer-grid">
         <div class="footer-info">
           <NuxtLink to="/" class="footer-logo">ROAD RUNNER</NuxtLink>
@@ -278,6 +284,14 @@ onUnmounted(() => {
 </template>
 
 <style scoped>
+.main-content {
+  flex: 1;
+}
+
+.admin-main {
+  padding-top: 0 !important;
+}
+
 .minimal-header {
   position: absolute;
   top: 0;

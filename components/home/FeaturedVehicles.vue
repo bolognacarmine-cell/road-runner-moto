@@ -42,6 +42,9 @@ const resetFilters = () => {
   sortBy.value = 'recente'
 }
 
+// Helper per verificare la visibilità
+const isVisible = (m) => m.isVisible === true || m.isVisible === undefined || m.isVisible === 'true'
+
 // Computed: categorie uniche dai veicoli caricate nel database
 const dynamicCategories = computed(() => {
   const cats = props.vehicles
@@ -55,7 +58,7 @@ const featuredMotos = computed(() => {
   if (!props.vehicles || !Array.isArray(props.vehicles)) return []
   
   // Filtriamo subito i veicoli non visibili
-  let filtered = props.vehicles.filter(m => m.isVisible !== false)
+  let filtered = props.vehicles.filter(isVisible)
   
   // 0. Filtro per ricerca globale (Header)
   const query = (searchQuery.value || '').toString().toLowerCase().trim()
@@ -121,7 +124,7 @@ const featuredMotos = computed(() => {
     }
   })
   
-  return filtered.slice(0, 12)
+  return filtered.slice(0, 24) // Aumentiamo il limite per mostrare più veicoli
 })
 
 const formatPrice = (price) => {
@@ -218,7 +221,7 @@ onUnmounted(() => {
             class="main-tab-btn"
           >
             <span class="tab-label">TUTTI</span>
-            <span class="tab-count">{{ props.vehicles.filter(m => m.isVisible !== false).length }}</span>
+            <span class="tab-count">{{ props.vehicles.filter(isVisible).length }}</span>
           </button>
           
           <button 
@@ -229,7 +232,7 @@ onUnmounted(() => {
             <span class="tab-icon">✨</span>
             <span class="tab-label">NUOVO</span>
             <span class="tab-count">
-              {{ props.vehicles.filter(m => m.isVisible !== false && ((m.nuovaUsata || '').toLowerCase().includes('nuov') || (m.stato || '').toLowerCase().includes('nuov'))).length }}
+              {{ props.vehicles.filter(m => isVisible(m) && ((m.nuovaUsata || '').toLowerCase().includes('nuov') || (m.stato || '').toLowerCase().includes('nuov'))).length }}
             </span>
           </button>
 
@@ -241,7 +244,7 @@ onUnmounted(() => {
             <span class="tab-icon">🏁</span>
             <span class="tab-label">USATO</span>
             <span class="tab-count">
-              {{ props.vehicles.filter(m => m.isVisible !== false && ((m.nuovaUsata || '').toLowerCase().includes('usat') || (m.stato || '').toLowerCase().includes('usat'))).length }}
+              {{ props.vehicles.filter(m => isVisible(m) && ((m.nuovaUsata || '').toLowerCase().includes('usat') || (m.stato || '').toLowerCase().includes('usat'))).length }}
             </span>
           </button>
 
@@ -253,7 +256,7 @@ onUnmounted(() => {
             <span class="tab-icon">🔥</span>
             <span class="tab-label">OFFERTE</span>
             <span class="tab-count">
-              {{ props.vehicles.filter(m => m.isVisible !== false && ((m.nuovaUsata || '').toLowerCase().includes('promozion') || m.isPromotion || m.prezzoScontato)).length }}
+              {{ props.vehicles.filter(m => isVisible(m) && ((m.nuovaUsata || '').toLowerCase().includes('promozion') || m.isPromotion || m.prezzoScontato)).length }}
             </span>
           </button>
 
@@ -265,7 +268,7 @@ onUnmounted(() => {
             <span class="tab-icon">🤝</span>
             <span class="tab-label">VENDUTO</span>
             <span class="tab-count">
-              {{ props.vehicles.filter(m => m.isVisible !== false && (m.venduta === true || (m.nuovaUsata || '').toLowerCase().includes('vendut'))).length }}
+              {{ props.vehicles.filter(m => isVisible(m) && (m.venduta === true || (m.nuovaUsata || '').toLowerCase().includes('vendut'))).length }}
             </span>
           </button>
         </div>
@@ -324,6 +327,7 @@ onUnmounted(() => {
             <div class="card-badges-top">
               <div v-if="moto.nuovaUsata === 'nuova' || moto.stato === 'nuovo'" class="badge-status-card new">NUOVO</div>
               <div v-else-if="moto.nuovaUsata === 'usata' || moto.stato === 'usato'" class="badge-status-card used">USATO</div>
+              <div v-if="moto.venduta === true" class="badge-status-card sold">VENDUTO</div>
               <div v-if="moto.nuovaUsata === 'promozione' || moto.isPromotion || moto.prezzoScontato || moto.offerta === true" class="badge-promo-card">PROMO</div>
             </div>
             
@@ -920,6 +924,11 @@ onUnmounted(() => {
 .badge-status-card.used {
   background: #333;
   border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.badge-status-card.sold {
+  background: #ff0000;
+  box-shadow: 0 4px 12px rgba(255, 0, 0, 0.4);
 }
 
 .badge-promo-card {

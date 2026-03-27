@@ -101,8 +101,8 @@ const error = ref(false)
 const filteredVehicles = computed(() => {
   let list = vehicles.value
   
-  // Escludi i veicoli venduti dallo showroom pubblico
-  list = list.filter(v => !v.venduta)
+  // Escludi SOLO i veicoli impostati come privati (Nascosti)
+  list = list.filter(v => v.isVisible !== false)
   
   if (!selectedBrand.value) return list
   return list.filter(v => 
