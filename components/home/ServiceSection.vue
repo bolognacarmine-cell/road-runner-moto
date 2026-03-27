@@ -23,10 +23,10 @@ const services = [
   },
   {
     title: 'Officina Specializzata',
-    desc: 'Assistenza tecnica qualificata, tagliandi, riparazioni e diagnosi computerizzata professionale.',
+    desc: 'Affida la tua moto a mani esperte: eseguiamo tagliandi, riparazioni, controlli completi e diagnosi professionali su moto e scooter. Un servizio preciso e trasparente, pensato per mantenere il tuo veicolo sempre efficiente e pronto a partire.',
     icon: '🔧',
     type: 'service'
-  }
+  },}
 ]
 
 let ctx

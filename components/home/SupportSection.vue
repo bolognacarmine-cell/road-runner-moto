@@ -32,7 +32,7 @@ onMounted(() => {
 const services = [
   {
     title: 'Officina Specializzata',
-    desc: 'Meccanici esperti per tagliandi, riparazioni e diagnosi computerizzata su ogni tipo di moto.',
+    desc: 'Affida la tua moto a mani esperte: eseguiamo tagliandi, riparazioni, controlli completi e diagnosi professionali su moto e scooter. Un servizio preciso e trasparente, pensato per mantenere il tuo veicolo sempre efficiente e pronto a partire.',
     icon: '🔧'
   },
   {

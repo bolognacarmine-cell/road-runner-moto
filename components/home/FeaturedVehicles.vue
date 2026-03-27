@@ -54,7 +54,8 @@ const dynamicCategories = computed(() => {
 const featuredMotos = computed(() => {
   if (!props.vehicles || !Array.isArray(props.vehicles)) return []
   
-  let filtered = [...props.vehicles]
+  // Filtriamo subito i veicoli non visibili
+  let filtered = props.vehicles.filter(m => m.isVisible !== false)
   
   // 0. Filtro per ricerca globale (Header)
   const query = (searchQuery.value || '').toString().toLowerCase().trim()
@@ -64,7 +65,7 @@ const featuredMotos = computed(() => {
     )
   }
 
-  // 1. Filtro per stato (nuovo/usato/promozione)
+  // 1. Filtro per stato (nuovo/usato/promozione/venduto)
   const filterVal = (activeFilter.value || 'tutti').toLowerCase()
   
   if (filterVal === 'nuovo') {
@@ -81,6 +82,10 @@ const featuredMotos = computed(() => {
     filtered = filtered.filter(m => 
       (m.nuovaUsata || '').toLowerCase().includes('promozion') || 
       m.isPromotion || m.prezzoScontato || m.offerta === true
+    )
+  } else if (filterVal === 'venduto') {
+    filtered = filtered.filter(m => 
+      m.venduta === true || (m.nuovaUsata || '').toLowerCase().includes('vendut')
     )
   }
 
@@ -213,7 +218,7 @@ onUnmounted(() => {
             class="main-tab-btn"
           >
             <span class="tab-label">TUTTI</span>
-            <span class="tab-count">{{ props.vehicles.length }}</span>
+            <span class="tab-count">{{ props.vehicles.filter(m => m.isVisible !== false).length }}</span>
           </button>
           
           <button 
@@ -224,7 +229,7 @@ onUnmounted(() => {
             <span class="tab-icon">✨</span>
             <span class="tab-label">NUOVO</span>
             <span class="tab-count">
-              {{ props.vehicles.filter(m => (m.nuovaUsata || '').toLowerCase().includes('nuov') || (m.stato || '').toLowerCase().includes('nuov')).length }}
+              {{ props.vehicles.filter(m => m.isVisible !== false && ((m.nuovaUsata || '').toLowerCase().includes('nuov') || (m.stato || '').toLowerCase().includes('nuov'))).length }}
             </span>
           </button>
 
@@ -236,7 +241,7 @@ onUnmounted(() => {
             <span class="tab-icon">🏁</span>
             <span class="tab-label">USATO</span>
             <span class="tab-count">
-              {{ props.vehicles.filter(m => (m.nuovaUsata || '').toLowerCase().includes('usat') || (m.stato || '').toLowerCase().includes('usat')).length }}
+              {{ props.vehicles.filter(m => m.isVisible !== false && ((m.nuovaUsata || '').toLowerCase().includes('usat') || (m.stato || '').toLowerCase().includes('usat'))).length }}
             </span>
           </button>
 
@@ -248,7 +253,19 @@ onUnmounted(() => {
             <span class="tab-icon">🔥</span>
             <span class="tab-label">OFFERTE</span>
             <span class="tab-count">
-              {{ props.vehicles.filter(m => (m.nuovaUsata || '').toLowerCase().includes('promozion') || m.isPromotion || m.prezzoScontato).length }}
+              {{ props.vehicles.filter(m => m.isVisible !== false && ((m.nuovaUsata || '').toLowerCase().includes('promozion') || m.isPromotion || m.prezzoScontato)).length }}
+            </span>
+          </button>
+
+          <button 
+            @click="activeFilter = 'venduto'"
+            :class="{ active: activeFilter === 'venduto' }"
+            class="main-tab-btn sold-tab"
+          >
+            <span class="tab-icon">🤝</span>
+            <span class="tab-label">VENDUTO</span>
+            <span class="tab-count">
+              {{ props.vehicles.filter(m => m.isVisible !== false && (m.venduta === true || (m.nuovaUsata || '').toLowerCase().includes('vendut'))).length }}
             </span>
           </button>
         </div>
@@ -308,6 +325,11 @@ onUnmounted(() => {
               <div v-if="moto.nuovaUsata === 'nuova' || moto.stato === 'nuovo'" class="badge-status-card new">NUOVO</div>
               <div v-else-if="moto.nuovaUsata === 'usata' || moto.stato === 'usato'" class="badge-status-card used">USATO</div>
               <div v-if="moto.nuovaUsata === 'promozione' || moto.isPromotion || moto.prezzoScontato || moto.offerta === true" class="badge-promo-card">PROMO</div>
+            </div>
+            
+            <!-- Timbro VENDUTO -->
+            <div v-if="moto.venduta === true" class="sold-stamp-overlay">
+              <div class="sold-stamp">VENDUTO</div>
             </div>
           </div>
 
@@ -853,6 +875,42 @@ onUnmounted(() => {
   text-transform: uppercase;
   color: white;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+/* Sold Stamp */
+.sold-stamp-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 8;
+  background: rgba(0, 0, 0, 0.15);
+  backdrop-filter: grayscale(1);
+  pointer-events: none;
+}
+
+.sold-stamp {
+  color: #ff0000;
+  font-size: 2.2rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  padding: 8px 24px;
+  border: 6px solid #ff0000;
+  border-radius: 12px;
+  transform: rotate(-20deg);
+  opacity: 0.9;
+  letter-spacing: 3px;
+  box-shadow: 0 0 20px rgba(255, 0, 0, 0.2);
+  background: rgba(0, 0, 0, 0.2);
+}
+
+@media (max-width: 480px) {
+  .sold-stamp {
+    font-size: 1.6rem;
+    border-width: 4px;
+    padding: 6px 16px;
+  }
 }
 
 .badge-status-card.new {
