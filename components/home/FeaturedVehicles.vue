@@ -648,7 +648,7 @@ onUnmounted(() => {
 
 .featured-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
   gap: 32px;
   padding-top: 24px;
   border-top: 1px solid rgba(255, 255, 255, 0.05);

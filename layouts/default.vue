@@ -263,8 +263,8 @@ onUnmounted(() => {
           <p>📱 +39 339 158 1997</p>
           <p>✉️ inforoadrunner@libero.it</p>
           <div class="social-links-footer">
-            <a href="#" target="_blank">Facebook</a>
-            <a href="#" target="_blank">Instagram</a>
+            <a href="https://www.facebook.com/RoadRunnerconcessionariomoto/?locale=it_IT" target="_blank" rel="noopener noreferrer">Facebook</a>
+            <a href="https://www.instagram.com/roadrunner_moto/" target="_blank" rel="noopener noreferrer">Instagram</a>
           </div>
         </div>
       </div>
