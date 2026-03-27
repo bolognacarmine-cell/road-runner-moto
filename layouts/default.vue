@@ -148,7 +148,10 @@ onUnmounted(() => {
           </div>
           <div class="brand-info">
             <span class="brand-title">ROAD RUNNER</span>
-            <span class="brand-subtitle">Concessionaria Moto Nuove & Usate</span>
+            <div class="brand-contacts-header">
+              <a href="tel:0823516087" class="header-phone-link">📞 0823 516087</a>
+              <span class="brand-subtitle">Concessionaria Moto Nuove & Usate</span>
+            </div>
           </div>
         </NuxtLink>
         <nav class="minimal-nav">
@@ -343,17 +346,38 @@ onUnmounted(() => {
 .brand-title {
   color: #fff;
   font-weight: 950;
-  font-size: 1.5rem;
+  font-size: 1.6rem; /* Leggermente più grande */
   letter-spacing: -0.02em;
-  line-height: 1;
+  line-height: 0.9;
+}
+
+.brand-contacts-header {
+  display: flex;
+  flex-direction: column;
+  margin-top: 4px;
+}
+
+.header-phone-link {
+  color: #fff;
+  font-size: 0.85rem;
+  font-weight: 800;
+  text-decoration: none;
+  transition: color 0.3s;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.header-phone-link:hover {
+  color: var(--primary-2);
 }
 
 .brand-subtitle {
   color: var(--primary-2);
-  font-size: 0.75rem;
+  font-size: 0.7rem;
   font-weight: 800;
   letter-spacing: 0.05em;
-  margin-top: 4px;
+  opacity: 0.8;
 }
 
 .minimal-nav {
