@@ -805,20 +805,22 @@ onUnmounted(() => {
 }
 
 .moto-card {
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 28px;
   overflow: hidden;
   transition: all 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
   position: relative;
   display: flex;
   flex-direction: column;
+  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
 }
 
 .moto-card:hover {
-  transform: translateY(-12px);
-  border-color: rgba(225, 29, 72, 0.3);
-  box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.7);
+  transform: translateY(-12px) scale(1.02);
+  border-color: var(--primary-2);
+  box-shadow: 0 40px 80px -20px rgba(0, 0, 0, 0.8);
+  background: rgba(255, 255, 255, 0.08);
 }
 
 .card-visual {
@@ -871,14 +873,14 @@ onUnmounted(() => {
 }
 
 .badge-status-card {
-  padding: 4px 12px;
-  border-radius: 6px;
-  font-size: 0.65rem;
-  font-weight: 900;
+  padding: 6px 14px;
+  border-radius: 8px;
+  font-size: 0.7rem;
+  font-weight: 950;
   letter-spacing: 0.05em;
   text-transform: uppercase;
   color: white;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
 }
 
 /* Sold Stamp */
