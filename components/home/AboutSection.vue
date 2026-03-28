@@ -166,7 +166,7 @@ onMounted(async () => {
             <div class="visual-layer layer-frame"></div>
             <!-- Immagine principale -->
             <div class="visual-layer layer-main">
-              <img src="/about-story.jpg" alt="La nostra storia - ROAD RUNNER" class="founder-img" />
+              <img :src="'/about-story.jpg'" alt="La nostra storia - ROAD RUNNER" class="founder-img" @error="(e) => e.target.src = 'https://images.unsplash.com/photo-1599819811279-d5ad9cccf838?auto=format&fit=crop&q=80&w=1000'" />
             </div>
             <!-- Badge esperienza -->
             <div class="visual-layer layer-badge">

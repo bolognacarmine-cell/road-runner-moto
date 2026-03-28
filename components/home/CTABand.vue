@@ -4,7 +4,10 @@
 <template>
 <section class="cta-band">
   <div class="container">
-    <div class="cta-band-shell">
+    <div 
+      class="cta-band-shell" 
+      :style="{ backgroundImage: `linear-gradient(135deg, rgba(5, 5, 5, 0.8), rgba(5, 5, 5, 0.4)), url('/cta-bg.jpg')` }"
+    >
       <div class="cta-content">
         <p class="section-kicker">Road Runner Moto</p>
         <h2>Competenze e passione <br class="desktop-only" /> al tuo servizio</h2>
@@ -50,9 +53,10 @@
   padding: 64px;
   border-radius: 40px;
   border: 1px solid rgba(255, 255, 255, 0.15);
-  background:
-    linear-gradient(135deg, rgba(5, 5, 5, 0.8), rgba(5, 5, 5, 0.4)),
-    url('/cta-bg.jpg') center/cover no-repeat;
+  background-color: #0a0a0a;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
   box-shadow: 0 40px 100px -20px rgba(0, 0, 0, 0.8);
   overflow: hidden;
 }
