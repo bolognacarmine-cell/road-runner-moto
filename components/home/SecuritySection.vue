@@ -63,7 +63,7 @@ onMounted(() => {
                 Gestione autonoma senza canoni esterni
               </li>
             </ul>
-            <a href="http://www.tecnoalarm.srl" target="_blank" rel="noopener noreferrer" class="btn-security">
+            <a href="https://www.facebook.com/technoalarmlatuasicurezza/posts/antifurto-satellitare-autogestito-prodotto-in-italia-senza-canone-e-abbonamentop/101840981795935/" target="_blank" rel="noopener noreferrer" class="btn-security">
               Scopri PagerSAT sul sito Tecno Alarm
               <span class="arrow">→</span>
             </a>
