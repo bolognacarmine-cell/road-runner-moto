@@ -166,7 +166,7 @@ onUnmounted(() => {
             </div>
           </div>
 
-          <NuxtLink to="/#sicurezza" @click="closeMobileMenu">Sicurezza</NuxtLink>
+          <NuxtLink to="/#sicurezza">Sicurezza</NuxtLink>
 
           <div class="nav-dropdown">
             <span class="dropdown-trigger">Lifestyle <span class="arrow">▼</span></span>
@@ -211,6 +211,8 @@ onUnmounted(() => {
               <NuxtLink to="/#moto" @click="selectFilter('usato'); toggleMenu()">Usato</NuxtLink>
               <NuxtLink to="/#moto" @click="selectFilter('promozioni'); toggleMenu()">Promozioni</NuxtLink>
             </div>
+
+            <NuxtLink to="/#sicurezza" @click="toggleMenu">Sicurezza</NuxtLink>
 
             <div class="mobile-group">
               <span class="group-title">Lifestyle</span>

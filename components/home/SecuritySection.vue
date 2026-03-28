@@ -38,34 +38,33 @@ onMounted(() => {
       </div>
 
       <div class="security-grid">
-        <!-- Card 1: Localizzatore Satellitare -->
+        <!-- Card 1: PagerSAT -->
         <div class="security-card">
           <div class="card-icon-box">
             <span class="card-icon">🛰️</span>
           </div>
           <div class="card-content">
-            <h3 class="card-title">Localizzatore Satellitare GPS</h3>
-            <p class="card-tagline">Controllo 24/7 dal tuo smartphone</p>
+            <h3 class="card-title">Localizzatore satellitare autogestito</h3>
+            <p class="card-tagline">Controlla la tua moto 24/7 direttamente da smartphone.</p>
             <p class="card-description">
-              Un sistema di localizzazione GPS autogestito che ti permette di monitorare la tua moto in tempo reale. 
-              Gestibile interamente tramite app dedicata o area riservata, senza intermediari.
+              PagerSAT è un localizzatore satellitare GPS autogestito che ti consente di vedere la posizione della tua moto in tempo reale. Invia notifiche istantanee in caso di movimento sospetto o tentativo di furto.
             </p>
             <ul class="benefit-list">
               <li>
                 <span class="check-icon">✓</span>
-                Posizione in tempo reale con precisione assoluta
+                Localizzazione GPS in tempo reale
               </li>
               <li>
                 <span class="check-icon">✓</span>
-                Notifiche istantanee in caso di movimento sospetto
+                Notifiche push per movimenti sospetti
               </li>
               <li>
                 <span class="check-icon">✓</span>
-                Storico dei percorsi e gestione autonoma tramite App
+                Gestione autonoma senza canoni esterni
               </li>
             </ul>
-            <NuxtLink to="/#contatti" class="btn-security">
-              Richiedi info GPS
+            <NuxtLink to="/sicurezza/pagersat" class="btn-security">
+              Scopri il localizzatore satellitare
               <span class="arrow">→</span>
             </NuxtLink>
           </div>
@@ -77,28 +76,27 @@ onMounted(() => {
             <span class="card-icon">🔒</span>
           </div>
           <div class="card-content">
-            <h3 class="card-title">EasyBlock</h3>
-            <p class="card-tagline">L'antifurto meccanico integrato</p>
+            <h3 class="card-title">EasyBlock – Antifurto blocca ruota</h3>
+            <p class="card-tagline">Sempre installato sulla moto, si attiva in pochi secondi.</p>
             <p class="card-description">
-              EasyBlock è l'antifurto meccanico blocca-ruota installato in modo permanente sulla tua moto. 
-              Si attiva in pochi secondi e rende impossibile spostare il veicolo senza forzature.
+              EasyBlock è un antifurto meccanico blocca ruota installato fisso sulla moto che immobilizza la ruota per evitare il furto. Non richiede catene o lucchetti ingombranti da portare con sé.
             </p>
             <ul class="benefit-list">
               <li>
                 <span class="check-icon">✓</span>
-                Sempre pronto all'uso: integrato direttamente nel veicolo
+                Installato fisso sulla moto
               </li>
               <li>
                 <span class="check-icon">✓</span>
-                Attivazione e disattivazione ultrarapida con chiave dedicata
+                Rapido da usare e attivare
               </li>
               <li>
                 <span class="check-icon">✓</span>
-                Costruzione robusta in acciaio temprato (Made in Italy)
+                Struttura robusta Made in Italy
               </li>
             </ul>
-            <NuxtLink to="/#contatti" class="btn-security">
-              Scopri EasyBlock
+            <NuxtLink to="/sicurezza/easyblock" class="btn-security">
+              Scopri EasyBlock blocca ruota
               <span class="arrow">→</span>
             </NuxtLink>
           </div>
@@ -110,62 +108,91 @@ onMounted(() => {
 
 <style scoped>
 .security-section {
-  padding: 120px 0;
+  padding: 80px 0;
   background: #0a0a0a;
   position: relative;
   overflow: hidden;
 }
 
+@media (min-width: 992px) {
+  .security-section {
+    padding: 120px 0;
+  }
+}
+
 .section-heading {
   text-align: center;
   max-width: 800px;
-  margin: 0 auto 60px;
+  margin: 0 auto 40px;
+  padding: 0 20px;
+}
+
+@media (min-width: 992px) {
+  .section-heading {
+    margin-bottom: 60px;
+  }
 }
 
 .section-kicker {
   color: var(--primary-2, #ff5b6b);
   text-transform: uppercase;
   font-weight: 800;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   letter-spacing: 0.15em;
-  margin-bottom: 16px;
+  margin-bottom: 12px;
 }
 
 .section-title {
-  font-size: clamp(2.5rem, 5vw, 3.5rem);
+  font-size: clamp(2rem, 8vw, 3.5rem);
   font-weight: 950;
-  margin-bottom: 24px;
+  margin-bottom: 20px;
   color: #fff;
   line-height: 1.1;
 }
 
 .section-subtitle {
-  font-size: 1.15rem;
+  font-size: 1rem;
   color: rgba(255, 255, 255, 0.6);
   line-height: 1.6;
 }
 
-.security-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 32px;
+@media (min-width: 992px) {
+  .section-subtitle {
+    font-size: 1.15rem;
+  }
 }
 
-@media (max-width: 991px) {
+.security-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+  padding: 0 20px;
+}
+
+@media (min-width: 992px) {
   .security-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 32px;
+    padding: 0;
   }
 }
 
 .security-card {
   background: rgba(255, 255, 255, 0.03);
   border: 1px solid rgba(255, 255, 255, 0.05);
-  border-radius: 32px;
-  padding: 48px;
+  border-radius: 24px;
+  padding: 32px;
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   display: flex;
   flex-direction: column;
   position: relative;
+}
+
+@media (min-width: 992px) {
+  .security-card {
+    border-radius: 32px;
+    padding: 48px;
+  }
 }
 
 .security-card:hover {
