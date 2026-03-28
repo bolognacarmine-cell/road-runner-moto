@@ -63,10 +63,10 @@ onMounted(() => {
                 Gestione autonoma senza canoni esterni
               </li>
             </ul>
-            <NuxtLink to="/sicurezza/pagersat" class="btn-security">
-              Scopri il localizzatore satellitare
+            <a href="http://www.tecnoalarm.srl" target="_blank" rel="noopener noreferrer" class="btn-security">
+              Scopri PagerSAT sul sito Tecno Alarm
               <span class="arrow">→</span>
-            </NuxtLink>
+            </a>
           </div>
         </div>
 
