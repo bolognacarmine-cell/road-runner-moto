@@ -95,10 +95,10 @@ onMounted(() => {
                 Struttura robusta Made in Italy
               </li>
             </ul>
-            <NuxtLink to="/sicurezza/easyblock" class="btn-security">
+            <a href="https://it.easyblock.com/?utm_source=google&utm_medium=cpc&utm_campaign=%5BS%5D+-+Brand&gad_source=1&gad_campaignid=217516830" target="_blank" rel="noopener noreferrer" class="btn-security">
               Scopri EasyBlock blocca ruota
               <span class="arrow">→</span>
-            </NuxtLink>
+            </a>
           </div>
         </div>
       </div>
