@@ -58,7 +58,7 @@
               alt="Compass - Acquisti Leggeri" 
               class="promo-img"
               loading="lazy"
-              @error="(e) => e.target.src = 'https://images.unsplash.com/photo-1559067515-bf7d799b6d4d?auto=format&fit=crop&q=80&w=800'"
+              @error="(e) => e.target.src = 'https://i.ibb.co/v4m0mXz/compass-promo.jpg'"
             />
           </div>
         </div>
