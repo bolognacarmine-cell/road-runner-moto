@@ -17,7 +17,7 @@ const brands = [
   { name: 'CFMOTO', image: '/brands/cfmoto.jpg' },
   { name: 'KL', image: '/brands/kl.jpg' },
   { name: 'SYM', image: '/brands/sysm.jpg' },
-  { name: 'Moto Morini', image: '/brands/moto morini.jpg' },
+  { name: 'Moto Morini', image: '/brands/motomorini.jpg' },
   { name: 'QJ MOTOR', image: '/brands/qjmotor.jpg' }
 ]
 </script>
@@ -198,6 +198,18 @@ const brands = [
 @media (max-width: 700px) {
   .brands-grid {
     grid-template-columns: 1fr;
+  }
+  
+  /* Mostra sempre le immagini sui dispositivi mobili */
+  .brand-image {
+    opacity: 1;
+    filter: grayscale(0);
+    background-size: 90%;
+  }
+  
+  .brand-pill {
+    background-color: #252525;
+    border-color: rgba(255, 255, 255, 0.15);
   }
 }
 </style>
