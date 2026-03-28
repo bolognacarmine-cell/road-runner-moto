@@ -69,16 +69,6 @@ onMounted(async () => {
     })
 
     // Parallasse continuo al movimento dello scroll
-    gsap.to('.layer-bg', {
-      y: -50,
-      scrollTrigger: {
-        trigger: '.about-section',
-        start: 'top bottom',
-        end: 'bottom top',
-        scrub: true
-      }
-    })
-    
     gsap.to('.layer-main', {
       y: 30,
       scrollTrigger: {
@@ -160,8 +150,6 @@ onMounted(async () => {
         <!-- Parte Visuale (Layered Animation) -->
         <div class="about-visual-container">
           <div class="visual-wrapper">
-            <!-- Sfondo astratto o decorativo -->
-            <div class="visual-layer layer-bg"></div>
             <!-- Cornice principale -->
             <div class="visual-layer layer-frame"></div>
             <!-- Immagine principale -->
@@ -223,16 +211,6 @@ onMounted(async () => {
   position: absolute;
   border-radius: 30px;
   transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
-}
-
-.layer-bg {
-  top: 10%;
-  right: 0;
-  width: 80%;
-  height: 70%;
-  background: linear-gradient(135deg, rgba(225, 29, 72, 0.05) 0%, rgba(225, 29, 72, 0) 100%);
-  border: 1px solid rgba(225, 29, 72, 0.1);
-  z-index: 1;
 }
 
 .layer-frame {
