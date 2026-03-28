@@ -12,9 +12,13 @@ const brands = [
   { name: 'Honda', image: '/brands/honda.jpg' },
   { name: 'Piaggio', image: '/brands/piaggio.jpg' },
   { name: 'Kymco', image: '/brands/kymco.jpg' },
-  { name: 'Suzuki', image: '/brands/suzuki.jpg' },
-  { name: 'Yamaha', image: '/brands/yamaha.jpg' },
-  { name: 'Moto Guzzi', image: '/brands/motoguzzi.jpg' }
+  { name: 'Moto Guzzi', image: '/brands/motoguzzi.jpg' },
+  { name: 'Zontes', image: '/brands/zontes.jpg' },
+  { name: 'CFMOTO', image: '/brands/cfmoto.jpg' },
+  { name: 'KL', image: '/brands/kl.jpg' },
+  { name: 'SYM', image: '/brands/sysm.jpg' },
+  { name: 'Moto Morini', image: '/brands/moto morini.jpg' },
+  { name: 'QJ MOTOR', image: '/brands/qjmotor.jpg' }
 ]
 </script>
 
@@ -191,72 +195,6 @@ const brands = [
     grid-template-columns: repeat(3, 1fr);
   }
 }
-@media (max-width: 700px) {
-  .brands-grid {
-    grid-template-columns: 1fr;
-  }
-}
-</style>
-<style scoped>
-.brands-section {
-  padding: 88px 16px;
-  background: #050505;
-  color: #f5f5f5;
-}
-
-.section-heading {
-  text-align: center;
-  max-width: 760px;
-  margin: 0 auto 40px;
-}
-
-.section-heading h2 {
-  margin: 0 0 12px;
-  font-size: clamp(2rem, 4vw, 3rem);
-  line-height: 1.05;
-}
-
-.section-kicker {
-  color: #ff5b6b;
-  text-transform: uppercase;
-  font-weight: 800;
-  font-size: .85rem;
-  letter-spacing: .12em;
-}
-
-.brands-grid {
-  display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  gap: 18px;
-  margin-top: 32px;
-}
-
-.brand-pill {
-  min-height: 78px;
-  display: grid;
-  place-items: center;
-  font-weight: 800;
-  color: #fff;
-  text-align: center;
-  padding: 14px;
-  border-radius: 12px;
-  background: linear-gradient(135deg, rgba(215,24,42,.14), rgba(255,91,107,.06));
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
-  cursor: default;
-}
-
-.brand-pill:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 12px 28px rgba(0,0,0,.3);
-}
-
-/* Responsive */
-@media (max-width: 1100px) {
-  .brands-grid {
-    grid-template-columns: repeat(3, 1fr);
-  }
-}
-
 @media (max-width: 700px) {
   .brands-grid {
     grid-template-columns: 1fr;

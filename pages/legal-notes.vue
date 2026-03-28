@@ -34,7 +34,7 @@
             <div class="section-number">01</div>
             <h2>Proprietà Intellettuale e Marchi</h2>
             <div class="section-body">
-              <p>Tutti i contenuti presenti sul sito (testi, grafiche, loghi, icone, immagini, clip audio, video, software) sono di proprietà di <strong>ROAD RUNNER DI TARTAGLIONE PASQUALE</strong> o dei rispettivi proprietari dei marchi citati (es. marchi motociclistici come Yamaha, Honda, Ducati, ecc.).</p>
+              <p>Tutti i contenuti presenti sul sito (testi, grafiche, loghi, icone, immagini, clip audio, video, software) sono di proprietà di <strong>ROAD RUNNER DI TARTAGLIONE PASQUALE</strong> o dei rispettivi proprietari dei marchi citati (es. marchi motociclistici come Honda, Ducati, ecc.).</p>
               <p>È vietata la riproduzione, distribuzione, modifica o utilizzo di tali materiali senza espressa autorizzazione scritta dal Titolare o dai legittimi proprietari.</p>
             </div>
           </section>

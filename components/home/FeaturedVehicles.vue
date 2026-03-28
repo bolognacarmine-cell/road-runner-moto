@@ -42,6 +42,9 @@ const resetFilters = () => {
   sortBy.value = 'recente'
 }
 
+// Helper per verificare la visibilità
+const isVisible = (m) => m.isVisible === true || m.isVisible === undefined || m.isVisible === 'true'
+
 // Computed: categorie uniche dai veicoli caricate nel database
 const dynamicCategories = computed(() => {
   const cats = props.vehicles
@@ -54,7 +57,8 @@ const dynamicCategories = computed(() => {
 const featuredMotos = computed(() => {
   if (!props.vehicles || !Array.isArray(props.vehicles)) return []
   
-  let filtered = [...props.vehicles]
+  // Filtriamo subito i veicoli non visibili
+  let filtered = props.vehicles.filter(isVisible)
   
   // 0. Filtro per ricerca globale (Header)
   const query = (searchQuery.value || '').toString().toLowerCase().trim()
@@ -64,7 +68,7 @@ const featuredMotos = computed(() => {
     )
   }
 
-  // 1. Filtro per stato (nuovo/usato/promozione)
+  // 1. Filtro per stato (nuovo/usato/promozione/venduto)
   const filterVal = (activeFilter.value || 'tutti').toLowerCase()
   
   if (filterVal === 'nuovo') {
@@ -81,6 +85,10 @@ const featuredMotos = computed(() => {
     filtered = filtered.filter(m => 
       (m.nuovaUsata || '').toLowerCase().includes('promozion') || 
       m.isPromotion || m.prezzoScontato || m.offerta === true
+    )
+  } else if (filterVal === 'venduto') {
+    filtered = filtered.filter(m => 
+      m.venduta === true || (m.nuovaUsata || '').toLowerCase().includes('vendut')
     )
   }
 
@@ -116,7 +124,7 @@ const featuredMotos = computed(() => {
     }
   })
   
-  return filtered.slice(0, 12)
+  return filtered.slice(0, 24) // Aumentiamo il limite per mostrare più veicoli
 })
 
 const formatPrice = (price) => {
@@ -129,8 +137,18 @@ const formatYear = (moto) => moto.annoImmatricolazione || moto.anno || 'N/D'
 const formatImages = (moto) => {
   if (moto?.immagini && Array.isArray(moto.immagini) && moto.immagini.length > 0) {
     return moto.immagini.map(img => {
-      const url = typeof img === 'string' ? img : (img?.url || '/logo-road-runner.jpg')
-      return url.replace('/upload/', '/upload/f_auto,q_auto/')
+      let url = typeof img === 'string' ? img : (img?.url || '/logo-road-runner.jpg')
+      
+      // Se l'URL non inizia con http, potrebbe essere un path locale o un placeholder
+      if (!url.startsWith('http') && !url.startsWith('/')) {
+        url = '/' + url
+      }
+      
+      // Ottimizzazione Cloudinary solo se è un URL Cloudinary
+      if (url.includes('cloudinary.com')) {
+        return url.replace('/upload/', '/upload/f_auto,q_auto/')
+      }
+      return url
     })
   }
   return ['/logo-road-runner.jpg']
@@ -213,7 +231,7 @@ onUnmounted(() => {
             class="main-tab-btn"
           >
             <span class="tab-label">TUTTI</span>
-            <span class="tab-count">{{ props.vehicles.length }}</span>
+            <span class="tab-count">{{ props.vehicles.filter(isVisible).length }}</span>
           </button>
           
           <button 
@@ -224,7 +242,7 @@ onUnmounted(() => {
             <span class="tab-icon">✨</span>
             <span class="tab-label">NUOVO</span>
             <span class="tab-count">
-              {{ props.vehicles.filter(m => (m.nuovaUsata || '').toLowerCase().includes('nuov') || (m.stato || '').toLowerCase().includes('nuov')).length }}
+              {{ props.vehicles.filter(m => isVisible(m) && ((m.nuovaUsata || '').toLowerCase().includes('nuov') || (m.stato || '').toLowerCase().includes('nuov'))).length }}
             </span>
           </button>
 
@@ -236,7 +254,7 @@ onUnmounted(() => {
             <span class="tab-icon">🏁</span>
             <span class="tab-label">USATO</span>
             <span class="tab-count">
-              {{ props.vehicles.filter(m => (m.nuovaUsata || '').toLowerCase().includes('usat') || (m.stato || '').toLowerCase().includes('usat')).length }}
+              {{ props.vehicles.filter(m => isVisible(m) && ((m.nuovaUsata || '').toLowerCase().includes('usat') || (m.stato || '').toLowerCase().includes('usat'))).length }}
             </span>
           </button>
 
@@ -248,7 +266,19 @@ onUnmounted(() => {
             <span class="tab-icon">🔥</span>
             <span class="tab-label">OFFERTE</span>
             <span class="tab-count">
-              {{ props.vehicles.filter(m => (m.nuovaUsata || '').toLowerCase().includes('promozion') || m.isPromotion || m.prezzoScontato).length }}
+              {{ props.vehicles.filter(m => isVisible(m) && ((m.nuovaUsata || '').toLowerCase().includes('promozion') || m.isPromotion || m.prezzoScontato)).length }}
+            </span>
+          </button>
+
+          <button 
+            @click="activeFilter = 'venduto'"
+            :class="{ active: activeFilter === 'venduto' }"
+            class="main-tab-btn sold-tab"
+          >
+            <span class="tab-icon">🤝</span>
+            <span class="tab-label">VENDUTO</span>
+            <span class="tab-count">
+              {{ props.vehicles.filter(m => isVisible(m) && (m.venduta === true || (m.nuovaUsata || '').toLowerCase().includes('vendut'))).length }}
             </span>
           </button>
         </div>
@@ -307,7 +337,13 @@ onUnmounted(() => {
             <div class="card-badges-top">
               <div v-if="moto.nuovaUsata === 'nuova' || moto.stato === 'nuovo'" class="badge-status-card new">NUOVO</div>
               <div v-else-if="moto.nuovaUsata === 'usata' || moto.stato === 'usato'" class="badge-status-card used">USATO</div>
+              <div v-if="moto.venduta === true" class="badge-status-card sold">VENDUTO</div>
               <div v-if="moto.nuovaUsata === 'promozione' || moto.isPromotion || moto.prezzoScontato || moto.offerta === true" class="badge-promo-card">PROMO</div>
+            </div>
+            
+            <!-- Timbro VENDUTO -->
+            <div v-if="moto.venduta === true" class="sold-stamp-overlay">
+              <div class="sold-stamp">VENDUTO</div>
             </div>
           </div>
 
@@ -622,7 +658,7 @@ onUnmounted(() => {
 
 .featured-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
   gap: 32px;
   padding-top: 24px;
   border-top: 1px solid rgba(255, 255, 255, 0.05);
@@ -779,20 +815,22 @@ onUnmounted(() => {
 }
 
 .moto-card {
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 28px;
   overflow: hidden;
   transition: all 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
   position: relative;
   display: flex;
   flex-direction: column;
+  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
 }
 
 .moto-card:hover {
-  transform: translateY(-12px);
-  border-color: rgba(225, 29, 72, 0.3);
-  box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.7);
+  transform: translateY(-12px) scale(1.02);
+  border-color: var(--primary-2);
+  box-shadow: 0 40px 80px -20px rgba(0, 0, 0, 0.8);
+  background: rgba(255, 255, 255, 0.08);
 }
 
 .card-visual {
@@ -845,14 +883,50 @@ onUnmounted(() => {
 }
 
 .badge-status-card {
-  padding: 4px 12px;
-  border-radius: 6px;
-  font-size: 0.65rem;
-  font-weight: 900;
+  padding: 6px 14px;
+  border-radius: 8px;
+  font-size: 0.7rem;
+  font-weight: 950;
   letter-spacing: 0.05em;
   text-transform: uppercase;
   color: white;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+}
+
+/* Sold Stamp */
+.sold-stamp-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 8;
+  background: rgba(0, 0, 0, 0.15);
+  backdrop-filter: grayscale(1);
+  pointer-events: none;
+}
+
+.sold-stamp {
+  color: #ff0000;
+  font-size: 2.2rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  padding: 8px 24px;
+  border: 6px solid #ff0000;
+  border-radius: 12px;
+  transform: rotate(-20deg);
+  opacity: 0.9;
+  letter-spacing: 3px;
+  box-shadow: 0 0 20px rgba(255, 0, 0, 0.2);
+  background: rgba(0, 0, 0, 0.2);
+}
+
+@media (max-width: 480px) {
+  .sold-stamp {
+    font-size: 1.6rem;
+    border-width: 4px;
+    padding: 6px 16px;
+  }
 }
 
 .badge-status-card.new {
@@ -862,6 +936,11 @@ onUnmounted(() => {
 .badge-status-card.used {
   background: #333;
   border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.badge-status-card.sold {
+  background: #ff0000;
+  box-shadow: 0 4px 12px rgba(255, 0, 0, 0.4);
 }
 
 .badge-promo-card {

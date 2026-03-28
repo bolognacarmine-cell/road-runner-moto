@@ -13,6 +13,7 @@ import ServiceSection from '~/components/home/ServiceSection.vue'
 import PortalCTA from '~/components/home/PortalCTA.vue'
 import QuoteSection from '~/components/home/QuoteSection.vue'
 import BrandsSection from '~/components/home/BrandsSection.vue'
+import SecuritySection from '~/components/home/SecuritySection.vue'
 import CTABand from '~/components/home/CTABand.vue'
 import BlogPreviewSection from '~/components/home/BlogPreviewSection.vue'
 import ContactSection from '~/components/home/ContactSection.vue'
@@ -101,8 +102,8 @@ const error = ref(false)
 const filteredVehicles = computed(() => {
   let list = vehicles.value
   
-  // Escludi i veicoli venduti dallo showroom pubblico
-  list = list.filter(v => !v.venduta)
+  // Escludi SOLO i veicoli impostati come privati (Nascosti)
+  list = list.filter(v => v.isVisible !== false)
   
   if (!selectedBrand.value) return list
   return list.filter(v => 
@@ -161,6 +162,9 @@ fetchVehicles()
       :selected-brand="selectedBrand" 
       @select-brand="handleBrandSelect" 
     />
+
+    <!-- Security Section -->
+    <SecuritySection />
 
     <!-- Lifestyle (Accessori & Mondo Biker) -->
     <LifestyleSection />

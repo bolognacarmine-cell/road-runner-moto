@@ -13,19 +13,30 @@ const services = [
     title: 'Vendita Veicoli',
     desc: 'Ampia scelta di moto e scooter nuovi e usati dei migliori brand, garantiti e certificati.',
     icon: '🏍️',
-    type: 'sales'
+    type: 'sales',
+    link: '/#contatti',
+    linkText: 'Richiedi Info'
   },
   {
-    title: 'Finanziamenti',
-    desc: 'Piani di pagamento personalizzati e flessibili per l\'acquisto della tua nuova moto.',
+    title: 'Finanziamenti Compass',
+    desc: 'Scegli la semplicità di un pagamento a rate. Grazie alla partnership con Compass, puoi dilazionare l’acquisto della tua moto o degli accessori in comode rate mensili personalizzabili, rendendo la spesa più leggera.',
     icon: '💳',
-    type: 'finance'
+    type: 'finance',
+    link: '/compass-finanziamento.jpg',
+    linkText: 'Scopri i finanziamenti',
+    benefits: [
+      'Acquisti subito, paghi a rate leggere.',
+      'Procedura semplice e veloce direttamente in concessionaria.',
+      'Piano di rimborso personalizzato in base alle tue esigenze.'
+    ]
   },
   {
     title: 'Officina Specializzata',
-    desc: 'Assistenza tecnica qualificata, tagliandi, riparazioni e diagnosi computerizzata professionale.',
+    desc: 'Affida la tua moto a mani esperte: eseguiamo tagliandi, riparazioni, controlli completi e diagnosi professionali. Un servizio preciso e trasparente per mantenere il tuo veicolo sempre efficiente.',
     icon: '🔧',
-    type: 'service'
+    type: 'service',
+    link: '/#contatti',
+    linkText: 'Richiedi Info'
   }
 ]
 
@@ -87,9 +98,20 @@ onMounted(async () => {
           <div class="card-body">
             <h3>{{ s.title }}</h3>
             <p>{{ s.desc }}</p>
+            
+            <ul v-if="s.benefits" class="service-benefits">
+              <li v-for="benefit in s.benefits" :key="benefit">
+                <span class="check">✓</span> {{ benefit }}
+              </li>
+            </ul>
           </div>
           <div class="card-footer">
-            <NuxtLink to="/#contatti" class="service-link">Richiedi Info →</NuxtLink>
+            <NuxtLink v-if="s.link.startsWith('/')" :to="s.link" class="service-link" :target="s.link.endsWith('.jpg') ? '_blank' : undefined">
+              {{ s.linkText }} →
+            </NuxtLink>
+            <a v-else :href="s.link" class="service-link" target="_blank">
+              {{ s.linkText }} →
+            </a>
           </div>
         </div>
       </div>
@@ -202,6 +224,28 @@ onMounted(async () => {
   color: rgba(255, 255, 255, 0.5);
   line-height: 1.6;
   font-size: 1rem;
+}
+
+.service-benefits {
+  list-style: none;
+  padding: 0;
+  margin: 24px 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.service-benefits li {
+  display: flex;
+  gap: 10px;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.95rem;
+  line-height: 1.4;
+}
+
+.service-benefits .check {
+  color: var(--primary-2);
+  font-weight: bold;
 }
 
 .card-footer {

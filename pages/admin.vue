@@ -116,6 +116,9 @@
                     {{ m.nuovaUsata === 'nuova' ? 'Nuova' : (m.nuovaUsata === 'promozione' ? 'Promozione' : 'Usata') }}
                   </span>
                   <span v-if="m.venduta" class="tag sold">VENDUTA</span>
+                  <span class="tag visibility" :class="m.isVisible !== false ? 'visible' : 'hidden'">
+                    {{ m.isVisible !== false ? '👁️ Visibile' : '🚫 Nascosto' }}
+                  </span>
                 </div>
                 <p class="description-preview">{{ m.descrizione || 'Nessuna descrizione' }}</p>
                 <p class="price">€ {{ m.prezzo }}</p>
@@ -181,6 +184,13 @@
                 <select v-model="motoForm.venduta">
                   <option :value="false">Disponibile</option>
                   <option :value="true">Venduta</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Visibilità sul sito</label>
+                <select v-model="motoForm.isVisible">
+                  <option :value="true">Pubblico (Visibile)</option>
+                  <option :value="false">Privato (Nascosto)</option>
                 </select>
               </div>
               <div class="form-group">
@@ -741,6 +751,7 @@ const motoForm = ref({
   categoria: 'Naked',
   nuovaUsata: 'nuova',
   venduta: false,
+  isVisible: true,
   immagini: []
 })
 
@@ -1158,7 +1169,10 @@ const editingBlogId = ref(null)
 }
 
 const editMoto = (m) => {
-  motoForm.value = { ...m }
+  motoForm.value = { 
+    ...m,
+    isVisible: m.isVisible !== undefined ? m.isVisible : true
+  }
   imagePreviews.value = [...(m.immagini || [])]
   editingId.value = m._id
   currentTab.value = 'edit'
@@ -2232,5 +2246,19 @@ onMounted(() => {
   background: #ff0000;
   color: white;
   font-weight: bold;
+}
+
+.tag.visibility {
+  font-size: 0.75rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.tag.visibility.visible {
+  color: #22c55e;
+}
+
+.tag.visibility.hidden {
+  color: #94a3b8;
 }
 </style>

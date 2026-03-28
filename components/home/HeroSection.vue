@@ -114,12 +114,12 @@ onUnmounted(() => {
             {{ subtitle }}
           </p>
           <div class="hero-actions">
-            <NuxtLink to="/moto" class="btn-primary-custom">
+            <NuxtLink to="/#moto" class="btn-primary-custom">
               Esplora Catalogo
             </NuxtLink>
-            <a href="#servizi" class="btn-secondary-custom">
+            <NuxtLink to="/#assistenza" class="btn-secondary-custom">
               I Nostri Servizi
-            </a>
+            </NuxtLink>
           </div>
         </div>
       </div>

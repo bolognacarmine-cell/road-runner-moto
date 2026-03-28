@@ -3,6 +3,12 @@ import { ref, onMounted, onUnmounted, nextTick } from 'vue'
 import { gsap } from 'gsap'
 import { useSearch } from '~/composables/useSearch'
 import { useFilter } from '~/composables/useFilter'
+import { useRoute } from 'vue-router'
+
+const route = useRoute()
+const isExcludedPage = computed(() => {
+  return route.path.startsWith('/admin') || route.path.startsWith('/portale')
+})
 
 const { setSearchQuery } = useSearch()
 const { setFilter } = useFilter()
@@ -134,7 +140,7 @@ onUnmounted(() => {
 <template>
   <div class="page-shell">
     <!-- Header Standard Minimale -->
-    <header class="minimal-header">
+    <header v-if="!isExcludedPage" class="minimal-header">
       <div class="container header-content">
         <NuxtLink to="/" class="minimal-logo">
           <div class="logo-box">
@@ -142,7 +148,10 @@ onUnmounted(() => {
           </div>
           <div class="brand-info">
             <span class="brand-title">ROAD RUNNER</span>
-            <span class="brand-subtitle">Concessionaria Moto Nuove & Usate</span>
+            <div class="brand-contacts-header">
+              <a href="tel:0823516087" class="header-phone-link">📞 0823 516087</a>
+              <span class="brand-subtitle">Concessionaria Moto Nuove & Usate</span>
+            </div>
           </div>
         </NuxtLink>
         <nav class="minimal-nav">
@@ -156,6 +165,8 @@ onUnmounted(() => {
               <NuxtLink to="/#moto" @click="selectFilter('promozioni')">Promozioni</NuxtLink>
             </div>
           </div>
+
+          <NuxtLink to="/#sicurezza">Sicurezza</NuxtLink>
 
           <div class="nav-dropdown">
             <span class="dropdown-trigger">Lifestyle <span class="arrow">▼</span></span>
@@ -201,6 +212,8 @@ onUnmounted(() => {
               <NuxtLink to="/#moto" @click="selectFilter('promozioni'); toggleMenu()">Promozioni</NuxtLink>
             </div>
 
+            <NuxtLink to="/#sicurezza" @click="toggleMenu">Sicurezza</NuxtLink>
+
             <div class="mobile-group">
               <span class="group-title">Lifestyle</span>
               <NuxtLink to="/#lifestyle" @click="toggleMenu">Accessori</NuxtLink>
@@ -222,12 +235,12 @@ onUnmounted(() => {
     </header>
 
     <!-- Main content -->
-    <main class="main-content">
+    <main class="main-content" :class="{ 'admin-main': isExcludedPage }">
       <NuxtPage />
     </main>
 
     <!-- Footer -->
-    <footer class="site-footer">
+    <footer v-if="!isExcludedPage" class="site-footer">
       <div class="container footer-grid">
         <div class="footer-info">
           <NuxtLink to="/" class="footer-logo">ROAD RUNNER</NuxtLink>
@@ -257,8 +270,8 @@ onUnmounted(() => {
           <p>📱 +39 339 158 1997</p>
           <p>✉️ inforoadrunner@libero.it</p>
           <div class="social-links-footer">
-            <a href="#" target="_blank">Facebook</a>
-            <a href="#" target="_blank">Instagram</a>
+            <a href="https://www.facebook.com/RoadRunnerconcessionariomoto/?locale=it_IT" target="_blank" rel="noopener noreferrer">Facebook</a>
+            <a href="https://www.instagram.com/roadrunner_moto/" target="_blank" rel="noopener noreferrer">Instagram</a>
           </div>
         </div>
       </div>
@@ -278,6 +291,14 @@ onUnmounted(() => {
 </template>
 
 <style scoped>
+.main-content {
+  flex: 1;
+}
+
+.admin-main {
+  padding-top: 0 !important;
+}
+
 .minimal-header {
   position: absolute;
   top: 0;
@@ -329,17 +350,38 @@ onUnmounted(() => {
 .brand-title {
   color: #fff;
   font-weight: 950;
-  font-size: 1.5rem;
+  font-size: 1.6rem; /* Leggermente più grande */
   letter-spacing: -0.02em;
-  line-height: 1;
+  line-height: 0.9;
+}
+
+.brand-contacts-header {
+  display: flex;
+  flex-direction: column;
+  margin-top: 4px;
+}
+
+.header-phone-link {
+  color: #fff;
+  font-size: 0.85rem;
+  font-weight: 800;
+  text-decoration: none;
+  transition: color 0.3s;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.header-phone-link:hover {
+  color: var(--primary-2);
 }
 
 .brand-subtitle {
   color: var(--primary-2);
-  font-size: 0.75rem;
+  font-size: 0.7rem;
   font-weight: 800;
   letter-spacing: 0.05em;
-  margin-top: 4px;
+  opacity: 0.8;
 }
 
 .minimal-nav {
