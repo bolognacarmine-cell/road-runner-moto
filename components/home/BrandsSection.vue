@@ -16,8 +16,8 @@ const brands = [
   { name: 'Zontes', image: '/brands/zontes.jpg' },
   { name: 'CFMOTO', image: '/brands/cfmoto.jpg' },
   { name: 'KL', image: '/brands/kl.jpg' },
-  { name: 'SYM', image: '/brands/sym.jpg' },
-  { name: 'Moto Morini', image: '/brands/motomorini.jpg' },
+  { name: 'SYM', image: '/brands/sysm.jpg' },
+  { name: 'Moto Morini', image: '/brands/moto morini.jpg' },
   { name: 'QJ MOTOR', image: '/brands/qjmotor.jpg' }
 ]
 </script>
