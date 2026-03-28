@@ -153,7 +153,7 @@ onMounted(async () => {
             <!-- Immagine principale -->
             <div class="visual-layer layer-main">
               <img 
-                src="/about-story.jpg" 
+                :src="'/about-story.jpg'" 
                 alt="La nostra storia - ROAD RUNNER" 
                 class="founder-img"
                 loading="lazy"

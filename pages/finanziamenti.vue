@@ -54,10 +54,11 @@
         <div class="finance-visual">
           <div class="image-container">
             <img 
-              src="/compass-promo.jpg" 
+              :src="'/compass-promo.jpg'" 
               alt="Compass - Acquisti Leggeri" 
               class="promo-img"
               loading="lazy"
+              @error="(e) => e.target.src = 'https://images.unsplash.com/photo-1559067515-bf7d799b6d4d?auto=format&fit=crop&q=80&w=800'"
             />
           </div>
         </div>
