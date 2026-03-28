@@ -53,12 +53,11 @@
         <!-- Parte Visuale -->
         <div class="finance-visual">
           <div class="image-container">
-            <NuxtImg 
+            <img 
               src="/compass-promo.jpg" 
               alt="Compass - Acquisti Leggeri" 
               class="promo-img"
               loading="lazy"
-              format="webp"
             />
           </div>
         </div>

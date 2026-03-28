@@ -152,15 +152,11 @@ onMounted(async () => {
           <div class="visual-wrapper">
             <!-- Immagine principale -->
             <div class="visual-layer layer-main">
-              <NuxtImg 
+              <img 
                 src="/about-story.jpg" 
                 alt="La nostra storia - ROAD RUNNER" 
                 class="founder-img"
                 loading="lazy"
-                format="webp"
-                quality="80"
-                width="800"
-                height="800"
                 @error="(e) => e.target.src = 'https://images.unsplash.com/photo-1599819811279-d5ad9cccf838?auto=format&fit=crop&q=80&w=1000'"
               />
             </div>
