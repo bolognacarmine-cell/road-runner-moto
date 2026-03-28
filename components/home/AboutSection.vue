@@ -150,8 +150,6 @@ onMounted(async () => {
         <!-- Parte Visuale (Layered Animation) -->
         <div class="about-visual-container">
           <div class="visual-wrapper">
-            <!-- Cornice principale -->
-            <div class="visual-layer layer-frame"></div>
             <!-- Immagine principale -->
             <div class="visual-layer layer-main">
               <img :src="'/about-story.jpg'" alt="La nostra storia - ROAD RUNNER" class="founder-img" @error="(e) => e.target.src = 'https://images.unsplash.com/photo-1599819811279-d5ad9cccf838?auto=format&fit=crop&q=80&w=1000'" />
@@ -211,15 +209,6 @@ onMounted(async () => {
   position: absolute;
   border-radius: 30px;
   transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
-}
-
-.layer-frame {
-  top: 15%;
-  left: 5%;
-  width: 75%;
-  height: 75%;
-  border: 2px solid rgba(255, 255, 255, 0.05);
-  z-index: 2;
 }
 
 .layer-main {
