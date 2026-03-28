@@ -22,7 +22,7 @@ const services = [
     desc: 'Scegli la semplicità di un pagamento a rate. Grazie alla partnership con Compass, puoi dilazionare l’acquisto della tua moto o degli accessori in comode rate mensili personalizzabili, rendendo la spesa più leggera.',
     icon: '💳',
     type: 'finance',
-    link: '/compass-finanziamento.jpg',
+    link: '/finanziamenti',
     linkText: 'Scopri i finanziamenti',
     benefits: [
       'Acquisti subito, paghi a rate leggere.',
