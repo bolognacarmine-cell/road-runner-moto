@@ -168,7 +168,7 @@ const onVehicleSelect = () => {
   }
 }
 
-const marche = ['Honda', 'Piaggio', 'Kymco', 'Suzuki', 'Yamaha', 'Moto Guzzi', 'Altro']
+const marche = ['Honda', 'Piaggio', 'Kymco', 'Moto Guzzi', 'Zontes', 'CFMOTO', 'KL', 'SYM', 'Moto Morini', 'QJ MOTOR', 'Altro']
 const tipi = ['Sportiva', 'Naked', 'Touring', 'Scooter', 'Enduro', 'Custom', 'Hypermotard', 'Motard', 'Crossover']
 </script>
 
@@ -294,7 +294,7 @@ const tipi = ['Sportiva', 'Naked', 'Touring', 'Scooter', 'Enduro', 'Custom', 'Hy
               <template v-if="form.valutazionePermuta === 'si'">
                 <div class="form-group">
                   <label>Tua moto (Marca e Modello)</label>
-                  <input v-model="form.permutaModello" type="text" placeholder="Es: Yamaha MT-07" />
+                  <input v-model="form.permutaModello" type="text" placeholder="Es: Honda SH 150" />
                 </div>
                 <div class="form-group">
                   <label>Anno</label>

@@ -12,9 +12,13 @@ const brands = [
   { name: 'Honda', image: '/brands/honda.jpg' },
   { name: 'Piaggio', image: '/brands/piaggio.jpg' },
   { name: 'Kymco', image: '/brands/kymco.jpg' },
-  { name: 'Suzuki', image: '/brands/suzuki.jpg' },
-  { name: 'Yamaha', image: '/brands/yamaha.jpg' },
-  { name: 'Moto Guzzi', image: '/brands/motoguzzi.jpg' }
+  { name: 'Moto Guzzi', image: '/brands/motoguzzi.jpg' },
+  { name: 'Zontes', image: '/brands/zontes.jpg' },
+  { name: 'CFMOTO', image: '/brands/cfmoto.jpg' },
+  { name: 'KL', image: '/brands/kl.jpg' },
+  { name: 'SYM', image: '/brands/sym.jpg' },
+  { name: 'Moto Morini', image: '/brands/motomorini.jpg' },
+  { name: 'QJ MOTOR', image: '/brands/qjmotor.jpg' }
 ]
 </script>
 
