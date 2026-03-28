@@ -15,9 +15,10 @@ onMounted(() => {
       duration: 0.8,
       stagger: 0.2,
       ease: 'power3.out',
+      clearProps: 'all',
       scrollTrigger: {
         trigger: '.security-section',
-        start: 'top 80%',
+        start: 'top 85%',
       }
     })
   })

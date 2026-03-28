@@ -137,8 +137,18 @@ const formatYear = (moto) => moto.annoImmatricolazione || moto.anno || 'N/D'
 const formatImages = (moto) => {
   if (moto?.immagini && Array.isArray(moto.immagini) && moto.immagini.length > 0) {
     return moto.immagini.map(img => {
-      const url = typeof img === 'string' ? img : (img?.url || '/logo-road-runner.jpg')
-      return url.replace('/upload/', '/upload/f_auto,q_auto/')
+      let url = typeof img === 'string' ? img : (img?.url || '/logo-road-runner.jpg')
+      
+      // Se l'URL non inizia con http, potrebbe essere un path locale o un placeholder
+      if (!url.startsWith('http') && !url.startsWith('/')) {
+        url = '/' + url
+      }
+      
+      // Ottimizzazione Cloudinary solo se è un URL Cloudinary
+      if (url.includes('cloudinary.com')) {
+        return url.replace('/upload/', '/upload/f_auto,q_auto/')
+      }
+      return url
     })
   }
   return ['/logo-road-runner.jpg']

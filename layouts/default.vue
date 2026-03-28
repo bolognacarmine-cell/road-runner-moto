@@ -166,7 +166,7 @@ onUnmounted(() => {
             </div>
           </div>
 
-          <NuxtLink to="/#sicurezza">Sicurezza</NuxtLink>
+          <NuxtLink to="/#sicurezza" @click="closeMobileMenu">Sicurezza</NuxtLink>
 
           <div class="nav-dropdown">
             <span class="dropdown-trigger">Lifestyle <span class="arrow">▼</span></span>
