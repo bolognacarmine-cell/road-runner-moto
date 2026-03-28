@@ -162,6 +162,9 @@ fetchVehicles()
       @select-brand="handleBrandSelect" 
     />
 
+    <!-- Security Section -->
+    <SecuritySection />
+
     <!-- Lifestyle (Accessori & Mondo Biker) -->
     <LifestyleSection />
 
