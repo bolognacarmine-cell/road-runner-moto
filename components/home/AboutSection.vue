@@ -152,7 +152,17 @@ onMounted(async () => {
           <div class="visual-wrapper">
             <!-- Immagine principale -->
             <div class="visual-layer layer-main">
-              <img :src="'/about-story.jpg'" alt="La nostra storia - ROAD RUNNER" class="founder-img" @error="(e) => e.target.src = 'https://images.unsplash.com/photo-1599819811279-d5ad9cccf838?auto=format&fit=crop&q=80&w=1000'" />
+              <NuxtImg 
+                src="/about-story.jpg" 
+                alt="La nostra storia - ROAD RUNNER" 
+                class="founder-img"
+                loading="lazy"
+                format="webp"
+                quality="80"
+                width="800"
+                height="800"
+                @error="(e) => e.target.src = 'https://images.unsplash.com/photo-1599819811279-d5ad9cccf838?auto=format&fit=crop&q=80&w=1000'"
+              />
             </div>
             <!-- Badge esperienza -->
             <div class="visual-layer layer-badge">
@@ -193,77 +203,166 @@ onMounted(async () => {
 /* Visual Layered Styles */
 .about-visual-container {
   position: relative;
-  height: 600px;
+  height: clamp(400px, 60vw, 600px);
   display: flex;
   align-items: center;
   justify-content: center;
+  width: 100%;
 }
 
 .visual-wrapper {
   position: relative;
   width: 100%;
   height: 100%;
+  max-width: 500px; /* Limita larghezza su desktop */
 }
 
 .visual-layer {
   position: absolute;
-  border-radius: 30px;
+  border-radius: 24px;
   transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
 .layer-main {
-  top: 12%;
-  left: 10%;
-  width: 80%;
-  height: 80%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 90%;
+  height: 90%;
   background: #111;
   z-index: 3;
   display: flex;
   align-items: center;
   justify-content: center;
   box-shadow: 0 40px 80px rgba(0, 0, 0, 0.6);
-  padding: 12px;
+  padding: 8px;
+  aspect-ratio: 1 / 1;
 }
 
-.layer-main img {
+.layer-main img, 
+.layer-main .founder-img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center top;
-  border-radius: 20px;
+  object-position: center center;
+  border-radius: 16px;
+  display: block;
 }
 
 .layer-badge {
   bottom: 5%;
-  right: -5%;
-  z-index: 4;
+  right: -2%;
+  z-index: 10;
+  transform-origin: bottom right;
 }
 
 .experience-badge-content {
   background: var(--primary-2);
-  padding: 30px;
-  border-radius: 25px;
+  padding: 24px;
+  border-radius: 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
   box-shadow: 0 20px 40px rgba(225, 29, 72, 0.4);
   transform: rotate(5deg);
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .experience-badge-content .years {
-  font-size: 3rem;
+  font-size: clamp(1.5rem, 4vw, 3rem);
   font-weight: 900;
   line-height: 1;
   color: #fff;
 }
 
 .experience-badge-content .label {
-  font-size: 0.8rem;
+  font-size: clamp(0.6rem, 2vw, 0.8rem);
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 0.1em;
-  margin-top: 6px;
+  margin-top: 4px;
   color: rgba(255, 255, 255, 0.9);
+  white-space: nowrap;
+}
+
+/* Breakpoints Responsivi */
+@media (max-width: 1024px) {
+  .about-grid {
+    gap: 60px;
+  }
+}
+
+@media (max-width: 768px) {
+  .about-grid {
+    grid-template-columns: 1fr;
+    gap: 40px;
+    text-align: center;
+  }
+
+  .about-visual-container {
+    height: 450px;
+    margin-top: 20px;
+  }
+
+  .about-values {
+    justify-content: center;
+  }
+
+  .value-card {
+    text-align: left;
+  }
+
+  .about-actions {
+    justify-content: center;
+  }
+
+  .layer-main {
+    width: 85%;
+    height: 85%;
+  }
+
+  .experience-badge-content {
+    padding: 16px;
+    transform: rotate(3deg) scale(0.85);
+  }
+}
+
+@media (max-width: 480px) {
+  .about-section {
+    padding: 40px 0;
+  }
+
+  .about-visual-container {
+    height: 350px;
+  }
+
+  .layer-main {
+    width: 90%;
+    height: 90%;
+    padding: 6px;
+  }
+
+  .layer-badge {
+    bottom: 2%;
+    right: 2%;
+  }
+
+  .experience-badge-content {
+    padding: 12px;
+    transform: rotate(2deg) scale(0.75);
+    border-radius: 14px;
+  }
+  
+  .experience-badge-content .years {
+    font-size: 1.8rem;
+  }
+}
+
+/* Ottimizzazione per iOS Safari (viewport-fit: cover) */
+@supports (-webkit-touch-callout: none) {
+  .about-section {
+    padding-bottom: calc(40px + env(safe-area-inset-bottom));
+  }
 }
 
 /* Content Styles Refinement */
