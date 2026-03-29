@@ -7,7 +7,11 @@ const success = ref(false)
 
 const themes = [
   { id: 'rosso', label: 'Rosso Corsa', primary: '#dc2626', secondary: '#ef4444' },
-  { id: 'arancione', label: 'Arancione KTM', primary: '#ea580c', secondary: '#f97316' }
+  { id: 'arancione', label: 'Arancione KTM', primary: '#ea580c', secondary: '#f97316' },
+  { id: 'verde', label: 'Verde Ninja', primary: '#16a34a', secondary: '#22c55e' },
+  { id: 'blu', label: 'Blu Yamaha', primary: '#2563eb', secondary: '#3b82f6' },
+  { id: 'giallo', label: 'Giallo Modena', primary: '#d97706', secondary: '#f59e0b' },
+  { id: 'viola', label: 'Viola Biker', primary: '#7c3aed', secondary: '#8b5cf6' }
 ]
 
 const selectTheme = (id) => {

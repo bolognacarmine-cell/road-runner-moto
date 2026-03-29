@@ -6,7 +6,7 @@ export default defineEventHandler(async (event) => {
   const body = await readBody(event)
   const { themeColor } = body
 
-  if (!themeColor || !['rosso', 'arancione'].includes(themeColor)) {
+  if (!themeColor || !['rosso', 'arancione', 'verde', 'blu', 'giallo', 'viola'].includes(themeColor)) {
     throw createError({ statusCode: 400, statusMessage: 'Colore non valido' })
   }
 
