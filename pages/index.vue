@@ -162,17 +162,17 @@ onMounted(() => {
       @select-brand="handleBrandSelect" 
     />
 
-    <!-- About Section -->
+    <!-- About Section (La Nostra Storia) -->
     <AboutSection />
 
-    <!-- Security Section -->
-    <SecuritySection />
+    <!-- Lifestyle (Vivi la tua passione al massimo) -->
+    <LifestyleSection />
 
-    <!-- Helmets Section (Dedicata Caschi) -->
+    <!-- Helmets Section (Protezione e Stile - Caschi Protettivi) -->
     <HelmetsSection />
 
-    <!-- Lifestyle (Accessori & Mondo Biker) -->
-    <LifestyleSection />
+    <!-- Security Section (Protezione Avanzata) -->
+    <SecuritySection />
 
     <!-- Trade-In (Permute) Section -->
     <TradeInSection />
