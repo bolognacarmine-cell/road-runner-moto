@@ -6,8 +6,8 @@ const loading = ref(false)
 const success = ref(false)
 
 const themes = [
-  { id: 'rosso', label: 'Rosso Corsa', primary: '#dc2626', secondary: '#b91c1c' },
-  { id: 'arancione', label: 'Arancione KTM', primary: '#ea580c', secondary: '#c2410c' }
+  { id: 'rosso', label: 'Rosso Corsa', primary: '#dc2626', secondary: '#ef4444' },
+  { id: 'arancione', label: 'Arancione KTM', primary: '#ea580c', secondary: '#f97316' }
 ]
 
 const selectTheme = (id) => {

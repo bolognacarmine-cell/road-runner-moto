@@ -12,16 +12,18 @@ export const useSiteSettings = defineStore('siteSettings', {
       this.themeColor = color
       if (color === 'arancione') {
         this.primary = '#ea580c'
-        this.primary2 = '#c2410c'
+        this.primary2 = '#f97316'
       } else {
         this.primary = '#dc2626'
-        this.primary2 = '#b91c1c'
+        this.primary2 = '#ef4444'
       }
       
-      // Applica al volo per preview (opzionale se usiamo v-bind)
+      // Applica globalmente modificando le variabili root
       if (process.client) {
-        document.documentElement.style.setProperty('--primary', this.primary)
-        document.documentElement.style.setProperty('--primary-2', this.primary2)
+        const root = document.documentElement
+        root.style.setProperty('--primary', this.primary)
+        root.style.setProperty('--primary-2', this.primary2)
+        root.style.setProperty('--accent', this.primary) // Spesso usato come sinonimo
       }
     },
     
