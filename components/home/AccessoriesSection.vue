@@ -4,7 +4,7 @@ import { onMounted, nextTick, ref } from 'vue'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import HelmetsPromo from './HelmetsPromo.vue'
-import MotoCarousel from './MotoCarousel.vue'
+import MotoCarousel from '../moto/MotoCarousel.vue'
 
 if (process.client) {
   gsap.registerPlugin(ScrollTrigger)
