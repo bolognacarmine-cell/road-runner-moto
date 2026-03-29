@@ -149,18 +149,6 @@ onMounted(() => {
       subtitle="Vendita plurimarche, finanziamenti su misura e assistenza specializzata"
     />
 
-    <!-- About Section (La Nostra Storia) -->
-    <AboutSection />
-
-    <!-- Lifestyle (Vivi la tua passione al massimo) -->
-    <LifestyleSection />
-
-    <!-- Helmets Section (Protezione e Stile - Caschi Protettivi) -->
-    <HelmetsSection />
-
-    <!-- Security Section (Protezione Avanzata) -->
-    <SecuritySection />
-
     <!-- Featured Vehicles dinamico (Nuovo & Usato incorporati) -->
     <FeaturedVehicles 
       id="moto"
@@ -173,6 +161,18 @@ onMounted(() => {
       :selected-brand="selectedBrand" 
       @select-brand="handleBrandSelect" 
     />
+
+    <!-- About Section (La Nostra Storia) -->
+    <AboutSection />
+
+    <!-- Lifestyle (Vivi la tua passione al massimo) -->
+    <LifestyleSection />
+
+    <!-- Helmets Section (Protezione e Stile - Caschi Protettivi) -->
+    <HelmetsSection />
+
+    <!-- Security Section (Protezione Avanzata) -->
+    <SecuritySection />
 
     <!-- Trade-In (Permute) Section -->
     <TradeInSection />
