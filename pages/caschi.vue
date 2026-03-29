@@ -1,6 +1,6 @@
 
 <script setup>
-import { useAsyncData, useFetch, computed } from '#imports'
+import { useAsyncData, computed, ref, useHead } from '#imports'
 import MotoCarousel from '~/components/moto/MotoCarousel.vue'
 
 // Recupero dinamico dei caschi dal database
