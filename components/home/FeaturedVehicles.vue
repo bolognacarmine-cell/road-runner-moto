@@ -362,7 +362,9 @@ onUnmounted(() => {
               </div>
               <div class="spec-item">
                 <span class="spec-icon">🛣️</span>
-                <span class="spec-value">{{ moto.chilometri?.toLocaleString('it-IT') || '0' }} km</span>
+                <span class="spec-value">
+                  <ClientOnly>{{ moto.chilometri?.toLocaleString('it-IT') || '0' }} km</ClientOnly>
+                </span>
               </div>
               <div class="spec-item">
                 <span class="spec-icon">⚡</span>
@@ -373,7 +375,9 @@ onUnmounted(() => {
             <div class="moto-footer-premium">
               <div class="price-display-wrapper">
                 <span class="price-label">Prezzo</span>
-                <strong class="main-price">{{ formatPrice(moto.prezzo) }}</strong>
+                <strong class="main-price">
+                  <ClientOnly>{{ formatPrice(moto.prezzo) }}</ClientOnly>
+                </strong>
               </div>
               <NuxtLink :to="{ path: '/', query: { moto: moto._id }, hash: '#preventivo' }" class="btn-quote-minimal">
                 <span class="icon">✉️</span>

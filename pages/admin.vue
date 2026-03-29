@@ -268,7 +268,9 @@
           <div v-else class="leads-list">
             <div v-for="l in leads" :key="l._id" class="lead-card">
               <div class="lead-header">
-                <span class="lead-date">{{ new Date(l.createdAt).toLocaleDateString('it-IT') }}</span>
+                <span class="lead-date">
+                  <ClientOnly>{{ new Date(l.createdAt).toLocaleDateString('it-IT') }}</ClientOnly>
+                </span>
                 <span class="lead-status" :class="l.status">{{ l.status }}</span>
               </div>
               <div class="lead-body">
@@ -319,7 +321,9 @@
           <div v-else class="leads-list">
             <div v-for="t in tradeIns" :key="t._id" class="lead-card trade-in-card">
               <div class="lead-header">
-                <span class="lead-date">{{ new Date(t.createdAt).toLocaleDateString('it-IT') }}</span>
+                <span class="lead-date">
+                  <ClientOnly>{{ new Date(t.createdAt).toLocaleDateString('it-IT') }}</ClientOnly>
+                </span>
                 <span class="lead-status" :class="t.status">{{ t.status }}</span>
               </div>
               <div class="lead-body">

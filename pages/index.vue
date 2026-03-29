@@ -122,20 +122,22 @@ const handleBrandSelect = (brandName) => {
   }
 }
 
-// Recupero veicoli dal backend
-const fetchVehicles = async () => {
-  try {
-    const res = await $fetch('/api/motos')
-    vehicles.value = Array.isArray(res.motos) ? res.motos : []
-  } catch (e) {
-    console.error('Errore nel caricamento:', e)
-    error.value = true
-  } finally {
-    loading.value = false
+// Recupero veicoli dal backend con useAsyncData per evitare hydration mismatch
+const { data: motosData, error: fetchError } = await useAsyncData('motos', () => $fetch('/api/motos'), {
+  transform: (res) => {
+    return Array.isArray(res.motos) ? res.motos : []
   }
-}
+})
 
-fetchVehicles()
+// vehicles sarà reattivo a motosData.value
+const vehicles = computed(() => motosData.value || [])
+
+onMounted(() => {
+  if (fetchError.value) {
+    error.value = true
+  }
+  loading.value = false
+})
 </script>
 
 <template>
