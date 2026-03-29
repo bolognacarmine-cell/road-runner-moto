@@ -1,9 +1,9 @@
 <template>
   <div class="finance-page">
-    <div class="container py-20">
+    <div class="container main-container">
       <NuxtLink to="/" class="back-link">← Torna alla Home</NuxtLink>
       
-      <div class="finance-grid mt-10">
+      <div class="finance-grid">
         <!-- Parte Testuale -->
         <div class="finance-content">
           <p class="section-kicker">Finanziamenti</p>
@@ -72,6 +72,13 @@
   background: #050505;
   color: #fff;
   min-height: 100vh;
+  padding-top: 140px; /* Offset per l'header absolute */
+  position: relative;
+  z-index: 1;
+}
+
+.main-container {
+  padding-bottom: 80px;
 }
 
 .back-link {
@@ -80,6 +87,8 @@
   font-weight: 700;
   font-size: 0.9rem;
   transition: opacity 0.3s;
+  display: inline-block;
+  margin-bottom: 40px;
 }
 
 .back-link:hover {
@@ -88,13 +97,16 @@
 
 .finance-grid {
   display: grid;
-  grid-template-columns: 1fr 400px;
+  grid-template-columns: 1fr 450px;
   gap: 80px;
   align-items: start;
+  position: relative;
 }
 
 .finance-content {
-  min-width: 0; /* Previene overflow del testo in grid */
+  min-width: 0;
+  position: relative;
+  z-index: 2;
 }
 
 .section-kicker {
@@ -186,47 +198,111 @@ h1 {
 
 .finance-visual {
   position: sticky;
-  top: 120px;
+  top: 140px; /* Offset per l'header */
+  z-index: 5;
 }
 
 .image-container {
+  position: relative;
   border-radius: 30px;
   overflow: hidden;
-  box-shadow: 0 40px 80px rgba(0,0,0,0.5);
-  border: 1px solid rgba(255,255,255,0.1);
+  box-shadow: 0 40px 80px rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: #111;
+  aspect-ratio: 1 / 1;
 }
 
 .promo-img {
   width: 100%;
-  height: auto;
+  height: 100%;
+  object-fit: contain; /* Mostra tutto il logo senza tagli */
   display: block;
+  padding: 20px;
 }
 
+/* --- Responsive Layout --- */
+
 @media (max-width: 1100px) {
+  .finance-page {
+    padding-top: 120px;
+  }
+  
   .finance-grid {
     grid-template-columns: 1fr;
-    gap: 40px;
+    gap: 60px;
   }
   
   .finance-visual {
-    position: static;
-    order: -1;
-    max-width: 500px;
+    position: relative;
+    top: 0;
+    max-width: 450px;
     margin: 0 auto;
+    order: -1;
+  }
+  
+  .image-container {
+    aspect-ratio: 16 / 9;
   }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 768px) {
+  .finance-page {
+    padding-top: 110px;
+  }
+  
   .finance-grid {
-    gap: 30px;
+    gap: 40px;
+  }
+  
+  h1 {
+    font-size: 2.8rem;
+  }
+  
+  .intro-text {
+    font-size: 1.1rem;
+    margin-bottom: 30px;
+  }
+  
+  .info-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 576px) {
+  .finance-page {
+    padding-top: 100px;
   }
   
   h1 {
     font-size: 2.2rem;
   }
   
+  .finance-visual {
+    max-width: 100%;
+  }
+  
+  .image-container {
+    border-radius: 20px;
+    aspect-ratio: 1 / 1; /* Torna a quadrato su mobile per il logo Compass */
+  }
+  
   .info-card {
-    padding: 16px;
+    padding: 20px;
+  }
+  
+  .info-card h4 {
+    font-size: 1rem;
+  }
+  
+  .info-card ul li {
+    font-size: 0.85rem;
+  }
+}
+
+/* Ottimizzazione per iOS Safari (viewport-fit: cover) */
+@supports (-webkit-touch-callout: none) {
+  .finance-page {
+    padding-bottom: calc(80px + env(safe-area-inset-bottom));
   }
 }
 </style>
