@@ -74,11 +74,10 @@ onMounted(async () => {
 
 <style scoped>
 .accessories-section {
-  padding: 140px 0;
-  background: #080808;
+  padding: 60px 0;
+  background: var(--bg);
   position: relative;
   overflow: hidden;
-  scroll-margin-top: 100px;
 }
 
 .bg-decoration {

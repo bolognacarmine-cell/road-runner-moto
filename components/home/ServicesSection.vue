@@ -67,7 +67,6 @@ onMounted(() => {
 .benefits-section {
   padding: 80px 0;
   background: var(--bg);
-  scroll-margin-top: 180px; /* Margine per l'header fisso */
 }
 
 .section-heading {

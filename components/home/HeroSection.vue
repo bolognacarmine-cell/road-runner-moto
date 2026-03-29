@@ -138,12 +138,18 @@ onUnmounted(() => {
 <style scoped>
 .hero {
   position: relative;
-  height: 100vh;
+  min-height: 100vh;
   width: 100%;
   display: flex;
   align-items: center;
   overflow: hidden;
   background: #000;
+}
+
+@media (max-width: 768px) {
+  .hero {
+    padding: 100px 0; /* Più spazio per il contenuto su mobile */
+  }
 }
 
 .hero-video-wrapper {
@@ -153,6 +159,7 @@ onUnmounted(() => {
   width: 100%;
   height: 100%;
   z-index: 1;
+  pointer-events: none;
 }
 
 .hero-video {

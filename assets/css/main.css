@@ -28,6 +28,7 @@
 
 html {
   scroll-behavior: smooth;
+  scroll-padding-top: 80px; /* Compensa l'header fisso per gli anchor links */
   overflow-x: hidden;
   font-size: 16px;
 }

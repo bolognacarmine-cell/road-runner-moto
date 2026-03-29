@@ -404,7 +404,6 @@ onUnmounted(() => {
   position: relative;
   z-index: 2;
   margin-top: 0;
-  scroll-margin-top: 20px;
 }
 
 .section-heading-row {

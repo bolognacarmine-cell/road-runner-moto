@@ -59,10 +59,10 @@ const brands = [
 
 <style scoped>
 .brands-section {
-  padding: 40px 16px;
-  background: #050505;
-  color: #f5f5f5;
-  scroll-margin-top: 180px; /* Margine per l'header fisso */
+  padding: 60px 0;
+  background: var(--bg);
+  position: relative;
+  z-index: 2;
 }
 
 .section-heading {

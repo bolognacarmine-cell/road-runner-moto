@@ -21,10 +21,15 @@ const selectFilter = (filter) => {
 }
 
 const mobileMenuOpen = ref(false)
+const isScrolled = ref(false)
 let ctx;
 
 const toggleMenu = () => {
   mobileMenuOpen.value = !mobileMenuOpen.value
+}
+
+const handleScroll = () => {
+  isScrolled.value = window.scrollY > 50
 }
 
 // Silktide Consent Manager - Local Implementation
@@ -35,6 +40,7 @@ useHead({
 })
 
 onMounted(async () => {
+  window.addEventListener('scroll', handleScroll)
   await settings.fetchSettings()
   await nextTick()
   
@@ -136,6 +142,7 @@ onMounted(async () => {
 })
 
 onUnmounted(() => {
+  window.removeEventListener('scroll', handleScroll)
   if (ctx) ctx.revert()
 })
 </script>
@@ -143,7 +150,7 @@ onUnmounted(() => {
 <template>
   <div class="page-shell">
     <!-- Header Standard Minimale -->
-    <header v-if="!isExcludedPage" class="minimal-header">
+    <header v-if="!isExcludedPage" class="minimal-header" :class="{ 'header-scrolled': isScrolled, 'menu-open': mobileMenuOpen }">
       <div class="container header-content">
         <NuxtLink to="/" class="minimal-logo">
           <div class="logo-box">
@@ -174,7 +181,7 @@ onUnmounted(() => {
           <div class="nav-dropdown">
             <span class="dropdown-trigger">Lifestyle <span class="arrow">▼</span></span>
             <div class="dropdown-content">
-              <NuxtLink to="/#lifestyle">Accessori</NuxtLink>
+              <NuxtLink to="/#caschi">Accessori</NuxtLink>
               <NuxtLink to="/#lifestyle">Mondo Biker</NuxtLink>
             </div>
           </div>
@@ -219,7 +226,7 @@ onUnmounted(() => {
 
             <div class="mobile-group">
               <span class="group-title">Lifestyle</span>
-              <NuxtLink to="/#lifestyle" @click="toggleMenu">Accessori</NuxtLink>
+              <NuxtLink to="/#caschi" @click="toggleMenu">Accessori</NuxtLink>
               <NuxtLink to="/#lifestyle" @click="toggleMenu">Mondo Biker</NuxtLink>
             </div>
 
@@ -303,13 +310,26 @@ onUnmounted(() => {
 }
 
 .minimal-header {
-  position: absolute;
+  position: fixed; /* Modificato da absolute a fixed per accessibilità menu */
   top: 0;
   left: 0;
   width: 100%;
-  padding: 1.5rem 0;
+  padding: 1rem 0;
   z-index: 1000;
-  background: linear-gradient(to bottom, rgba(0,0,0,0.8) 0%, transparent 100%);
+  background: linear-gradient(to bottom, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.4) 50%, transparent 100%);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.minimal-header.header-scrolled {
+  background: rgba(3, 3, 3, 0.95);
+  backdrop-filter: blur(15px);
+  padding: 0.6rem 0;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+
+.minimal-header.menu-open {
+  background: #050505;
+  backdrop-filter: none;
 }
 
 .header-content {
@@ -498,6 +518,7 @@ onUnmounted(() => {
   cursor: pointer;
   padding: 10px;
   z-index: 1001;
+  position: relative; /* Assicura che lo z-index funzioni */
 }
 
 .hamburger {
@@ -534,12 +555,14 @@ onUnmounted(() => {
 .mobile-drawer {
   position: fixed;
   inset: 0;
-  background: rgba(5, 5, 5, 0.98);
+  background: rgba(5, 5, 5, 0.99); /* Più opaco */
   backdrop-filter: blur(20px);
   z-index: 1000;
-  padding: 120px 40px 60px;
+  padding: 100px 40px 100px; /* Più spazio in basso */
   display: flex;
   flex-direction: column;
+  overflow-y: auto; /* Abilitato scroll per piccoli schermi */
+  -webkit-overflow-scrolling: touch;
 }
 
 .mobile-nav {
@@ -608,7 +631,7 @@ onUnmounted(() => {
   }
 }
 
-@media (max-width: 850px) {
+@media (max-width: 1024px) {
   .minimal-nav {
     display: none;
   }
