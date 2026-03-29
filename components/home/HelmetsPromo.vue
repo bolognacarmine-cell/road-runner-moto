@@ -5,27 +5,27 @@ import { ref, onMounted, onUnmounted } from 'vue'
 const currentSlide = ref(0)
 const images = [
   {
-    url: 'https://images.weserv.nl/?url=https://trae-user-assets.s3.amazonaws.com/uploads/3a79f1f0-0d65-4b1d-876a-9f5b66781829/image.png',
+    url: '/img/helmets/momo-showroom.jpg',
     title: 'Showroom MomoDesign',
     desc: 'La collezione completa disponibile in negozio'
   },
   {
-    url: 'https://images.weserv.nl/?url=https://trae-user-assets.s3.amazonaws.com/uploads/1e176694-8031-414c-836d-004456181829/image.png',
+    url: '/img/helmets/momo-blue.jpg',
     title: 'MomoDesign Blue Matte',
     desc: 'Stile urbano e finiture premium'
   },
   {
-    url: 'https://images.weserv.nl/?url=https://trae-user-assets.s3.amazonaws.com/uploads/7f651818-2900-4103-8310-310310310310/image.png',
+    url: '/img/helmets/momo-green.jpg',
     title: 'MomoDesign Military Green',
     desc: 'Design iconico e personalità distintiva'
   },
   {
-    url: 'https://images.weserv.nl/?url=https://trae-user-assets.s3.amazonaws.com/uploads/83103103-1031-4031-8310-310310310310/image.png',
+    url: '/img/helmets/momo-black.jpg',
     title: 'MomoDesign Matte Black',
     desc: 'L\'eleganza del nero opaco'
   },
   {
-    url: 'https://images.weserv.nl/?url=https://trae-user-assets.s3.amazonaws.com/uploads/10310310-3103-4103-8310-310310310310/image.png',
+    url: '/img/helmets/momo-grey.jpg',
     title: 'MomoDesign Titanium Grey',
     desc: 'Tecnologia e stile contemporaneo'
   }
