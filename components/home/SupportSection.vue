@@ -209,6 +209,7 @@ const services = [
 .btn-whatsapp-support {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 10px;
   min-height: 52px;
   padding: 0 32px;
@@ -249,6 +250,11 @@ const services = [
 @media (max-width: 640px) {
   .cta-btns {
     flex-direction: column;
+    width: 100%;
+  }
+  .btn-primary-custom, .btn-whatsapp-support {
+    width: 100%;
+    justify-content: center;
   }
   .support-card {
     padding: 32px;
