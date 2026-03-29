@@ -54,11 +54,11 @@
         <div class="finance-visual">
           <div class="image-container">
             <img 
-              :src="'/compass-promo.jpg'" 
+              :src="'/compass.jpg'" 
               alt="Compass - Acquisti Leggeri" 
               class="promo-img"
               loading="lazy"
-              @error="(e) => e.target.src = 'https://i.ibb.co/v4m0mXz/compass-promo.jpg'"
+              @error="(e) => e.target.src = '/compass.jpg'"
             />
           </div>
         </div>
