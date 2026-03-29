@@ -206,11 +206,22 @@ const services = [
   flex-shrink: 0;
 }
 
+.btn-primary-custom {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 52px;
+  padding: 0 32px;
+  border-radius: var(--radius);
+  font-weight: 700;
+  font-size: 1rem;
+}
+
 .btn-whatsapp-support {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
+  gap: 12px;
   min-height: 52px;
   padding: 0 32px;
   border-radius: var(--radius);
@@ -220,11 +231,18 @@ const services = [
   color: white;
   transition: all var(--transition);
   box-shadow: 0 10px 20px -5px rgba(37, 211, 102, 0.4);
+  text-align: center;
+}
+
+.btn-whatsapp-support span {
+  display: inline-block;
+  line-height: 1;
 }
 
 .btn-whatsapp-support svg {
-  width: 20px;
-  height: 20px;
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
 }
 
 @media (hover: hover) {
