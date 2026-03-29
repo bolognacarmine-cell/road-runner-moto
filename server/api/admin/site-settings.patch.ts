@@ -4,9 +4,9 @@ import { MongoClient } from 'mongodb'
 export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig(event)
   const body = await readBody(event)
-  const { themeColor } = body
+  const { themeColor, backgroundColor, textColor } = body
 
-  if (!themeColor || !['rosso', 'arancione', 'verde', 'blu', 'giallo', 'viola'].includes(themeColor)) {
+  if (themeColor && !['rosso', 'arancione', 'verde', 'blu', 'giallo', 'viola'].includes(themeColor)) {
     throw createError({ statusCode: 400, statusMessage: 'Colore non valido' })
   }
 
@@ -16,19 +16,20 @@ export default defineEventHandler(async (event) => {
     await client.connect()
     const db = client.db(config.mongodbDbName)
     
+    // Costruisci oggetto update
+    const updateData: any = { updatedAt: new Date() }
+    if (themeColor) updateData.themeColor = themeColor
+    if (backgroundColor) updateData.backgroundColor = backgroundColor
+    if (textColor) updateData.textColor = textColor
+
     // Aggiorna o crea il documento unico di impostazioni
     await db.collection('siteSettings').updateOne(
       { _id: 'road-runner-settings' as any },
-      { 
-        $set: { 
-          themeColor, 
-          updatedAt: new Date() 
-        } 
-      },
+      { $set: updateData },
       { upsert: true }
     )
 
-    return { success: true, themeColor }
+    return { success: true, themeColor, backgroundColor, textColor }
 
   } catch (error: any) {
     console.error('ERRORE PATCH SITE SETTINGS:', error)

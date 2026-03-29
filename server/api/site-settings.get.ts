@@ -10,10 +10,18 @@ export default defineEventHandler(async (event) => {
     const db = client.db(config.mongodbDbName)
     const settings = await db.collection('siteSettings').findOne({ _id: 'road-runner-settings' as any })
     
-    return settings || { themeColor: 'rosso' }
+    return settings || { 
+      themeColor: 'rosso',
+      backgroundColor: '#030303',
+      textColor: '#fdfdfd'
+    }
 
   } catch (error: any) {
-    return { themeColor: 'rosso' }
+    return { 
+      themeColor: 'rosso',
+      backgroundColor: '#030303',
+      textColor: '#fdfdfd'
+    }
   } finally {
     await client.close()
   }
