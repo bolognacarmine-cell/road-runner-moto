@@ -329,7 +329,8 @@ onMounted(async () => {
   overflow: hidden;
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  justify-content: center;
+  gap: 12px;
 }
 
 .btn-whatsapp::after {
