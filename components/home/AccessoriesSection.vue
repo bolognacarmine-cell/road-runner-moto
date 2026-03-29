@@ -1,6 +1,6 @@
 
 <script setup>
-import { onMounted, nextTick, ref } from 'vue'
+import { onMounted, nextTick, ref, computed } from 'vue'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import HelmetsPromo from './HelmetsPromo.vue'
@@ -10,26 +10,18 @@ if (process.client) {
   gsap.registerPlugin(ScrollTrigger)
 }
 
-const helmets = ref([])
-const loading = ref(true)
-
-const fetchHelmets = async () => {
-  try {
-    const { data } = await useFetch('/api/helmets')
-    if (data.value && data.value.helmets) {
-      helmets.value = data.value.helmets.filter(h => h.isVisible !== false)
-    }
-  } catch (e) {
-    console.error('Errore recupero caschi:', e)
-  } finally {
-    loading.value = false
+const { data: helmetsData, pending: loadingHelmets } = await useAsyncData('helmets', () => $fetch('/api/helmets'), {
+  transform: (res) => {
+    return Array.isArray(res.helmets) ? res.helmets.filter(h => h.isVisible !== false) : []
   }
-}
+})
+
+// helmets sarà reattivo a helmetsData.value
+const helmets = computed(() => helmetsData.value || [])
 
 let ctx
 
 onMounted(async () => {
-  fetchHelmets()
   await nextTick()
   ctx = gsap.context(() => {
     // Animazione Intestazione
@@ -116,7 +108,7 @@ onMounted(async () => {
         </div>
       </div>
 
-      <div v-if="!loading && helmets.length === 0" class="helmets-grid">
+      <div v-if="!loadingHelmets && helmets.length === 0" class="helmets-grid">
         <!-- Card 1: Integrali -->
         <div class="helmet-card">
           <div class="helmet-visual">
