@@ -1,12 +1,15 @@
 
 <script setup>
-import { onMounted, nextTick } from 'vue'
+import { ref, onMounted, nextTick } from 'vue'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import PagerSatModal from '~/components/moto/PagerSatModal.vue'
 
 if (process.client) {
   gsap.registerPlugin(ScrollTrigger)
 }
+
+const isPagerSatModalOpen = ref(false)
 
 const services = [
   {
@@ -31,12 +34,12 @@ const services = [
     ]
   },
   {
-    title: 'Officina Specializzata',
-    desc: 'Affida la tua moto a mani esperte: eseguiamo tagliandi, riparazioni, controlli completi e diagnosi professionali. Un servizio preciso e trasparente per mantenere il tuo veicolo sempre efficiente.',
-    icon: '🔧',
-    type: 'service',
-    link: '/#contatti',
-    linkText: 'Richiedi Info'
+    title: 'Localizzatore Satellitare',
+    desc: 'Proteggi il tuo investimento con il sistema Techno-alarm PagerSAT: antifurto satellitare autogestito senza canoni mensili, con blocco motore remoto e avvisi SMS.',
+    icon: '🛡️',
+    type: 'security',
+    action: () => { isPagerSatModalOpen.value = true },
+    linkText: 'Scopri PagerSAT'
   }
 ]
 
@@ -106,15 +109,27 @@ onMounted(async () => {
             </ul>
           </div>
           <div class="card-footer">
-            <NuxtLink v-if="s.link.startsWith('/')" :to="s.link" class="service-link" :target="s.link.endsWith('.jpg') ? '_blank' : undefined">
-              {{ s.linkText }} →
-            </NuxtLink>
-            <a v-else :href="s.link" class="service-link" target="_blank">
-              {{ s.linkText }} →
-            </a>
+            <template v-if="s.action">
+              <button class="service-link btn-action" @click="s.action">
+                {{ s.linkText }} →
+              </button>
+            </template>
+            <template v-else>
+              <NuxtLink v-if="s.link.startsWith('/')" :to="s.link" class="service-link" :target="s.link.endsWith('.jpg') ? '_blank' : undefined">
+                {{ s.linkText }} →
+              </NuxtLink>
+              <a v-else :href="s.link" class="service-link" target="_blank">
+                {{ s.linkText }} →
+              </a>
+            </template>
           </div>
         </div>
       </div>
+
+      <PagerSatModal 
+        :is-open="isPagerSatModalOpen" 
+        @close="isPagerSatModalOpen = false" 
+      />
 
       <!-- CTA Unificato -->
       <div class="support-cta-box">
@@ -256,7 +271,19 @@ onMounted(async () => {
   color: var(--primary-2);
   text-decoration: none;
   font-weight: 800;
-  font-size: 0.9rem;
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+.service-link:hover {
+  transform: translateX(5px);
+  color: #fff;
 }
 
 /* CTA Box */
