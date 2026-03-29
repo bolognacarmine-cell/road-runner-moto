@@ -100,6 +100,12 @@
             <span class="icon">📰</span> Blog
           </button>
           <button 
+            :class="{ active: currentTab === 'helmets' || currentTab === 'addHelmet' || currentTab === 'editHelmet' }" 
+            @click="currentTab = 'helmets'; fetchHelmets(); isSidebarOpen = false"
+          >
+            <span class="icon">🪖</span> Gestione Caschi
+          </button>
+          <button 
             :class="{ active: currentTab === 'theme' }" 
             @click="currentTab = 'theme'; isSidebarOpen = false"
           >
@@ -247,6 +253,155 @@
             <div class="form-actions">
               <button type="submit" :disabled="submitting" class="btn-primary-custom">
                 {{ submitting ? 'Salvataggio...' : (currentTab === 'add' ? 'Pubblica Veicolo' : 'Salva Modifiche') }}
+              </button>
+              <p v-if="formMessage" :class="['msg', isSuccess ? 'success' : 'error']">{{ formMessage }}</p>
+            </div>
+          </form>
+        </section>
+
+        <!-- Helmets List View -->
+        <section v-if="currentTab === 'helmets'" class="content-section">
+          <div class="section-header">
+            <div>
+              <h2>Gestione Caschi Protettivi</h2>
+              <p>Inserisci e modifica i caschi disponibili in negozio</p>
+            </div>
+            <button @click="openAddHelmetForm" class="btn-primary-custom">+ Aggiungi Casco</button>
+          </div>
+
+          <div v-if="loading" class="loading-state">Caricamento caschi...</div>
+          
+          <div v-else-if="helmets.length === 0" class="empty-state">
+            <p>Nessun casco presente nel database.</p>
+            <button @click="openAddHelmetForm" class="btn-primary-custom">Aggiungi il primo casco</button>
+          </div>
+
+          <div v-else class="motos-grid">
+            <div v-for="h in helmets" :key="h._id" class="moto-card-admin">
+              <div class="moto-img-admin">
+                <MotoCarousel :images="h.immagini" :altText="h.nome" />
+              </div>
+              <div class="moto-info-admin">
+                <h3>{{ h.marca }} {{ h.modello }}</h3>
+                <div class="moto-tags">
+                  <span class="tag">{{ h.categoria }}</span>
+                  <span class="tag status" :class="h.disponibilita">{{ h.disponibilita }}</span>
+                  <span class="tag badge-type" :class="h.badge">{{ h.badge }}</span>
+                  <span class="tag visibility" :class="h.isVisible !== false ? 'visible' : 'hidden'">
+                    {{ h.isVisible !== false ? '👁️ Visibile' : '🚫 Nascosto' }}
+                  </span>
+                </div>
+                <p class="price">€ {{ h.prezzoScontato || h.prezzoOriginale }}</p>
+                <div class="actions-admin">
+                  <button @click="editHelmet(h)" class="btn-edit">Modifica</button>
+                  <button @click="deleteHelmet(h._id)" class="btn-delete">Elimina</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Helmet Form View (Add/Edit) -->
+        <section v-if="currentTab === 'addHelmet' || currentTab === 'editHelmet'" class="content-section">
+          <div class="section-header">
+            <h2>{{ currentTab === 'addHelmet' ? 'Nuovo Casco' : 'Modifica Casco' }}</h2>
+            <button @click="currentTab = 'helmets'" class="btn-back">← Torna ai caschi</button>
+          </div>
+
+          <form @submit.prevent="handleHelmetSubmit" class="moto-form">
+            <div class="form-grid">
+              <div class="form-group">
+                <label>Nome Prodotto</label>
+                <input type="text" v-model="helmetForm.nome" required />
+              </div>
+              <div class="form-group">
+                <label>Marca</label>
+                <input type="text" v-model="helmetForm.marca" required />
+              </div>
+              <div class="form-group">
+                <label>Modello</label>
+                <input type="text" v-model="helmetForm.modello" required />
+              </div>
+              <div class="form-group">
+                <label>Categoria</label>
+                <select v-model="helmetForm.categoria">
+                  <option value="Integrale">Integrale</option>
+                  <option value="Modular">Modulare</option>
+                  <option value="Jet">Jet</option>
+                  <option value="Cross">Cross / Enduro</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Prezzo Originale (€)</label>
+                <input type="number" v-model="helmetForm.prezzoOriginale" required />
+              </div>
+              <div class="form-group">
+                <label>Prezzo Scontato (€)</label>
+                <input type="number" v-model="helmetForm.prezzoScontato" />
+              </div>
+              <div class="form-group">
+                <label>Sconto (%)</label>
+                <input type="number" v-model="helmetForm.scontoPercentuale" />
+              </div>
+              <div class="form-group">
+                <label>Badge</label>
+                <select v-model="helmetForm.badge">
+                  <option value="novita">Novità</option>
+                  <option value="promo">Promo</option>
+                  <option value="offerta">In Offerta</option>
+                  <option value="bestseller">Best Seller</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Colore Principale</label>
+                <input type="text" v-model="helmetForm.colore" />
+              </div>
+              <div class="form-group">
+                <label>Taglie (es: S, M, L)</label>
+                <input type="text" v-model="helmetForm.taglie" />
+              </div>
+              <div class="form-group">
+                <label>Disponibilità</label>
+                <select v-model="helmetForm.disponibilita">
+                  <option value="disponibile">Disponibile</option>
+                  <option value="ordinabile">Su Ordinazione</option>
+                  <option value="esaurito">Esaurito</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Visibilità</label>
+                <select v-model="helmetForm.isVisible">
+                  <option :value="true">Pubblicato</option>
+                  <option :value="false">Bozza (Nascosto)</option>
+                </select>
+              </div>
+              <div class="form-group full-width">
+                <label>Descrizione Breve</label>
+                <input type="text" v-model="helmetForm.descrizioneBreve" />
+              </div>
+              <div class="form-group full-width">
+                <label>Descrizione Completa</label>
+                <textarea v-model="helmetForm.descrizioneCompleta" rows="4"></textarea>
+              </div>
+              <div class="form-group full-width">
+                <label>Galleria Immagini</label>
+                <input type="file" @change="handleHelmetImageUpload" multiple accept="image/*" class="file-input" />
+                <div v-if="unifiedHelmetImages.length" class="image-previews">
+                  <div v-for="(img, index) in unifiedHelmetImages" :key="index" class="image-preview-item">
+                    <img :src="img.preview" />
+                    <div class="image-controls">
+                      <button @click="moveHelmetImage(index, -1)" type="button" class="move-btn" :disabled="index === 0">←</button>
+                      <button @click="moveHelmetImage(index, 1)" type="button" class="move-btn" :disabled="index === unifiedHelmetImages.length - 1">→</button>
+                      <button @click="removeHelmetImage(index)" type="button" class="remove-btn">×</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-actions">
+              <button type="submit" :disabled="submitting" class="btn-primary-custom">
+                {{ submitting ? 'Salvataggio...' : (currentTab === 'addHelmet' ? 'Crea Casco' : 'Salva Modifiche') }}
               </button>
               <p v-if="formMessage" :class="['msg', isSuccess ? 'success' : 'error']">{{ formMessage }}</p>
             </div>
@@ -806,9 +961,139 @@ const motoForm = ref({
   immagini: []
 })
 
+const helmetForm = ref({
+  nome: '',
+  marca: '',
+  modello: '',
+  descrizioneBreve: '',
+  descrizioneCompleta: '',
+  prezzoOriginale: 0,
+  prezzoScontato: 0,
+  scontoPercentuale: 0,
+  promozioneAttiva: false,
+  testoPromozionale: '',
+  colore: '',
+  variantiColore: '',
+  taglie: '',
+  categoria: 'Integrale',
+  disponibilita: 'disponibile',
+  isVisible: true,
+  badge: 'novita',
+  immagini: []
+})
+
 const initialForm = { ...motoForm.value }
+const initialHelmetForm = { ...helmetForm.value }
 const unifiedImages = ref([]) // Lista unificata di immagini per riordinamento [{type: 'url'|'file', value: string|File, preview: string}]
+const unifiedHelmetImages = ref([]) 
 const editingId = ref(null)
+const editingHelmetId = ref(null)
+
+const helmets = ref([])
+const fetchHelmets = async () => {
+  try {
+    const res = await $fetch('/api/helmets')
+    helmets.value = res.helmets || []
+  } catch (e) {
+    console.error('Errore recupero caschi:', e)
+  }
+}
+
+const openAddHelmetForm = () => {
+  helmetForm.value = { ...initialHelmetForm }
+  unifiedHelmetImages.value = []
+  editingHelmetId.value = null
+  currentTab.value = 'addHelmet'
+}
+
+const editHelmet = (h) => {
+  helmetForm.value = { ...h }
+  unifiedHelmetImages.value = (h.immagini || []).map(url => ({
+    type: 'url',
+    value: url,
+    preview: url
+  }))
+  editingHelmetId.value = h._id
+  currentTab.value = 'editHelmet'
+}
+
+const handleHelmetImageUpload = (event) => {
+  const files = Array.from(event.target.files)
+  files.forEach(file => {
+    const reader = new FileReader()
+    reader.onload = (e) => {
+      unifiedHelmetImages.value.push({
+        type: 'file',
+        value: file,
+        preview: e.target.result
+      })
+    }
+    reader.readAsDataURL(file)
+  })
+}
+
+const removeHelmetImage = (index) => {
+  unifiedHelmetImages.value.splice(index, 1)
+}
+
+const moveHelmetImage = (index, direction) => {
+  const newIndex = index + direction
+  if (newIndex < 0 || newIndex >= unifiedHelmetImages.value.length) return
+  const temp = unifiedHelmetImages.value[index]
+  unifiedHelmetImages.value[index] = unifiedHelmetImages.value[newIndex]
+  unifiedHelmetImages.value[newIndex] = temp
+}
+
+const handleHelmetSubmit = async () => {
+  submitting.value = true
+  formMessage.value = ''
+  try {
+    const existingUrls = unifiedHelmetImages.value.filter(img => img.type === 'url').map(img => img.value)
+    const newFiles = unifiedHelmetImages.value.filter(img => img.type === 'file').map(img => img.value)
+    const imagesBase64 = []
+    for (const file of newFiles) {
+      const base64 = await new Promise((resolve) => {
+        const reader = new FileReader()
+        reader.onloadend = () => resolve(reader.result)
+        reader.readAsDataURL(file)
+      })
+      imagesBase64.push(base64)
+    }
+
+    const method = editingHelmetId.value ? 'PUT' : 'POST'
+    const url = editingHelmetId.value ? `/api/helmets/${editingHelmetId.value}` : '/api/helmets'
+    
+    const body = {
+      ...helmetForm.value,
+      imagesBase64,
+      immagini: existingUrls,
+      imageOrder: unifiedHelmetImages.value.map(img => img.type === 'url' ? img.value : 'NEW_IMAGE')
+    }
+
+    await $fetch(url, { method, body })
+    isSuccess.value = true
+    formMessage.value = 'Casco salvato con successo!'
+    setTimeout(() => {
+      fetchHelmets()
+      currentTab.value = 'helmets'
+    }, 1500)
+  } catch (e) {
+    isSuccess.value = false
+    formMessage.value = 'Errore durante il salvataggio del casco.'
+  } finally {
+    submitting.value = false
+  }
+}
+
+const deleteHelmet = async (id) => {
+  if (!confirm('Sei sicuro di voler eliminare questo casco?')) return
+  try {
+    await $fetch(`/api/helmets/${id}`, { method: 'DELETE' })
+    fetchHelmets()
+  } catch (e) {
+    alert('Errore durante l\'eliminazione')
+  }
+}
 
 // --- Portal Management Actions ---
 const selectedUserForAction = ref(null)

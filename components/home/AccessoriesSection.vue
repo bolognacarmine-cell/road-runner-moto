@@ -1,17 +1,35 @@
 
 <script setup>
-import { onMounted, nextTick } from 'vue'
+import { onMounted, nextTick, ref } from 'vue'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import HelmetsPromo from './HelmetsPromo.vue'
+import MotoCarousel from './MotoCarousel.vue'
 
 if (process.client) {
   gsap.registerPlugin(ScrollTrigger)
 }
 
+const helmets = ref([])
+const loading = ref(true)
+
+const fetchHelmets = async () => {
+  try {
+    const { data } = await useFetch('/api/helmets')
+    if (data.value && data.value.helmets) {
+      helmets.value = data.value.helmets.filter(h => h.isVisible !== false)
+    }
+  } catch (e) {
+    console.error('Errore recupero caschi:', e)
+  } finally {
+    loading.value = false
+  }
+}
+
 let ctx
 
 onMounted(async () => {
+  fetchHelmets()
   await nextTick()
   ctx = gsap.context(() => {
     // Animazione Intestazione
@@ -72,7 +90,33 @@ onMounted(async () => {
       <!-- Nuova Card Promozionale Caschi -->
       <HelmetsPromo />
 
-      <div class="helmets-grid">
+      <div v-if="helmets.length > 0" class="helmets-dynamic-grid">
+        <div v-for="h in helmets" :key="h._id" class="helmet-product-card">
+          <div class="product-badge" v-if="h.badge">{{ h.badge }}</div>
+          <div class="product-visual">
+            <MotoCarousel :images="h.immagini" :altText="h.nome" />
+          </div>
+          <div class="product-info">
+            <span class="product-category">{{ h.categoria }}</span>
+            <h3 class="product-name">{{ h.marca }} {{ h.modello }}</h3>
+            <p class="product-desc">{{ h.descrizioneBreve }}</p>
+            <div class="product-meta">
+              <span class="product-price">
+                <span v-if="h.prezzoScontato" class="old-price">€ {{ h.prezzoOriginale }}</span>
+                <span class="current-price">€ {{ h.prezzoScontato || h.prezzoOriginale }}</span>
+              </span>
+              <span class="product-taglia" v-if="h.taglie">Taglie: {{ h.taglie }}</span>
+            </div>
+            <div class="product-actions">
+              <a :href="`https://wa.me/393391581997?text=Ciao, vorrei informazioni sul casco ${h.marca} ${h.modello}`" target="_blank" class="btn-info">
+                Richiedi info
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div v-if="!loading && helmets.length === 0" class="helmets-grid">
         <!-- Card 1: Integrali -->
         <div class="helmet-card">
           <div class="helmet-visual">
@@ -353,6 +397,138 @@ onMounted(async () => {
   }
   .brands-placeholder {
     font-size: 1rem;
+  }
+}
+
+/* Nuovi stili per la griglia dinamica dei caschi */
+.helmets-dynamic-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 32px;
+  margin-bottom: 80px;
+}
+
+.helmet-product-card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 32px;
+  overflow: hidden;
+  transition: all 0.4s ease;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.helmet-product-card:hover {
+  transform: translateY(-10px);
+  background: rgba(255, 255, 255, 0.05);
+  border-color: var(--primary);
+}
+
+.product-badge {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: var(--primary);
+  color: white;
+  padding: 6px 14px;
+  border-radius: 100px;
+  font-size: 0.75rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  z-index: 10;
+}
+
+.product-visual {
+  height: 300px;
+  background: #000;
+}
+
+.product-info {
+  padding: 30px;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.product-category {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--primary-2);
+  font-weight: 800;
+  margin-bottom: 8px;
+  display: block;
+}
+
+.product-name {
+  font-size: 1.5rem;
+  font-weight: 900;
+  color: white;
+  margin-bottom: 12px;
+}
+
+.product-desc {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 0.95rem;
+  line-height: 1.5;
+  margin-bottom: 24px;
+}
+
+.product-meta {
+  margin-top: auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.product-price {
+  display: flex;
+  flex-direction: column;
+}
+
+.old-price {
+  text-decoration: line-through;
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.3);
+}
+
+.current-price {
+  font-size: 1.5rem;
+  font-weight: 900;
+  color: white;
+}
+
+.product-taglia {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.btn-info {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  padding: 16px;
+  background: white;
+  color: black;
+  text-decoration: none;
+  border-radius: 16px;
+  font-weight: 800;
+  transition: all 0.3s;
+}
+
+.btn-info:hover {
+  background: var(--primary);
+  color: white;
+  transform: translateY(-3px);
+}
+
+@media (max-width: 640px) {
+  .helmets-dynamic-grid {
+    grid-template-columns: 1fr;
   }
 }
 </style>
