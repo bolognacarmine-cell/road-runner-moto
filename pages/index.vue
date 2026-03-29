@@ -147,9 +147,6 @@ fetchVehicles()
       subtitle="Vendita plurimarche, finanziamenti su misura e assistenza specializzata"
     />
 
-    <!-- About Section -->
-    <AboutSection />
-
     <!-- Featured Vehicles dinamico (Nuovo & Usato incorporati) -->
     <FeaturedVehicles 
       id="moto"
@@ -162,6 +159,9 @@ fetchVehicles()
       :selected-brand="selectedBrand" 
       @select-brand="handleBrandSelect" 
     />
+
+    <!-- About Section -->
+    <AboutSection />
 
     <!-- Security Section -->
     <SecuritySection />
