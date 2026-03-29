@@ -9,13 +9,13 @@ if (process.client) {
 }
 
 const currentSlide = ref(0)
-const images = [
-  { url: '/img/helmets/collezione (1).jpg', title: 'Showroom ROAD RUNNER', badge: 'Official Dealer' },
-  { url: '/img/helmets/collezione (2).jpg', title: 'MomoDesign FGTR Blue', badge: 'Nuova Collezione' },
-  { url: '/img/helmets/collezione (3).jpg', title: 'MomoDesign FGTR Green', badge: 'Nuowe Colorazioni' },
-  { url: '/img/helmets/collezione (4).jpg', title: 'MomoDesign Classic Black', badge: 'Best Seller' },
-  { url: '/img/helmets/collezione (5).jpg', title: 'MomoDesign Titanium', badge: 'Disponibilità Immediata' }
-]
+
+// Generazione automatica della lista immagini da collezione (1) a (19)
+const images = Array.from({ length: 19 }, (_, i) => ({
+  url: `/img/helmets/collezione (${i + 1}).jpg`,
+  title: i === 0 ? 'Showroom ROAD RUNNER' : `MomoDesign Model ${i + 1}`,
+  badge: i === 0 ? 'Official Dealer' : (i < 5 ? 'Nuova Collezione' : 'Disponibile')
+}))
 
 let autoplayInterval
 const nextSlide = () => { currentSlide.value = (currentSlide.value + 1) % images.length }

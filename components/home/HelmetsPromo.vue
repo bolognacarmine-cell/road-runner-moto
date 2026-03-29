@@ -3,33 +3,13 @@
 import { ref, onMounted, onUnmounted } from 'vue'
 
 const currentSlide = ref(0)
-const images = [
-  {
-    url: '/img/helmets/collezione (1).jpg',
-    title: 'Showroom ROAD RUNNER',
-    desc: 'La collezione completa disponibile in negozio'
-  },
-  {
-    url: '/img/helmets/collezione (2).jpg',
-    title: 'MomoDesign FGTR Blue',
-    desc: 'Stile urbano e finiture premium'
-  },
-  {
-    url: '/img/helmets/collezione (3).jpg',
-    title: 'MomoDesign FGTR Green',
-    desc: 'Design iconico e personalità distintiva'
-  },
-  {
-    url: '/img/helmets/collezione (4).jpg',
-    title: 'MomoDesign Classic Black',
-    desc: 'L\'eleganza del nero opaco'
-  },
-  {
-    url: '/img/helmets/collezione (5).jpg',
-    title: 'MomoDesign Titanium',
-    desc: 'Tecnologia e stile contemporaneo'
-  }
-]
+
+// Generazione automatica della lista immagini da collezione (1) a (19)
+const images = Array.from({ length: 19 }, (_, i) => ({
+  url: `/img/helmets/collezione (${i + 1}).jpg`,
+  title: i === 0 ? 'Showroom ROAD RUNNER' : `MomoDesign Style ${i + 1}`,
+  desc: i === 0 ? 'La collezione completa disponibile in negozio' : 'Dettagli e finiture della nuova collezione'
+}))
 
 let autoplayInterval
 
