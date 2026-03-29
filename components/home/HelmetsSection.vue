@@ -10,11 +10,11 @@ if (process.client) {
 
 const currentSlide = ref(0)
 const images = [
-  { url: '/img/helmets/momo-showroom.jpg', title: 'Showroom ROAD RUNNER', badge: 'Official Dealer' },
-  { url: '/img/helmets/momo-blue.jpg', title: 'MomoDesign FGTR Blue', badge: 'Nuova Collezione' },
-  { url: '/img/helmets/momo-green.jpg', title: 'MomoDesign FGTR Green', badge: 'Nuove Colorazioni' },
-  { url: '/img/helmets/momo-black.jpg', title: 'MomoDesign Classic Black', badge: 'Best Seller' },
-  { url: '/img/helmets/momo-grey.jpg', title: 'MomoDesign Titanium', badge: 'Disponibilità Immediata' }
+  { url: '/img/helmets/collezione (1).jpg', title: 'Showroom ROAD RUNNER', badge: 'Official Dealer' },
+  { url: '/img/helmets/collezione (2).jpg', title: 'MomoDesign FGTR Blue', badge: 'Nuova Collezione' },
+  { url: '/img/helmets/collezione (3).jpg', title: 'MomoDesign FGTR Green', badge: 'Nuowe Colorazioni' },
+  { url: '/img/helmets/collezione (4).jpg', title: 'MomoDesign Classic Black', badge: 'Best Seller' },
+  { url: '/img/helmets/collezione (5).jpg', title: 'MomoDesign Titanium', badge: 'Disponibilità Immediata' }
 ]
 
 let autoplayInterval
