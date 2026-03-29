@@ -144,6 +144,7 @@ onMounted(async () => {
   background: #080808;
   position: relative;
   overflow: hidden;
+  scroll-margin-top: 100px;
 }
 
 .bg-decoration {

@@ -5,17 +5,17 @@ import { ref, onMounted, onUnmounted } from 'vue'
 const currentSlide = ref(0)
 const images = [
   {
-    url: 'https://res.cloudinary.com/dbm86ky9p/image/upload/v1740500000/road-runner-motos/momo-design-1.jpg',
+    url: 'https://images.unsplash.com/photo-1599819811279-d5ad9cccf838?auto=format&fit=crop&q=80&w=1000',
     title: 'MomoDesign Urban Style',
     desc: 'Nuove colorazioni 2026'
   },
   {
-    url: 'https://res.cloudinary.com/dbm86ky9p/image/upload/v1740500001/road-runner-motos/ls2-airflow-2.jpg',
+    url: 'https://images.unsplash.com/photo-1621905252507-b354bc2cadcc?auto=format&fit=crop&q=80&w=1000',
     title: 'LS2 Airflow 2',
     desc: 'Praticità e leggerezza quotidiana'
   },
   {
-    url: 'https://res.cloudinary.com/dbm86ky9p/image/upload/v1740500002/road-runner-motos/momo-design-2.jpg',
+    url: 'https://images.unsplash.com/photo-1581232280390-6ff5a5932c4d?auto=format&fit=crop&q=80&w=1000',
     title: 'MomoDesign Classic',
     desc: 'Eleganza senza tempo'
   }
@@ -83,7 +83,7 @@ onUnmounted(() => {
         </div>
 
         <div class="promo-actions">
-          <NuxtLink to="/#contatti" class="btn-promo-primary">Scopri la collezione</NuxtLink>
+          <NuxtLink to="/#accessori" class="btn-promo-primary">Scopri la collezione</NuxtLink>
           <a href="https://wa.me/393391581997" target="_blank" class="btn-promo-outline">
             Richiedi informazioni
           </a>
