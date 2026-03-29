@@ -5,28 +5,28 @@ import { ref, onMounted, onUnmounted } from 'vue'
 const currentSlide = ref(0)
 const images = [
   {
-    url: '/img/helmets/momo-showroom.jpg',
-    title: 'Showroom MomoDesign',
+    url: '/img/helmets/collezione-1.jpg',
+    title: 'Showroom ROAD RUNNER',
     desc: 'La collezione completa disponibile in negozio'
   },
   {
-    url: '/img/helmets/momo-blue.jpg',
-    title: 'MomoDesign Blue Matte',
+    url: '/img/helmets/collezione-2.jpg',
+    title: 'MomoDesign FGTR Blue',
     desc: 'Stile urbano e finiture premium'
   },
   {
-    url: '/img/helmets/momo-green.jpg',
-    title: 'MomoDesign Military Green',
+    url: '/img/helmets/collezione-3.jpg',
+    title: 'MomoDesign FGTR Green',
     desc: 'Design iconico e personalità distintiva'
   },
   {
-    url: '/img/helmets/momo-black.jpg',
-    title: 'MomoDesign Matte Black',
+    url: '/img/helmets/collezione-4.jpg',
+    title: 'MomoDesign Classic Black',
     desc: 'L\'eleganza del nero opaco'
   },
   {
-    url: '/img/helmets/momo-grey.jpg',
-    title: 'MomoDesign Titanium Grey',
+    url: '/img/helmets/collezione-5.jpg',
+    title: 'MomoDesign Titanium',
     desc: 'Tecnologia e stile contemporaneo'
   }
 ]
