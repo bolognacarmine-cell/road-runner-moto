@@ -30,7 +30,23 @@
 
     <!-- Admin Dashboard -->
     <div v-else class="admin-dashboard">
-      <aside class="admin-sidebar">
+      <!-- Mobile Header (Visible only on < 768px) -->
+      <header class="admin-mobile-header">
+        <div class="header-inner">
+          <img src="/logo-road-runner.jpg" alt="Logo" class="sidebar-logo-mini" />
+          <span class="header-title">Admin Panel</span>
+          <button @click="isSidebarOpen = !isSidebarOpen" class="hamburger-admin" :class="{ active: isSidebarOpen }">
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
+        </div>
+      </header>
+
+      <!-- Sidebar Overlay -->
+      <div v-if="isSidebarOpen" @click="isSidebarOpen = false" class="sidebar-overlay"></div>
+
+      <aside class="admin-sidebar" :class="{ 'sidebar-open': isSidebarOpen }">
         <div class="sidebar-header">
           <img src="/logo-road-runner.jpg" alt="Logo" class="sidebar-logo" />
           <span>Road Runner Admin</span>
@@ -38,39 +54,39 @@
         <nav class="sidebar-nav">
           <button 
             :class="{ active: currentTab === 'list' }" 
-            @click="currentTab = 'list'"
+            @click="currentTab = 'list'; isSidebarOpen = false"
           >
             <span class="icon">🏍️</span> Gestisci Veicoli
           </button>
           <button 
             :class="{ active: currentTab === 'add' }" 
-            @click="openAddForm"
+            @click="openAddForm(); isSidebarOpen = false"
           >
             <span class="icon">➕</span> Aggiungi Nuovo
           </button>
           <button 
             :class="{ active: currentTab === 'leads' }" 
-            @click="currentTab = 'leads'; fetchLeads()"
+            @click="currentTab = 'leads'; fetchLeads(); isSidebarOpen = false"
           >
             <span class="icon">📩</span> Preventivi 
             <span v-if="leads.length" class="badge-count">{{ leads.length }}</span>
           </button>
           <button 
             :class="{ active: currentTab === 'tradeIns' }" 
-            @click="currentTab = 'tradeIns'; fetchTradeIns()"
+            @click="currentTab = 'tradeIns'; fetchTradeIns(); isSidebarOpen = false"
           >
             <span class="icon">🔄</span> Permute 
             <span v-if="tradeIns.length" class="badge-count">{{ tradeIns.length }}</span>
           </button>
           <button 
             :class="{ active: currentTab === 'portal' }" 
-            @click="currentTab = 'portal'; fetchPortalUsers()"
+            @click="currentTab = 'portal'; fetchPortalUsers(); isSidebarOpen = false"
           >
             <span class="icon">👤</span> Gestione Portale
           </button>
           <button 
             :class="{ active: currentTab === 'deadlines' }" 
-            @click="currentTab = 'deadlines'; fetchPortalUsers()"
+            @click="currentTab = 'deadlines'; fetchPortalUsers(); isSidebarOpen = false"
           >
             <span class="icon">🔔</span> Alert Scadenze
             <span v-if="upcomingDeadlines && upcomingDeadlines.length" class="badge-count" :class="{ 'blink-badge': hasUrgentDeadlines }">
@@ -79,18 +95,18 @@
           </button>
           <button 
             :class="{ active: currentTab === 'blog' }" 
-            @click="currentTab = 'blog'; fetchBlogPosts()"
+            @click="currentTab = 'blog'; fetchBlogPosts(); isSidebarOpen = false"
           >
             <span class="icon">📰</span> Blog
           </button>
           <button 
             :class="{ active: currentTab === 'theme' }" 
-            @click="currentTab = 'theme'"
+            @click="currentTab = 'theme'; isSidebarOpen = false"
           >
             <span class="icon">🎨</span> Colori Template
           </button>
         </nav>
-        <button @click="logout" class="btn-logout">Esci</button>
+        <button @click="logout(); isSidebarOpen = false" class="btn-logout">Esci</button>
       </aside>
 
       <main class="admin-content">
@@ -724,6 +740,7 @@ const logout = () => {
 
 // --- Data State ---
 const currentTab = ref('list')
+const isSidebarOpen = ref(false) // Toggle per mobile
 const motos = ref([])
 const leads = ref([])
 const tradeIns = ref([])
@@ -1367,6 +1384,73 @@ onMounted(() => {
   height: 100vh;
 }
 
+.admin-mobile-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 60px;
+  background: #111;
+  border-bottom: 1px solid #222;
+  z-index: 1001;
+  padding: 0 20px;
+  display: none;
+}
+
+.header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 100%;
+}
+
+.sidebar-logo-mini {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+}
+
+.header-title {
+  font-weight: 800;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.hamburger-admin {
+  width: 30px;
+  height: 20px;
+  position: relative;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.hamburger-admin span {
+  display: block;
+  width: 100%;
+  height: 2px;
+  background: white;
+  border-radius: 2px;
+  transition: all 0.3s;
+}
+
+.hamburger-admin.active span:nth-child(1) { transform: translateY(9px) rotate(45deg); }
+.hamburger-admin.active span:nth-child(2) { opacity: 0; }
+.hamburger-admin.active span:nth-child(3) { transform: translateY(-9px) rotate(-45deg); }
+
+.sidebar-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  backdrop-filter: blur(4px);
+  z-index: 999;
+  display: none;
+}
+
 .admin-sidebar {
   width: 280px;
   background: #111;
@@ -1374,6 +1458,7 @@ onMounted(() => {
   display: flex;
   flex-direction: column;
   padding: 20px;
+  transition: transform 0.3s ease;
 }
 
 .sidebar-header {
@@ -2093,10 +2178,34 @@ onMounted(() => {
 .msg.error { background: rgba(220, 53, 69, 0.1); color: #dc3545; }
 
 @media (max-width: 768px) {
-  .admin-dashboard { flex-direction: column; }
-  .admin-sidebar { width: 100%; height: auto; }
+  .admin-mobile-header { display: block; }
+  .sidebar-overlay { display: block; }
+  .admin-sidebar { 
+    position: fixed;
+    top: 60px;
+    left: 0;
+    bottom: 0;
+    z-index: 1000;
+    transform: translateX(-100%);
+    width: 80%;
+    max-width: 300px;
+    box-shadow: 20px 0 50px rgba(0,0,0,0.5);
+  }
+  .admin-sidebar.sidebar-open {
+    transform: translateX(0);
+  }
+  .sidebar-header { display: none; }
+  .admin-content { 
+    padding: 80px 15px 40px; 
+  }
   .form-grid { grid-template-columns: 1fr; }
   .full-width { grid-column: span 1; }
+  
+  .section-header {
+    flex-direction: column;
+    gap: 15px;
+  }
+  .section-header h2 { font-size: 1.5rem; }
 }
 /* Deadlines Alert Styles */
 .deadlines-list {
