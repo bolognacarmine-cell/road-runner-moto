@@ -9,7 +9,6 @@ import AboutSection from '~/components/home/AboutSection.vue'
 import FeaturedVehicles from '~/components/home/FeaturedVehicles.vue'
 import TradeInSection from '~/components/home/TradeInSection.vue'
 import LifestyleSection from '~/components/home/LifestyleSection.vue'
-import AccessoriesSection from '~/components/home/AccessoriesSection.vue'
 import ServiceSection from '~/components/home/ServiceSection.vue'
 import PortalCTA from '~/components/home/PortalCTA.vue'
 import QuoteSection from '~/components/home/QuoteSection.vue'
@@ -170,9 +169,6 @@ onMounted(() => {
 
     <!-- Lifestyle (Accessori & Mondo Biker) -->
     <LifestyleSection />
-
-    <!-- Sezione Accessori & Caschi (Richiamata da Lifestyle) -->
-    <AccessoriesSection />
 
     <!-- Trade-In (Permute) Section -->
     <TradeInSection />
