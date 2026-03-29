@@ -20,7 +20,7 @@ const images = Array.from({ length: 19 }, (_, i) => {
     title = 'Showroom ROAD RUNNER'
     badge = 'Official Dealer'
   } else if (index >= 15) {
-    title = `LS2 Model ${index}`
+    title = 'LS2 Model 9'
     badge = 'Collezione LS2'
   }
 
