@@ -79,7 +79,7 @@ onUnmounted(() => {
               </div>
 
               <div class="feature-item">
-                <div class="feature-icon">🏷️</div>
+                <div class="feature-icon">💰🚫</div>
                 <div class="feature-text">
                   <strong>Nessun Canone Abbonamento:</strong>
                   <p>A differenza di altri sistemi, spesso si tratta di soluzioni autogestite che non richiedono abbonamenti mensili a centrali operative.</p>

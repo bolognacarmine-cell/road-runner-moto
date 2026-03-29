@@ -1,11 +1,14 @@
 <script setup>
-import { onMounted } from 'vue'
+import { ref, onMounted } from 'vue'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import PagerSatModal from '~/components/moto/PagerSatModal.vue'
 
 if (process.client) {
   gsap.registerPlugin(ScrollTrigger)
 }
+
+const isPagerSatModalOpen = ref(false)
 
 onMounted(() => {
   const ctx = gsap.context(() => {
@@ -63,10 +66,10 @@ onMounted(() => {
                 Gestione autonoma senza canoni esterni
               </li>
             </ul>
-            <a href="https://www.facebook.com/technoalarmlatuasicurezza/posts/antifurto-satellitare-autogestito-prodotto-in-italia-senza-canone-e-abbonamentop/101840981795935/" target="_blank" rel="noopener noreferrer" class="btn-security">
-              Scopri PagerSAT sul sito Tecno Alarm
+            <button class="btn-security btn-pagersat-trigger" @click="isPagerSatModalOpen = true">
+              Scopri PagerSAT
               <span class="arrow">→</span>
-            </a>
+            </button>
           </div>
         </div>
 
@@ -103,6 +106,11 @@ onMounted(() => {
         </div>
       </div>
     </div>
+
+    <PagerSatModal 
+      :is-open="isPagerSatModalOpen" 
+      @close="isPagerSatModalOpen = false" 
+    />
   </section>
 </template>
 
@@ -265,19 +273,31 @@ onMounted(() => {
   display: inline-flex;
   align-items: center;
   gap: 12px;
+  background: var(--primary-2, #ff5b6b);
   color: #fff;
+  padding: 14px 28px;
+  border-radius: 16px;
   text-decoration: none;
   font-weight: 800;
-  font-size: 1rem;
-  transition: all 0.3s ease;
+  font-size: 0.95rem;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border: none;
+  cursor: pointer;
+  width: fit-content;
+}
+
+.btn-pagersat-trigger {
+  background: #0a75ad; /* Verde/Azzurro richiesto */
+}
+
+.btn-security:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  filter: brightness(1.1);
 }
 
 .btn-security .arrow {
   transition: transform 0.3s ease;
-}
-
-.btn-security:hover {
-  color: var(--primary-2, #ff5b6b);
 }
 
 .btn-security:hover .arrow {
@@ -285,12 +305,25 @@ onMounted(() => {
 }
 
 @media (max-width: 576px) {
+  .security-section {
+    padding: 60px 0;
+  }
+  
+  .section-title {
+    font-size: 2.2rem;
+  }
+
   .security-card {
     padding: 32px;
   }
   
   .card-title {
     font-size: 1.5rem;
+  }
+
+  .btn-security {
+    width: 100%;
+    justify-content: center;
   }
 }
 </style>
