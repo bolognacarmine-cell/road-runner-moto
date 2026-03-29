@@ -5,19 +5,19 @@ import { ref, onMounted, onUnmounted } from 'vue'
 const currentSlide = ref(0)
 const images = [
   {
-    url: 'https://images.unsplash.com/photo-1599819811279-d5ad9cccf838?auto=format&fit=crop&q=80&w=1000',
-    title: 'MomoDesign Urban Style',
-    desc: 'Nuove colorazioni 2026'
+    url: 'https://images.weserv.nl/?url=https://trae-user-assets.s3.amazonaws.com/uploads/3a79f1f0-0d65-4b1d-876a-9f5b66781829/image.png',
+    title: 'Showroom MomoDesign',
+    desc: 'La nuova collezione 2026 disponibile'
   },
   {
-    url: 'https://images.unsplash.com/photo-1621905252507-b354bc2cadcc?auto=format&fit=crop&q=80&w=1000',
-    title: 'LS2 Airflow 2',
-    desc: 'Praticità e leggerezza quotidiana'
+    url: 'https://images.weserv.nl/?url=https://trae-user-assets.s3.amazonaws.com/uploads/1e176694-8031-414c-836d-004456181829/image.png',
+    title: 'MomoDesign Blue Matte',
+    desc: 'Stile urbano e distintivo'
   },
   {
-    url: 'https://images.unsplash.com/photo-1581232280390-6ff5a5932c4d?auto=format&fit=crop&q=80&w=1000',
-    title: 'MomoDesign Classic',
-    desc: 'Eleganza senza tempo'
+    url: 'https://images.weserv.nl/?url=https://trae-user-assets.s3.amazonaws.com/uploads/7f651818-2900-4103-8310-310310310310/image.png',
+    title: 'MomoDesign Military Green',
+    desc: 'Design moderno e personalità'
   }
 ]
 
