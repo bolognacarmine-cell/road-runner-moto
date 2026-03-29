@@ -3,6 +3,7 @@
 import { onMounted, nextTick } from 'vue'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import HelmetsPromo from './HelmetsPromo.vue'
 
 if (process.client) {
   gsap.registerPlugin(ScrollTrigger)
@@ -67,6 +68,9 @@ onMounted(async () => {
           Dall'integrale racing al jet urbano, proteggiamo la tua passione con il massimo della qualità.
         </p>
       </div>
+
+      <!-- Nuova Card Promozionale Caschi -->
+      <HelmetsPromo />
 
       <div class="helmets-grid">
         <!-- Card 1: Integrali -->
