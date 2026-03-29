@@ -231,10 +231,14 @@
               <div class="form-group full-width">
                 <label>Immagini</label>
                 <input type="file" @change="handleImageUpload" multiple accept="image/*" class="file-input" />
-                <div v-if="imagePreviews.length" class="image-previews">
-                  <div v-for="(preview, index) in imagePreviews" :key="index" class="image-preview-item">
-                    <img :src="preview" />
-                    <button @click="removeImage(index)" type="button" class="remove-btn">×</button>
+                <div v-if="unifiedImages.length" class="image-previews">
+                  <div v-for="(img, index) in unifiedImages" :key="index" class="image-preview-item">
+                    <img :src="img.preview" />
+                    <div class="image-controls">
+                      <button @click="moveImage(index, -1)" type="button" class="move-btn" :disabled="index === 0" title="Sposta a sinistra">←</button>
+                      <button @click="moveImage(index, 1)" type="button" class="move-btn" :disabled="index === unifiedImages.length - 1" title="Sposta a destra">→</button>
+                      <button @click="removeImage(index)" type="button" class="remove-btn" title="Rimuovi">×</button>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -803,8 +807,7 @@ const motoForm = ref({
 })
 
 const initialForm = { ...motoForm.value }
-const selectedFiles = ref([])
-const imagePreviews = ref([])
+const unifiedImages = ref([]) // Lista unificata di immagini per riordinamento [{type: 'url'|'file', value: string|File, preview: string}]
 const editingId = ref(null)
 
 // --- Portal Management Actions ---
@@ -1209,8 +1212,7 @@ const editingBlogId = ref(null)
 
   const openAddForm = () => {
   motoForm.value = { ...initialForm }
-  imagePreviews.value = []
-  selectedFiles.value = []
+  unifiedImages.value = []
   editingId.value = null
   currentTab.value = 'add'
 }
@@ -1220,7 +1222,12 @@ const editMoto = (m) => {
     ...m,
     isVisible: m.isVisible !== undefined ? m.isVisible : true
   }
-  imagePreviews.value = [...(m.immagini || [])]
+  // Popola unifiedImages con le URL esistenti
+  unifiedImages.value = (m.immagini || []).map(url => ({
+    type: 'url',
+    value: url,
+    preview: url
+  }))
   editingId.value = m._id
   currentTab.value = 'edit'
 }
@@ -1228,37 +1235,30 @@ const editMoto = (m) => {
 const handleImageUpload = (event) => {
   const files = Array.from(event.target.files)
   
-  // Aggiungiamo i file alla lista dei file da caricare
-  selectedFiles.value = [...selectedFiles.value, ...files]
-  
-  // Creiamo le anteprime per i nuovi file
   files.forEach(file => {
     const reader = new FileReader()
     reader.onload = (e) => {
-      imagePreviews.value.push(e.target.result)
+      unifiedImages.value.push({
+        type: 'file',
+        value: file,
+        preview: e.target.result
+      })
     }
     reader.readAsDataURL(file)
   })
 }
 
 const removeImage = (index) => {
-  // Se l'immagine è già sul server (URL completo), la rimuoviamo da motoForm.immagini
-  const imageToRemove = imagePreviews.value[index]
-  if (typeof imageToRemove === 'string' && imageToRemove.startsWith('http')) {
-    motoForm.value.immagini = motoForm.value.immagini.filter(img => img !== imageToRemove)
-  } else {
-    // Altrimenti è un file appena selezionato, lo rimuoviamo da selectedFiles
-    // Dobbiamo trovare l'indice corretto in selectedFiles
-    // Poiché imagePreviews contiene [immagini_esistenti, nuove_immagini]
-    const existingCount = motoForm.value.immagini ? motoForm.value.immagini.length : 0
-    const fileIndex = index - existingCount
-    if (fileIndex >= 0) {
-      selectedFiles.value.splice(fileIndex, 1)
-    }
-  }
+  unifiedImages.value.splice(index, 1)
+}
+
+const moveImage = (index, direction) => {
+  const newIndex = index + direction
+  if (newIndex < 0 || newIndex >= unifiedImages.value.length) return
   
-  // Rimuoviamo l'anteprima in ogni caso
-  imagePreviews.value.splice(index, 1)
+  const temp = unifiedImages.value[index]
+  unifiedImages.value[index] = unifiedImages.value[newIndex]
+  unifiedImages.value[newIndex] = temp
 }
 
 const handleSubmit = async () => {
@@ -1266,9 +1266,18 @@ const handleSubmit = async () => {
   formMessage.value = ''
   
   try {
-    // 1. Convertiamo i nuovi file selezionati in Base64
+    // 1. Dividiamo le immagini unificate in esistenti e nuove
+    const existingUrls = unifiedImages.value
+      .filter(img => img.type === 'url')
+      .map(img => img.value)
+      
+    const newFiles = unifiedImages.value
+      .filter(img => img.type === 'file')
+      .map(img => img.value)
+
+    // 2. Convertiamo i nuovi file selezionati in Base64
     const imagesBase64 = []
-    for (const file of selectedFiles.value) {
+    for (const file of newFiles) {
       const base64 = await new Promise((resolve) => {
         const reader = new FileReader()
         reader.onloadend = () => resolve(reader.result)
@@ -1280,12 +1289,16 @@ const handleSubmit = async () => {
     const method = editingId.value ? 'PUT' : 'POST'
     const url = editingId.value ? `/api/motos/${editingId.value}` : '/api/motos'
     
-    // 2. Prepariamo il body: uniamo le immagini esistenti che sono rimaste con le nuove (Base64)
+    // 3. Prepariamo il body
+    // Nota: il backend dovrà gestire l'ordine finale.
+    // Attualmente il backend concatena esistenti + nuove.
+    // Per preservare l'ordine scelto dall'utente, dobbiamo dire al backend l'ordine finale.
+    
     const body = {
       ...motoForm.value,
       imagesBase64,
-      // Passiamo solo le immagini che l'utente NON ha rimosso
-      immagini: motoForm.value.immagini 
+      immagini: existingUrls, // URL esistenti rimasti
+      imageOrder: unifiedImages.value.map(img => img.type === 'url' ? img.value : 'NEW_IMAGE')
     }
 
     const response = await $fetch(url, {
@@ -2010,36 +2023,71 @@ onMounted(() => {
 }
 
 .image-previews {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 15px;
   margin-top: 15px;
 }
 
 .image-preview-item {
   position: relative;
-  width: 100px;
-  height: 100px;
+  width: 120px;
+  height: 120px;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid #333;
 }
 
 .image-preview-item img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  border-radius: 8px;
 }
 
-.remove-btn {
+.image-controls {
   position: absolute;
-  top: -5px;
-  right: -5px;
-  background: var(--primary);
-  color: white;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(4px);
+  display: flex;
+  justify-content: space-around;
+  padding: 6px;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.image-preview-item:hover .image-controls {
+  opacity: 1;
+}
+
+.move-btn, .remove-btn {
+  background: rgba(255, 255, 255, 0.1);
   border: none;
-  border-radius: 50%;
-  width: 20px;
-  height: 20px;
+  color: white;
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9rem;
+  transition: all 0.2s;
+}
+
+.move-btn:hover:not(:disabled) {
+  background: var(--primary);
+}
+
+.move-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.remove-btn:hover {
+  background: #ff4444;
 }
 
 /* Modal */

@@ -48,20 +48,31 @@ export default defineEventHandler(async (event) => {
     const db = client.db(config.mongodbDbName)
     const collection = db.collection('motos')
 
-    // 3. Uniamo le vecchie immagini (quelle che sono rimaste nel form) con le nuove
-    // body.immagini contiene gli URL esistenti che l'utente ha deciso di tenere
-    const updatedImages = [...(body.immagini || []), ...newImageUrls]
+    // 3. Rimuoviamo i campi che non devono essere salvati direttamente come dati
+    const { _id, imagesBase64, immagini, imageOrder, ...updateData } = body
 
-    // Rimuoviamo i campi che non devono essere salvati direttamente come dati
-    const { _id, imagesBase64, immagini, ...updateData } = body
+    // 4. Costruiamo la lista immagini finale rispettando l'ordine
+    let finalImmagini = []
+    if (imageOrder && Array.isArray(imageOrder)) {
+      let newImgIdx = 0
+      finalImmagini = imageOrder.map(item => {
+        if (item === 'NEW_IMAGE') {
+          return newImageUrls[newImgIdx++]
+        }
+        return item // È un URL esistente
+      })
+    } else {
+      // Fallback: concatena vecchie e nuove
+      finalImmagini = [...(body.immagini || []), ...newImageUrls]
+    }
 
-    // 4. Aggiorna il documento tramite ID
+    // 5. Aggiorna il documento tramite ID
     const result = await collection.updateOne(
       { _id: new ObjectId(id) },
       { 
         $set: { 
           ...updateData,
-          immagini: updatedImages,
+          immagini: finalImmagini,
           updatedAt: new Date()
         } 
       }
@@ -76,7 +87,7 @@ export default defineEventHandler(async (event) => {
 
     return {
       message: 'Moto aggiornata con successo!',
-      urls: updatedImages
+      urls: finalImmagini
     }
 
   } catch (error) {

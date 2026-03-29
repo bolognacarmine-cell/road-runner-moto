@@ -63,10 +63,25 @@ export default defineEventHandler(async (event) => {
     const collection = db.collection('motos')
 
     // 4. Preparazione dei dati finali
-    const { imagesBase64, ...motoData } = body
+    const { imagesBase64, imageOrder, ...motoData } = body
+    
+    // Costruiamo la lista immagini finale rispettando l'ordine
+    let finalImmagini = []
+    if (imageOrder && Array.isArray(imageOrder)) {
+      let newImgIdx = 0
+      finalImmagini = imageOrder.map(item => {
+        if (item === 'NEW_IMAGE') {
+          return imageUrls[newImgIdx++]
+        }
+        return item // È un URL esistente
+      })
+    } else {
+      finalImmagini = imageUrls.length > 0 ? imageUrls : (body.immagini || [])
+    }
+
     const newMoto = {
       ...motoData,
-      immagini: imageUrls.length > 0 ? imageUrls : body.immagini,
+      immagini: finalImmagini,
       createdAt: new Date(),
       updatedAt: new Date()
     }
