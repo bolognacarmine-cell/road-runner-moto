@@ -93,7 +93,6 @@ useHead({
 })
 
 // Stato dei veicoli
-const vehicles = ref([])
 const selectedBrand = ref(null)
 const loading = ref(true)
 const error = ref(false)
