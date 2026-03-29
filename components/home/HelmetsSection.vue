@@ -13,12 +13,15 @@ const currentSlide = ref(0)
 // Generazione automatica della lista immagini da collezione (1) a (19)
 const images = Array.from({ length: 19 }, (_, i) => {
   const index = i + 1
-  let title = `MomoDesign Model ${index}`
+  let title = `Dieffe Model ${index}`
   let badge = i < 5 ? 'Nuova Collezione' : 'Disponibile'
   
   if (i === 0) {
     title = 'Showroom ROAD RUNNER'
     badge = 'Official Dealer'
+  } else if (index >= 6 && index <= 14) {
+    title = `MomoDesign Model ${index}`
+    badge = 'MomoDesign'
   } else if (index >= 15) {
     title = `LS2 Model ${index}`
     badge = 'Collezione LS2'
@@ -76,13 +79,26 @@ onUnmounted(() => {
         <!-- Parte Sinistra: Contenuto Testuale Strutturato -->
         <div class="helmets-text-content">
           <div class="kicker">Protezione & Stile</div>
-          <h2 class="section-title">Caschi Protettivi</h2>
+          <h2 class="section-title">Caschi delle migliori linee</h2>
           <p class="section-intro">
-            La nostra selezione esclusiva di caschi dei migliori brand. 
-            Sicurezza, comfort e design per ogni tipologia di guida, dal commuting urbano ai lunghi viaggi touring.
+            Scopri la nostra selezione di caschi <strong>Dieffe</strong>, <strong>Momo Design</strong> e <strong>LS2</strong>, pensata per offrire il giusto equilibrio tra design, comfort e sicurezza. 
+            Una proposta dedicata a chi cerca soluzioni affidabili, moderne e adatte alla mobilità di ogni giorno.
           </p>
 
           <div class="brand-highlights">
+            <!-- Blocco Dieffe -->
+            <div class="highlight-card">
+              <div class="card-header">
+                <span class="flag">🏷️</span>
+                <h3>Linea Dieffe</h3>
+                <span class="badge">Affidabilità & Stile</span>
+              </div>
+              <p>
+                La linea <strong>Dieffe</strong> rappresenta la scelta ideale per chi cerca un prodotto concreto, sicuro e dal design curato. 
+                Ottimo rapporto qualità-prezzo per la tua protezione quotidiana.
+              </p>
+            </div>
+
             <!-- Blocco MomoDesign -->
             <div class="highlight-card">
               <div class="card-header">
@@ -91,7 +107,7 @@ onUnmounted(() => {
                 <span class="badge">Official Dealer</span>
               </div>
               <p>
-                Vieni a scoprire da noi la nuova collezione <strong>MomoDesign</strong>. 
+                Vieni a scoprire la nuova collezione <strong>MomoDesign</strong>. 
                 Linee moderne, spirito urbano e personalità distintiva, con le nuovissime colorazioni 2026 ora disponibili in store.
               </p>
             </div>
@@ -101,7 +117,7 @@ onUnmounted(() => {
               <div class="card-header">
                 <span class="icon">🌬️</span>
                 <h3>LS2 Airflow 2</h3>
-                <span class="badge blue">Disponibile</span>
+                <span class="badge blue">Comfort Premium</span>
               </div>
               <p>
                 La linea <strong>LS2 Airflow 2</strong> è l'alleato ideale per chi cerca praticità e leggerezza quotidiana. 
