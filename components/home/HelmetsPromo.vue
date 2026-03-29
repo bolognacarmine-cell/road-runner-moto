@@ -83,7 +83,7 @@ onUnmounted(() => {
         </div>
 
         <div class="promo-actions">
-          <NuxtLink to="/#accessori" class="btn-promo-primary">Scopri la collezione</NuxtLink>
+          <NuxtLink to="/caschi" class="btn-promo-primary">Esplora ora</NuxtLink>
           <a href="https://wa.me/393391581997" target="_blank" class="btn-promo-outline">
             Richiedi informazioni
           </a>

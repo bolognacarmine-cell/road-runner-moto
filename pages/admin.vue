@@ -343,6 +343,16 @@
                 <label>Sconto (%)</label>
                 <input type="number" v-model="helmetForm.scontoPercentuale" />
               </div>
+              <div class="form-group checkbox-group">
+                <label class="checkbox-label">
+                  <input type="checkbox" v-model="helmetForm.promozioneAttiva" />
+                  Promozione Attiva
+                </label>
+              </div>
+              <div class="form-group">
+                <label>Testo Promozionale</label>
+                <input type="text" v-model="helmetForm.testoPromozionale" placeholder="Es: Sconto 20% solo per oggi" />
+              </div>
               <div class="form-group">
                 <label>Badge</label>
                 <select v-model="helmetForm.badge">
@@ -355,6 +365,10 @@
               <div class="form-group">
                 <label>Colore Principale</label>
                 <input type="text" v-model="helmetForm.colore" />
+              </div>
+              <div class="form-group">
+                <label>Varianti Colore</label>
+                <input type="text" v-model="helmetForm.variantiColore" placeholder="Es: Nero, Bianco, Rosso" />
               </div>
               <div class="form-group">
                 <label>Taglie (es: S, M, L)</label>
@@ -2305,6 +2319,28 @@ onMounted(() => {
 .form-group textarea {
   height: 100px;
   resize: vertical;
+}
+
+.checkbox-group {
+  flex-direction: row;
+  align-items: center;
+  display: flex;
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  font-weight: 600;
+  color: #fff;
+  margin-top: 10px;
+}
+
+.checkbox-label input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  accent-color: var(--primary);
 }
 
 .image-previews {

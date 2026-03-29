@@ -1,23 +1,13 @@
 
 <script setup>
-import { onMounted, nextTick, ref, computed } from 'vue'
+import { onMounted, nextTick } from 'vue'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import HelmetsPromo from './HelmetsPromo.vue'
-import MotoCarousel from '../moto/MotoCarousel.vue'
 
 if (process.client) {
   gsap.registerPlugin(ScrollTrigger)
 }
-
-const { data: helmetsData, pending: loadingHelmets } = await useAsyncData('helmets', () => $fetch('/api/helmets'), {
-  transform: (res) => {
-    return Array.isArray(res.helmets) ? res.helmets.filter(h => h.isVisible !== false) : []
-  }
-})
-
-// helmets sarà reattivo a helmetsData.value
-const helmets = computed(() => helmetsData.value || [])
 
 let ctx
 
@@ -35,19 +25,6 @@ onMounted(async () => {
       duration: 1,
       stagger: 0.2,
       ease: 'power3.out'
-    })
-
-    // Animazione Card Caschi
-    gsap.from('.helmet-card', {
-      scrollTrigger: {
-        trigger: '.helmets-grid',
-        start: 'top 75%',
-      },
-      y: 50,
-      opacity: 0,
-      duration: 1.2,
-      stagger: 0.15,
-      ease: 'power4.out'
     })
 
     // Effetto parallasse sullo sfondo decorativo
@@ -81,85 +58,6 @@ onMounted(async () => {
 
       <!-- Nuova Card Promozionale Caschi -->
       <HelmetsPromo />
-
-      <div v-if="helmets.length > 0" class="helmets-dynamic-grid">
-        <div v-for="h in helmets" :key="h._id" class="helmet-product-card">
-          <div class="product-badge" v-if="h.badge">{{ h.badge }}</div>
-          <div class="product-visual">
-            <MotoCarousel :images="h.immagini" :altText="h.nome" />
-          </div>
-          <div class="product-info">
-            <span class="product-category">{{ h.categoria }}</span>
-            <h3 class="product-name">{{ h.marca }} {{ h.modello }}</h3>
-            <p class="product-desc">{{ h.descrizioneBreve }}</p>
-            <div class="product-meta">
-              <span class="product-price">
-                <span v-if="h.prezzoScontato" class="old-price">€ {{ h.prezzoOriginale }}</span>
-                <span class="current-price">€ {{ h.prezzoScontato || h.prezzoOriginale }}</span>
-              </span>
-              <span class="product-taglia" v-if="h.taglie">Taglie: {{ h.taglie }}</span>
-            </div>
-            <div class="product-actions">
-              <a :href="`https://wa.me/393391581997?text=Ciao, vorrei informazioni sul casco ${h.marca} ${h.modello}`" target="_blank" class="btn-info">
-                Richiedi info
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div v-if="!loadingHelmets && helmets.length === 0" class="helmets-grid">
-        <!-- Card 1: Integrali -->
-        <div class="helmet-card">
-          <div class="helmet-visual">
-            <div class="helmet-icon-box">🪖</div>
-            <div class="helmet-tag">Racing & Sport</div>
-          </div>
-          <div class="helmet-info">
-            <h3>Caschi Integrali</h3>
-            <p>Massima protezione e aerodinamica per chi non accetta compromessi sulla velocità.</p>
-            <ul class="feature-list">
-              <li>Fibra di carbonio</li>
-              <li>Sistemi di ventilazione avanzati</li>
-              <li>Design aerodinamico</li>
-            </ul>
-          </div>
-        </div>
-
-        <!-- Card 2: Modulari -->
-        <div class="helmet-card featured-card">
-          <div class="helmet-visual">
-            <div class="helmet-icon-box">🏍️</div>
-            <div class="helmet-tag featured-tag">Best Seller</div>
-          </div>
-          <div class="helmet-info">
-            <h3>Caschi Modulari</h3>
-            <p>La versatilità perfetta per il touring e i lunghi viaggi, senza rinunciare alla sicurezza.</p>
-            <ul class="feature-list">
-              <li>Doppia omologazione P/J</li>
-              <li>Visierino parasole integrato</li>
-              <li>Comfort acustico superiore</li>
-            </ul>
-          </div>
-        </div>
-
-        <!-- Card 3: Jet -->
-        <div class="helmet-card">
-          <div class="helmet-visual">
-            <div class="helmet-icon-box">🛵</div>
-            <div class="helmet-tag">Urban Style</div>
-          </div>
-          <div class="helmet-info">
-            <h3>Caschi Jet</h3>
-            <p>Leggerezza e stile per i tuoi spostamenti quotidiani in città su scooter o cafe racer.</p>
-            <ul class="feature-list">
-              <li>Ampio campo visivo</li>
-              <li>Interni anallergici</li>
-              <li>Stile iconico</li>
-            </ul>
-          </div>
-        </div>
-      </div>
 
       <div class="accessories-footer">
         <div class="brands-mini-info">
