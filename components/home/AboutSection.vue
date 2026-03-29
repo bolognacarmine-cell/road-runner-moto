@@ -289,15 +289,20 @@ onMounted(async () => {
 }
 
 @media (max-width: 768px) {
+  .about-section {
+    padding-top: 20px;
+    padding-bottom: 40px;
+  }
+
   .about-grid {
     grid-template-columns: 1fr;
-    gap: 40px;
+    gap: 24px;
     text-align: center;
   }
 
   .about-visual-container {
     height: 450px;
-    margin-top: 20px;
+    margin-top: 10px;
   }
 
   .about-values {

@@ -129,9 +129,18 @@ onUnmounted(() => {
 const toggleMobileMenu = () => {
   mobileMenuOpen.value = !mobileMenuOpen.value
   if (mobileMenuOpen.value) {
+    document.body.style.overflow = 'hidden'
     gsap.from('.mobile-drawer-link', { x: 50, opacity: 0, stagger: 0.1, delay: 0.3, ease: 'back.out(1.7)' })
+  } else {
+    document.body.style.overflow = ''
   }
 }
+
+watch(mobileMenuOpen, (val) => {
+  if (!val) {
+    document.body.style.overflow = ''
+  }
+})
 </script>
 
 <template>
@@ -277,7 +286,7 @@ const toggleMobileMenu = () => {
         <div @click="toggleMobileMenu" class="absolute inset-0 bg-black/70 backdrop-blur-xl"></div>
         
         <!-- Drawer Content -->
-        <div class="absolute right-0 top-0 bottom-0 w-[85%] max-w-sm bg-white dark:bg-[#050505] shadow-[0_0_50px_rgba(0,0,0,0.5)] p-10 flex flex-col border-l border-white/5">
+        <div class="absolute right-0 top-0 bottom-0 w-[85%] max-w-sm bg-white dark:bg-[#050505] shadow-[0_0_50px_rgba(0,0,0,0.5)] p-10 flex flex-col border-l border-white/5 mobile-drawer-container">
           <div class="flex justify-between items-center mb-16">
             <div class="flex flex-col">
               <span class="text-3xl font-black text-primary italic">MENU</span>
@@ -339,6 +348,11 @@ const toggleMobileMenu = () => {
 /* Glassmorphism utility with high-end saturation */
 .backdrop-blur-xl {
   backdrop-filter: blur(25px) saturate(200%);
+}
+
+.mobile-drawer-container {
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 /* Safe area for iPhone notch & modern status bars */

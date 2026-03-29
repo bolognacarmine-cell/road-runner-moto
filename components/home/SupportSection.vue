@@ -68,7 +68,10 @@ const services = [
           </div>
           <div class="cta-btns">
             <a href="tel:0823516087" class="btn-primary-custom">Chiama Ora</a>
-            <a href="https://wa.me/393391581997" target="_blank" class="btn-secondary-custom">WhatsApp</a>
+            <a href="https://wa.me/393391581997" target="_blank" class="btn-whatsapp-support">
+              <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12.31 2c-5.52 0-10 4.48-10 10 0 1.76.46 3.41 1.26 4.85l-1.33 4.86 4.98-1.31c1.4.74 2.99 1.17 4.67 1.17 5.52 0 10-4.48 10-10s-4.48-10-10-10zm5.79 14.16c-.25.7-1.46 1.34-2.01 1.43-.5.08-1.15.15-3.32-.74-2.78-1.14-4.57-3.97-4.71-4.16-.14-.19-1.13-1.5-1.13-2.86s.71-2.03.96-2.3c.25-.27.54-.34.72-.34.18 0 .36.01.52.02.17.01.4.04.62.55.23.54.79 1.93.86 2.07.07.14.12.3.02.49-.1.19-.15.3-.3.47-.15.17-.31.38-.44.51-.15.15-.31.31-.13.62.18.31.79 1.3 1.7 2.11.7.63 1.29.83 1.6.96.31.13.49.11.67-.1.18-.21.79-.91.99-1.22.21-.31.42-.26.71-.15.29.11 1.83.86 2.15 1.02.32.16.53.24.6.38.08.13.08.77-.17 1.47z"/></svg>
+              <span>WhatsApp</span>
+            </a>
           </div>
         </div>
       </div>
@@ -201,6 +204,34 @@ const services = [
   display: flex;
   gap: 16px;
   flex-shrink: 0;
+}
+
+.btn-whatsapp-support {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 52px;
+  padding: 0 32px;
+  border-radius: var(--radius);
+  font-weight: 700;
+  font-size: 1rem;
+  background: #25D366;
+  color: white;
+  transition: all var(--transition);
+  box-shadow: 0 10px 20px -5px rgba(37, 211, 102, 0.4);
+}
+
+.btn-whatsapp-support svg {
+  width: 20px;
+  height: 20px;
+}
+
+@media (hover: hover) {
+  .btn-whatsapp-support:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 30px -5px rgba(37, 211, 102, 0.5);
+    filter: brightness(1.1);
+  }
 }
 
 @media (max-width: 1024px) {

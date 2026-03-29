@@ -196,6 +196,14 @@ const brands = [
   }
 }
 @media (max-width: 700px) {
+  .brands-section {
+    padding-bottom: 20px;
+  }
+  
+  .brands-footer {
+    margin-top: 32px;
+  }
+
   .brands-grid {
     grid-template-columns: 1fr;
   }
