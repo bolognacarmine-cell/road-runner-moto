@@ -83,6 +83,12 @@
           >
             <span class="icon">📰</span> Blog
           </button>
+          <button 
+            :class="{ active: currentTab === 'theme' }" 
+            @click="currentTab = 'theme'"
+          >
+            <span class="icon">🎨</span> Colori Template
+          </button>
         </nav>
         <button @click="logout" class="btn-logout">Esci</button>
       </aside>
@@ -543,6 +549,21 @@
             </div>
           </form>
         </section>
+
+        <!-- Theme Color View -->
+        <section v-if="currentTab === 'theme'" class="content-section">
+          <div class="section-header">
+            <div>
+              <h2>Personalizzazione Sito</h2>
+              <p>Cambia l'aspetto visivo della tua concessionaria</p>
+            </div>
+            <button @click="currentTab = 'list'" class="btn-back">← Torna alla lista</button>
+          </div>
+          
+          <div class="theme-content">
+            <ThemeSwitcher />
+          </div>
+        </section>
       </main>
     </div>
 
@@ -667,10 +688,15 @@
 import { ref, onMounted } from 'vue'
 import { useRuntimeConfig } from '#imports'
 import MotoCarousel from '~/components/moto/MotoCarousel.vue'
+import ThemeSwitcher from '~/components/admin/ThemeSwitcher.vue'
+import { useSiteSettings } from '~/stores/useSiteSettings'
 
 definePageMeta({
   layout: 'admin-layout'
 })
+
+// --- Theme State ---
+const settings = useSiteSettings()
 
 // --- Auth State ---
 const config = useRuntimeConfig()
@@ -1285,6 +1311,7 @@ const deleteMoto = async () => {
 }
 
 onMounted(() => {
+  settings.fetchSettings()
   if (localStorage.getItem('rr_admin_auth') === 'true') {
     isAuthenticated.value = true
     fetchMotos()

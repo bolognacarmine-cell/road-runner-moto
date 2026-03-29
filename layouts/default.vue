@@ -4,8 +4,10 @@ import { gsap } from 'gsap'
 import { useSearch } from '~/composables/useSearch'
 import { useFilter } from '~/composables/useFilter'
 import { useRoute } from 'vue-router'
+import { useSiteSettings } from '~/stores/useSiteSettings'
 
 const route = useRoute()
+const settings = useSiteSettings()
 const isExcludedPage = computed(() => {
   return route.path.startsWith('/admin') || route.path.startsWith('/portale')
 })
@@ -33,6 +35,7 @@ useHead({
 })
 
 onMounted(async () => {
+  await settings.fetchSettings()
   await nextTick()
   
   // Inizializzazione Silktide

@@ -64,7 +64,8 @@ export default defineNuxtConfig({
   // ✅ Moduli opzionali (immagini e sitemap)
   modules: [
     '@nuxt/image',
-    '@nuxtjs/sitemap'
+    '@nuxtjs/sitemap',
+    '@pinia/nuxt'
   ],
 
   // ✅ Sitemap per SEO
