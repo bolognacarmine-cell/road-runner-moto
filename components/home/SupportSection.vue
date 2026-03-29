@@ -248,6 +248,14 @@ const services = [
 }
 
 @media (max-width: 640px) {
+  .support-card {
+    text-align: center;
+    padding: 32px;
+  }
+  .support-icon-box {
+    margin-left: auto;
+    margin-right: auto;
+  }
   .cta-btns {
     flex-direction: column;
     width: 100%;

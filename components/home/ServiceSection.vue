@@ -370,6 +370,30 @@ onMounted(async () => {
 
 @media (max-width: 768px) {
   .services-grid { grid-template-columns: 1fr; }
-  .service-card { padding: 30px; }
+  .service-card { 
+    padding: 30px; 
+    text-align: center;
+    align-items: center;
+  }
+  .card-top {
+    flex-direction: column;
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+  .service-benefits li {
+    justify-content: center;
+  }
+  .card-footer {
+    display: flex;
+    justify-content: center;
+  }
+  .cta-actions {
+    flex-direction: column;
+    width: 100%;
+  }
+  .btn-primary-custom, .btn-whatsapp {
+    width: 100%;
+    justify-content: center;
+  }
 }
 </style>
