@@ -1385,10 +1385,6 @@ onMounted(() => {
 }
 
 .admin-mobile-header {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
   height: 60px;
   background: #111;
   border-bottom: 1px solid #222;
@@ -2178,11 +2174,12 @@ onMounted(() => {
 .msg.error { background: rgba(220, 53, 69, 0.1); color: #dc3545; }
 
 @media (max-width: 768px) {
+  .admin-dashboard { flex-direction: column; height: auto; min-height: 100vh; }
   .admin-mobile-header { display: block; }
   .sidebar-overlay { display: block; }
   .admin-sidebar { 
     position: fixed;
-    top: 60px;
+    top: 0;
     left: 0;
     bottom: 0;
     z-index: 1000;
@@ -2196,16 +2193,19 @@ onMounted(() => {
   }
   .sidebar-header { display: none; }
   .admin-content { 
-    padding: 80px 15px 40px; 
+    padding: 20px 15px 40px; 
+    overflow-y: visible;
   }
   .form-grid { grid-template-columns: 1fr; }
   .full-width { grid-column: span 1; }
   
   .section-header {
     flex-direction: column;
-    gap: 15px;
+    gap: 10px;
+    margin-bottom: 20px;
   }
-  .section-header h2 { font-size: 1.5rem; }
+  .section-header h2 { font-size: 1.4rem; }
+  .section-header p { display: none; } /* Nascondi descrizione su mobile per spazio */
 }
 /* Deadlines Alert Styles */
 .deadlines-list {
