@@ -5,11 +5,25 @@ import { ref, onMounted, onUnmounted } from 'vue'
 const currentSlide = ref(0)
 
 // Generazione automatica della lista immagini da collezione (1) a (19)
-const images = Array.from({ length: 19 }, (_, i) => ({
-  url: `/img/helmets/collezione (${i + 1}).jpg`,
-  title: i === 0 ? 'Showroom ROAD RUNNER' : `MomoDesign Style ${i + 1}`,
-  desc: i === 0 ? 'La collezione completa disponibile in negozio' : 'Dettagli e finiture della nuova collezione'
-}))
+const images = Array.from({ length: 19 }, (_, i) => {
+  const index = i + 1
+  let title = `MomoDesign Style ${index}`
+  let desc = 'Dettagli e finiture della nuova collezione'
+  
+  if (i === 0) {
+    title = 'Showroom ROAD RUNNER'
+    desc = 'La collezione completa disponibile in negozio'
+  } else if (index >= 15) {
+    title = `LS2 Model ${index}`
+    desc = 'Praticità e leggerezza per l\'uso quotidiano'
+  }
+
+  return {
+    url: `/img/helmets/collezione (${index}).jpg`,
+    title,
+    desc
+  }
+})
 
 let autoplayInterval
 

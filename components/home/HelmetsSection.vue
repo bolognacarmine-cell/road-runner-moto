@@ -11,11 +11,25 @@ if (process.client) {
 const currentSlide = ref(0)
 
 // Generazione automatica della lista immagini da collezione (1) a (19)
-const images = Array.from({ length: 19 }, (_, i) => ({
-  url: `/img/helmets/collezione (${i + 1}).jpg`,
-  title: i === 0 ? 'Showroom ROAD RUNNER' : `MomoDesign Model ${i + 1}`,
-  badge: i === 0 ? 'Official Dealer' : (i < 5 ? 'Nuova Collezione' : 'Disponibile')
-}))
+const images = Array.from({ length: 19 }, (_, i) => {
+  const index = i + 1
+  let title = `MomoDesign Model ${index}`
+  let badge = i < 5 ? 'Nuova Collezione' : 'Disponibile'
+  
+  if (i === 0) {
+    title = 'Showroom ROAD RUNNER'
+    badge = 'Official Dealer'
+  } else if (index >= 15) {
+    title = `LS2 Model ${index}`
+    badge = 'Collezione LS2'
+  }
+
+  return {
+    url: `/img/helmets/collezione (${index}).jpg`,
+    title,
+    badge
+  }
+})
 
 let autoplayInterval
 const nextSlide = () => { currentSlide.value = (currentSlide.value + 1) % images.length }
