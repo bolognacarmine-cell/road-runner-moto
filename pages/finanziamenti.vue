@@ -88,9 +88,13 @@
 
 .finance-grid {
   display: grid;
-  grid-template-columns: 1.2fr 0.8fr;
-  gap: 60px;
+  grid-template-columns: 1fr 400px;
+  gap: 80px;
   align-items: start;
+}
+
+.finance-content {
+  min-width: 0; /* Previene overflow del testo in grid */
 }
 
 .section-kicker {
@@ -131,7 +135,7 @@ h1 {
 
 .info-grid {
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 24px;
   margin-bottom: 40px;
 }
@@ -198,7 +202,7 @@ h1 {
   display: block;
 }
 
-@media (max-width: 968px) {
+@media (max-width: 1100px) {
   .finance-grid {
     grid-template-columns: 1fr;
     gap: 40px;
@@ -207,6 +211,22 @@ h1 {
   .finance-visual {
     position: static;
     order: -1;
+    max-width: 500px;
+    margin: 0 auto;
+  }
+}
+
+@media (max-width: 480px) {
+  .finance-grid {
+    gap: 30px;
+  }
+  
+  h1 {
+    font-size: 2.2rem;
+  }
+  
+  .info-card {
+    padding: 16px;
   }
 }
 </style>
