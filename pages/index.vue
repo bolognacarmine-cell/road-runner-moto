@@ -14,6 +14,7 @@ import PortalCTA from '~/components/home/PortalCTA.vue'
 import QuoteSection from '~/components/home/QuoteSection.vue'
 import BrandsSection from '~/components/home/BrandsSection.vue'
 import SecuritySection from '~/components/home/SecuritySection.vue'
+import HelmetsSection from '~/components/home/HelmetsSection.vue'
 import CTABand from '~/components/home/CTABand.vue'
 import BlogPreviewSection from '~/components/home/BlogPreviewSection.vue'
 import ContactSection from '~/components/home/ContactSection.vue'
@@ -166,6 +167,9 @@ onMounted(() => {
 
     <!-- Security Section -->
     <SecuritySection />
+
+    <!-- Helmets Section (Dedicata Caschi) -->
+    <HelmetsSection />
 
     <!-- Lifestyle (Accessori & Mondo Biker) -->
     <LifestyleSection />
