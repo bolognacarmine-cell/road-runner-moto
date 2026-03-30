@@ -70,12 +70,18 @@ export default defineNuxtConfig({
 
   // ✅ Sitemap per SEO
   sitemap: {
-    siteUrl: 'https://road-runner-moto.it',
+    hostname: 'https://road-runner-moto.it',
     gzip: true,
     exclude: [
       '/admin/**',
-      '/portale/dashboard/**'
-    ]
+      '/portale/dashboard/**',
+      '/portale/login'
+    ],
+    defaults: {
+      changefreq: 'daily',
+      priority: 0.7,
+      lastmod: new Date()
+    }
   },
 
   // ✅ Immagini ottimizzate
