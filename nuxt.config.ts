@@ -70,7 +70,7 @@ export default defineNuxtConfig({
 
   // ✅ Sitemap per SEO
   sitemap: {
-    hostname: 'https://road-runner.it',
+    siteUrl: 'https://road-runner.it',
     gzip: true,
     exclude: [
       '/admin/**',
@@ -80,7 +80,7 @@ export default defineNuxtConfig({
     defaults: {
       changefreq: 'daily',
       priority: 0.7,
-      lastmod: new Date()
+      lastmod: new Date().toISOString()
     }
   },
 
