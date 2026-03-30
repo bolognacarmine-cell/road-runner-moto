@@ -16,8 +16,8 @@ export default defineNuxtConfig({
     cloudinaryApiKey: process.env.CLOUDINARY_API_KEY,
     cloudinaryApiSecret: process.env.CLOUDINARY_API_SECRET,
     public: {
-      siteUrl: process.env.NUXT_PUBLIC_SITE_URL || 'https://road-runner-moto.it',
-      apiBase: process.env.NUXT_PUBLIC_API_BASE || 'https://api.road-runner-moto.it',
+      siteUrl: process.env.NUXT_PUBLIC_SITE_URL || 'https://road-runner.it',
+      apiBase: process.env.NUXT_PUBLIC_API_BASE || 'https://api.road-runner.it',
       adminUser: process.env.ADMIN_USER || 'roadrunner',
       adminPassword: process.env.ADMIN_PASSWORD || 'runner2026'
     }
@@ -33,17 +33,17 @@ export default defineNuxtConfig({
         { name: 'theme-color', content: '#111111' },
         { name: 'description', content: 'Road Runner è concessionaria moto e scooter a Capodrise. Vendita plurimarche, assistenza qualificata, finanziamenti su misura e usato selezionato.' },
         { property: 'og:type', content: 'website' },
-        { property: 'og:url', content: 'https://road-runner-moto.it' },
+        { property: 'og:url', content: 'https://road-runner.it' },
         { property: 'og:title', content: 'Road Runner Moto | Concessionaria moto e scooter a Capodrise' },
         { property: 'og:description', content: 'Moto e scooter nuovi e usati plurimarche, assistenza qualificata e finanziamenti su misura a Capodrise.' },
-        { property: 'og:image', content: 'https://road-runner-moto.it/logo-road-runner.jpg' },
+        { property: 'og:image', content: 'https://road-runner.it/logo-road-runner.jpg' },
         { name: 'twitter:card', content: 'summary_large_image' },
         { name: 'twitter:title', content: 'Road Runner Moto | Moto e scooter a Capodrise' },
         { name: 'twitter:description', content: 'Concessionaria moto e scooter plurimarche con vendita, assistenza e finanziamenti personalizzati.' },
-        { name: 'twitter:image', content: 'https://road-runner-moto.it/logo-road-runner.jpg' }
+        { name: 'twitter:image', content: 'https://road-runner.it/logo-road-runner.jpg' }
       ],
       link: [
-        { rel: 'canonical', href: 'https://road-runner-moto.it' },
+        { rel: 'canonical', href: 'https://road-runner.it' },
         { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
       ]
     }
@@ -70,7 +70,7 @@ export default defineNuxtConfig({
 
   // ✅ Sitemap per SEO
   sitemap: {
-    hostname: 'https://road-runner-moto.it',
+    hostname: 'https://road-runner.it',
     gzip: true,
     exclude: [
       '/admin/**',
@@ -86,7 +86,7 @@ export default defineNuxtConfig({
 
   // ✅ Immagini ottimizzate
   image: {
-    domains: ['api.road-runner-moto.it'],
+    domains: ['api.road-runner.it'],
     format: ['webp', 'avif']
   }
 })

@@ -102,8 +102,8 @@ const formatDate = (d) => new Date(d).toLocaleDateString('it-IT', {
           <div class="share-box">
             <span>Condividi:</span>
             <div class="share-links">
-              <a :href="`https://wa.me/?text=Leggi questo articolo su Road Runner Moto: ${post.title} - https://road-runner-moto.it/blog/${post.slug}`" target="_blank" class="share-wa">WhatsApp</a>
-              <a :href="`https://www.facebook.com/sharer/sharer.php?u=https://road-runner-moto.it/blog/${post.slug}`" target="_blank" class="share-fb">Facebook</a>
+              <a :href="`https://wa.me/?text=Leggi questo articolo su Road Runner Moto: ${post.title} - https://road-runner.it/blog/${post.slug}`" target="_blank" class="share-wa">WhatsApp</a>
+              <a :href="`https://www.facebook.com/sharer/sharer.php?u=https://road-runner.it/blog/${post.slug}`" target="_blank" class="share-fb">Facebook</a>
             </div>
           </div>
         </div>

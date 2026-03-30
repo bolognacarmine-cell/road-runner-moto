@@ -4,4 +4,4 @@ Disallow: /admin
 Disallow: /portale/dashboard
 Disallow: /testsiti.txt
 
-Sitemap: https://road-runner-moto.it/sitemap.xml
+Sitemap: https://road-runner.it/sitemap.xml
