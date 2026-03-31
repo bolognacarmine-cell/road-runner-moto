@@ -38,7 +38,7 @@
 
       <div class="google-badge-container">
         <a href="https://www.google.com/search?sca_esv=8d67f07cd29c129e&sxsrf=ANbL-n5NdLrMaFtSNGZy6nYfmWat5rmLWA:1774971793498&q=road+runner+capodrise&si=AL3DRZEsmMGCryMMFSHJ3StBhOdZ2-6yYkXd_doETEE1OR-qOWi4y2BmUQpnz2REyXkSv4Vs5RNsaxXs354nvXSIII8b6yICbt0R6u2npnnWME7J6GZvTko%3D&uds=ALYpb_lx5Hup9BUa31h6AkHudUb2K0KyRs0Tmz30Bubzs8aEHHo283VhvZz8wiaZfZg0pDik2OpUtQb82A2Lga8YiHl-Nt0ysYmrECXYqn5nbhC9OAeA09vuNA8fGLGkk0eGKledaUuY&sa=X&ved=2ahUKEwixkPOZvcqTAxU-8LsIHd3THBUQ3PALegQIGRAE&biw=1536&bih=711&dpr=1.25" target="_blank" rel="noopener noreferrer" class="google-badge">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Google_Maps_icon_%282020%29.svg/1200px-Google_Maps_icon_%282020%29.svg.png" alt="Google Maps" width="24" height="24" />
+          <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_Maps_icon_%282020%29.svg" alt="Google Maps" width="24" height="24" />
           <span>Vedi tutte le recensioni su Google</span>
         </a>
       </div>
