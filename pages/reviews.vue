@@ -23,7 +23,7 @@
         <div class="cta-google">
           <h2>Vuoi lasciare una recensione?</h2>
           <p>La tua opinione è importante per noi. Racconta la tua esperienza con <strong>moto usate Capodrise</strong> e <strong>concessionaria moto Caserta</strong>.</p>
-          <a href="https://search.google.com/local/writereview?placeid=ChIJgUbEo8cfqokR5lP9_Wh_DaM" target="_blank" rel="noopener noreferrer" class="btn-google">
+          <a href="https://www.google.com/search?sca_esv=8d67f07cd29c129e&sxsrf=ANbL-n5NdLrMaFtSNGZy6nYfmWat5rmLWA:1774971793498&q=road+runner+capodrise&si=AL3DRZEsmMGCryMMFSHJ3StBhOdZ2-6yYkXd_doETEE1OR-qOWi4y2BmUQpnz2REyXkSv4Vs5RNsaxXs354nvXSIII8b6yICbt0R6u2npnnWME7J6GZvTko%3D&uds=ALYpb_lx5Hup9BUa31h6AkHudUb2K0KyRs0Tmz30Bubzs8aEHHo283VhvZz8wiaZfZg0pDik2OpUtQb82A2Lga8YiHl-Nt0ysYmrECXYqn5nbhC9OAeA09vuNA8fGLGkk0eGKledaUuY&sa=X&ved=2ahUKEwixkPOZvcqTAxU-8LsIHd3THBUQ3PALegQIGRAE&biw=1536&bih=711&dpr=1.25" target="_blank" rel="noopener noreferrer" class="btn-google">
             Lascia una recensione su Google
           </a>
         </div>
