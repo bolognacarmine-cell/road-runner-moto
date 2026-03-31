@@ -17,6 +17,7 @@ import SecuritySection from '~/components/home/SecuritySection.vue'
 import HelmetsSection from '~/components/home/HelmetsSection.vue'
 import CTABand from '~/components/home/CTABand.vue'
 import BlogPreviewSection from '~/components/home/BlogPreviewSection.vue'
+import ReviewsSlider from '~/components/home/ReviewsSlider.vue'
 import ContactSection from '~/components/home/ContactSection.vue'
 
 // Config runtime
@@ -54,16 +55,23 @@ useHead({
         "@type": "AutoDealer",
         "name": "Road Runner Moto",
         "image": `${siteUrl}/logo-road-runner.jpg`,
-        "@id": siteUrl,
+        "@id": "https://www.google.com/maps/place/?q=place_id:ChIJgUbEo8cfqokR5lP9_Wh_DaM",
         "url": siteUrl,
         "telephone": "+390823516087",
         "address": {
           "@type": "PostalAddress",
-          "streetAddress": "Via San Francesco 13",
+          "streetAddress": "Via Retella 65",
           "addressLocality": "Capodrise",
           "postalCode": "81020",
           "addressRegion": "CE",
           "addressCountry": "IT"
+        },
+        "aggregateRating": {
+          "@type": "AggregateRating",
+          "ratingValue": "4.8",
+          "bestRating": "5",
+          "worstRating": "1",
+          "ratingCount": "125"
         },
         "geo": {
           "@type": "GeoCoordinates",
@@ -190,10 +198,13 @@ onMounted(() => {
     <CTABand />
 
     <!-- Blog Preview dinamico -->
-    <BlogPreviewSection />
+    <BlogPreviewSection id="blog" />
+
+    <!-- Reviews Slider -->
+    <ReviewsSlider id="recensioni" />
 
     <!-- Contact Section -->
-    <ContactSection />
+    <ContactSection id="contatti" />
 
   </div>
 </template>

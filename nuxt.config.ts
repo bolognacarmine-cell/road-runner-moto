@@ -87,6 +87,13 @@ export default defineNuxtConfig({
   // ✅ Immagini ottimizzate
   image: {
     domains: ['api.road-runner.it'],
-    format: ['webp', 'avif']
+    format: ['webp', 'avif'],
+    providers: {
+      cloudinary: {
+        name: 'cloudinary',
+        instance: 'https://res.cloudinary.com',
+        baseURL: 'https://res.cloudinary.com/' + (process.env.CLOUDINARY_CLOUD_NAME || 'roadrunner') + '/image/upload/'
+      }
+    }
   }
 })

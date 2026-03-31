@@ -160,6 +160,7 @@ onUnmounted(() => {
             <span class="brand-title">ROAD RUNNER</span>
             <div class="brand-contacts-header">
               <a href="tel:0823516087" class="header-phone-link">📞 0823 516087</a>
+              <a href="tel:+393391581997" class="header-phone-link mobile-only-header">📱 339 1581997</a>
               <span class="brand-subtitle">Concessionaria Moto Nuove & Usate</span>
             </div>
           </div>
@@ -195,6 +196,7 @@ onUnmounted(() => {
           </div>
 
           <NuxtLink to="/blog">Blog</NuxtLink>
+          <NuxtLink to="/reviews">Recensioni</NuxtLink>
           <NuxtLink to="/#contatti">Contatti</NuxtLink>
           <NuxtLink to="/portale/login" class="portal-link-minimal">Area Clienti</NuxtLink>
         </nav>
@@ -255,7 +257,7 @@ onUnmounted(() => {
         <div class="footer-info">
           <NuxtLink to="/" class="footer-logo">ROAD RUNNER</NuxtLink>
           <p class="company-name">ROAD RUNNER DI TARTAGLIONE PASQUALE</p>
-          <p class="company-address">Via San Francesco 13, 81020 Capodrise (CE)</p>
+          <p class="company-address">Via Retella 65, 81020 Capodrise (CE)</p>
           <div class="legal-details">
             <p>Partita IVA: 04335610616</p>
             <p>Codice Fiscale: TRTPQL76E12E932E</p>
@@ -270,6 +272,7 @@ onUnmounted(() => {
             <NuxtLink to="/#moto">Moto & Scooter</NuxtLink>
             <NuxtLink to="/#lifestyle">Lifestyle</NuxtLink>
             <NuxtLink to="/#assistenza">Assistenza</NuxtLink>
+            <NuxtLink to="/reviews">Recensioni</NuxtLink>
             <NuxtLink to="/blog">Blog</NuxtLink>
           </nav>
         </div>
