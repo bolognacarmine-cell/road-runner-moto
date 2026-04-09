@@ -55,10 +55,17 @@ export default defineNuxtConfig({
     optimizeDeps: { include: ['gsap'] }
   },
 
-  // ✅ Configurazione Nitro per gestire file grandi (immagini)
+  // ✅ Configurazione Nitro
   nitro: {
     experimental: {
       bodySizeLimit: '20mb'
+    },
+    // Forza l'host e la porta per Render
+    devProxy: {},
+    hooks: {
+      'compiled'() {
+        console.log('Nitro compiled with Render config')
+      }
     }
   },
   // ✅ Moduli opzionali (immagini e sitemap)

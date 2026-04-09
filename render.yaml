@@ -8,6 +8,10 @@ services:
     envVars:
       - key: NODE_VERSION
         value: 20.x
+      - key: HOST
+        value: 0.0.0.0
+      - key: PORT
+        value: 10000
       - key: MONGODB_URI
         sync: false
       - key: MONGODB_DB_NAME
