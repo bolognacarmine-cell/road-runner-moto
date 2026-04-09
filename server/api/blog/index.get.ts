@@ -2,7 +2,6 @@ import { defineEventHandler, createError, getQuery } from 'h3'
 import { MongoClient } from 'mongodb'
 
 export default defineEventHandler(async (event) => {
-  const config = useRuntimeConfig(event)
   const query = getQuery(event)
   
   // Parametri di query per filtri, ricerca e paginazione
@@ -12,15 +11,9 @@ export default defineEventHandler(async (event) => {
   const limit = parseInt(query.limit as string) || 9
   const skip = (page - 1) * limit
 
-  if (!config.mongodbUri) {
-    throw createError({ statusCode: 500, statusMessage: 'Database non configurato.' })
-  }
-
-  const client = new MongoClient(config.mongodbUri as string)
+  const { db, client } = await connectToDatabase()
 
   try {
-    await client.connect()
-    const db = client.db(config.mongodbDbName || 'roadrunner_db')
     const collection = db.collection('blog_posts')
 
     // Costruzione filtro

@@ -2,7 +2,6 @@ import { defineEventHandler, readBody, createError } from 'h3'
 import { MongoClient } from 'mongodb'
 
 export default defineEventHandler(async (event) => {
-  const config = useRuntimeConfig(event)
   const body = await readBody(event)
   const { themeColor, backgroundColor, textColor } = body
 
@@ -10,12 +9,9 @@ export default defineEventHandler(async (event) => {
     throw createError({ statusCode: 400, statusMessage: 'Colore non valido' })
   }
 
-  const client = new MongoClient(config.mongodbUri)
+  const { db, client } = await connectToDatabase()
 
   try {
-    await client.connect()
-    const db = client.db(config.mongodbDbName)
-    
     // Costruisci oggetto update
     const updateData: any = { updatedAt: new Date() }
     if (themeColor) updateData.themeColor = themeColor

@@ -1,9 +1,8 @@
 
 import { defineEventHandler, getRouterParam, createError } from 'h3'
-import { MongoClient, ObjectId } from 'mongodb'
+import { ObjectId } from 'mongodb'
 
 export default defineEventHandler(async (event) => {
-  const config = useRuntimeConfig()
   const id = getRouterParam(event, 'id')
   
   if (!id) {
@@ -13,22 +12,9 @@ export default defineEventHandler(async (event) => {
     })
   }
 
-  if (!config.mongodbUri) {
-    throw createError({
-      statusCode: 500,
-      statusMessage: 'Configurazione database mancante.'
-    })
-  }
-
-  const mongodbUri = config.mongodbUri as string
-  const client = new MongoClient(mongodbUri, {
-    connectTimeoutMS: 10000,
-    serverSelectionTimeoutMS: 10000
-  })
+  const { db, client } = await connectToDatabase()
 
   try {
-    await client.connect()
-    const db = client.db(config.mongodbDbName)
     const collection = db.collection('motos')
 
     const moto = await collection.findOne({ _id: new ObjectId(id) })

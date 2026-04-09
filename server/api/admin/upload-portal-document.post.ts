@@ -19,7 +19,7 @@ export default defineEventHandler(async (event) => {
     api_secret: config.cloudinaryApiSecret
   })
 
-  const client = new MongoClient(config.mongodbUri)
+  const { db, client } = await connectToDatabase()
 
   try {
     // 1. Upload su Cloudinary
@@ -29,9 +29,6 @@ export default defineEventHandler(async (event) => {
     })
 
     // 2. Salvataggio riferimento su MongoDB
-    await client.connect()
-    const db = client.db(config.mongodbDbName)
-    
     await db.collection('portal_documents').insertOne({
       targa: targa.toUpperCase(),
       title: title || 'Documento senza titolo',

@@ -3,17 +3,13 @@ import { defineEventHandler } from 'h3'
 import { MongoClient, ObjectId } from 'mongodb'
 
 export default defineEventHandler(async (event) => {
-  const config = useRuntimeConfig(event)
   const id = event.context.params?.id
 
   if (!id) throw createError({ statusCode: 400, statusMessage: 'ID casco non fornito' })
-  if (!config.mongodbUri) throw createError({ statusCode: 500, statusMessage: 'Database non configurato.' })
 
-  const client = new MongoClient(config.mongodbUri as string)
+  const { db, client } = await connectToDatabase()
 
   try {
-    await client.connect()
-    const db = client.db(config.mongodbDbName)
     const collection = db.collection('helmets')
 
     const result = await collection.deleteOne({ _id: new ObjectId(id) })

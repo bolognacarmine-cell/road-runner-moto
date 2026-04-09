@@ -2,7 +2,6 @@ import { defineEventHandler, readBody, createError } from 'h3'
 import { MongoClient } from 'mongodb'
 
 export default defineEventHandler(async (event) => {
-  const config = useRuntimeConfig(event)
   const body = await readBody(event)
 
   const { 
@@ -16,12 +15,9 @@ export default defineEventHandler(async (event) => {
     throw createError({ statusCode: 400, statusMessage: 'Targa obbligatoria.' })
   }
 
-  const client = new MongoClient(config.mongodbUri)
+  const { db, client } = await connectToDatabase()
 
   try {
-    await client.connect()
-    const db = client.db(config.mongodbDbName)
-    
     console.log('UPDATING VEHICLE FOR TARGA:', targa.toUpperCase())
     console.log('DATA:', { marca, modello, dataAcquisto, kmIniziali, kmAttuali, prossimaManutenzione, avvisi })
 

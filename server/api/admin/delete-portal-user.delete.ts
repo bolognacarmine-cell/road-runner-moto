@@ -2,7 +2,6 @@ import { defineEventHandler, getQuery, createError } from 'h3'
 import { MongoClient, ObjectId } from 'mongodb'
 
 export default defineEventHandler(async (event) => {
-  const config = useRuntimeConfig(event)
   const query = getQuery(event)
   const { id } = query
 
@@ -10,12 +9,9 @@ export default defineEventHandler(async (event) => {
     throw createError({ statusCode: 400, statusMessage: 'ID utente mancante.' })
   }
 
-  const client = new MongoClient(config.mongodbUri)
+  const { db, client } = await connectToDatabase()
 
   try {
-    await client.connect()
-    const db = client.db(config.mongodbDbName)
-    
     // 1. Trova l'utente per recuperare la targa
     const user = await db.collection('portal_users').findOne({ _id: new ObjectId(id as string) })
     

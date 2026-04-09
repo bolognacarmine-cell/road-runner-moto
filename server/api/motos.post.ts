@@ -7,12 +7,6 @@ export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig(event)
   const body = await readBody(event)
 
-  // 0. Verifica configurazione essenziale
-  if (!config.mongodbUri) {
-    console.error('ERRORE POST: MONGODB_URI non definita!')
-    throw createError({ statusCode: 500, statusMessage: 'Database non configurato.' })
-  }
-
   // 1. Configurazione Cloudinary
   if (config.cloudinaryCloudName && config.cloudinaryApiKey && config.cloudinaryApiSecret) {
     cloudinary.config({
@@ -24,12 +18,8 @@ export default defineEventHandler(async (event) => {
     console.warn('ATTENZIONE: Cloudinary non configurato. L\'upload delle immagini fallirà.')
   }
 
-  // 2. Connessione a MongoDB
-  const mongodbUri = config.mongodbUri as string
-  const client = new MongoClient(mongodbUri, {
-    connectTimeoutMS: 10000,
-    serverSelectionTimeoutMS: 10000
-  })
+  // 2. Connessione a MongoDB tramite utilità centralizzata
+  const { db, client } = await connectToDatabase()
 
   try {
     // 3. Upload Immagini su Cloudinary (se presenti)
@@ -44,7 +34,7 @@ export default defineEventHandler(async (event) => {
           })
           imageUrls.push(uploadResponse.secure_url)
           console.log(`Immagine ${index + 1} caricata: ${uploadResponse.secure_url}`)
-        } catch (cloudinaryError) {
+        } catch (cloudinaryError: any) {
           console.error(`Errore Cloudinary sull'immagine ${index + 1}:`, cloudinaryError.message)
           throw createError({
             statusCode: 500,
@@ -55,11 +45,6 @@ export default defineEventHandler(async (event) => {
       }
     }
 
-    console.log('Tentativo di connessione a MongoDB (POST)...')
-    await client.connect()
-    console.log('Connesso con successo al database:', config.mongodbDbName)
-    
-    const db = client.db(config.mongodbDbName)
     const collection = db.collection('motos')
 
     // 4. Preparazione dei dati finali
@@ -97,21 +82,14 @@ export default defineEventHandler(async (event) => {
     }
 
   } catch (error: any) {
-    const errorMessage = error?.message || 'Errore sconosciuto'
-    console.error('ERRORE CRITICO MONGODB (POST):', errorMessage)
-    
-    let userFriendlyMessage = errorMessage
-    if (errorMessage.includes('querySrv')) {
-      userFriendlyMessage = 'Problema DNS locale: Non riesco a risolvere l\'indirizzo di MongoDB Atlas. Prova a cambiare i DNS del tuo PC in 8.8.8.8 o 1.1.1.1.'
-    } else if (errorMessage.includes('Authentication failed')) {
-      userFriendlyMessage = 'ERRORE DI AUTENTICAZIONE: La password o lo username del Database User in Atlas sono errati. Controlla il file .env.'
-    }
+    const errorMessage = error?.message || 'Errore sconosciuto durante il salvataggio della moto'
+    console.error('ERRORE API MOTOS POST:', errorMessage)
     
     if (error.statusCode) throw error
     throw createError({
       statusCode: 500,
-      statusMessage: 'Errore di connessione al database.',
-      message: userFriendlyMessage
+      statusMessage: 'Errore interno del server durante il salvataggio del veicolo.',
+      message: errorMessage
     })
   } finally {
     await client.close()

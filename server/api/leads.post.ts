@@ -1,17 +1,9 @@
 export default defineEventHandler(async (event) => {
-  const config = useRuntimeConfig(event)
   const body = await readBody(event)
 
-  if (!config.mongodbUri) {
-    throw createError({ statusCode: 500, statusMessage: 'Database non configurato.' })
-  }
-
-  const { MongoClient } = await import('mongodb')
-  const client = new MongoClient(config.mongodbUri)
+  const { db, client } = await connectToDatabase()
 
   try {
-    await client.connect()
-    const db = client.db(config.mongodbDbName)
     const collection = db.collection('leads')
 
     // Validazione base
@@ -37,7 +29,7 @@ export default defineEventHandler(async (event) => {
       id: result.insertedId
     }
 
-  } catch (error) {
+  } catch (error: any) {
     console.error('ERRORE LEADS POST:', error)
     throw createError({
       statusCode: 500,

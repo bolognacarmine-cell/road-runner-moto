@@ -9,7 +9,6 @@ export default defineEventHandler(async (event) => {
   const id = event.context.params?.id
 
   if (!id) throw createError({ statusCode: 400, statusMessage: 'ID casco non fornito' })
-  if (!config.mongodbUri) throw createError({ statusCode: 500, statusMessage: 'Database non configurato.' })
 
   if (config.cloudinaryCloudName && config.cloudinaryApiKey && config.cloudinaryApiSecret) {
     cloudinary.config({
@@ -19,7 +18,7 @@ export default defineEventHandler(async (event) => {
     })
   }
 
-  const client = new MongoClient(config.mongodbUri as string)
+  const { db, client } = await connectToDatabase()
 
   try {
     const newImageUrls = []
@@ -33,8 +32,6 @@ export default defineEventHandler(async (event) => {
       }
     }
 
-    await client.connect()
-    const db = client.db(config.mongodbDbName)
     const collection = db.collection('helmets')
 
     const { _id, imagesBase64, immagini, imageOrder, ...updateData } = body

@@ -3,17 +3,9 @@ import { defineEventHandler, createError } from 'h3'
 import { MongoClient } from 'mongodb'
 
 export default defineEventHandler(async (event) => {
-  const config = useRuntimeConfig(event)
-
-  if (!config.mongodbUri) {
-    throw createError({ statusCode: 500, statusMessage: 'Database non configurato.' })
-  }
-
-  const client = new MongoClient(config.mongodbUri as string)
+  const { db, client } = await connectToDatabase()
 
   try {
-    await client.connect()
-    const db = client.db(config.mongodbDbName)
     const collection = db.collection('tradeins')
 
     const tradeIns = await collection.find({}).sort({ createdAt: -1 }).toArray()

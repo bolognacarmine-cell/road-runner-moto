@@ -2,7 +2,6 @@ import { defineEventHandler, getRouterParam } from 'h3'
 import { MongoClient, ObjectId } from 'mongodb'
 
 export default defineEventHandler(async (event) => {
-  const config = useRuntimeConfig(event)
   const id = getRouterParam(event, 'id')
   
   if (!id) {
@@ -12,16 +11,10 @@ export default defineEventHandler(async (event) => {
     })
   }
 
-  const mongodbUri = config.mongodbUri as string
-  const client = new MongoClient(mongodbUri, {
-    connectTimeoutMS: 10000,
-    serverSelectionTimeoutMS: 10000
-  })
+  const { db, client } = await connectToDatabase()
 
   try {
-    console.log(`Tentativo di eliminazione moto ${id}...`)
-    await client.connect()
-    const db = client.db(config.mongodbDbName)
+    console.log(`[API] Tentativo di eliminazione moto ${id}...`)
     const collection = db.collection('motos')
 
     // Elimina il documento tramite ID
@@ -38,8 +31,8 @@ export default defineEventHandler(async (event) => {
       message: 'Moto eliminata con successo'
     }
 
-  } catch (error) {
-    console.error('Errore MongoDB (DELETE):', error)
+  } catch (error: any) {
+    console.error('ERRORE API MOTOS DELETE:', error)
     if (error.statusCode) throw error
     throw createError({
       statusCode: 500,

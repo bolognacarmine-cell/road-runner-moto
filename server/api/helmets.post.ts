@@ -7,10 +7,6 @@ export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig(event)
   const body = await readBody(event)
 
-  if (!config.mongodbUri) {
-    throw createError({ statusCode: 500, statusMessage: 'Database non configurato.' })
-  }
-
   if (config.cloudinaryCloudName && config.cloudinaryApiKey && config.cloudinaryApiSecret) {
     cloudinary.config({
       cloud_name: config.cloudinaryCloudName,
@@ -19,7 +15,7 @@ export default defineEventHandler(async (event) => {
     })
   }
 
-  const client = new MongoClient(config.mongodbUri as string)
+  const { db, client } = await connectToDatabase()
 
   try {
     const imageUrls = []
@@ -33,8 +29,6 @@ export default defineEventHandler(async (event) => {
       }
     }
 
-    await client.connect()
-    const db = client.db(config.mongodbDbName)
     const collection = db.collection('helmets')
 
     const { imagesBase64, imageOrder, ...helmetData } = body

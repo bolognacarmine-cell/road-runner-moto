@@ -23,11 +23,7 @@ export default defineEventHandler(async (event) => {
     })
   }
 
-  const mongodbUri = config.mongodbUri as string
-  const client = new MongoClient(mongodbUri, {
-    connectTimeoutMS: 10000,
-    serverSelectionTimeoutMS: 10000
-  })
+  const { db, client } = await connectToDatabase()
 
   try {
     // 2. Upload nuove immagini su Cloudinary (se presenti in Base64)
@@ -42,10 +38,6 @@ export default defineEventHandler(async (event) => {
       }
     }
 
-    console.log('Tentativo di connessione a MongoDB (PUT)...')
-    await client.connect()
-    
-    const db = client.db(config.mongodbDbName)
     const collection = db.collection('motos')
 
     // 3. Rimuoviamo i campi che non devono essere salvati direttamente come dati
@@ -90,7 +82,7 @@ export default defineEventHandler(async (event) => {
       urls: finalImmagini
     }
 
-  } catch (error) {
+  } catch (error: any) {
     console.error('Errore durante l\'aggiornamento:', error)
     if (error.statusCode) throw error
     throw createError({
