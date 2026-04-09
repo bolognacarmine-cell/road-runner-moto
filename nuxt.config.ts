@@ -8,6 +8,16 @@ export default defineNuxtConfig({
     '~/assets/css/silktide-consent.css'
   ],
 
+  // ✅ Regole di routing e caching per produzione
+  routeRules: {
+    // Evita il caching aggressivo dei chunk Nuxt per prevenire errori "Failed to fetch dynamically imported module"
+    '/_nuxt/**': { 
+      headers: { 
+        'Cache-Control': 'public, max-age=0, must-revalidate' 
+      } 
+    }
+  },
+
   // ✅ Configurazione runtime per API e URL pubblico
   runtimeConfig: {
     mongodbUri: process.env.MONGODB_URI || process.env.NUXT_MONGODB_URI,
