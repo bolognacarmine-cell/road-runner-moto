@@ -1,4 +1,6 @@
 <script setup>
+import { ref, onMounted, onUnmounted } from 'vue'
+
 defineProps({
   selectedBrand: {
     type: String,
@@ -7,6 +9,56 @@ defineProps({
 })
 
 defineEmits(['select-brand'])
+
+// Gestione caricamento differito per mobile/touch
+const isLoaded = ref(false)
+const brandsSection = ref(null)
+
+const triggerLoad = () => {
+  if (isLoaded.value) return
+  isLoaded.value = true
+  cleanup()
+}
+
+let observer = null
+const cleanup = () => {
+  if (observer) {
+    observer.disconnect()
+    observer = null
+  }
+  if (brandsSection.value) {
+    brandsSection.value.removeEventListener('touchstart', triggerLoad, { passive: true })
+    brandsSection.value.removeEventListener('pointerdown', triggerLoad, { passive: true })
+  }
+}
+
+onMounted(() => {
+  // Su desktop carichiamo subito per non cambiare nulla
+  if (window && window.innerWidth > 700) {
+    isLoaded.value = true
+    return
+  }
+
+  // Su mobile/touch usiamo IntersectionObserver e listener di touch
+  if (brandsSection.value) {
+    brandsSection.value.addEventListener('touchstart', triggerLoad, { passive: true })
+    brandsSection.value.addEventListener('pointerdown', triggerLoad, { passive: true })
+
+    if ('IntersectionObserver' in window) {
+      observer = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting) {
+          triggerLoad()
+        }
+      }, { rootMargin: '100px' })
+      observer.observe(brandsSection.value)
+    } else {
+      // Fallback per browser datati
+      isLoaded.value = true
+    }
+  }
+})
+
+onUnmounted(cleanup)
 
 const brands = [
   { name: 'Honda', image: '/brands/honda.jpg' },
@@ -23,7 +75,7 @@ const brands = [
 </script>
 
 <template>
-  <section id="marchi" class="brands-section">
+  <section id="marchi" ref="brandsSection" class="brands-section">
     <div class="container">
       <div class="section-heading">
         <p class="section-kicker">Marchi</p>
@@ -41,7 +93,7 @@ const brands = [
         >
           <div 
             class="brand-image" 
-            :style="{ backgroundImage: `url(${brand.image})` }"
+            :style="isLoaded ? { backgroundImage: `url(${brand.image})` } : {}"
           ></div>
           <div class="brand-overlay"></div>
           <span class="brand-name">{{ brand.name }}</span>
