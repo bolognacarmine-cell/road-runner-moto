@@ -2,21 +2,16 @@ import { defineEventHandler, readBody, createError } from 'h3'
 import { MongoClient } from 'mongodb'
 
 export default defineEventHandler(async (event) => {
-  const config = useRuntimeConfig(event)
   const body = await readBody(event)
-
   const { targa, data, km, descrizione, partiSostituite, costo } = body
 
   if (!targa || !descrizione) {
     throw createError({ statusCode: 400, statusMessage: 'Targa e descrizione obbligatorie.' })
   }
 
-  const client = new MongoClient(config.mongodbUri)
+  const { db, client } = await connectToDatabase()
 
   try {
-    await client.connect()
-    const db = client.db(config.mongodbDbName)
-    
     await db.collection('portal_maintenance').insertOne({
       targa: targa.toUpperCase(),
       data: data || new Date().toISOString().split('T')[0],

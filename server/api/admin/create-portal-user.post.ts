@@ -2,21 +2,16 @@ import { defineEventHandler, readBody, createError } from 'h3'
 import { MongoClient } from 'mongodb'
 
 export default defineEventHandler(async (event) => {
-  const config = useRuntimeConfig(event)
   const body = await readBody(event)
-
   const { nome, cognome, targa, password } = body
 
   if (!nome || !cognome || !targa || !password) {
     throw createError({ statusCode: 400, statusMessage: 'Tutti i campi sono obbligatori.' })
   }
 
-  const client = new MongoClient(config.mongodbUri)
+  const { db, client } = await connectToDatabase()
 
   try {
-    await client.connect()
-    const db = client.db(config.mongodbDbName)
-    
     // Controlla se targa esiste già
     const existing = await db.collection('portal_users').findOne({ targa: targa.toUpperCase() })
     if (existing) {

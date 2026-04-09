@@ -2,9 +2,7 @@ import { defineEventHandler, readBody, createError } from 'h3'
 import { MongoClient } from 'mongodb'
 
 export default defineEventHandler(async (event) => {
-  const config = useRuntimeConfig(event)
   const body = await readBody(event)
-
   const { username, targa, password } = body
 
   // Validazione Username fisso come richiesto
@@ -22,11 +20,9 @@ export default defineEventHandler(async (event) => {
     })
   }
 
-  const client = new MongoClient(config.mongodbUri)
+  const { db, client } = await connectToDatabase()
 
   try {
-    await client.connect()
-    const db = client.db(config.mongodbDbName)
     const usersCollection = db.collection('portal_users')
 
     // Ricerca utente per targa

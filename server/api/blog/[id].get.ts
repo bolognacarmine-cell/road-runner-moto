@@ -2,22 +2,15 @@ import { defineEventHandler, createError, getRouterParam } from 'h3'
 import { MongoClient } from 'mongodb'
 
 export default defineEventHandler(async (event) => {
-  const config = useRuntimeConfig(event)
   const id = getRouterParam(event, 'id')
 
   if (!id) {
     throw createError({ statusCode: 400, statusMessage: 'Identificativo mancante.' })
   }
 
-  if (!config.mongodbUri) {
-    throw createError({ statusCode: 500, statusMessage: 'Database non configurato.' })
-  }
-
-  const client = new MongoClient(config.mongodbUri as string)
+  const { db, client } = await connectToDatabase()
 
   try {
-    await client.connect()
-    const db = client.db(config.mongodbDbName || 'roadrunner_db')
     const collection = db.collection('blog_posts')
 
     console.log('RICERCA POST PER ID/SLUG:', id)
@@ -28,7 +21,6 @@ export default defineEventHandler(async (event) => {
 
     // Fallback: cerca per ID se non trovato per slug (utile per admin/modifica)
     if (!post && id.length === 24) {
-      const { ObjectId } = await import('mongodb')
       try {
         post = await collection.findOne({ _id: new ObjectId(id) })
       } catch (e) {
@@ -49,7 +41,6 @@ export default defineEventHandler(async (event) => {
     let relatedMotos = []
     if (post.relatedMotos && post.relatedMotos.length > 0) {
       const motosCollection = db.collection('motos')
-      const { ObjectId } = await import('mongodb')
       
       const ids = post.relatedMotos.map((id: string) => {
         try { return new ObjectId(id) } catch (e) { return null }

@@ -2,17 +2,15 @@ import { defineEventHandler } from 'h3'
 import { MongoClient } from 'mongodb'
 
 export default defineEventHandler(async (event) => {
-  const config = useRuntimeConfig(event)
-  const client = new MongoClient(config.mongodbUri as string)
+  const { db, client } = await connectToDatabase()
 
   try {
-    await client.connect()
-    const db = client.db(config.mongodbDbName || 'roadrunner_db')
     const collection = db.collection('blog_posts')
 
     const posts = await collection.find({}).project({ title: 1, slug: 1 }).toArray()
+    const config = useRuntimeConfig()
     const dbName = config.mongodbDbName || 'roadrunner_db'
-    const uri = config.mongodbUri?.replace(/:[^:@]+@/, ':***@') // Mask password
+    const uri = (config.mongodbUri as string)?.replace(/:[^:@]+@/, ':***@') // Mask password
     const collections = await db.listCollections().toArray()
 
     return {

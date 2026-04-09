@@ -3,7 +3,6 @@ import { MongoClient, ObjectId } from 'mongodb'
 import { v2 as cloudinary } from 'cloudinary'
 
 export default defineEventHandler(async (event) => {
-  const config = useRuntimeConfig(event)
   const query = getQuery(event)
   const { id } = query
 
@@ -13,17 +12,14 @@ export default defineEventHandler(async (event) => {
 
   // Configurazione Cloudinary
   cloudinary.config({
-    cloud_name: config.cloudinaryCloudName,
-    api_key: config.cloudinaryApiKey,
-    api_secret: config.cloudinaryApiSecret
+    cloud_name: useRuntimeConfig().cloudinaryCloudName,
+    api_key: useRuntimeConfig().cloudinaryApiKey,
+    api_secret: useRuntimeConfig().cloudinaryApiSecret
   })
 
-  const client = new MongoClient(config.mongodbUri)
+  const { db, client } = await connectToDatabase()
 
   try {
-    await client.connect()
-    const db = client.db(config.mongodbDbName)
-    
     // 1. Recupera il documento per ottenere il cloudinary_id
     const doc = await db.collection('portal_documents').findOne({ _id: new ObjectId(id as string) })
     

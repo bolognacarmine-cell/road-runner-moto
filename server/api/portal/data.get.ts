@@ -2,7 +2,6 @@ import { defineEventHandler, createError, getQuery } from 'h3'
 import { MongoClient } from 'mongodb'
 
 export default defineEventHandler(async (event) => {
-  const config = useRuntimeConfig(event)
   const query = getQuery(event)
   const targa = query.targa as string
 
@@ -13,12 +12,9 @@ export default defineEventHandler(async (event) => {
     })
   }
 
-  const client = new MongoClient(config.mongodbUri)
+  const { db, client } = await connectToDatabase()
 
   try {
-    await client.connect()
-    const db = client.db(config.mongodbDbName)
-
     // 1. Dati Veicolo
     const vehicle = await db.collection('portal_vehicles').findOne({ targa: targa.toUpperCase() })
     

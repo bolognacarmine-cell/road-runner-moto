@@ -2,13 +2,9 @@ import { defineEventHandler, createError } from 'h3'
 import { MongoClient } from 'mongodb'
 
 export default defineEventHandler(async (event) => {
-  const config = useRuntimeConfig(event)
-  const client = new MongoClient(config.mongodbUri)
+  const { db, client } = await connectToDatabase()
 
   try {
-    await client.connect()
-    const db = client.db(config.mongodbDbName)
-
     const vehicles = await db.collection('portal_vehicles').find({}).toArray()
 
     return {

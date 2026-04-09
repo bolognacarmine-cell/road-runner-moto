@@ -1,5 +1,3 @@
-import { defineNitroPlugin } from 'nitro/runtime/plugin'
-
 export default defineNitroPlugin((nitroApp) => {
   // Configurazione per Render: ascoltare su 0.0.0.0 e usare la porta da process.env.PORT
   if (process.env.NODE_ENV === 'production') {

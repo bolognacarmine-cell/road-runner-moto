@@ -2,18 +2,11 @@ import { defineEventHandler, createError, getRouterParam } from 'h3'
 import { MongoClient, ObjectId } from 'mongodb'
 
 export default defineEventHandler(async (event) => {
-  const config = useRuntimeConfig(event)
   const id = getRouterParam(event, 'id')
 
-  if (!config.mongodbUri) {
-    throw createError({ statusCode: 500, statusMessage: 'Database non configurato.' })
-  }
-
-  const client = new MongoClient(config.mongodbUri as string)
+  const { db, client } = await connectToDatabase()
 
   try {
-    await client.connect()
-    const db = client.db(config.mongodbDbName)
     const collection = db.collection('blog_posts')
 
     const result = await collection.deleteOne({ _id: new ObjectId(id) })
