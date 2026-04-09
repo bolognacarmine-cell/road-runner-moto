@@ -1,15 +1,4 @@
 <script setup>
-import { ref, onMounted, onUnmounted } from 'vue'
-
-defineProps({
-  selectedBrand: {
-    type: String,
-    default: null
-  }
-})
-
-defineEmits(['select-brand'])
-
 // Gestione caricamento differito per mobile/touch
 const isLoaded = ref(false)
 const brandsSection = ref(null)
@@ -17,24 +6,22 @@ const brandsSection = ref(null)
 const triggerLoad = () => {
   if (isLoaded.value) return
   isLoaded.value = true
-  cleanup()
-}
-
-let observer = null
-const cleanup = () => {
+  
   if (observer) {
     observer.disconnect()
     observer = null
   }
   if (brandsSection.value) {
-    brandsSection.value.removeEventListener('touchstart', triggerLoad, { passive: true })
-    brandsSection.value.removeEventListener('pointerdown', triggerLoad, { passive: true })
+    brandsSection.value.removeEventListener('touchstart', triggerLoad)
+    brandsSection.value.removeEventListener('pointerdown', triggerLoad)
   }
 }
 
+let observer = null
+
 onMounted(() => {
   // Su desktop carichiamo subito per non cambiare nulla
-  if (window && window.innerWidth > 700) {
+  if (window.innerWidth > 700) {
     isLoaded.value = true
     return
   }
@@ -52,13 +39,27 @@ onMounted(() => {
       }, { rootMargin: '100px' })
       observer.observe(brandsSection.value)
     } else {
-      // Fallback per browser datati
       isLoaded.value = true
     }
   }
 })
 
-onUnmounted(cleanup)
+onUnmounted(() => {
+  if (observer) observer.disconnect()
+  if (brandsSection.value) {
+    brandsSection.value.removeEventListener('touchstart', triggerLoad)
+    brandsSection.value.removeEventListener('pointerdown', triggerLoad)
+  }
+})
+
+defineProps({
+  selectedBrand: {
+    type: String,
+    default: null
+  }
+})
+
+defineEmits(['select-brand'])
 
 const brands = [
   { name: 'Honda', image: '/brands/honda.jpg' },
