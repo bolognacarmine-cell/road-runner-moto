@@ -153,8 +153,8 @@ onMounted(async () => {
             <!-- Immagine principale -->
             <div class="visual-layer layer-main">
               <img 
-                :src="'/about-story.jpg'" 
-                alt="La nostra storia - ROAD RUNNER" 
+                src="https://images.unsplash.com/photo-1558981285-6f0c94958bb6?auto=format&fit=crop&q=80&w=1200" 
+                alt="Moto in Officina ROAD RUNNER - Passione Meccanica" 
                 class="founder-img"
                 loading="lazy"
                 @error="(e) => e.target.src = 'https://images.unsplash.com/photo-1599819811279-d5ad9cccf838?auto=format&fit=crop&q=80&w=1000'"
