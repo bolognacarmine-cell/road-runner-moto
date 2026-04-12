@@ -49,13 +49,15 @@ onMounted(async () => {
 
     // Animazione Visual Layered (Effetto Parallasse)
     const visualElements = document.querySelectorAll('.visual-layer')
+    const isMobile = window.innerWidth <= 1024
+    
     visualElements.forEach((el, i) => {
       gsap.fromTo(el, 
-        { y: 60 * (i + 1), opacity: 0, scale: 0.9 },
+        { y: isMobile ? 20 * (i + 1) : 60 * (i + 1), opacity: 0, scale: 0.9 },
         {
           scrollTrigger: {
             trigger: '.about-visual-container',
-            start: 'top 75%',
+            start: isMobile ? 'top 90%' : 'top 75%',
           },
           y: 0,
           opacity: 1,
@@ -68,16 +70,18 @@ onMounted(async () => {
       )
     })
 
-    // Parallasse continuo al movimento dello scroll
-    gsap.to('.layer-main', {
-      y: 30,
-      scrollTrigger: {
-        trigger: '.about-section',
-        start: 'top bottom',
-        end: 'bottom top',
-        scrub: true
-      }
-    })
+    // Parallasse continuo al movimento dello scroll - Solo Desktop
+    if (!isMobile) {
+      gsap.to('.layer-main', {
+        y: 30,
+        scrollTrigger: {
+          trigger: '.about-section',
+          start: 'top bottom',
+          end: 'bottom top',
+          scrub: true
+        }
+      })
+    }
 
     // Hover sulle icone valori
     gsap.fromTo('.value-card', 
@@ -482,7 +486,16 @@ onMounted(async () => {
 
 @media (max-width: 1024px) {
   .about-grid { grid-template-columns: 1fr; }
-  .about-visual-container { height: 500px; order: -1; }
+  .about-visual-container { 
+    height: 500px; 
+    order: -1; 
+    overflow: hidden; /* Patch mobile: evita che l'immagine esca dal contenitore */
+    margin-bottom: 10px; /* Stabilità spaziatura */
+  }
+  .about-content {
+    position: relative;
+    z-index: 5; /* Patch mobile: testo sempre sopra l'immagine */
+  }
   .layer-main { padding: 30px; }
 }
 
