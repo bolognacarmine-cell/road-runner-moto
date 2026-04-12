@@ -621,8 +621,14 @@ onUnmounted(() => {
   transform: translateY(-20px);
 }
 
-.main-content {
+.page-shell {
+  display: flex;
+  flex-direction: column;
   min-height: 100vh;
+}
+
+.main-content {
+  flex: 1;
 }
 
 @media (max-width: 1100px) {
@@ -784,10 +790,26 @@ onUnmounted(() => {
   .footer-grid {
     grid-template-columns: 1fr;
     gap: 40px;
+    text-align: center; /* Patch mobile: centra il contenuto */
+  }
+  .footer-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Patch mobile: centra logo e info */
+  }
+  .footer-links nav {
+    align-items: center; /* Patch mobile: centra i link verticali */
+  }
+  .social-links-footer {
+    justify-content: center; /* Patch mobile: centra i link e le icone social */
   }
   .bottom-flex {
     flex-direction: column;
     text-align: center;
+    align-items: center; /* Patch mobile: centra i link di privacy */
+  }
+  .privacy-links {
+    justify-content: center;
   }
 }
 </style>
