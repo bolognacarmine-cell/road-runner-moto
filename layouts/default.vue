@@ -787,28 +787,58 @@ onUnmounted(() => {
 }
 
 @media (max-width: 768px) {
+  .site-footer {
+    padding: 60px 0 40px; /* Ridotto per mobile */
+  }
   .footer-grid {
-    grid-template-columns: 1fr;
-    gap: 40px;
-    text-align: center; /* Patch mobile: centra il contenuto */
+    grid-template-columns: 1fr 1fr; /* Soluzione Premium: 2 colonne */
+    gap: 40px 20px;
+    text-align: left; /* Allineamento a sinistra più professionale per liste */
   }
   .footer-info {
-    display: flex;
-    flex-direction: column;
-    align-items: center; /* Patch mobile: centra logo e info */
+    grid-column: span 2; /* Info sopra a tutta larghezza */
+    text-align: center;
+    align-items: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    padding-bottom: 30px;
+    margin-bottom: 10px;
   }
-  .footer-links nav {
-    align-items: center; /* Patch mobile: centra i link verticali */
+  .footer-links strong, .footer-contact strong {
+    font-size: 0.9rem;
+    margin-bottom: 15px;
+    color: var(--primary-2); /* Evidenzia le testate */
+  }
+  .footer-links nav a, .footer-contact p {
+    font-size: 0.85rem;
   }
   .social-links-footer {
-    justify-content: center; /* Patch mobile: centra i link e le icone social */
+    justify-content: flex-start;
+    flex-wrap: wrap;
   }
   .bottom-flex {
     flex-direction: column;
     text-align: center;
-    align-items: center; /* Patch mobile: centra i link di privacy */
+    align-items: center;
+    gap: 15px;
   }
   .privacy-links {
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  /* Per schermi molto piccoli torniamo a 1 colonna per leggibilità */
+  .footer-grid {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+  .footer-info {
+    grid-column: span 1;
+  }
+  .footer-links nav, .social-links-footer {
+    align-items: center;
     justify-content: center;
   }
 }
