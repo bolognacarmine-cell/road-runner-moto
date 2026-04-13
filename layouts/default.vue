@@ -23,6 +23,7 @@ const selectFilter = (filter) => {
 const mobileMenuOpen = ref(false)
 const isScrolled = ref(false)
 let ctx;
+let gdprCleanup;
 
 const toggleMenu = () => {
   mobileMenuOpen.value = !mobileMenuOpen.value
@@ -121,6 +122,113 @@ onMounted(async () => {
 
   initSilktide()
 
+  const setupGdprFooter = () => {
+    const footer = document.querySelector('.gdpr-footer')
+    if (!footer) return () => {}
+
+    const panel = footer.querySelector('.gdpr-panel')
+    const toggle = footer.querySelector('.gdpr-toggle')
+    const preferencesBtn = footer.querySelector('#open-cookie-preferences')
+
+    if (!panel || !toggle) return () => {}
+
+    const mq = window.matchMedia('(max-width: 900px)')
+    let isOpen = false
+    let lastFocused = null
+
+    const setPanelHeight = () => {
+      if (!isOpen) return
+      panel.style.maxHeight = `${panel.scrollHeight}px`
+    }
+
+    const setOpen = (open, { restoreFocus = false } = {}) => {
+      if (!mq.matches) open = false
+
+      isOpen = open
+      footer.dataset.state = open ? 'open' : 'closed'
+      toggle.setAttribute('aria-expanded', open ? 'true' : 'false')
+
+      if (open) {
+        lastFocused = document.activeElement
+        panel.hidden = false
+        panel.style.maxHeight = '0px'
+        panel.offsetHeight
+        setPanelHeight()
+        const focusable = panel.querySelector('a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])')
+        if (focusable instanceof HTMLElement) focusable.focus()
+      } else {
+        panel.style.maxHeight = '0px'
+        const onTransitionEnd = (e) => {
+          if (e.target !== panel) return
+          panel.hidden = true
+          panel.removeEventListener('transitionend', onTransitionEnd)
+        }
+        panel.addEventListener('transitionend', onTransitionEnd)
+
+        if (restoreFocus) {
+          if (toggle instanceof HTMLElement) toggle.focus()
+        } else if (lastFocused instanceof HTMLElement) {
+          lastFocused.focus()
+        }
+      }
+    }
+
+    const onToggleClick = (e) => {
+      e.preventDefault()
+      setOpen(!isOpen, { restoreFocus: true })
+    }
+
+    const onDocClick = (e) => {
+      if (!isOpen) return
+      if (e.target instanceof Node && footer.contains(e.target)) return
+      setOpen(false, { restoreFocus: true })
+    }
+
+    const onKeyDown = (e) => {
+      if (!isOpen) return
+      if (e.key === 'Escape') {
+        e.preventDefault()
+        setOpen(false, { restoreFocus: true })
+      }
+    }
+
+    const onResize = () => setPanelHeight()
+
+    const onMqChange = () => {
+      if (!mq.matches) setOpen(false, { restoreFocus: false })
+    }
+
+    const onPreferencesClick = (e) => {
+      e.preventDefault()
+      if (window.silktideCookieBannerManager && typeof window.silktideCookieBannerManager.toggleModal === 'function') {
+        window.silktideCookieBannerManager.toggleModal(true)
+      }
+    }
+
+    toggle.addEventListener('click', onToggleClick)
+    document.addEventListener('click', onDocClick, true)
+    document.addEventListener('keydown', onKeyDown)
+    window.addEventListener('resize', onResize)
+    mq.addEventListener('change', onMqChange)
+    preferencesBtn?.addEventListener('click', onPreferencesClick)
+
+    footer.dataset.state = 'closed'
+    toggle.setAttribute('aria-expanded', 'false')
+    panel.hidden = true
+    panel.style.maxHeight = '0px'
+
+    return () => {
+      toggle.removeEventListener('click', onToggleClick)
+      document.removeEventListener('click', onDocClick, true)
+      document.removeEventListener('keydown', onKeyDown)
+      window.removeEventListener('resize', onResize)
+      mq.removeEventListener('change', onMqChange)
+      preferencesBtn?.removeEventListener('click', onPreferencesClick)
+    }
+  }
+
+  gdprCleanup = setupGdprFooter()
+
   ctx = gsap.context(() => {
     // Animazione degli elementi interni (senza far muovere l'intero header)
     const navElements = document.querySelectorAll('.brand, .main-nav a, .nav-dropdown, .btn-primary-custom, .mobile-toggle')
@@ -144,6 +252,7 @@ onMounted(async () => {
 onUnmounted(() => {
   window.removeEventListener('scroll', handleScroll)
   if (ctx) ctx.revert()
+  if (gdprCleanup) gdprCleanup()
 })
 </script>
 
@@ -300,6 +409,45 @@ onUnmounted(() => {
         </div>
       </div>
     </footer>
+
+    <div v-if="!isExcludedPage" class="gdpr-footer" data-state="closed" aria-label="Privacy e cookie">
+      <button
+        class="gdpr-toggle"
+        type="button"
+        aria-expanded="false"
+        aria-controls="gdpr-panel"
+      >
+        <span class="gdpr-toggle__label">Privacy e Cookie</span>
+        <svg class="gdpr-toggle__chevron" width="18" height="18" viewBox="0 0 20 20" aria-hidden="true" focusable="false">
+          <path d="M5 7.5L10 12.5L15 7.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+      </button>
+
+      <section id="gdpr-panel" class="gdpr-panel" hidden>
+        <div class="gdpr-panel__inner">
+          <p class="gdpr-text">
+            Utilizziamo i cookie per migliorare l'esperienza di navigazione, statistiche anonime e servizi terzi come mappe e WhatsApp. Alcuni contenuti restano bloccati fino all'accettazione dei cookie statistici, come su dpcars.it.
+          </p>
+
+          <nav class="gdpr-links" aria-label="Link privacy">
+            <a href="/privacy-policy">Privacy Policy</a>
+            <a href="/cookie-policy">Cookie Policy</a>
+            <a href="/legal-notes">Note legali</a>
+          </nav>
+
+          <button id="open-cookie-preferences" class="gdpr-preferences" type="button">
+            Gestisci preferenze cookie
+          </button>
+
+          <address class="gdpr-company">
+            <strong>Road Runner Moto</strong>
+            <span>Via San Francesco 13 - Capodrise (CE)</span>
+            <span><a href="tel:0823516087">Tel: 0823 516087</a> / <a href="tel:+393391581997">339 158 1997</a></span>
+            <span><a href="mailto:inforoadrunner@libero.it">inforoadrunner@libero.it</a></span>
+          </address>
+        </div>
+      </section>
+    </div>
   </div>
 </template>
 
