@@ -56,7 +56,7 @@
           <h5>Orari di Apertura</h5>
           <div class="hours-grid">
             <span>Lun - Ven:</span>
-            <span>09:00 - 13:00, 15:30 - 19:30</span>
+            <span>09:00 - 13:00, 16:00 - 19:00</span>
             <span>Sabato:</span>
             <span>09:00 - 13:00</span>
             <span>Domenica:</span>

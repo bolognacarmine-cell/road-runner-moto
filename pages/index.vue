@@ -83,7 +83,7 @@ useHead({
             "@type": "OpeningHoursSpecification",
             "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
             "opens": "09:00",
-            "closes": "19:30"
+            "closes": "19:00"
           },
           {
             "@type": "OpeningHoursSpecification",
