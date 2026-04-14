@@ -25,6 +25,33 @@ useHead({
   title: 'Collezione Caschi Moto | ROAD RUNNER MOTO',
   meta: [
     { name: 'description', content: 'Vasta gamma caschi LS2, Dieffe e Momo Design da Road Runner Capodrise. Accessori moto e localizzatori GPS per la tua sicurezza. Visita il nostro showroom!' }
+  ],
+  script: [
+    {
+      type: 'application/ld+json',
+      children: JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "Dove trovare caschi LS2 economici a Caserta?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Road Runner Moto a Capodrise (CE) è rivenditore ufficiale di caschi LS2, offrendo modelli come l'Airflow 2 a prezzi competitivi. Trovi anche le ultime collezioni Momo Design e Dieffe in pronta consegna."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Quali marche di caschi moto sono disponibili in negozio?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Presso il nostro showroom a Capodrise troverai un'ampia selezione di caschi delle migliori marche, tra cui la linea urbana e moderna di Momo Design, la sicurezza tecnologica di LS2 e l'ottimo rapporto qualità-prezzo di Dieffe."
+            }
+          }
+        ]
+      })
+    }
   ]
 })
 </script>
@@ -40,6 +67,14 @@ useHead({
           La nostra selezione esclusiva di caschi dei migliori brand. 
           Sicurezza, comfort e design per ogni tipologia di guida.
         </p>
+
+        <!-- AEO Direct Response Paragraph -->
+        <div class="aeo-direct-response mt-8 max-w-4xl p-6 bg-white/5 border-l-4 border-primary-2 rounded-r-lg shadow-xl">
+          <p class="text-sm uppercase tracking-wider text-primary-2 font-bold mb-2">Guida all'acquisto Caschi - Capodrise & Caserta</p>
+          <p class="text-lg leading-relaxed text-gray-200">
+            Cerchi un <strong>casco LS2 economico</strong> o l'ultima collezione <strong>Momo Design</strong> a Caserta? <strong>Road Runner Moto</strong> a Capodrise è il punto di riferimento per la protezione su due ruote in Campania. Offriamo una selezione curata di caschi <strong>LS2 Airflow 2</strong>, modelli <strong>Dieffe</strong> e lo stile inconfondibile di Momo Design. Ogni casco nel nostro showroom è scelto per garantire il massimo equilibrio tra <strong>sicurezza certificata</strong> e comfort urbano. Visita il nostro store per provare le nuove colorazioni 2026.
+          </p>
+        </div>
 
         <!-- Filtri Categorie -->
         <div class="categories-filter">
