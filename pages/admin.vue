@@ -236,6 +236,10 @@
               
               <div class="form-group full-width">
                 <label>Immagini</label>
+                <div class="image-input-row">
+                  <input type="url" v-model="imageUrlInput" placeholder="Inserisci URL immagine (es: https://...)" class="url-input" />
+                  <button type="button" @click="addImageFromUrl" :disabled="!imageUrlInput" class="url-add-btn">Aggiungi</button>
+                </div>
                 <input type="file" @change="handleImageUpload" multiple accept="image/*" class="file-input" />
                 <div v-if="unifiedImages.length" class="image-previews">
                   <div v-for="(img, index) in unifiedImages" :key="index" class="image-preview-item">
@@ -399,6 +403,10 @@
               </div>
               <div class="form-group full-width">
                 <label>Galleria Immagini</label>
+                <div class="image-input-row">
+                  <input type="url" v-model="helmetImageUrlInput" placeholder="Inserisci URL immagine (es: https://...)" class="url-input" />
+                  <button type="button" @click="addHelmetImageFromUrl" :disabled="!helmetImageUrlInput" class="url-add-btn">Aggiungi</button>
+                </div>
                 <input type="file" @change="handleHelmetImageUpload" multiple accept="image/*" class="file-input" />
                 <div v-if="unifiedHelmetImages.length" class="image-previews">
                   <div v-for="(img, index) in unifiedHelmetImages" :key="index" class="image-preview-item">
@@ -1042,7 +1050,9 @@ const helmetForm = ref({
 const initialForm = { ...motoForm.value }
 const initialHelmetForm = { ...helmetForm.value }
 const unifiedImages = ref([]) // Lista unificata di immagini per riordinamento [{type: 'url'|'file', value: string|File, preview: string}]
-const unifiedHelmetImages = ref([]) 
+const unifiedHelmetImages = ref([])
+const imageUrlInput = ref('')
+const helmetImageUrlInput = ref('')
 const editingId = ref(null)
 const editingHelmetId = ref(null)
 
@@ -1087,6 +1097,16 @@ const handleHelmetImageUpload = (event) => {
     }
     reader.readAsDataURL(file)
   })
+}
+
+const addHelmetImageFromUrl = () => {
+  if (!helmetImageUrlInput.value) return
+  unifiedHelmetImages.value.push({
+    type: 'url',
+    value: helmetImageUrlInput.value,
+    preview: helmetImageUrlInput.value
+  })
+  helmetImageUrlInput.value = ''
 }
 
 const removeHelmetImage = (index) => {
@@ -1644,6 +1664,16 @@ const editMoto = (m) => {
   }))
   editingId.value = m._id
   currentTab.value = 'edit'
+}
+
+const addImageFromUrl = () => {
+  if (!imageUrlInput.value) return
+  unifiedImages.value.push({
+    type: 'url',
+    value: imageUrlInput.value,
+    preview: imageUrlInput.value
+  })
+  imageUrlInput.value = ''
 }
 
 const handleImageUpload = (event) => {
