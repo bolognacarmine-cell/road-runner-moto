@@ -1,9 +1,8 @@
 <script setup>
-import { onMounted, onUnmounted, nextTick } from 'vue'
+import { onMounted, onUnmounted, nextTick, ref } from 'vue'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
-// Props per dinamismo
 defineProps({
   badge: { type: String, default: 'Concessionaria a Capodrise' },
   title: { type: String, default: 'Il tuo mondo in moto' },
@@ -13,14 +12,24 @@ defineProps({
 gsap.registerPlugin(ScrollTrigger)
 
 let ctx
+const videoLoaded = ref(false)
 
 onMounted(async () => {
   await nextTick()
+
+  const video = document.querySelector('.hero-video')
+  if (video) {
+    video.play().then(() => {
+      videoLoaded.value = true
+    }).catch(() => {
+      videoLoaded.value = false
+    })
+  }
+
   ctx = gsap.context(() => {
-    // Animazione di comparsa fluida ed elegante
     const textWrapper = document.querySelector('.hero-text-wrapper')
     if (textWrapper) {
-      gsap.fromTo(textWrapper, 
+      gsap.fromTo(textWrapper,
         { opacity: 0, y: 30 },
         {
           y: 0,
@@ -32,7 +41,6 @@ onMounted(async () => {
       )
     }
 
-    // Stagger dei contenuti interni per profondità
     const internalContent = document.querySelectorAll('.hero-badge, .hero-title, .hero-subtitle, .hero-actions')
     if (internalContent.length > 0) {
       gsap.fromTo(internalContent,
@@ -50,19 +58,18 @@ onMounted(async () => {
 
     const scrollIndicator = document.querySelector('.scroll-indicator')
     if (scrollIndicator) {
-      gsap.fromTo(scrollIndicator, 
+      gsap.fromTo(scrollIndicator,
         { opacity: 0, y: 20 },
-        { 
-          opacity: 0.6, 
+        {
+          opacity: 0.6,
           y: 0,
-          duration: 1.2, 
+          duration: 1.2,
           delay: 1.5,
           clearProps: 'transform'
         }
       )
     }
 
-    // Parallasse discreto sullo scroll
     if (textWrapper && document.querySelector('.hero')) {
       gsap.to(textWrapper, {
         y: -30,
@@ -85,7 +92,6 @@ onUnmounted(() => {
 
 <template>
   <section class="hero">
-    <!-- Video di sfondo con overlay gradiente -->
     <div class="hero-video-wrapper">
       <video
         class="hero-video desktop-only"
@@ -103,7 +109,6 @@ onUnmounted(() => {
       <div class="hero-overlay" />
     </div>
 
-    <!-- Contenuto testuale -->
     <div class="container hero-container">
       <div class="hero-content">
         <div class="hero-text-wrapper">
@@ -128,7 +133,6 @@ onUnmounted(() => {
       </div>
     </div>
 
-    <!-- Scroll Indicator -->
     <div class="scroll-indicator">
       <div class="mouse">
         <div class="wheel"></div>
@@ -151,7 +155,7 @@ onUnmounted(() => {
 
 @media (max-width: 768px) {
   .hero {
-    padding: 100px 0; /* Più spazio per il contenuto su mobile */
+    padding: 100px 0;
   }
 }
 
@@ -163,6 +167,7 @@ onUnmounted(() => {
   height: 100%;
   z-index: 1;
   pointer-events: none;
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
 }
 
 .hero-video {
@@ -172,6 +177,7 @@ onUnmounted(() => {
   filter: brightness(0.6) contrast(1.1);
 }
 
+<<<<<<< HEAD
 .hero-mobile-bg {
   position: absolute;
   top: 0;
@@ -192,6 +198,13 @@ onUnmounted(() => {
 }
 
 .hero-overlay {
+=======
+.hero-video:not([src*=".mp4"]) {
+   display: none;
+ }
+
+ .hero-overlay {
+>>>>>>> 1bbc17e (Fix hero video visibility - add z-index to hero-content and poster fallback image for mobile)
   position: absolute;
   top: 0;
   left: 0;
@@ -211,9 +224,17 @@ onUnmounted(() => {
   padding-top: var(--header-h);
 }
 
+.hero-content {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
 .hero-text-wrapper {
   max-width: 800px;
-  /* Rimossa opacity per evitare card invisibili se GSAP non carica */
 }
 
 .hero-badge-wrapper {
