@@ -884,13 +884,27 @@
         
         <form @submit.prevent="handleUpdatePortalUser" class="mini-form mt-4">
           <div class="form-group">
+            <label>Targa (Username)</label>
+            <input v-model="editUserForm.targa" placeholder="Username / Targa" required />
+          </div>
+          <div class="form-group">
             <label>Cellulare</label>
             <input v-model="editUserForm.cellulare" placeholder="Cellulare per alert" />
           </div>
           <div class="form-group">
-            <label>Nuova Password Temporanea</label>
-            <input v-model="editUserForm.password" placeholder="Lascia vuoto per non cambiare" />
-            <small class="text-muted block mt-1">Inserisci una nuova password solo se il cliente l'ha dimenticata.</small>
+            <label>Password Temporanea</label>
+            <div class="flex gap-2">
+              <input v-model="editUserForm.password" placeholder="Lascia vuoto per non cambiare" class="flex-1" />
+              <button type="button" @click="generateRandomPassword" class="btn-edit-small">Rigenera</button>
+            </div>
+            <small class="text-muted block mt-1">Inserisci o rigenera una password se il cliente l'ha dimenticata.</small>
+          </div>
+
+          <div class="mt-4 p-3 bg-white/5 border border-white/10 rounded-lg">
+            <p class="text-xs text-muted mb-2">Una volta salvato, puoi inviare le nuove credenziali:</p>
+            <button type="button" @click="sendCredentialsViaWhatsApp" class="btn-whatsapp-small w-full">
+              Invia Credenziali su WhatsApp 📲
+            </button>
           </div>
           
           <div class="modal-actions mt-6">
@@ -1148,6 +1162,7 @@ const editUserForm = ref({
   nome: '',
   cognome: '',
   cellulare: '',
+  targa: '',
   password: ''
 })
 const portalDocs = ref([])
@@ -1327,6 +1342,7 @@ const openEditUser = (user) => {
     nome: user.nome,
     cognome: user.cognome,
     cellulare: user.cellulare || '',
+    targa: user.targa,
     password: '' // Non mostriamo la vecchia password, ma permettiamo di sovrascriverla
   }
   showEditUserModal.value = true
@@ -1344,6 +1360,33 @@ const handleUpdatePortalUser = async () => {
   } catch (e) {
     alert('Errore durante l\'aggiornamento del cliente.')
   }
+}
+
+const generateRandomPassword = () => {
+  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789' // Senza 0, O, 1, I per chiarezza
+  let pass = ''
+  for (let i = 0; i < 8; i++) {
+    pass += chars.charAt(Math.floor(Math.random() * chars.length))
+  }
+  editUserForm.value.password = pass
+}
+
+const sendCredentialsViaWhatsApp = () => {
+  const { nome, cellulare, targa, password } = editUserForm.value
+  if (!cellulare) {
+    alert('Inserisci prima il numero di cellulare.')
+    return
+  }
+  
+  let phone = cellulare.replace(/\D/g, '')
+  if (phone.length === 10 && !phone.startsWith('39')) {
+    phone = '39' + phone
+  }
+
+  const passMsg = password ? `La tua nuova password è: *${password}*` : 'La tua password attuale è rimasta invariata.'
+  const message = `Ciao ${nome}, ecco le tue credenziali per accedere al portale Road Runner Moto:\n\n👤 Username (Targa): *${targa.toUpperCase()}*\n🔑 ${passMsg}\n\nAccedi qui: https://www.road-runner.it/login`
+  
+  window.open(`https://wa.me/${phone}?text=${encodeURIComponent(message)}`, '_blank')
 }
 
 // --- Methods ---
@@ -2225,6 +2268,27 @@ onMounted(() => {
   font-size: 0.85rem;
   color: var(--muted);
   margin-top: 4px;
+}
+
+.btn-whatsapp-small {
+  background: #25D366;
+  color: #fff;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.btn-whatsapp-small:hover {
+  background: #128C7E;
+  transform: translateY(-1px);
 }
 
 .btn-edit-small {
