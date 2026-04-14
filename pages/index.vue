@@ -210,37 +210,37 @@ onMounted(() => {
     <AboutSection />
 
     <!-- Lifestyle (Vivi la tua passione al massimo) -->
-    <LazyLifestyleSection />
+    <LifestyleSection />
 
     <!-- Helmets Section (Protezione e Stile - Caschi Protettivi) -->
-    <LazyHelmetsSection />
+    <HelmetsSection />
 
     <!-- Security Section (Protezione Avanzata) -->
-    <LazySecuritySection />
+    <SecuritySection />
 
     <!-- Trade-In (Permute) Section -->
-    <LazyTradeInSection />
+    <TradeInSection />
 
     <!-- Service & Support (Officina & Finanziamenti) -->
-    <LazyServiceSection />
+    <ServiceSection />
 
     <!-- Portal CTA -->
-    <LazyPortalCTA />
+    <PortalCTA />
 
     <!-- Quote Section -->
-    <LazyQuoteSection :vehicles="vehicles" />
+    <QuoteSection :vehicles="vehicles" />
 
     <!-- CTA Band -->
-    <LazyCTABand />
+    <CTABand />
 
     <!-- Blog Preview dinamico -->
-    <LazyBlogPreviewSection id="blog" />
+    <BlogPreviewSection id="blog" />
 
     <!-- Reviews Slider -->
-    <LazyReviewsSlider id="recensioni" />
+    <ReviewsSlider id="recensioni" />
 
     <!-- Contact Section -->
-    <LazyContactSection id="contatti" />
+    <ContactSection id="contatti" />
 
   </div>
 </template>
