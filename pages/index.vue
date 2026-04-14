@@ -191,23 +191,23 @@ onMounted(() => {
     />
 
     <!-- Striscia icone info -->
-    <LazyIntroStrip />
+    <IntroStrip />
 
     <!-- Featured Vehicles dinamico (Nuovo & Usato incorporati) -->
-    <LazyFeaturedVehicles 
+    <FeaturedVehicles 
       id="moto"
       :vehicles="filteredVehicles" 
       :loading="loading" 
       :error="error" 
     />
 
-    <LazyBrandsSection 
+    <BrandsSection 
       :selected-brand="selectedBrand" 
       @select-brand="handleBrandSelect" 
     />
 
     <!-- About Section (La Nostra Storia) -->
-    <LazyAboutSection />
+    <AboutSection />
 
     <!-- Lifestyle (Vivi la tua passione al massimo) -->
     <LazyLifestyleSection />
