@@ -22,13 +22,13 @@ useHead({
           </p>
 
           <div class="info-section">
-            <h3>Vantaggi Aggiunti</h3>
+            <h2>Vantaggi Aggiunti</h2>
             <p>Compass offre prestiti finalizzati per moto nuove e usate direttamente in concessionaria. Con rate personalizzabili e una procedura veloce, è la soluzione ideale per fidelizzare i clienti Road Runner Moto.</p>
           </div>
 
           <div class="info-grid">
             <div class="info-card">
-              <h4>Documenti Obbligatori</h4>
+              <h3>Documenti Obbligatori</h3>
               <ul>
                 <li>Carta d'identità (o passaporto valido)</li>
                 <li>Codice fiscale (o tessera sanitaria)</li>
@@ -37,14 +37,14 @@ useHead({
             </div>
 
             <div class="info-card">
-              <h4>Per Stranieri</h4>
+              <h3>Per Stranieri</h3>
               <ul>
                 <li>Permesso di soggiorno regolare</li>
               </ul>
             </div>
 
             <div class="info-card">
-              <h4>Requisiti Base</h4>
+              <h3>Requisiti Base</h3>
               <ul>
                 <li>Età compresa tra 18 e 82 anni</li>
                 <li>Residenza in Italia</li>
@@ -149,7 +149,7 @@ h1 {
   margin-bottom: 40px;
 }
 
-.info-section h3 {
+.info-section h2 {
   color: var(--primary-2);
   margin-bottom: 12px;
 }
@@ -168,7 +168,7 @@ h1 {
   border-left: 4px solid var(--primary-2);
 }
 
-.info-card h4 {
+.info-card h3 {
   margin-bottom: 16px;
   font-size: 1.1rem;
 }
@@ -299,7 +299,7 @@ h1 {
     padding: 20px;
   }
   
-  .info-card h4 {
+  .info-card h3 {
     font-size: 1rem;
   }
   

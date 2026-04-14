@@ -448,7 +448,7 @@
               </div>
               <div class="lead-body">
                 <div class="lead-info">
-                  <h4>{{ l.nome }}</h4>
+                  <h3>{{ l.nome }}</h3>
                   <p>📧 {{ l.email }}</p>
                   <p>📞 {{ l.telefono }}</p>
                   <p>📍 {{ l.citta || 'N/D' }}</p>
@@ -501,7 +501,7 @@
               </div>
               <div class="lead-body">
                 <div class="lead-info">
-                  <h4>{{ t.nome }}</h4>
+                  <h3>{{ t.nome }}</h3>
                   <p>📧 {{ t.email }}</p>
                   <p>📞 {{ t.telefono }}</p>
                   <p>📍 {{ t.citta }}</p>
@@ -2151,7 +2151,7 @@ onMounted(() => {
   }
 }
 
-.lead-info h4 {
+.lead-info h3 {
   font-size: 1.2rem;
   margin-bottom: 10px;
 }
