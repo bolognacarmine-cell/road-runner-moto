@@ -95,7 +95,7 @@ onUnmounted(() => {
         loop
         playsinline
         preload="metadata"
-        poster="/cavallo.webp"
+        poster="/cta-bg.jpg"
       >
         <source src="/hero-video.mp4" type="video/mp4" />
       </video>
