@@ -13,9 +13,12 @@ gsap.registerPlugin(ScrollTrigger)
 
 let ctx
 const videoLoaded = ref(false)
+const isMobile = ref(false)
 
 onMounted(async () => {
   await nextTick()
+
+  isMobile.value = window.innerWidth <= 768
 
   const video = document.querySelector('.hero-video')
   if (video) {
@@ -25,6 +28,10 @@ onMounted(async () => {
       videoLoaded.value = false
     })
   }
+
+  window.addEventListener('resize', () => {
+    isMobile.value = window.innerWidth <= 768
+  })
 
   ctx = gsap.context(() => {
     const textWrapper = document.querySelector('.hero-text-wrapper')
@@ -94,18 +101,19 @@ onUnmounted(() => {
   <section class="hero">
     <div class="hero-video-wrapper">
       <video
-        class="hero-video desktop-only"
+        v-if="!isMobile || videoLoaded"
+        class="hero-video"
         autoplay
         muted
         loop
         playsinline
         preload="metadata"
-        poster="/cta-bg.jpg"
+        poster="/cavallo.webp"
       >
         <source src="/hero-video.mp4" type="video/mp4" />
       </video>
-      <!-- Fallback statico per mobile per migliorare LCP -->
-      <div class="hero-mobile-bg mobile-only" />
+      <!-- Fallback statico per mobile -->
+      <div v-if="isMobile && !videoLoaded" class="hero-mobile-bg" />
       <div class="hero-overlay" />
     </div>
 
@@ -184,16 +192,7 @@ onUnmounted(() => {
   width: 100%;
   height: 100%;
   background: url('/cavallo.webp') center/cover no-repeat;
-  filter: brightness(0.5);
-}
-
-/* Visibility helpers */
-.desktop-only { display: block; }
-.mobile-only { display: none; }
-
-@media (max-width: 768px) {
-  .desktop-only { display: none; }
-  .mobile-only { display: block; }
+  z-index: 0;
 }
 
 .hero-overlay {
