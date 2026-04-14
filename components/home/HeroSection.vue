@@ -191,7 +191,7 @@ onUnmounted(() => {
   left: 0;
   width: 100%;
   height: 100%;
-  background: url('/cavallo.webp') center/cover no-repeat;
+  background: url('/cavallo.webp') center center / contain no-repeat;
   z-index: 0;
 }
 
