@@ -1423,6 +1423,7 @@ const upcomingDeadlines = computed(() => {
       modello: v.modello,
       nome: user.nome,
       cognome: user.cognome,
+      cellulare: user.cellulare || '',
       scadenzaRevisione: v.scadenzaRevisione,
       scadenzaAssicurazione: v.scadenzaAssicurazione,
       scadenzaBollo: v.scadenzaBollo,
@@ -1473,7 +1474,12 @@ const hasUrgentDeadlines = computed(() => {
 })
 
 const generateWhatsAppLink = (d) => {
-  const phone = '393391581997' // In realtà andrebbe preso dal profilo utente se disponibile, o lasciato vuoto per scelta manuale
+  // Pulisce il numero di cellulare rimuovendo spazi, +, etc. (aggiunge prefisso IT se manca)
+  let phone = d.cellulare ? d.cellulare.replace(/\D/g, '') : ''
+  if (phone && phone.length === 10 && !phone.startsWith('39')) {
+    phone = '39' + phone
+  }
+  
   let message = `Ciao ${d.nome}, sono Road Runner Moto. Ti avvisiamo che per il tuo veicolo con targa ${d.targa} si avvicinano le seguenti scadenze:\n`
   
   if (d.revisioneStatus) message += `- Revisione: ${formatDate(d.scadenzaRevisione)}\n`
@@ -1481,7 +1487,11 @@ const generateWhatsAppLink = (d) => {
   if (d.bolloStatus) message += `- Bollo: ${formatDate(d.scadenzaBollo)}\n`
   
   message += `\nContattaci per un appuntamento o per maggiori informazioni!`
-  return `https://wa.me/?text=${encodeURIComponent(message)}`
+  
+  // Se c'è un telefono, apri chat diretta, altrimenti apri whatsapp generale
+  return phone 
+    ? `https://wa.me/${phone}?text=${encodeURIComponent(message)}`
+    : `https://wa.me/?text=${encodeURIComponent(message)}`
 }
 
 const formatDate = (dateStr) => {
