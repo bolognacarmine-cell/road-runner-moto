@@ -177,14 +177,13 @@ onUnmounted(() => {
   filter: brightness(0.6) contrast(1.1);
 }
 
-<<<<<<< HEAD
 .hero-mobile-bg {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: url('/cta-bg.jpg') center/cover no-repeat;
+  background: url('/cavallo.webp') center/cover no-repeat;
   filter: brightness(0.5);
 }
 
@@ -198,13 +197,6 @@ onUnmounted(() => {
 }
 
 .hero-overlay {
-=======
-.hero-video:not([src*=".mp4"]) {
-   display: none;
- }
-
- .hero-overlay {
->>>>>>> 1bbc17e (Fix hero video visibility - add z-index to hero-content and poster fallback image for mobile)
   position: absolute;
   top: 0;
   left: 0;
