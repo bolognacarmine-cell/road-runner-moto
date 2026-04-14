@@ -25,8 +25,8 @@ onMounted(async () => {
         {
           y: 0,
           opacity: 1,
-          duration: 1.5,
-          delay: 0.5,
+          duration: 1.2,
+          delay: 0.1, // Ridotto per migliorare LCP/FCP
           ease: 'power4.out'
         }
       )
@@ -40,9 +40,9 @@ onMounted(async () => {
         {
           y: 0,
           opacity: 1,
-          duration: 1,
-          stagger: 0.1,
-          delay: 0.8,
+          duration: 0.8,
+          stagger: 0.05, // Ridotto per migliorare LCP/FCP
+          delay: 0.2, // Ridotto per migliorare LCP/FCP
           ease: 'power2.out'
         }
       )
@@ -88,15 +88,18 @@ onUnmounted(() => {
     <!-- Video di sfondo con overlay gradiente -->
     <div class="hero-video-wrapper">
       <video
-        class="hero-video"
+        class="hero-video desktop-only"
         autoplay
         muted
         loop
         playsinline
-        preload="auto"
+        preload="metadata"
+        poster="/cta-bg.jpg"
       >
         <source src="/hero-video.mp4" type="video/mp4" />
       </video>
+      <!-- Fallback statico per mobile per migliorare LCP -->
+      <div class="hero-mobile-bg mobile-only" />
       <div class="hero-overlay" />
     </div>
 
@@ -107,7 +110,7 @@ onUnmounted(() => {
           <div class="hero-badge-wrapper">
             <span class="hero-badge">{{ badge }}</span>
           </div>
-          <h1 class="hero-title">
+          <h1 class="hero-title" fetchpriority="high">
             {{ title }}
           </h1>
           <p class="hero-subtitle">
@@ -167,6 +170,25 @@ onUnmounted(() => {
   height: 100%;
   object-fit: cover;
   filter: brightness(0.6) contrast(1.1);
+}
+
+.hero-mobile-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: url('/cta-bg.jpg') center/cover no-repeat;
+  filter: brightness(0.5);
+}
+
+/* Visibility helpers */
+.desktop-only { display: block; }
+.mobile-only { display: none; }
+
+@media (max-width: 768px) {
+  .desktop-only { display: none; }
+  .mobile-only { display: block; }
 }
 
 .hero-overlay {

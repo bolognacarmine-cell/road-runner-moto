@@ -54,7 +54,13 @@ export default defineNuxtConfig({
       ],
       link: [
         { rel: 'canonical', href: 'https://road-runner.it' },
-        { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
+        { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+        // Preconnect per Google Fonts
+        { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
+        { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: '' },
+        { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800;950&display=swap' },
+        // Preload per LCP (Hero Background)
+        { rel: 'preload', as: 'image', href: '/cta-bg.jpg', fetchpriority: 'high' }
       ]
     }
   },

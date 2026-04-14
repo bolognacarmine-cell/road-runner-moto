@@ -190,54 +190,57 @@ onMounted(() => {
       subtitle="Vendita plurimarche, finanziamenti su misura e assistenza specializzata"
     />
 
+    <!-- Striscia icone info -->
+    <LazyIntroStrip />
+
     <!-- Featured Vehicles dinamico (Nuovo & Usato incorporati) -->
-    <FeaturedVehicles 
+    <LazyFeaturedVehicles 
       id="moto"
       :vehicles="filteredVehicles" 
       :loading="loading" 
       :error="error" 
     />
 
-    <BrandsSection 
+    <LazyBrandsSection 
       :selected-brand="selectedBrand" 
       @select-brand="handleBrandSelect" 
     />
 
     <!-- About Section (La Nostra Storia) -->
-    <AboutSection />
+    <LazyAboutSection />
 
     <!-- Lifestyle (Vivi la tua passione al massimo) -->
-    <LifestyleSection />
+    <LazyLifestyleSection />
 
     <!-- Helmets Section (Protezione e Stile - Caschi Protettivi) -->
-    <HelmetsSection />
+    <LazyHelmetsSection />
 
     <!-- Security Section (Protezione Avanzata) -->
-    <SecuritySection />
+    <LazySecuritySection />
 
     <!-- Trade-In (Permute) Section -->
-    <TradeInSection />
+    <LazyTradeInSection />
 
     <!-- Service & Support (Officina & Finanziamenti) -->
-    <ServiceSection />
+    <LazyServiceSection />
 
     <!-- Portal CTA -->
-    <PortalCTA />
+    <LazyPortalCTA />
 
     <!-- Quote Section -->
-    <QuoteSection :vehicles="vehicles" />
+    <LazyQuoteSection :vehicles="vehicles" />
 
     <!-- CTA Band -->
-    <CTABand />
+    <LazyCTABand />
 
     <!-- Blog Preview dinamico -->
-    <BlogPreviewSection id="blog" />
+    <LazyBlogPreviewSection id="blog" />
 
     <!-- Reviews Slider -->
-    <ReviewsSlider id="recensioni" />
+    <LazyReviewsSlider id="recensioni" />
 
     <!-- Contact Section -->
-    <ContactSection id="contatti" />
+    <LazyContactSection id="contatti" />
 
   </div>
 </template>
