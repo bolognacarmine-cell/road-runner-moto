@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, onUnmounted, nextTick, ref } from 'vue'
+import { onMounted, onUnmounted, nextTick } from 'vue'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
@@ -12,26 +12,14 @@ defineProps({
 gsap.registerPlugin(ScrollTrigger)
 
 let ctx
-const videoLoaded = ref(false)
-const isMobile = ref(false)
 
 onMounted(async () => {
   await nextTick()
 
-  isMobile.value = window.innerWidth <= 768
-
   const video = document.querySelector('.hero-video')
   if (video) {
-    video.play().then(() => {
-      videoLoaded.value = true
-    }).catch(() => {
-      videoLoaded.value = false
-    })
+    video.play().catch(() => {})
   }
-
-  window.addEventListener('resize', () => {
-    isMobile.value = window.innerWidth <= 768
-  })
 
   ctx = gsap.context(() => {
     const textWrapper = document.querySelector('.hero-text-wrapper')
@@ -101,7 +89,6 @@ onUnmounted(() => {
   <section class="hero">
     <div class="hero-video-wrapper">
       <video
-        v-if="!isMobile || videoLoaded"
         class="hero-video"
         autoplay
         muted
@@ -112,8 +99,6 @@ onUnmounted(() => {
       >
         <source src="/hero-video.mp4" type="video/mp4" />
       </video>
-      <!-- Fallback statico per mobile -->
-      <div v-if="isMobile && !videoLoaded" class="hero-mobile-bg" />
       <div class="hero-overlay" />
     </div>
 
@@ -183,16 +168,6 @@ onUnmounted(() => {
   height: 100%;
   object-fit: cover;
   filter: brightness(0.6) contrast(1.1);
-}
-
-.hero-mobile-bg {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: url('/cavallo.webp') center center / contain no-repeat;
-  z-index: 0;
 }
 
 .hero-overlay {
