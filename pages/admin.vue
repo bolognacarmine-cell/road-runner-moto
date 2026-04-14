@@ -574,8 +574,10 @@
                 <div class="user-main-info">
                   <strong>{{ u.nome }} {{ u.cognome }}</strong>
                   <span>Targa: <code>{{ u.targa }}</code></span>
+                  <span v-if="u.cellulare" class="user-phone">📞 {{ u.cellulare }}</span>
                 </div>
                 <div class="user-actions">
+                  <button @click="openEditUser(u)" class="btn-edit-small">Modifica</button>
                   <button @click="openManageMoto(u)" class="btn-edit-small">Veicolo</button>
                   <button @click="openMaintenance(u)" class="btn-edit-small">Manutenzione</button>
                   <button @click="deletePortalUser(u._id)" class="btn-edit-small btn-delete-red">Elimina</button>
@@ -591,6 +593,7 @@
               <form @submit.prevent="handleCreatePortalUser" class="mini-form">
                 <input v-model="newUser.nome" placeholder="Nome" required />
                 <input v-model="newUser.cognome" placeholder="Cognome" required />
+                <input v-model="newUser.cellulare" placeholder="Cellulare (per alert scadenze)" />
                 <input v-model="newUser.targa" placeholder="Targa (es: AA123BB)" required />
                 <input v-model="newUser.password" placeholder="Password Temporanea" required />
                 <button type="submit" class="btn-primary-custom full">Crea Account Portale</button>
@@ -873,6 +876,31 @@
       </div>
     </div>
 
+    <!-- Edit User Modal -->
+    <div v-if="showEditUserModal" class="modal-overlay">
+      <div class="modal">
+        <h3>Modifica Cliente</h3>
+        <p>Cliente: <strong>{{ editUserForm.nome }} {{ editUserForm.cognome }}</strong></p>
+        
+        <form @submit.prevent="handleUpdatePortalUser" class="mini-form mt-4">
+          <div class="form-group">
+            <label>Cellulare</label>
+            <input v-model="editUserForm.cellulare" placeholder="Cellulare per alert" />
+          </div>
+          <div class="form-group">
+            <label>Nuova Password Temporanea</label>
+            <input v-model="editUserForm.password" placeholder="Lascia vuoto per non cambiare" />
+            <small class="text-muted block mt-1">Inserisci una nuova password solo se il cliente l'ha dimenticata.</small>
+          </div>
+          
+          <div class="modal-actions mt-6">
+            <button type="button" @click="showEditUserModal = false" class="btn-cancel">Annulla</button>
+            <button type="submit" class="btn-primary-custom">Salva Modifiche</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
     <!-- Portal: Manage Docs Modal removed -->
   </div>
 </template>
@@ -942,6 +970,7 @@ const portalVehicles = ref([]) // Nuovo: per tracciare i dati dei veicoli dei cl
 const newUser = ref({
   nome: '',
   cognome: '',
+  cellulare: '',
   targa: '',
   password: ''
 })
@@ -1113,6 +1142,14 @@ const deleteHelmet = async (id) => {
 const selectedUserForAction = ref(null)
 const showPortalMotoModal = ref(false)
 const showPortalDocsModal = ref(false)
+const showEditUserModal = ref(false)
+const editUserForm = ref({
+  id: '',
+  nome: '',
+  cognome: '',
+  cellulare: '',
+  password: ''
+})
 const portalDocs = ref([])
 const portalDocForm = ref({
   title: '',
@@ -1281,6 +1318,31 @@ const deletePortalUser = async (id) => {
     fetchPortalUsers() // Refresh list
   } catch (e) {
     alert('Errore durante l\'eliminazione del cliente.')
+  }
+}
+
+const openEditUser = (user) => {
+  editUserForm.value = {
+    id: user._id,
+    nome: user.nome,
+    cognome: user.cognome,
+    cellulare: user.cellulare || '',
+    password: '' // Non mostriamo la vecchia password, ma permettiamo di sovrascriverla
+  }
+  showEditUserModal.value = true
+}
+
+const handleUpdatePortalUser = async () => {
+  try {
+    await $fetch('/api/admin/update-portal-user', {
+      method: 'PATCH',
+      body: editUserForm.value
+    })
+    alert('Cliente aggiornato con successo!')
+    showEditUserModal.value = false
+    fetchPortalUsers()
+  } catch (e) {
+    alert('Errore durante l\'aggiornamento del cliente.')
   }
 }
 
@@ -2146,6 +2208,13 @@ onMounted(() => {
 .user-main-info code {
   color: var(--primary-2);
   font-weight: 800;
+}
+
+.user-phone {
+  display: block;
+  font-size: 0.85rem;
+  color: var(--muted);
+  margin-top: 4px;
 }
 
 .btn-edit-small {

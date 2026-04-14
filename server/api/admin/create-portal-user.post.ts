@@ -3,7 +3,7 @@ import { MongoClient } from 'mongodb'
 
 export default defineEventHandler(async (event) => {
   const body = await readBody(event)
-  const { nome, cognome, targa, password } = body
+  const { nome, cognome, targa, password, cellulare } = body
 
   if (!nome || !cognome || !targa || !password) {
     throw createError({ statusCode: 400, statusMessage: 'Tutti i campi sono obbligatori.' })
@@ -21,6 +21,7 @@ export default defineEventHandler(async (event) => {
     const newUser = {
       nome,
       cognome,
+      cellulare: cellulare || '',
       targa: targa.toUpperCase(),
       password, // In produzione: bcrypt.hash
       role: 'customer',
