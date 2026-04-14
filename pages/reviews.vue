@@ -34,7 +34,7 @@
     <!-- Schema Markup JSON-LD -->
     <Head>
       <Title>Recensioni Road Runner Moto | Moto Usate Capodrise</Title>
-      <Meta name="description" content="Leggi le recensioni 5 stelle di Road Runner Moto a Capodrise. Scopri cosa dicono i nostri clienti su moto usate, assistenza e finanziamenti a Caserta." />
+      <Meta name="description" content="Visita Road Runner Moto a Capodrise (CE), Via San Francesco 13. Concessionaria moto Caserta: Honda, Piaggio, Kymco, usato garantito e accessori. Ti aspettiamo!" />
       <Script type="application/ld+json">
         {{ JSON.stringify(schemaMarkup) }}
       </Script>

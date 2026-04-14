@@ -30,7 +30,7 @@ useHead({
   htmlAttrs: { lang: 'it' },
   title: 'Road Runner Moto | Concessionaria Moto Nuove & Usate a Capodrise (CE)',
   meta: [
-    { name: 'description', content: 'Road Runner di Tartaglione Pasquale: la tua concessionaria di fiducia a Capodrise per moto e scooter nuovi e usati. Assistenza tecnica, finanziamenti personalizzati e permute garantite.' },
+    { name: 'description', content: 'Road Runner Moto Capodrise: moto nuove/usate Honda Piaggio Kymco. Finanziamenti, caschi LS2, localizzatori GPS. Offerte imperdibili! Visita showroom CE' },
     { name: 'keywords', content: 'concessionaria moto capodrise, moto usate caserta, scooter nuovi caserta, assistenza moto capodrise, finanziamenti moto, permuta moto usato' },
     { name: 'robots', content: 'index,follow' },
     { name: 'author', content: 'Road Runner Moto' },

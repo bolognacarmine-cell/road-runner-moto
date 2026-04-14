@@ -1,3 +1,12 @@
+<script setup>
+useHead({
+  title: 'Finanziamenti Moto | Road Runner Moto',
+  meta: [
+    { name: 'description', content: 'Finanziamenti moto personalizzati a Capodrise (CE). Acquista la tua nuova Honda o Piaggio con rate agevolate da Road Runner Moto. Contattaci per un preventivo!' }
+  ]
+})
+</script>
+
 <template>
   <div class="finance-page">
     <div class="container main-container">

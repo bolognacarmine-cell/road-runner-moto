@@ -26,7 +26,7 @@ onMounted(() => {
 useHead({
   title: 'Catalogo Veicoli | Road Runner Moto',
   meta: [
-    { name: 'description', content: 'Sfoglia il nostro catalogo completo di moto e scooter nuovi e usati.' }
+    { name: 'description', content: 'Le migliori moto usate a Caserta sono da Road Runner Moto. Usato plurimarche controllato, finanziamenti rapidi e accessori Dieffe/LS2. Scopri le occasioni!' }
   ]
 })
 </script>
