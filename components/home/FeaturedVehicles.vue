@@ -285,14 +285,14 @@ onUnmounted(() => {
 
         <div class="secondary-filters-row">
           <div v-if="dynamicCategories.length" class="filter-group">
-            <select v-model="activeCategory" class="premium-select">
+            <select v-model="activeCategory" class="premium-select" aria-label="Filtra per categoria">
               <option value="tutte">Tutte le Categorie</option>
               <option v-for="cat in dynamicCategories" :key="cat" :value="cat">{{ cat }}</option>
             </select>
           </div>
 
           <div v-if="activeFilter === 'usato' || activeFilter === 'tutti'" class="filter-group">
-            <select v-model="maxKm" class="premium-select">
+            <select v-model="maxKm" class="premium-select" aria-label="Filtra per chilometraggio massimo">
               <option :value="null">Qualsiasi Chilometraggio</option>
               <option :value="5000">Fino a 5.000 km</option>
               <option :value="10000">Fino a 10.000 km</option>
@@ -302,7 +302,7 @@ onUnmounted(() => {
           </div>
 
           <div class="filter-group">
-            <select v-model="sortBy" class="premium-select">
+            <select v-model="sortBy" class="premium-select" aria-label="Ordina i risultati">
               <option value="recente">Ultimi Arrivi</option>
               <option value="alfabetico">Marca e Modello (A-Z)</option>
               <option value="anno">Anno (Più Recente)</option>
