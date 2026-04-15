@@ -3,7 +3,7 @@
   <div class="carousel-container" @mouseenter="showArrows = true" @mouseleave="showArrows = false">
     <!-- Watermark Logo -->
     <div v-if="(images && images.length > 0) || !images" class="carousel-watermark">
-      <img src="/logo-road-runner.png" alt="Road Runner" />
+      <img src="/logo-road-runner.jpg" alt="Road Runner" />
     </div>
 
     <!-- Immagini -->
@@ -162,11 +162,12 @@ onUnmounted(() => {
   position: absolute;
   bottom: 16px;
   left: 16px;
-  z-index: 8;
-  opacity: 0.16;
+  z-index: 20; /* Più alto delle frecce */
+  opacity: 0.2; /* Aumentata leggermente visibilità */
   pointer-events: none;
-  /* Rendiamo il logo monocromatico bianco */
-  filter: brightness(0) invert(1) drop-shadow(0 1px 2px rgba(0,0,0,0.1));
+  /* Tecnica per rendere bianco un logo JPG con sfondo bianco e contenuto scuro */
+  filter: grayscale(1) invert(1) brightness(1.2);
+  mix-blend-mode: screen; /* Rende nero (ex-bianco) trasparente */
   transition: opacity 0.3s ease;
 }
 
