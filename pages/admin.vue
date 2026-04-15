@@ -295,7 +295,7 @@
                     {{ h.isVisible !== false ? '👁️ Visibile' : '🚫 Nascosto' }}
                   </span>
                 </div>
-                <p class="price">€ {{ h.prezzoScontato || h.prezzoOriginale }}</p>
+                <p class="price">{{ formatPrice(h.prezzoScontato || h.prezzoOriginale) }}</p>
                 <div class="actions-admin">
                   <button @click="editHelmet(h)" class="btn-edit">Modifica</button>
                   <button @click="deleteHelmet(h._id)" class="btn-delete">Elimina</button>
@@ -338,10 +338,16 @@
               <div class="form-group">
                 <label>Prezzo Originale (€)</label>
                 <input type="number" v-model="helmetForm.prezzoOriginale" required />
+                <p class="price-preview" v-if="helmetForm.prezzoOriginale !== null && helmetForm.prezzoOriginale !== ''">
+                  {{ helmetForm.prezzoOriginale === 0 ? 'Verrà mostrato: Prezzo riservato' : `Anteprima: ${formatPrice(helmetForm.prezzoOriginale)}` }}
+                </p>
               </div>
               <div class="form-group">
                 <label>Prezzo Scontato (€)</label>
                 <input type="number" v-model="helmetForm.prezzoScontato" />
+                <p class="price-preview" v-if="helmetForm.prezzoScontato > 0">
+                  Anteprima: {{ formatPrice(helmetForm.prezzoScontato) }}
+                </p>
               </div>
               <div class="form-group">
                 <label>Sconto (%)</label>
@@ -2116,6 +2122,17 @@ onMounted(() => {
 .btn-logout:hover {
   background: rgba(215, 24, 42, 0.1);
   color: var(--primary-2);
+}
+
+.price-preview {
+  font-size: 0.85rem;
+  color: var(--primary-2);
+  margin-top: 6px;
+  font-weight: 600;
+  background: rgba(215, 24, 42, 0.05);
+  padding: 4px 10px;
+  border-radius: 6px;
+  display: inline-block;
 }
 
 .badge-count {

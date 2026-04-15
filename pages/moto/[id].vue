@@ -23,7 +23,7 @@ const fetchMoto = async () => {
       useHead({
         title: `${moto.value.marca} ${moto.value.modello} | Road Runner Moto`,
         meta: [
-          { name: 'description', content: `Scopri ${moto.value.marca} ${moto.value.modello} presso Road Runner Moto. ${moto.value.chilometri} km, anno ${moto.value.anno}. Prezzo: ${formatPrice(moto.value.prezzo)}.` },
+          { name: 'description', content: `Scopri ${moto.value.marca} ${moto.value.modello} presso Road Runner Moto. ${moto.value.chilometri} km, anno ${moto.value.anno}. Prezzo: ${formatPrice(moto.value.prezzo, 'Prezzo su richiesta')}.` },
           { property: 'og:title', content: `${moto.value.marca} ${moto.value.modello} | Road Runner Moto` },
           { property: 'og:description', content: `Dettagli e prezzo per ${moto.value.marca} ${moto.value.modello}. Vieni a trovarci a Capodrise.` },
           { property: 'og:image', content: formatImages(moto.value.immagini)[0] }
@@ -50,11 +50,6 @@ const fetchRelatedPosts = async () => {
 onMounted(() => {
   fetchMoto()
 })
-
-const formatPrice = (price) => {
-  if (!price) return 'Prezzo su richiesta'
-  return new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(price)
-}
 
 const formatImages = (images) => {
   if (images && Array.isArray(images) && images.length > 0) {
@@ -108,7 +103,7 @@ const formatImages = (images) => {
           <div class="sticky-panel">
             <span class="type-badge">{{ moto.tipo }}</span>
             <h1 class="moto-title">{{ moto.marca }} {{ moto.modello }}</h1>
-            <p class="price-tag">{{ formatPrice(moto.prezzo) }}</p>
+            <p class="price-tag">{{ formatPrice(moto.prezzo, 'Prezzo su richiesta') }}</p>
             
             <div class="spec-grid">
               <div class="spec-item">

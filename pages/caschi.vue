@@ -137,8 +137,8 @@ useHead({
               <!-- Prezzi e Disponibilità -->
               <div class="product-footer">
                 <div class="product-price-box">
-                  <span v-if="h.prezzoScontato" class="old-price">€ {{ h.prezzoOriginale }}</span>
-                  <span class="current-price">€ {{ h.prezzoScontato || h.prezzoOriginale }}</span>
+                  <span v-if="h.prezzoScontato && h.prezzoScontato > 0" class="old-price">{{ formatPrice(h.prezzoOriginale) }}</span>
+                  <span class="current-price">{{ formatPrice(h.prezzoScontato && h.prezzoScontato > 0 ? h.prezzoScontato : h.prezzoOriginale) }}</span>
                 </div>
                 <div class="product-status" :class="h.disponibilita">
                   {{ h.disponibilita }}

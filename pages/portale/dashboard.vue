@@ -50,7 +50,6 @@ onMounted(() => {
   fetchPortalData(user.value.targa)
 })
 
-const formatPrice = (p) => new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(p)
 const formatDate = (d) => new Date(d).toLocaleDateString('it-IT')
 
 const getDateStatus = (dateStr) => {

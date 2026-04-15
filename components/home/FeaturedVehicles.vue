@@ -127,11 +127,6 @@ const featuredMotos = computed(() => {
   return filtered.slice(0, 24) // Aumentiamo il limite per mostrare più veicoli
 })
 
-const formatPrice = (price) => {
-  if (!price) return 'Prezzo su richiesta'
-  return new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(price)
-}
-
 const formatYear = (moto) => moto.annoImmatricolazione || moto.anno || 'N/D'
 
 const formatImages = (moto) => {
@@ -376,7 +371,7 @@ onUnmounted(() => {
               <div class="price-display-wrapper">
                 <span class="price-label">Prezzo</span>
                 <strong class="main-price">
-                  <ClientOnly>{{ formatPrice(moto.prezzo) }}</ClientOnly>
+                  <ClientOnly>{{ formatPrice(moto.prezzo, 'Prezzo su richiesta') }}</ClientOnly>
                 </strong>
               </div>
               <NuxtLink :to="{ path: '/', query: { moto: moto._id }, hash: '#preventivo' }" class="btn-quote-minimal">
