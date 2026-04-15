@@ -283,7 +283,7 @@
           <div v-else class="motos-grid">
             <div v-for="h in helmets" :key="h._id" class="moto-card-admin">
               <div class="moto-img-admin">
-                <MotoCarousel :images="h.immagini" :altText="h.nome" />
+                <MotoCarousel :images="h.immagini" :altText="h.nome" watermarkPosition="top-left" />
               </div>
               <div class="moto-info-admin">
                 <h3>{{ h.marca }} {{ h.modello }}</h3>

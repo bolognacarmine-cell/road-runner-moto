@@ -112,7 +112,7 @@ useHead({
 
             <!-- Carosello Immagini -->
             <div class="product-visual">
-              <MotoCarousel :images="h.immagini" :altText="`${h.marca} ${h.modello}`" />
+              <MotoCarousel :images="h.immagini" :altText="`${h.marca} ${h.modello}`" watermarkPosition="top-left" />
             </div>
 
             <!-- Info Prodotto -->

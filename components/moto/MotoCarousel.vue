@@ -2,7 +2,11 @@
 <template>
   <div class="carousel-container" @mouseenter="showArrows = true" @mouseleave="showArrows = false">
     <!-- Watermark Logo -->
-    <div v-if="(images && images.length > 0) || !images" class="carousel-watermark">
+    <div 
+      v-if="(images && images.length > 0) || !images" 
+      class="carousel-watermark"
+      :class="watermarkPosition"
+    >
       <img src="/logo-road-runner.jpg" alt="Road Runner" />
     </div>
 
@@ -73,6 +77,10 @@ const props = defineProps({
   autoplayInterval: {
     type: Number,
     default: 4000 // 4 secondi
+  },
+  watermarkPosition: {
+    type: String,
+    default: 'top-right' // 'top-right' o 'top-left'
   }
 })
 
@@ -160,30 +168,41 @@ onUnmounted(() => {
 /* Watermark Style */
 .carousel-watermark {
   position: absolute;
+  z-index: 30;
+  opacity: 0.22; /* Ripristinata opacità sfumata */
+  pointer-events: none;
+  mix-blend-mode: multiply; /* Sfondo trasparente */
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+  transition: all 0.3s ease;
+}
+
+.carousel-watermark.top-right {
   top: 16px;
   right: 16px;
-  z-index: 30; /* Valore molto alto per essere sopra tutto */
-  opacity: 0.6; /* Opacity aumentata significativamente per test visibilità */
-  pointer-events: none;
-  /* Rimuoviamo mix-blend-mode temporaneamente per debug visibilità */
-  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
-  transition: opacity 0.3s ease;
+}
+
+.carousel-watermark.top-left {
+  top: 16px;
+  left: 16px;
 }
 
 .carousel-watermark img {
-  width: 90px; /* Dimensione massima consentita per visibilità */
+  width: 75px;
   height: auto;
   display: block;
-  border-radius: 4px; /* Leggera curvatura se il logo ha sfondo bianco */
 }
 
 @media (max-width: 768px) {
-  .carousel-watermark {
+  .carousel-watermark.top-right {
     top: 12px;
     right: 12px;
   }
+  .carousel-watermark.top-left {
+    top: 12px;
+    left: 12px;
+  }
   .carousel-watermark img {
-    width: 65px; /* Mobile size aumentata */
+    width: 55px;
   }
 }
 
