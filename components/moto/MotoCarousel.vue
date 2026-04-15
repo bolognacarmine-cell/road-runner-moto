@@ -162,19 +162,19 @@ onUnmounted(() => {
   position: absolute;
   top: 16px;
   right: 16px;
-  z-index: 10;
-  opacity: 0.22; /* Opacity leggermente aumentata per i colori originali */
+  z-index: 30; /* Valore molto alto per essere sopra tutto */
+  opacity: 0.6; /* Opacity aumentata significativamente per test visibilità */
   pointer-events: none;
-  /* Utilizziamo multiply per rendere trasparente lo sfondo bianco del JPG mantenendo i colori originali */
-  mix-blend-mode: multiply;
-  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+  /* Rimuoviamo mix-blend-mode temporaneamente per debug visibilità */
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
   transition: opacity 0.3s ease;
 }
 
 .carousel-watermark img {
-  width: 75px; /* Desktop size leggermente aumentata */
+  width: 90px; /* Dimensione massima consentita per visibilità */
   height: auto;
   display: block;
+  border-radius: 4px; /* Leggera curvatura se il logo ha sfondo bianco */
 }
 
 @media (max-width: 768px) {
@@ -183,7 +183,7 @@ onUnmounted(() => {
     right: 12px;
   }
   .carousel-watermark img {
-    width: 55px; /* Mobile size */
+    width: 65px; /* Mobile size aumentata */
   }
 }
 
