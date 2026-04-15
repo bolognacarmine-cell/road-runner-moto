@@ -1,6 +1,11 @@
 
 <template>
   <div class="carousel-container" @mouseenter="showArrows = true" @mouseleave="showArrows = false">
+    <!-- Watermark Logo -->
+    <div v-if="(images && images.length > 0) || !images" class="carousel-watermark">
+      <img src="/logo-road-runner.png" alt="Road Runner" />
+    </div>
+
     <!-- Immagini -->
     <div class="carousel-wrapper">
       <div 
@@ -150,6 +155,35 @@ onUnmounted(() => {
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+
+/* Watermark Style */
+.carousel-watermark {
+  position: absolute;
+  bottom: 16px;
+  left: 16px;
+  z-index: 8;
+  opacity: 0.16;
+  pointer-events: none;
+  /* Rendiamo il logo monocromatico bianco */
+  filter: brightness(0) invert(1) drop-shadow(0 1px 2px rgba(0,0,0,0.1));
+  transition: opacity 0.3s ease;
+}
+
+.carousel-watermark img {
+  width: 65px; /* Desktop size */
+  height: auto;
+  display: block;
+}
+
+@media (max-width: 768px) {
+  .carousel-watermark {
+    bottom: 12px;
+    left: 12px;
+  }
+  .carousel-watermark img {
+    width: 45px; /* Mobile size */
+  }
 }
 
 .nav-btn {
