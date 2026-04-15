@@ -170,28 +170,32 @@ onUnmounted(() => {
   position: absolute;
   z-index: 30;
   pointer-events: none;
-  /* Tecnica per mantenere colori e rimuovere il bianco (multiply) */
-  mix-blend-mode: multiply;
-  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
   transition: all 0.3s ease;
 }
 
-/* Visibilità specifica per i Caschi (top-left) */
+/* Visibilità specifica per i Caschi (top-left) - Mantiene Multiply per sfondo bianco */
 .carousel-watermark.top-left {
   top: 16px;
   left: 16px;
-  opacity: 0.5; /* Più evidenziato per i caschi */
+  opacity: 0.5;
+  mix-blend-mode: multiply;
 }
 
-/* Visibilità specifica per le Moto (top-right) */
+/* Visibilità specifica per le Moto (top-right) - Ottimizzato per sfondi NERI */
 .carousel-watermark.top-right {
   top: 16px;
   right: 16px;
-  opacity: 0.4; /* Aumentata visibilità anche per le moto */
+  opacity: 0.6; /* Aumentata opacità per contrasto su nero */
+  /* Tecnica per rendere il logo visibile su nero: invertiamo solo se necessario o usiamo un blend mode diverso */
+  /* Screen rende visibili i colori chiari su sfondo scuro */
+  mix-blend-mode: screen; 
+  /* Invertiamo i colori per far sì che il logo (scuro) diventi chiaro su sfondo nero */
+  filter: grayscale(1) invert(1) brightness(1.5) contrast(1.2);
 }
 
 .carousel-watermark img {
-  width: 85px; /* Leggermente più grande per visibilità */
+  width: 85px;
   height: auto;
   display: block;
 }
