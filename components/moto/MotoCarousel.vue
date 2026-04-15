@@ -169,25 +169,29 @@ onUnmounted(() => {
 .carousel-watermark {
   position: absolute;
   z-index: 30;
-  opacity: 0.22; /* Ripristinata opacità sfumata */
   pointer-events: none;
-  mix-blend-mode: multiply; /* Sfondo trasparente */
+  /* Tecnica per mantenere colori e rimuovere il bianco (multiply) */
+  mix-blend-mode: multiply;
   filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
   transition: all 0.3s ease;
 }
 
-.carousel-watermark.top-right {
-  top: 16px;
-  right: 16px;
-}
-
+/* Visibilità specifica per i Caschi (top-left) */
 .carousel-watermark.top-left {
   top: 16px;
   left: 16px;
+  opacity: 0.5; /* Più evidenziato per i caschi */
+}
+
+/* Visibilità specifica per le Moto (top-right) */
+.carousel-watermark.top-right {
+  top: 16px;
+  right: 16px;
+  opacity: 0.4; /* Aumentata visibilità anche per le moto */
 }
 
 .carousel-watermark img {
-  width: 75px;
+  width: 85px; /* Leggermente più grande per visibilità */
   height: auto;
   display: block;
 }
@@ -202,7 +206,7 @@ onUnmounted(() => {
     left: 12px;
   }
   .carousel-watermark img {
-    width: 55px;
+    width: 60px;
   }
 }
 
