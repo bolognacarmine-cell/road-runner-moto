@@ -429,5 +429,18 @@ const formatImages = (images) => {
   .sticky-panel {
     position: static;
   }
+  /* Surgical patch: improve image responsiveness on mobile detail view */
+  .moto-visuals :deep(.carousel-container) {
+    height: 350px !important;
+  }
+  .moto-visuals :deep(.carousel-img) {
+    object-fit: contain !important;
+  }
+}
+
+@media (max-width: 600px) {
+  .moto-visuals :deep(.carousel-container) {
+    height: 250px !important;
+  }
 }
 </style>
