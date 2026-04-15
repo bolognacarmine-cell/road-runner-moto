@@ -160,30 +160,30 @@ onUnmounted(() => {
 /* Watermark Style */
 .carousel-watermark {
   position: absolute;
-  bottom: 16px;
-  left: 16px;
-  z-index: 20; /* Più alto delle frecce */
-  opacity: 0.2; /* Aumentata leggermente visibilità */
+  top: 16px;
+  right: 16px;
+  z-index: 10;
+  opacity: 0.22; /* Opacity leggermente aumentata per i colori originali */
   pointer-events: none;
-  /* Tecnica per rendere bianco un logo JPG con sfondo bianco e contenuto scuro */
-  filter: grayscale(1) invert(1) brightness(1.2);
-  mix-blend-mode: screen; /* Rende nero (ex-bianco) trasparente */
+  /* Utilizziamo multiply per rendere trasparente lo sfondo bianco del JPG mantenendo i colori originali */
+  mix-blend-mode: multiply;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
   transition: opacity 0.3s ease;
 }
 
 .carousel-watermark img {
-  width: 65px; /* Desktop size */
+  width: 75px; /* Desktop size leggermente aumentata */
   height: auto;
   display: block;
 }
 
 @media (max-width: 768px) {
   .carousel-watermark {
-    bottom: 12px;
-    left: 12px;
+    top: 12px;
+    right: 12px;
   }
   .carousel-watermark img {
-    width: 45px; /* Mobile size */
+    width: 55px; /* Mobile size */
   }
 }
 
