@@ -182,22 +182,39 @@ onUnmounted(() => {
   mix-blend-mode: multiply;
 }
 
-/* Visibilità specifica per le Moto (top-right) - Ottimizzato per sfondi NERI */
+/* Visibilità specifica per le Moto (top-right) - Animazione Colori Originali */
 .carousel-watermark.top-right {
   top: 16px;
   right: 16px;
-  opacity: 0.6; /* Aumentata opacità per contrasto su nero */
-  /* Tecnica per rendere il logo visibile su nero: invertiamo solo se necessario o usiamo un blend mode diverso */
-  /* Screen rende visibili i colori chiari su sfondo scuro */
-  mix-blend-mode: screen; 
-  /* Invertiamo i colori per far sì che il logo (scuro) diventi chiaro su sfondo nero */
-  filter: grayscale(1) invert(1) brightness(1.5) contrast(1.2);
+  opacity: 0.8; /* Maggiore opacità per l'animazione */
+  mix-blend-mode: normal; /* Normal per vedere i colori reali */
+  filter: drop-shadow(0 2px 8px rgba(0,0,0,0.4));
+  animation: logoColors 8s infinite alternate ease-in-out;
+}
+
+@keyframes logoColors {
+  0% {
+    filter: brightness(1) contrast(1) drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+  }
+  33% {
+    /* Enfatizza il Bianco */
+    filter: brightness(1.3) contrast(1.1) drop-shadow(0 4px 8px rgba(255,255,255,0.2));
+  }
+  66% {
+    /* Enfatizza il Rosso */
+    filter: sepia(0.5) hue-rotate(-50deg) saturate(3) brightness(1) drop-shadow(0 4px 10px rgba(255,0,0,0.3));
+  }
+  100% {
+    /* Versione più definita/scura (Nero) */
+    filter: brightness(0.9) contrast(1.2) drop-shadow(0 2px 6px rgba(0,0,0,0.5));
+  }
 }
 
 .carousel-watermark img {
   width: 85px;
   height: auto;
   display: block;
+  border-radius: 4px; /* Per ammorbidire lo sfondo bianco del JPG */
 }
 
 @media (max-width: 768px) {
