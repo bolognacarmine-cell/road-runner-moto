@@ -796,11 +796,11 @@
 
     <!-- Portal: Manage Moto Modal -->
     <div v-if="showPortalMotoModal" class="modal-overlay">
-      <div class="modal large">
+      <div class="modal large flex flex-col max-h-[90vh]">
         <h3>Gestisci Veicolo Utente</h3>
         <p>Targa: <code>{{ selectedUserForAction?.targa }}</code></p>
         
-        <form @submit.prevent="savePortalVehicle" class="mini-form mt-4">
+        <form @submit.prevent="savePortalVehicle" class="mini-form mt-4 overflow-y-auto flex-grow pr-2">
           <div class="form-grid">
             <div class="form-group">
               <label>Marca</label>
@@ -2628,7 +2628,17 @@ onMounted(() => {
   align-items: center;
   justify-content: center;
   z-index: 1000;
+  padding: 20px;
+  overflow-y: auto;
 }
+
+@media (max-width: 768px) {
+  .modal-overlay {
+    align-items: flex-start;
+    padding: 10px;
+  }
+}
+
 
 .modal {
   background: #1a1a1a;
@@ -2638,7 +2648,17 @@ onMounted(() => {
   width: 90%;
   text-align: center;
   border: 1px solid #333;
+  max-height: 90vh;
+  overflow-y: auto;
 }
+
+/* Utility per i modal che devono scrollare internamente */
+.flex { display: flex; }
+.flex-col { flex-direction: column; }
+.flex-grow { flex-grow: 1; }
+.overflow-y-auto { overflow-y: auto; }
+.max-h-\[90vh\] { max-height: 90vh; }
+
 
 .modal.large {
   max-width: 550px;
