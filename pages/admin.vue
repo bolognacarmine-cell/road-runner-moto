@@ -2037,6 +2037,7 @@ onMounted(() => {
 
 .moto-tags {
   display: flex;
+  flex-wrap: wrap;
   gap: 8px;
   margin-bottom: 12px;
 }
@@ -2050,6 +2051,8 @@ onMounted(() => {
   text-transform: uppercase;
   font-weight: 700;
   color: var(--muted);
+  white-space: nowrap;
+  line-height: 1.2;
 }
 
 .tag.category {
@@ -2769,6 +2772,10 @@ onMounted(() => {
   }
   .section-header h2 { font-size: 1.4rem; }
   .section-header p { display: none; } /* Nascondi descrizione su mobile per spazio */
+  
+  .motos-grid {
+    grid-template-columns: 1fr;
+  }
 }
 /* Deadlines Alert Styles */
 .deadlines-list {
