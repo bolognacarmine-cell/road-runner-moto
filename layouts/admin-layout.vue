@@ -8,5 +8,6 @@
 .admin-layout {
   min-height: 100vh;
   background: #0a0a0a;
+  overflow-y: visible;
 }
 </style>

@@ -660,6 +660,11 @@
                   <span class="date">{{ formatDate(d.scadenzaBollo) }}</span>
                   <span class="days">({{ d.bolloStatus.message }})</span>
                 </div>
+                <div v-if="d.manutenzioneStatus" class="deadline-item border-t border-white/5 pt-2 mt-2" :class="d.manutenzioneStatus.type">
+                  <span class="label">🛠️ Manutenzione:</span>
+                  <span class="date">{{ formatDate(d.scadenzaManutenzione) }}</span>
+                  <span class="days">({{ d.manutenzioneStatus.message }})</span>
+                </div>
               </div>
 
               <div class="deadline-actions">
@@ -818,8 +823,8 @@
               <input type="number" v-model="portalMotoForm.kmAttuali" />
             </div>
             <div class="form-group">
-              <label>Prossima Manutenzione (Km o Data)</label>
-              <input v-model="portalMotoForm.prossimaManutenzione" placeholder="Es: 10.000 km o 12/2026" />
+              <label>Prossima Manutenzione</label>
+              <input type="date" v-model="portalMotoForm.prossimaManutenzione" />
             </div>
             <div class="form-group">
               <label>Scadenza Revisione</label>
@@ -861,7 +866,7 @@
           <div v-for="rec in maintenanceHistory" :key="rec._id" class="maintenance-record-item mb-4 pb-4 border-b border-white/5">
             <div class="flex justify-between items-start">
               <div>
-                <span class="text-xs text-muted block">{{ rec.data }} - {{ rec.km }} km</span>
+                <span class="text-xs text-muted block">{{ formatDate(rec.data) }}</span>
                 <strong class="text-sm block">{{ rec.descrizione }}</strong>
                 <p v-if="rec.partiSostituite" class="text-xs text-muted mt-1 italic">Parti: {{ rec.partiSostituite }}</p>
                 <p v-if="rec.costo" class="text-xs text-primary mt-1">€ {{ rec.costo }}</p>
@@ -876,7 +881,6 @@
           <h4>Aggiungi Intervento</h4>
           <div class="grid grid-cols-2 gap-3 mt-3">
             <input type="date" v-model="maintenanceForm.data" class="mini-input" />
-            <input type="number" v-model="maintenanceForm.km" placeholder="Km intervento" class="mini-input" />
             <input v-model="maintenanceForm.descrizione" placeholder="Descrizione (es: Tagliando)" class="mini-input col-span-2" />
             <input v-model="maintenanceForm.partiSostituite" placeholder="Parti sostituite" class="mini-input col-span-2" />
             <input type="number" v-model="maintenanceForm.costo" placeholder="Costo (€)" class="mini-input" />
@@ -1496,10 +1500,12 @@ const upcomingDeadlines = computed(() => {
       scadenzaRevisione: v.scadenzaRevisione,
       scadenzaAssicurazione: v.scadenzaAssicurazione,
       scadenzaBollo: v.scadenzaBollo,
+      scadenzaManutenzione: v.prossimaManutenzione,
       isExpired: false,
       revisioneStatus: null,
       assicurazioneStatus: null,
-      bolloStatus: null
+      bolloStatus: null,
+      manutenzioneStatus: null
     }
 
     let hasUpcoming = false
@@ -1524,6 +1530,7 @@ const upcomingDeadlines = computed(() => {
     deadlineInfo.revisioneStatus = checkDate(v.scadenzaRevisione, 'Revisione')
     deadlineInfo.assicurazioneStatus = checkDate(v.scadenzaAssicurazione, 'Assicurazione')
     deadlineInfo.bolloStatus = checkDate(v.scadenzaBollo, 'Bollo')
+    deadlineInfo.manutenzioneStatus = checkDate(v.prossimaManutenzione, 'Manutenzione')
 
     if (hasUpcoming) {
       list.push(deadlineInfo)
@@ -1538,7 +1545,8 @@ const hasUrgentDeadlines = computed(() => {
     d.isExpired || 
     (d.revisioneStatus?.type === 'urgent') || 
     (d.assicurazioneStatus?.type === 'urgent') || 
-    (d.bolloStatus?.type === 'urgent')
+    (d.bolloStatus?.type === 'urgent') ||
+    (d.manutenzioneStatus?.type === 'urgent')
   )
 })
 
@@ -1554,6 +1562,10 @@ const generateWhatsAppLink = (d) => {
   if (d.revisioneStatus) message += `- Revisione: ${formatDate(d.scadenzaRevisione)}\n`
   if (d.assicurazioneStatus) message += `- Assicurazione: ${formatDate(d.scadenzaAssicurazione)}\n`
   if (d.bolloStatus) message += `- Bollo: ${formatDate(d.scadenzaBollo)}\n`
+  
+  if (d.manutenzioneStatus) {
+    message += `\n🛠️ Manutenzione: ${formatDate(d.scadenzaManutenzione)}\n`
+  }
   
   message += `\nContattaci per un appuntamento o per maggiori informazioni!`
   

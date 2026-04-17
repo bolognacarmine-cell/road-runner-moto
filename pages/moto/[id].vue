@@ -159,6 +159,8 @@ const formatImages = (images) => {
   color: #fff;
   min-height: 100vh;
   padding-top: 80px;
+  padding-bottom: 80px; /* Spazio extra in fondo per scroll */
+  overflow-y: visible; /* Forza lo scroll */
 }
 
 .back-nav {
