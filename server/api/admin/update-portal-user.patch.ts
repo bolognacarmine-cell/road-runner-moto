@@ -3,7 +3,7 @@ import { ObjectId } from 'mongodb'
 
 export default defineEventHandler(async (event) => {
   const body = await readBody(event)
-  const { id, password, cellulare, targa } = body
+  const { id, nome, cognome, password, cellulare, targa } = body
 
   if (!id) {
     throw createError({ statusCode: 400, statusMessage: 'ID utente mancante.' })
@@ -13,6 +13,8 @@ export default defineEventHandler(async (event) => {
 
   try {
     const updateData: any = {}
+    if (nome !== undefined) updateData.nome = nome
+    if (cognome !== undefined) updateData.cognome = cognome
     if (password) updateData.password = password
     if (cellulare !== undefined) updateData.cellulare = cellulare
     if (targa) updateData.targa = targa.toUpperCase()

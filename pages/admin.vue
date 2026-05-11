@@ -902,6 +902,14 @@
         
         <form @submit.prevent="handleUpdatePortalUser" class="mini-form mt-4">
           <div class="form-group">
+            <label>Nome</label>
+            <input v-model="editUserForm.nome" placeholder="Nome" />
+          </div>
+          <div class="form-group">
+            <label>Cognome</label>
+            <input v-model="editUserForm.cognome" placeholder="Cognome" />
+          </div>
+          <div class="form-group">
             <label>Targa (Username)</label>
             <input v-model="editUserForm.targa" placeholder="Username / Targa" required />
           </div>
