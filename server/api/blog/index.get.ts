@@ -11,7 +11,7 @@ export default defineEventHandler(async (event) => {
   const limit = parseInt(query.limit as string) || 9
   const skip = (page - 1) * limit
 
-  const { db, client } = await connectToDatabase()
+  const { db } = await connectToDatabase()
 
   try {
     const collection = db.collection('blog_posts')
@@ -44,6 +44,5 @@ export default defineEventHandler(async (event) => {
     console.error('ERRORE BLOG GET:', error)
     throw createError({ statusCode: 500, statusMessage: 'Errore durante il recupero degli articoli.' })
   } finally {
-    await client.close()
   }
 })

@@ -15,7 +15,7 @@ export default defineEventHandler(async (event) => {
     throw createError({ statusCode: 400, statusMessage: 'Targa obbligatoria.' })
   }
 
-  const { db, client } = await connectToDatabase()
+  const { db } = await connectToDatabase()
 
   try {
     console.log('UPDATING VEHICLE FOR TARGA:', targa.toUpperCase())
@@ -55,6 +55,5 @@ export default defineEventHandler(async (event) => {
       message: error.message 
     })
   } finally {
-    await client.close()
   }
 })

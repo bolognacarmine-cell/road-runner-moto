@@ -9,7 +9,7 @@ export default defineEventHandler(async (event) => {
     throw createError({ statusCode: 400, statusMessage: 'ID permuta mancante.' })
   }
 
-  const { db, client } = await connectToDatabase()
+  const { db } = await connectToDatabase()
 
   try {
     const result = await db.collection('tradeins').deleteOne({ _id: new ObjectId(id as string) })
@@ -24,6 +24,5 @@ export default defineEventHandler(async (event) => {
     console.error('ERRORE DELETE TRADE-IN:', error)
     throw createError({ statusCode: 500, statusMessage: 'Errore durante l\'eliminazione.' })
   } finally {
-    await client.close()
   }
 })

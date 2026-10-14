@@ -5,7 +5,7 @@ export default defineEventHandler(async (event) => {
   const id = getRouterParam(event, 'id')
   const body = await readBody(event)
 
-  const { db, client } = await connectToDatabase()
+  const { db } = await connectToDatabase()
 
   try {
     const collection = db.collection('blog_posts')
@@ -32,6 +32,5 @@ export default defineEventHandler(async (event) => {
     console.error('ERRORE BLOG PUT:', error)
     throw createError({ statusCode: 500, statusMessage: 'Errore durante l\'aggiornamento.' })
   } finally {
-    await client.close()
   }
 })

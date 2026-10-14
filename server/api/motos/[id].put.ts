@@ -23,7 +23,7 @@ export default defineEventHandler(async (event) => {
     })
   }
 
-  const { db, client } = await connectToDatabase()
+  const { db } = await connectToDatabase()
 
   try {
     // 2. Upload nuove immagini su Cloudinary (se presenti in Base64)
@@ -91,6 +91,5 @@ export default defineEventHandler(async (event) => {
       message: error.message
     })
   } finally {
-    await client.close()
   }
 })

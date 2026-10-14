@@ -2,7 +2,7 @@ import { defineEventHandler, createError } from 'h3'
 import { MongoClient } from 'mongodb'
 
 export default defineEventHandler(async (event) => {
-  const { db, client } = await connectToDatabase()
+  const { db } = await connectToDatabase()
 
   try {
     const collection = db.collection('leads')
@@ -20,6 +20,5 @@ export default defineEventHandler(async (event) => {
       statusMessage: 'Errore durante il recupero dei preventivi.'
     })
   } finally {
-    await client.close()
   }
 })

@@ -11,7 +11,7 @@ export default defineEventHandler(async (event) => {
     })
   }
 
-  const { db, client } = await connectToDatabase()
+  const { db } = await connectToDatabase()
 
   try {
     console.log(`[API] Tentativo di eliminazione moto ${id}...`)
@@ -40,6 +40,5 @@ export default defineEventHandler(async (event) => {
       message: error.message
     })
   } finally {
-    await client.close()
   }
 })

@@ -1,5 +1,6 @@
 import { defineEventHandler, readBody, createError } from 'h3'
 import { MongoClient } from 'mongodb'
+import { hashPassword } from '../../utils/password'
 
 export default defineEventHandler(async (event) => {
   const body = await readBody(event)
@@ -9,7 +10,7 @@ export default defineEventHandler(async (event) => {
     throw createError({ statusCode: 400, statusMessage: 'Tutti i campi sono obbligatori.' })
   }
 
-  const { db, client } = await connectToDatabase()
+  const { db } = await connectToDatabase()
 
   try {
     // Controlla se targa esiste già
@@ -23,7 +24,7 @@ export default defineEventHandler(async (event) => {
       cognome,
       cellulare: cellulare || '',
       targa: targa.toUpperCase(),
-      password, // In produzione: bcrypt.hash
+      password: hashPassword(String(password)),
       role: 'customer',
       createdAt: new Date()
     }
@@ -39,6 +40,5 @@ export default defineEventHandler(async (event) => {
       statusMessage: error.statusMessage || 'Errore salvataggio utente.' 
     })
   } finally {
-    await client.close()
   }
 })

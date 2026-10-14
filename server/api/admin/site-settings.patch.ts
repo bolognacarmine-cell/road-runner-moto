@@ -9,7 +9,7 @@ export default defineEventHandler(async (event) => {
     throw createError({ statusCode: 400, statusMessage: 'Colore non valido' })
   }
 
-  const { db, client } = await connectToDatabase()
+  const { db } = await connectToDatabase()
 
   try {
     // Costruisci oggetto update
@@ -31,6 +31,5 @@ export default defineEventHandler(async (event) => {
     console.error('ERRORE PATCH SITE SETTINGS:', error)
     throw createError({ statusCode: 500, statusMessage: 'Errore durante il salvataggio' })
   } finally {
-    await client.close()
   }
 })

@@ -2,7 +2,7 @@ import { defineEventHandler, createError } from 'h3'
 import { MongoClient } from 'mongodb'
 
 export default defineEventHandler(async (event) => {
-  const { db, client } = await connectToDatabase()
+  const { db } = await connectToDatabase()
 
   try {
     const vehicles = await db.collection('portal_vehicles').find({}).toArray()
@@ -19,6 +19,5 @@ export default defineEventHandler(async (event) => {
       statusMessage: 'Errore recupero veicoli portale.'
     })
   } finally {
-    await client.close()
   }
 })

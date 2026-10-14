@@ -7,7 +7,7 @@ export default defineEventHandler(async (event) => {
 
   if (!id) throw createError({ statusCode: 400, statusMessage: 'ID casco non fornito' })
 
-  const { db, client } = await connectToDatabase()
+  const { db } = await connectToDatabase()
 
   try {
     const collection = db.collection('helmets')
@@ -28,6 +28,5 @@ export default defineEventHandler(async (event) => {
       statusMessage: error.message || 'Errore durante l\'eliminazione del casco'
     })
   } finally {
-    await client.close()
   }
 })

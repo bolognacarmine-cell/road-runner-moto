@@ -2,7 +2,7 @@ import { defineEventHandler } from 'h3'
 import { MongoClient } from 'mongodb'
 
 export default defineEventHandler(async (event) => {
-  const { db, client } = await connectToDatabase()
+  const { db } = await connectToDatabase()
 
   try {
     const settings = await db.collection('siteSettings').findOne({ _id: 'road-runner-settings' as any })
@@ -20,6 +20,5 @@ export default defineEventHandler(async (event) => {
       textColor: '#fdfdfd'
     }
   } finally {
-    await client.close()
   }
 })

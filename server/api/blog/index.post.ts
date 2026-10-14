@@ -4,7 +4,7 @@ import { MongoClient } from 'mongodb'
 export default defineEventHandler(async (event) => {
   const body = await readBody(event)
 
-  const { db, client } = await connectToDatabase()
+  const { db } = await connectToDatabase()
 
   try {
     const collection = db.collection('blog_posts')
@@ -43,6 +43,5 @@ export default defineEventHandler(async (event) => {
       statusMessage: error.statusMessage || 'Errore durante la creazione dell\'articolo.'
     })
   } finally {
-    await client.close()
   }
 })

@@ -8,7 +8,7 @@ export default defineEventHandler(async (event) => {
     throw createError({ statusCode: 400, statusMessage: 'Identificativo mancante.' })
   }
 
-  const { db, client } = await connectToDatabase()
+  const { db } = await connectToDatabase()
 
   try {
     const collection = db.collection('blog_posts')
@@ -63,6 +63,5 @@ export default defineEventHandler(async (event) => {
       statusMessage: error.statusMessage || 'Errore durante il recupero dell\'articolo.'
     })
   } finally {
-    await client.close()
   }
 })

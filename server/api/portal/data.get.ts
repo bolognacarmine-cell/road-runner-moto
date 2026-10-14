@@ -2,34 +2,37 @@ import { defineEventHandler, createError, getQuery } from 'h3'
 import { MongoClient } from 'mongodb'
 
 export default defineEventHandler(async (event) => {
+  const payloadTarga = (event.context as any)?.portalTarga as string | undefined
   const query = getQuery(event)
-  const targa = query.targa as string
+  const requested = (query.targa as string | undefined) || payloadTarga
 
-  if (!targa) {
-    throw createError({
-      statusCode: 400,
-      statusMessage: 'Targa mancante.'
-    })
+  if (!payloadTarga) {
+    throw createError({ statusCode: 401, statusMessage: 'Accesso portale richiesto.' })
+  }
+  if (requested && requested.toUpperCase() !== payloadTarga.toUpperCase()) {
+    throw createError({ statusCode: 403, statusMessage: 'Accesso negato ai dati di questo veicolo.' })
   }
 
-  const { db, client } = await connectToDatabase()
+  const targa = payloadTarga.toUpperCase()
+
+  const { db } = await connectToDatabase()
 
   try {
     // 1. Dati Veicolo
-    const vehicle = await db.collection('portal_vehicles').findOne({ targa: targa.toUpperCase() })
+    const vehicle = await db.collection('portal_vehicles').findOne({ targa })
     
     // 2. Storico Manutenzioni
     const maintenance = await db.collection('portal_maintenance')
-      .find({ targa: targa.toUpperCase() })
+      .find({ targa })
       .sort({ date: -1 })
       .toArray()
-
+    
     // 3. Documenti
     const documents = await db.collection('portal_documents')
-      .find({ targa: targa.toUpperCase() })
+      .find({ targa })
       .sort({ date: -1 })
       .toArray()
-
+    
     return {
       success: true,
       vehicle: vehicle || null,
@@ -44,6 +47,5 @@ export default defineEventHandler(async (event) => {
       statusMessage: error.statusMessage || 'Errore recupero dati portale.'
     })
   } finally {
-    await client.close()
   }
 })

@@ -1,5 +1,6 @@
 import { defineEventHandler, readBody, createError } from 'h3'
 import { ObjectId } from 'mongodb'
+import { hashPassword } from '../../utils/password'
 
 export default defineEventHandler(async (event) => {
   const body = await readBody(event)
@@ -9,13 +10,13 @@ export default defineEventHandler(async (event) => {
     throw createError({ statusCode: 400, statusMessage: 'ID utente mancante.' })
   }
 
-  const { db, client } = await connectToDatabase()
+  const { db } = await connectToDatabase()
 
   try {
     const updateData: any = {}
     if (nome !== undefined) updateData.nome = nome
     if (cognome !== undefined) updateData.cognome = cognome
-    if (password) updateData.password = password
+    if (password) updateData.password = hashPassword(String(password))
     if (cellulare !== undefined) updateData.cellulare = cellulare
     if (targa) updateData.targa = targa.toUpperCase()
 
@@ -41,6 +42,5 @@ export default defineEventHandler(async (event) => {
       statusMessage: error.statusMessage || 'Errore aggiornamento utente.' 
     })
   } finally {
-    await client.close()
   }
 })

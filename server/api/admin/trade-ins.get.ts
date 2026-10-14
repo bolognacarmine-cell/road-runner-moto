@@ -3,7 +3,7 @@ import { defineEventHandler, createError } from 'h3'
 import { MongoClient } from 'mongodb'
 
 export default defineEventHandler(async (event) => {
-  const { db, client } = await connectToDatabase()
+  const { db } = await connectToDatabase()
 
   try {
     const collection = db.collection('tradeins')
@@ -23,6 +23,5 @@ export default defineEventHandler(async (event) => {
       message: error.message
     })
   } finally {
-    await client.close()
   }
 })

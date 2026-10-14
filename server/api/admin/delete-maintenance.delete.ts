@@ -9,7 +9,7 @@ export default defineEventHandler(async (event) => {
     throw createError({ statusCode: 400, statusMessage: 'ID intervento mancante.' })
   }
 
-  const { db, client } = await connectToDatabase()
+  const { db } = await connectToDatabase()
 
   try {
     await db.collection('portal_maintenance').deleteOne({ _id: new ObjectId(id as string) })
@@ -20,6 +20,5 @@ export default defineEventHandler(async (event) => {
     console.error('ERRORE DELETE MAINTENANCE:', error)
     throw createError({ statusCode: 500, statusMessage: 'Errore durante l\'eliminazione.' })
   } finally {
-    await client.close()
   }
 })

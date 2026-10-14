@@ -9,7 +9,7 @@ export default defineEventHandler(async (event) => {
     throw createError({ statusCode: 400, statusMessage: 'Targa e descrizione obbligatorie.' })
   }
 
-  const { db, client } = await connectToDatabase()
+  const { db } = await connectToDatabase()
 
   try {
     await db.collection('portal_maintenance').insertOne({
@@ -28,6 +28,5 @@ export default defineEventHandler(async (event) => {
     console.error('ERRORE ADD MAINTENANCE:', error)
     throw createError({ statusCode: 500, statusMessage: 'Errore salvataggio intervento.' })
   } finally {
-    await client.close()
   }
 })

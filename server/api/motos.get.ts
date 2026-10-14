@@ -3,7 +3,7 @@ import { MongoClient } from 'mongodb'
 
 export default defineEventHandler(async (event) => {
   // 1. Connessione al database tramite utilità centralizzata e robusta
-  const { db, client } = await connectToDatabase()
+  const { db } = await connectToDatabase()
 
   try {
     const collection = db.collection('motos')
@@ -28,6 +28,5 @@ export default defineEventHandler(async (event) => {
   } finally {
     // 3. Chiusura connessione (opzionale se si volesse usare il pooling, 
     // ma manteniamo il comportamento originale per sicurezza)
-    await client.close()
   }
 })

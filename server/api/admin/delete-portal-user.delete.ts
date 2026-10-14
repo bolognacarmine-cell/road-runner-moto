@@ -9,7 +9,7 @@ export default defineEventHandler(async (event) => {
     throw createError({ statusCode: 400, statusMessage: 'ID utente mancante.' })
   }
 
-  const { db, client } = await connectToDatabase()
+  const { db } = await connectToDatabase()
 
   try {
     // 1. Trova l'utente per recuperare la targa
@@ -37,6 +37,5 @@ export default defineEventHandler(async (event) => {
     if (error.statusCode) throw error
     throw createError({ statusCode: 500, statusMessage: 'Errore durante l\'eliminazione dell\'utente.' })
   } finally {
-    await client.close()
   }
 })

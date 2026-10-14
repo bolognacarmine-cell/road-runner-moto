@@ -4,7 +4,7 @@ import { MongoClient, ObjectId } from 'mongodb'
 export default defineEventHandler(async (event) => {
   const id = getRouterParam(event, 'id')
 
-  const { db, client } = await connectToDatabase()
+  const { db } = await connectToDatabase()
 
   try {
     const collection = db.collection('blog_posts')
@@ -21,6 +21,5 @@ export default defineEventHandler(async (event) => {
     console.error('ERRORE BLOG DELETE:', error)
     throw createError({ statusCode: 500, statusMessage: 'Errore durante l\'eliminazione.' })
   } finally {
-    await client.close()
   }
 })

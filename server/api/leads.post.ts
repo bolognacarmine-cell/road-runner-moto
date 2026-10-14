@@ -1,7 +1,7 @@
 export default defineEventHandler(async (event) => {
   const body = await readBody(event)
 
-  const { db, client } = await connectToDatabase()
+  const { db } = await connectToDatabase()
 
   try {
     const collection = db.collection('leads')
@@ -37,6 +37,5 @@ export default defineEventHandler(async (event) => {
       data: error.message
     })
   } finally {
-    await client.close()
   }
 })

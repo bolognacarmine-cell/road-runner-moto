@@ -2,59 +2,111 @@ import { MongoClient, Db } from 'mongodb'
 import { createError } from 'h3'
 
 /**
- * Utilità centralizzata per la connessione a MongoDB.
- * Gestisce URI SRV e Standard, fornisce log chiari e gestione errori robusta.
+ * Connessione MongoDB riutilizzata per l'intero processo.
+ *
+ * Il modulo mantiene una singola connessione/pool. I consumatori ricevono un client
+ * già connesso ma non devono chiuderlo: la chiusura è responsabilità del modulo.
  */
-export async function connectToDatabase(): Promise<{ client: MongoClient; db: Db }> {
-  const config = useRuntimeConfig()
-  const uri = config.mongodbUri as string
-  const dbName = config.mongodbDbName || 'roadrunner_db'
+type ReusableClient = Omit<MongoClient, 'close'>
 
-  // 1. Verifica presenza variabile ambiente
-  if (!uri) {
-    console.error('[MONGODB] ERRORE: Variabile MONGODB_URI assente nelle runtimeConfig.')
-    throw createError({
-      statusCode: 500,
-      statusMessage: 'Database non configurato correttamente su Render.'
-    })
+let cachedClient: MongoClient | null = null
+let cachedDb: Db | null = null
+let pendingConnection: Promise<{ client: ReusableClient; db: Db }> | null = null
+let realCloseClient: MongoClient | null = null
+
+export async function connectToDatabase(): Promise<{ client: ReusableClient; db: Db }> {
+  if (cachedClient && cachedDb) {
+    return { client: cachedClient as ReusableClient, db: cachedDb }
   }
 
-  // 2. Analisi tipo URI (senza stampare segreti)
-  const isSrv = uri.startsWith('mongodb+srv://')
-  const maskedUri = uri.replace(/\/\/.*:.*@/, '//****:****@')
-  console.log(`[MONGODB] Tentativo di connessione...`)
-  console.log(`[MONGODB] Tipo URI: ${isSrv ? 'SRV (+srv)' : 'Standard'}`)
-  // console.log(`[MONGODB] URI Mascherata: ${maskedUri}`) // Utile per debug se necessario
+  if (pendingConnection) {
+    return pendingConnection
+  }
 
-  // 3. Configurazione client robusta
-  const client = new MongoClient(uri, {
-    connectTimeoutMS: 15000,      // Più tempo per la risoluzione DNS su Render
-    serverSelectionTimeoutMS: 15000,
-    socketTimeoutMS: 45000,
-    // Se SRV fallisce spesso, l'utente dovrebbe passare alla stringa standard
-  })
+  pendingConnection = (async () => {
+    const config = useRuntimeConfig()
+    const uri = config.mongodbUri as string
+    const dbName = config.mongodbDbName || 'roadrunner_db'
 
-  try {
-    await client.connect()
-    const db = client.db(dbName)
-    console.log(`[MONGODB] Connesso con successo al database: ${dbName}`)
-    return { client, db }
-  } catch (error: any) {
-    const errMsg = error.message || 'Errore di connessione sconosciuto'
-    console.error(`[MONGODB] ERRORE CRITICO: ${errMsg}`)
-    
-    // Gestione specifica errori DNS SRV
-    if (errMsg.includes('querySrv') || errMsg.includes('ETIMEOUT')) {
-      console.error('[MONGODB] SUGGERIMENTO: Errore DNS/SRV rilevato. Passare alla "Standard Connection String" in MongoDB Atlas.')
+    if (!uri) {
+      console.error('[MONGODB] ERRORE: Variabile MONGODB_URI assente nelle runtimeConfig.')
+      throw createError({
+        statusCode: 500,
+        statusMessage: 'Database non configurato correttamente su Render.'
+      })
     }
 
-    throw createError({
-      statusCode: 503,
-      statusMessage: 'Servizio Database Temporaneamente Non Disponibile',
-      data: {
-        error: errMsg,
-        hint: isSrv ? 'Prova a usare la stringa di connessione standard (mongodb://) invece di quella SRV.' : 'Verifica whitelist IP su MongoDB Atlas.'
-      }
+    const isSrv = uri.startsWith('mongodb+srv://')
+    const client = new MongoClient(uri, {
+      connectTimeoutMS: 15000,
+      serverSelectionTimeoutMS: 15000,
+      socketTimeoutMS: 45000,
     })
+
+    try {
+      await client.connect()
+      const db = client.db(dbName)
+
+      const reusableClient = client as ReusableClient
+
+      cachedClient = client
+      cachedDb = db
+      realCloseClient = client
+
+      console.log(`[MONGODB] Connesso con successo al database: ${dbName}`)
+      console.log(`[MONGODB] Tipo URI: ${isSrv ? 'SRV (+srv)' : 'Standard'}`)
+
+      return { client: reusableClient, db }
+    } catch (error: any) {
+      const errMsg = error.message || 'Errore di connessione sconosciuto'
+      console.error(`[MONGODB] ERRORE CRITICO: ${errMsg}`)
+
+      if (errMsg.includes('querySrv') || errMsg.includes('ETIMEOUT')) {
+        console.error('[MONGODB] SUGGERIMENTO: Errore DNS/SRV rilevato. Passare alla "Standard Connection String" in MongoDB Atlas.')
+      }
+
+      try {
+        await client.close()
+      } catch {
+        // Ignore cleanup errors after a failed connection attempt.
+      }
+
+      cachedClient = null
+      cachedDb = null
+      realCloseClient = null
+
+      throw createError({
+        statusCode: 503,
+        statusMessage: 'Servizio Database Temporaneamente Non Disponibile',
+        data: {
+          error: errMsg,
+          hint: isSrv ? 'Prova a usare la stringa di connessione standard (mongodb://) invece di quella SRV.' : 'Verifica whitelist IP su MongoDB Atlas.'
+        }
+      })
+    }
+  })()
+
+  try {
+    return await pendingConnection
+  } catch (error) {
+    throw error
+  } finally {
+    pendingConnection = null
+  }
+}
+
+/**
+ * Utility dedicata alla chiusura esplicita del pool singleton.
+ * Non usata dagli handler delle API.
+ */
+export async function closeDatabase(): Promise<void> {
+  if (!realCloseClient) return
+  try {
+    await realCloseClient.close()
+  } finally {
+    realCloseClient = null
+    cachedClient = null
+    cachedDb = null
+    pendingConnection = null
   }
 }

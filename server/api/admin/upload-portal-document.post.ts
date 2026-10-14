@@ -19,7 +19,7 @@ export default defineEventHandler(async (event) => {
     api_secret: config.cloudinaryApiSecret
   })
 
-  const { db, client } = await connectToDatabase()
+  const { db } = await connectToDatabase()
 
   try {
     // 1. Upload su Cloudinary
@@ -44,6 +44,5 @@ export default defineEventHandler(async (event) => {
     console.error('ERRORE UPLOAD DOC:', error)
     throw createError({ statusCode: 500, statusMessage: 'Errore caricamento documento.' })
   } finally {
-    await client.close()
   }
 })

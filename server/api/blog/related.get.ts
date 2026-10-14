@@ -9,7 +9,7 @@ export default defineEventHandler(async (event) => {
     throw createError({ statusCode: 400, statusMessage: 'motoId mancante.' })
   }
 
-  const { db, client } = await connectToDatabase()
+  const { db } = await connectToDatabase()
 
   try {
     const collection = db.collection('blog_posts')
@@ -27,6 +27,5 @@ export default defineEventHandler(async (event) => {
     console.error('ERRORE BLOG RELATED GET:', error)
     throw createError({ statusCode: 500, statusMessage: 'Errore durante il recupero degli articoli correlati.' })
   } finally {
-    await client.close()
   }
 })

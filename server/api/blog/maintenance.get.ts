@@ -2,7 +2,7 @@ import { defineEventHandler, createError } from 'h3'
 import { MongoClient } from 'mongodb'
 
 export default defineEventHandler(async (event) => {
-  const { db, client } = await connectToDatabase()
+  const { db } = await connectToDatabase()
 
   try {
     const collection = db.collection('blog_posts')
@@ -20,6 +20,5 @@ export default defineEventHandler(async (event) => {
     console.error('ERRORE BLOG MAINTENANCE GET:', error)
     throw createError({ statusCode: 500, statusMessage: 'Errore durante il recupero degli articoli di manutenzione.' })
   } finally {
-    await client.close()
   }
 })

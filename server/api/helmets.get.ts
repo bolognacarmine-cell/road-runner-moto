@@ -3,7 +3,7 @@ import { defineEventHandler } from 'h3'
 import { MongoClient } from 'mongodb'
 
 export default defineEventHandler(async (event) => {
-  const { db, client } = await connectToDatabase()
+  const { db } = await connectToDatabase()
 
   try {
     const collection = db.collection('helmets')
@@ -22,6 +22,5 @@ export default defineEventHandler(async (event) => {
       statusMessage: error.message || 'Errore durante il recupero dei caschi'
     })
   } finally {
-    await client.close()
   }
 })

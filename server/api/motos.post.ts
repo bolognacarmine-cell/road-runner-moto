@@ -19,7 +19,7 @@ export default defineEventHandler(async (event) => {
   }
 
   // 2. Connessione a MongoDB tramite utilità centralizzata
-  const { db, client } = await connectToDatabase()
+  const { db } = await connectToDatabase()
 
   try {
     // 3. Upload Immagini su Cloudinary (se presenti)
@@ -92,6 +92,5 @@ export default defineEventHandler(async (event) => {
       message: errorMessage
     })
   } finally {
-    await client.close()
   }
 })

@@ -17,7 +17,7 @@ export default defineEventHandler(async (event) => {
     api_secret: useRuntimeConfig().cloudinaryApiSecret
   })
 
-  const { db, client } = await connectToDatabase()
+  const { db } = await connectToDatabase()
 
   try {
     // 1. Recupera il documento per ottenere il cloudinary_id
@@ -46,6 +46,5 @@ export default defineEventHandler(async (event) => {
     if (error.statusCode) throw error
     throw createError({ statusCode: 500, statusMessage: 'Errore durante l\'eliminazione.' })
   } finally {
-    await client.close()
   }
 })
