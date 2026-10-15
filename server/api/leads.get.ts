@@ -1,7 +1,12 @@
 import { defineEventHandler, createError } from 'h3'
-import { MongoClient } from 'mongodb'
+import { connectToDatabase } from '~/server/utils/mongodb'
+import { isAdmin } from '../utils/auth'
 
 export default defineEventHandler(async (event) => {
+  if (!isAdmin(event)) {
+    throw createError({ statusCode: 401, statusMessage: 'Non autorizzato.' })
+  }
+
   const { db } = await connectToDatabase()
 
   try {
