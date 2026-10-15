@@ -133,7 +133,8 @@ export default defineNuxtConfig({
     defaults: {
       changefreq: 'weekly',
       priority: 0.5
-    }
+    },
+    zeroRuntime: true
   },
 
   // ✅ Immagini ottimizzate
