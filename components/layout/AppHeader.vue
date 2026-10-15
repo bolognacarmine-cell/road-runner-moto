@@ -3,6 +3,7 @@
 import { ref, onMounted, onUnmounted, watch, computed } from 'vue'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { useSearch } from '~/composables/useSearch'
 
 if (process.client) {
   gsap.registerPlugin(ScrollTrigger)
@@ -27,7 +28,7 @@ const props = defineProps({
 const isScrolled = ref(false)
 const mobileMenuOpen = ref(false)
 const isDarkMode = ref(true)
-const searchQuery = ref('')
+const { searchQuery, setSearchQuery } = useSearch()
 const currentLang = ref('IT')
 const userDropdownOpen = ref(false)
 const isLoaded = ref(false) // Skeleton loader control
@@ -197,9 +198,10 @@ watch(mobileMenuOpen, (val) => {
         
         <!-- Smart Search Bar -->
         <div class="relative hidden xl:block">
-          <input 
-            v-model="searchQuery"
-            type="text" 
+          <input
+            :value="searchQuery"
+            @input="setSearchQuery($event.target.value)"
+            type="text"
             placeholder="Cerca veicolo..."
             class="bg-gray-100 dark:bg-white/5 border border-white/5 focus:border-primary/40 rounded-full py-2.5 px-5 pl-12 text-sm outline-none transition-all duration-500 w-40 focus:w-72 shadow-inner"
           />

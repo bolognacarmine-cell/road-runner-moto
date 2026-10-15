@@ -33,18 +33,30 @@ const handleScroll = () => {
   isScrolled.value = window.scrollY > 50
 }
 
-// Silktide Consent Manager - Local Implementation
-useHead({
-  script: [
-    { src: '/silktide-consent-manager.js', defer: true }
-  ]
-})
-
 onMounted(async () => {
   window.addEventListener('scroll', handleScroll)
   await settings.fetchSettings()
   await nextTick()
-  
+
+  // Load Silktide script only on client side to prevent hydration mismatch
+  const loadSilktideScript = () => {
+    return new Promise((resolve, reject) => {
+      if (window.silktideCookieBannerManager) {
+        resolve()
+        return
+      }
+
+      const script = document.createElement('script')
+      script.src = '/silktide-consent-manager.js'
+      script.defer = true
+      script.onload = resolve
+      script.onerror = reject
+      document.head.appendChild(script)
+    })
+  }
+
+  await loadSilktideScript()
+
   // Inizializzazione Silktide
   const initSilktide = () => {
     if (window.silktideCookieBannerManager) {
