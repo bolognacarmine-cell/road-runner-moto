@@ -11,7 +11,7 @@ const mockPosts = [
     category: 'Novità Moto',
     excerpt: 'Scopri le novità Honda per il 2024 con nuovi modelli di scooter e moto.',
     content: 'Scopri le novità Honda per il 2024 con nuovi modelli di scooter e moto.',
-    date: new Date().toISOString(),
+    date: '2024-01-15T10:00:00.000Z',
     imageUrl: '/cta-bg.jpg',
     isVisible: true
   },
@@ -22,7 +22,7 @@ const mockPosts = [
     category: 'Sicurezza',
     excerpt: 'Guida completa per scegliere il casco più adatto alle tue esigenze.',
     content: 'Guida completa per scegliere il casco più adatto alle tue esigenze.',
-    date: new Date(Date.now() - 86400000).toISOString(),
+    date: '2024-01-14T10:00:00.000Z',
     imageUrl: '/compass.jpg',
     isVisible: true
   }

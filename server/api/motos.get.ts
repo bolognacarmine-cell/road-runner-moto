@@ -21,7 +21,7 @@ const mockMotos = [
     immagini: [
       'https://res.cloudinary.com/roadrunner/image/upload/v1/moto/honda-pcx-160-1.jpg'
     ],
-    createdAt: new Date().toISOString()
+    createdAt: '2024-01-15T10:00:00.000Z'
   },
   {
     _id: '2',
@@ -40,7 +40,7 @@ const mockMotos = [
     immagini: [
       'https://res.cloudinary.com/roadrunner/image/upload/v1/moto/piaggio-beverly-300-1.jpg'
     ],
-    createdAt: new Date(Date.now() - 86400000).toISOString()
+    createdAt: '2024-01-14T10:00:00.000Z'
   },
   {
     _id: '3',
@@ -61,7 +61,7 @@ const mockMotos = [
     immagini: [
       'https://res.cloudinary.com/roadrunner/image/upload/v1/moto/kymco-x-town-300i-1.jpg'
     ],
-    createdAt: new Date(Date.now() - 172800000).toISOString()
+    createdAt: '2024-01-13T10:00:00.000Z'
   },
   {
     _id: '4',
@@ -80,7 +80,7 @@ const mockMotos = [
     immagini: [
       'https://res.cloudinary.com/roadrunner/image/upload/v1/moto/honda-cbr-650r-1.jpg'
     ],
-    createdAt: new Date(Date.now() - 259200000).toISOString()
+    createdAt: '2024-01-12T10:00:00.000Z'
   },
   {
     _id: '5',
@@ -99,7 +99,7 @@ const mockMotos = [
     immagini: [
       'https://res.cloudinary.com/roadrunner/image/upload/v1/moto/moto-guzzi-v7-iii-stone-1.jpg'
     ],
-    createdAt: new Date(Date.now() - 345600000).toISOString()
+    createdAt: '2024-01-11T10:00:00.000Z'
   },
   {
     _id: '6',
@@ -118,7 +118,7 @@ const mockMotos = [
     immagini: [
       'https://res.cloudinary.com/roadrunner/image/upload/v1/moto/piaggio-medley-150-1.jpg'
     ],
-    createdAt: new Date(Date.now() - 432000000).toISOString()
+    createdAt: '2024-01-10T10:00:00.000Z'
   }
 ]
 

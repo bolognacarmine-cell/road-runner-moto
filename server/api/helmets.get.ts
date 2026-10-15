@@ -13,7 +13,7 @@ const mockHelmets = [
     prezzo: 129,
     isVisible: true,
     immagini: ['/img/helmets/collezione (1).jpg'],
-    createdAt: new Date().toISOString()
+    createdAt: '2024-01-15T10:00:00.000Z'
   },
   {
     _id: '2',
@@ -23,7 +23,7 @@ const mockHelmets = [
     prezzo: 149,
     isVisible: true,
     immagini: ['/img/helmets/collezione (2).jpg'],
-    createdAt: new Date(Date.now() - 86400000).toISOString()
+    createdAt: '2024-01-14T10:00:00.000Z'
   }
 ]
 
