@@ -18,7 +18,7 @@ const error = computed(() => !!fetchError.value)
 useHead({
   title: 'Catalogo Veicoli | Road Runner Moto',
   meta: [
-    { name: 'description', content: 'Le migliori moto usate a Caserta sono da Road Runner Moto. Usato plurimarche controllato, finanziamenti rapidi e accessori Dieffe/LS2. Scopri le occasioni!' }
+    { name: 'description', content: 'Catalogo moto usate e scooter a Capodrise (CE). Honda, Piaggio, Kymco, motomorini e altre marche. Usato plurimarche garantito con controlli tecnici. Finanziamenti Compass e permute.' }
   ],
   script: [
     {
@@ -44,6 +44,29 @@ useHead({
             }
           }
         ]
+      })
+    },
+    {
+      type: 'application/ld+json',
+      children: JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "ItemList",
+        "itemListElement": vehicles.value.map((moto, index) => ({
+          "@type": "ListItem",
+          "position": index + 1,
+          "item": {
+            "@type": "Vehicle",
+            "name": `${moto.marca} ${moto.modello}`,
+            "url": `https://road-runner.it/moto/${moto._id}`,
+            "image": moto.immagini?.[0] || '/logo-road-runner.jpg',
+            "offers": {
+              "@type": "Offer",
+              "price": moto.prezzo || 0,
+              "priceCurrency": "EUR",
+              "availability": moto.stato === 'disponibile' ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock'
+            }
+          }
+        }))
       })
     }
   ]

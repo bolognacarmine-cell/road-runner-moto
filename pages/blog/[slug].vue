@@ -52,22 +52,42 @@ useHead({
         '@context': 'https://schema.org',
         '@type': 'Article',
         headline: post.value?.title || '',
+        description: post.value?.excerpt || post.value?.title,
         image: post.value?.imageCover || '/logo-road-runner.jpg',
         datePublished: post.value?.date,
         dateModified: post.value?.updatedAt || post.value?.date,
         author: {
           '@type': 'Organization',
-          name: post.value?.autore || 'Road Runner Moto'
+          name: post.value?.autore || 'Road Runner Moto',
+          url: 'https://road-runner.it'
         },
         publisher: {
           '@type': 'Organization',
           name: 'Road Runner Moto',
-          logo: { '@type': 'ImageObject', url: 'https://road-runner.it/logo-road-runner.jpg' }
+          logo: {
+            '@type': 'ImageObject',
+            url: 'https://road-runner.it/logo-road-runner.jpg',
+            width: 200,
+            height: 200
+          },
+          address: {
+            '@type': 'PostalAddress',
+            streetAddress: 'Via Retella 65',
+            addressLocality: 'Capodrise',
+            postalCode: '81020',
+            addressRegion: 'CE',
+            addressCountry: 'IT'
+          },
+          telephone: '+390823516087',
+          url: 'https://road-runner.it'
         },
         mainEntityOfPage: {
           '@type': 'WebPage',
           '@id': `https://road-runner.it/blog/${route.params.slug}`
-        }
+        },
+        articleSection: post.value?.category || 'News',
+        keywords: post.value?.category ? [post.value.category, 'moto', 'scooter', 'manutenzione'] : ['moto', 'scooter', 'manutenzione'],
+        inLanguage: 'it-IT'
       })
     }
   ]

@@ -24,7 +24,7 @@ const filteredHelmets = computed(() => {
 useHead({
   title: 'Collezione Caschi Moto | ROAD RUNNER MOTO',
   meta: [
-    { name: 'description', content: 'Vasta gamma caschi LS2, Dieffe e Momo Design da Road Runner Capodrise. Accessori moto e localizzatori GPS per la tua sicurezza. Visita il nostro showroom!' }
+    { name: 'description', content: 'Scopri la collezione di caschi LS2, Dieffe e Momo Design da Road Runner Moto a Capodrise (CE). Caschi integrali, modulari e jet per sicurezza e stile. Provali nel nostro showroom vicino Caserta!' }
   ],
   script: [
     {

@@ -51,18 +51,44 @@ useHead({
       type: 'application/ld+json',
       innerHTML: JSON.stringify({
         '@context': 'https://schema.org',
-        '@type': 'Product',
+        '@type': 'Vehicle',
         name: `${moto.value.marca} ${moto.value.modello}`,
-        image: formatImages(moto.value.immagini)[0],
-        description: moto.value.descrizione?.substring(0, 160) || '',
+        description: moto.value.descrizione?.substring(0, 300) || `${moto.value.marca} ${moto.value.modello} disponibile presso Road Runner Moto a Capodrise.`,
+        image: formatImages(moto.value.immagini),
         brand: { '@type': 'Brand', name: moto.value.marca },
+        model: { '@type': 'ProductModel', name: moto.value.modello },
+        vehicleConfiguration: moto.value.cilindrata ? `${moto.value.cilindrata}cc` : undefined,
+        vehicleEngine: moto.value.cilindrata ? { '@type': 'EngineSpecification', engineDisplacement: { '@type': 'QuantitativeValue', value: moto.value.cilindrata, unitCode: 'CMQ' } } : undefined,
+        productionDate: moto.value.annoImmatricolazione ? `${moto.value.annoImmatricolazione}-01-01` : undefined,
+        mileageFromOdometer: moto.value.chilometri ? { '@type': 'QuantitativeValue', value: moto.value.chilometri, unitCode: 'KMT' } : undefined,
         offers: {
           '@type': 'Offer',
-          priceCurrency: 'EUR',
           price: moto.value.prezzo || 0,
+          priceCurrency: 'EUR',
           availability: moto.value.stato === 'disponibile' ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock',
-          seller: { '@type': 'AutoDealer', name: 'Road Runner Moto' }
-        }
+          seller: {
+            '@type': 'AutoDealer',
+            name: 'Road Runner Moto',
+            address: {
+              '@type': 'PostalAddress',
+              streetAddress: 'Via Retella 65',
+              addressLocality: 'Capodrise',
+              postalCode: '81020',
+              addressRegion: 'CE',
+              addressCountry: 'IT'
+            },
+            telephone: '+390823516087',
+            image: 'https://road-runner.it/logo-road-runner.jpg',
+            url: 'https://road-runner.it'
+          },
+          url: `https://road-runner.it/moto/${route.params.id}`,
+          itemCondition: 'https://schema.org/UsedCondition'
+        },
+        additionalProperty: [
+          { '@type': 'PropertyValue', name: 'Tipo', value: moto.value.tipo || 'Moto' },
+          { '@type': 'PropertyValue', name: 'Anno', value: moto.value.annoImmatricolazione || 'N/D' },
+          { '@type': 'PropertyValue', name: 'Chilometri', value: `${moto.value.chilometri?.toLocaleString('it-IT') || '0'} km` }
+        ]
       })
     }
   ] : []

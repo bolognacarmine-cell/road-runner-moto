@@ -43,7 +43,7 @@ watch(searchQuery, () => {
 useHead({
   title: 'Blog & News | Road Runner Moto',
   meta: [
-    { name: 'description', content: 'Ultime novità dal mondo delle moto, consigli di manutenzione e offerte speciali da Road Runner Moto.' }
+    { name: 'description', content: 'Blog Road Runner Moto: guide manutenzione, consigli sicurezza, novità Honda Piaggio Kymco e offerte speciali. Tutto sul mondo delle due ruote a Capodrise e Caserta.' }
   ]
 })
 </script>
