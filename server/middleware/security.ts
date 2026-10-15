@@ -13,7 +13,8 @@ export default defineEventHandler((event) => {
     contentSecurityPolicy: {
       directives: {
         ...helmet.contentSecurityPolicy.getDefaultDirectives(),
-        "script-src": ["'self'", "*.google-analytics.com", "*.googletagmanager.com", "https://cdn.silktide.com"],
+        // 'unsafe-inline' is required for Nuxt 3 SSR hydration and client-side state management
+        "script-src": ["'self'", "'unsafe-inline'", "'unsafe-eval'", "*.google-analytics.com", "*.googletagmanager.com", "https://cdn.silktide.com"],
         "img-src": ["'self'", "data:", "https:", "*.google-analytics.com"],
         "connect-src": ["'self'", "https://*.google-analytics.com", "https://*.analytics.google.com", "https://*.googletagmanager.com"],
       },

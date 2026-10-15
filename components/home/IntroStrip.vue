@@ -1,3 +1,7 @@
+<script setup>
+// Componente introduttivo - nessuna logica necessaria
+</script>
+
 <template>
   <section class="intro-strip">
     <div class="container">
@@ -37,6 +41,19 @@
   margin-top: -40px;
 }
 
+.intro-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 40px;
+}
+
+@media (max-width: 768px) {
+  .intro-grid {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+}
+
 .icon-wrapper {
   width: 48px;
   height: 48px;
@@ -51,5 +68,20 @@
 
 .intro-card {
   text-align: center;
+}
+
+.intro-card strong {
+  display: block;
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #fff;
+  margin-bottom: 8px;
+}
+
+.intro-card span {
+  display: block;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.95rem;
+  line-height: 1.5;
 }
 </style>
