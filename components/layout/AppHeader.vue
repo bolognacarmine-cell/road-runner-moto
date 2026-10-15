@@ -42,10 +42,10 @@ const toggleDarkMode = () => {
 const updateTheme = () => {
   if (isDarkMode.value) {
     document.documentElement.classList.add('dark')
-    localStorage.setItem('theme', 'dark')
+    if (process.client) localStorage.setItem('theme', 'dark')
   } else {
     document.documentElement.classList.remove('dark')
-    localStorage.setItem('theme', 'light')
+    if (process.client) localStorage.setItem('theme', 'light')
   }
 }
 
@@ -77,28 +77,29 @@ const initAnimations = () => {
 
 // --- Scroll Handling (Sticky Morphing) ---
 const handleScroll = () => {
+  if (!process.client) return
   const scrollY = window.scrollY
   isScrolled.value = scrollY > 50
-  
-  if (process.client) {
-    gsap.to('header', {
-      backgroundColor: isScrolled.value 
-        ? (isDarkMode.value ? 'rgba(5, 5, 5, 0.85)' : 'rgba(255, 255, 255, 0.85)') 
-        : 'rgba(5, 5, 5, 0)',
-      backdropFilter: isScrolled.value ? 'blur(25px) saturate(180%)' : 'blur(0px)',
-      borderBottomColor: isScrolled.value ? 'rgba(255, 255, 255, 0.1)' : 'rgba(255, 255, 255, 0)',
-      height: isScrolled.value ? '85px' : '110px',
-      duration: 0.4,
-      ease: 'power2.inOut'
-    })
-  }
+
+  gsap.to('header', {
+    backgroundColor: isScrolled.value
+      ? (isDarkMode.value ? 'rgba(5, 5, 5, 0.85)' : 'rgba(255, 255, 255, 0.85)')
+      : 'rgba(5, 5, 5, 0)',
+    backdropFilter: isScrolled.value ? 'blur(25px) saturate(180%)' : 'blur(0px)',
+    borderBottomColor: isScrolled.value ? 'rgba(255, 255, 255, 0.1)' : 'rgba(255, 255, 255, 0)',
+    height: isScrolled.value ? '85px' : '110px',
+    duration: 0.4,
+    ease: 'power2.inOut'
+  })
 }
 
 onMounted(() => {
-  // Theme initialization
-  const savedTheme = localStorage.getItem('theme')
-  isDarkMode.value = savedTheme ? savedTheme === 'dark' : true
-  updateTheme()
+  // Theme initialization (client-side only to prevent hydration mismatch)
+  if (process.client) {
+    const savedTheme = localStorage.getItem('theme')
+    isDarkMode.value = savedTheme ? savedTheme === 'dark' : true
+    updateTheme()
+  }
 
   // Simulate loading for Skeleton
   setTimeout(() => {
@@ -107,38 +108,42 @@ onMounted(() => {
     initAnimations()
   }, 800)
 
-  window.addEventListener('scroll', handleScroll)
-  
-  // Custom Cursor Follower
-  if (window.innerWidth > 1024) {
-    const cursor = document.querySelector('.custom-cursor')
-    window.addEventListener('mousemove', (e) => {
-      gsap.to(cursor, { 
-        x: e.clientX, y: e.clientY, 
-        duration: 0.15, ease: 'power2.out',
-        scale: e.target.closest('a, button') ? 1.5 : 1,
-        opacity: e.target.closest('a, button') ? 0.8 : 0.5
+  if (process.client) {
+    window.addEventListener('scroll', handleScroll)
+
+    // Custom Cursor Follower
+    if (window.innerWidth > 1024) {
+      const cursor = document.querySelector('.custom-cursor')
+      window.addEventListener('mousemove', (e) => {
+        gsap.to(cursor, {
+          x: e.clientX, y: e.clientY,
+          duration: 0.15, ease: 'power2.out',
+          scale: e.target.closest('a, button') ? 1.5 : 1,
+          opacity: e.target.closest('a, button') ? 0.8 : 0.5
+        })
       })
-    })
+    }
   }
 })
 
 onUnmounted(() => {
-  window.removeEventListener('scroll', handleScroll)
+  if (process.client) {
+    window.removeEventListener('scroll', handleScroll)
+  }
 })
 
 const toggleMobileMenu = () => {
   mobileMenuOpen.value = !mobileMenuOpen.value
   if (mobileMenuOpen.value) {
-    document.body.style.overflow = 'hidden'
+    if (process.client) document.body.style.overflow = 'hidden'
     gsap.from('.mobile-drawer-link', { x: 50, opacity: 0, stagger: 0.1, delay: 0.3, ease: 'back.out(1.7)' })
   } else {
-    document.body.style.overflow = ''
+    if (process.client) document.body.style.overflow = ''
   }
 }
 
 watch(mobileMenuOpen, (val) => {
-  if (!val) {
+  if (!val && process.client) {
     document.body.style.overflow = ''
   }
 })

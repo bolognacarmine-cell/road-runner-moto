@@ -1,15 +1,14 @@
-import { ref, computed } from 'vue'
-
-// Stato globale per la ricerca dei veicoli
-const globalSearchQuery = ref('')
+import { useState } from '#app'
 
 export const useSearch = () => {
+  const searchQuery = useState('globalSearchQuery', () => '')
+
   const setSearchQuery = (query: string) => {
-    globalSearchQuery.value = query
+    searchQuery.value = query
   }
 
   return {
-    searchQuery: computed(() => globalSearchQuery.value),
+    searchQuery,
     setSearchQuery
   }
 }

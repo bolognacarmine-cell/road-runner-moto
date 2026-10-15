@@ -1,8 +1,8 @@
-import { ref } from 'vue'
-
-const activeFilter = ref('tutti')
+import { useState } from '#app'
 
 export const useFilter = () => {
+  const activeFilter = useState('globalActiveFilter', () => 'tutti')
+
   const setFilter = (filter: string) => {
     activeFilter.value = filter
   }

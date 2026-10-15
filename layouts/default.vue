@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, onUnmounted, nextTick } from 'vue'
+import { ref, computed, onMounted, onUnmounted, nextTick } from 'vue'
 import { gsap } from 'gsap'
 import { useSearch } from '~/composables/useSearch'
 import { useFilter } from '~/composables/useFilter'
@@ -30,37 +30,41 @@ const toggleMenu = () => {
 }
 
 const handleScroll = () => {
-  isScrolled.value = window.scrollY > 50
+  if (process.client) {
+    isScrolled.value = window.scrollY > 50
+  }
 }
 
 onMounted(async () => {
-  window.addEventListener('scroll', handleScroll)
   await settings.fetchSettings()
   await nextTick()
 
-  // Load Silktide script only on client side to prevent hydration mismatch
-  const loadSilktideScript = () => {
-    return new Promise((resolve, reject) => {
+  if (process.client) {
+    window.addEventListener('scroll', handleScroll)
+
+    // Load Silktide script only on client side to prevent hydration mismatch
+    const loadSilktideScript = () => {
+      return new Promise((resolve, reject) => {
+        if (window.silktideCookieBannerManager) {
+          resolve()
+          return
+        }
+
+        const script = document.createElement('script')
+        script.src = '/silktide-consent-manager.js'
+        script.defer = true
+        script.onload = resolve
+        script.onerror = reject
+        document.head.appendChild(script)
+      })
+    }
+
+    await loadSilktideScript()
+
+    // Inizializzazione Silktide
+    const initSilktide = () => {
       if (window.silktideCookieBannerManager) {
-        resolve()
-        return
-      }
-
-      const script = document.createElement('script')
-      script.src = '/silktide-consent-manager.js'
-      script.defer = true
-      script.onload = resolve
-      script.onerror = reject
-      document.head.appendChild(script)
-    })
-  }
-
-  await loadSilktideScript()
-
-  // Inizializzazione Silktide
-  const initSilktide = () => {
-    if (window.silktideCookieBannerManager) {
-      window.silktideCookieBannerManager.init({
+        window.silktideCookieBannerManager.init({
         "background": {
           "showBackground": true
         },
@@ -245,7 +249,7 @@ onMounted(async () => {
     // Animazione degli elementi interni (senza far muovere l'intero header)
     const navElements = document.querySelectorAll('.brand, .main-nav a, .nav-dropdown, .btn-primary-custom, .mobile-toggle')
     if (navElements.length > 0) {
-      gsap.fromTo(navElements, 
+      gsap.fromTo(navElements,
         { y: -30, opacity: 0 },
         {
           y: 0,
@@ -259,10 +263,13 @@ onMounted(async () => {
       )
     }
   })
+  }
 })
 
 onUnmounted(() => {
-  window.removeEventListener('scroll', handleScroll)
+  if (process.client) {
+    window.removeEventListener('scroll', handleScroll)
+  }
   if (ctx) ctx.revert()
   if (gdprCleanup) gdprCleanup()
 })
@@ -271,101 +278,103 @@ onUnmounted(() => {
 <template>
   <div class="page-shell">
     <!-- Header Standard Minimale -->
-    <header v-if="!isExcludedPage" class="minimal-header" :class="{ 'header-scrolled': isScrolled, 'menu-open': mobileMenuOpen }">
-      <div class="container header-content">
-        <NuxtLink to="/" class="minimal-logo">
-          <div class="logo-box">
-            <img src="/logo-road-runner.jpg" alt="Logo Road Runner Moto - Concessionaria Capodrise" />
-          </div>
-          <div class="brand-info">
-            <span class="brand-title">ROAD RUNNER</span>
-            <div class="brand-contacts-header">
-              <a href="tel:0823516087" class="header-phone-link">📞 0823 516087</a>
-              <a href="tel:+393391581997" class="header-phone-link mobile-only-header">📱 339 1581997</a>
-              <span class="brand-subtitle">Concessionaria Moto Nuove & Usate</span>
+    <ClientOnly>
+      <header v-if="!isExcludedPage" class="minimal-header" :class="{ 'header-scrolled': isScrolled, 'menu-open': mobileMenuOpen }">
+        <div class="container header-content">
+          <NuxtLink to="/" class="minimal-logo">
+            <div class="logo-box">
+              <img src="/logo-road-runner.jpg" alt="Logo Road Runner Moto - Concessionaria Capodrise" />
             </div>
-          </div>
-        </NuxtLink>
-        <nav class="minimal-nav">
-          <NuxtLink to="/#chi-siamo">Chi Siamo</NuxtLink>
-          
-          <div class="nav-dropdown">
-            <span class="dropdown-trigger">Moto <span class="arrow">▼</span></span>
-            <div class="dropdown-content">
-              <NuxtLink to="/#moto" @click="selectFilter('nuovo')">Nuovo</NuxtLink>
-              <NuxtLink to="/#moto" @click="selectFilter('usato')">Usato</NuxtLink>
-              <NuxtLink to="/#moto" @click="selectFilter('promozioni')">Promozioni</NuxtLink>
+            <div class="brand-info">
+              <span class="brand-title">ROAD RUNNER</span>
+              <div class="brand-contacts-header">
+                <a href="tel:0823516087" class="header-phone-link">📞 0823 516087</a>
+                <a href="tel:+393391581997" class="header-phone-link mobile-only-header">📱 339 1581997</a>
+                <span class="brand-subtitle">Concessionaria Moto Nuove & Usate</span>
+              </div>
             </div>
-          </div>
+          </NuxtLink>
+          <nav class="minimal-nav">
+            <NuxtLink to="/#chi-siamo">Chi Siamo</NuxtLink>
 
-          <NuxtLink to="/#sicurezza">Sicurezza</NuxtLink>
-
-          <div class="nav-dropdown">
-            <span class="dropdown-trigger">Lifestyle <span class="arrow">▼</span></span>
-            <div class="dropdown-content">
-              <NuxtLink to="/#caschi">Accessori</NuxtLink>
-              <NuxtLink to="/#lifestyle">Mondo Biker</NuxtLink>
-            </div>
-          </div>
-
-          <div class="nav-dropdown">
-            <span class="dropdown-trigger">Servizi <span class="arrow">▼</span></span>
-            <div class="dropdown-content">
-              <NuxtLink to="/#permute">Permute</NuxtLink>
-              <NuxtLink to="/#assistenza">Assistenza</NuxtLink>
-            </div>
-          </div>
-
-          <NuxtLink to="/blog">Blog</NuxtLink>
-          <NuxtLink to="/reviews">Recensioni</NuxtLink>
-          <NuxtLink to="/#contatti">Contatti</NuxtLink>
-          <NuxtLink to="/portale/login" class="portal-link-minimal">Area Clienti</NuxtLink>
-        </nav>
-
-        <!-- Mobile Toggle -->
-        <button class="mobile-toggle" @click="toggleMenu" aria-label="Menu">
-          <div class="hamburger" :class="{ active: mobileMenuOpen }">
-            <span></span>
-            <span></span>
-            <span></span>
-          </div>
-        </button>
-      </div>
-
-      <!-- Mobile Drawer -->
-      <Transition name="drawer">
-        <div v-if="mobileMenuOpen" class="mobile-drawer">
-          <nav class="mobile-nav">
-            <NuxtLink to="/#chi-siamo" @click="toggleMenu">Chi Siamo</NuxtLink>
-            
-            <div class="mobile-group">
-              <span class="group-title">Moto</span>
-              <NuxtLink to="/#moto" @click="selectFilter('nuovo'); toggleMenu()">Nuovo</NuxtLink>
-              <NuxtLink to="/#moto" @click="selectFilter('usato'); toggleMenu()">Usato</NuxtLink>
-              <NuxtLink to="/#moto" @click="selectFilter('promozioni'); toggleMenu()">Promozioni</NuxtLink>
+            <div class="nav-dropdown">
+              <span class="dropdown-trigger">Moto <span class="arrow">▼</span></span>
+              <div class="dropdown-content">
+                <NuxtLink to="/#moto" @click="selectFilter('nuovo')">Nuovo</NuxtLink>
+                <NuxtLink to="/#moto" @click="selectFilter('usato')">Usato</NuxtLink>
+                <NuxtLink to="/#moto" @click="selectFilter('promozioni')">Promozioni</NuxtLink>
+              </div>
             </div>
 
-            <NuxtLink to="/#sicurezza" @click="toggleMenu">Sicurezza</NuxtLink>
+            <NuxtLink to="/#sicurezza">Sicurezza</NuxtLink>
 
-            <div class="mobile-group">
-              <span class="group-title">Lifestyle</span>
-              <NuxtLink to="/#caschi" @click="toggleMenu">Accessori</NuxtLink>
-              <NuxtLink to="/#lifestyle" @click="toggleMenu">Mondo Biker</NuxtLink>
+            <div class="nav-dropdown">
+              <span class="dropdown-trigger">Lifestyle <span class="arrow">▼</span></span>
+              <div class="dropdown-content">
+                <NuxtLink to="/#caschi">Accessori</NuxtLink>
+                <NuxtLink to="/#lifestyle">Mondo Biker</NuxtLink>
+              </div>
             </div>
 
-            <div class="mobile-group">
-              <span class="group-title">Servizi</span>
-              <NuxtLink to="/#permute" @click="toggleMenu">Permute</NuxtLink>
-              <NuxtLink to="/#assistenza" @click="toggleMenu">Assistenza</NuxtLink>
+            <div class="nav-dropdown">
+              <span class="dropdown-trigger">Servizi <span class="arrow">▼</span></span>
+              <div class="dropdown-content">
+                <NuxtLink to="/#permute">Permute</NuxtLink>
+                <NuxtLink to="/#assistenza">Assistenza</NuxtLink>
+              </div>
             </div>
 
-            <NuxtLink to="/blog" @click="toggleMenu">Blog</NuxtLink>
-            <NuxtLink to="/#contatti" @click="toggleMenu">Contatti</NuxtLink>
-            <NuxtLink to="/portale/login" class="portal-link-mobile" @click="toggleMenu">Area Clienti</NuxtLink>
+            <NuxtLink to="/blog">Blog</NuxtLink>
+            <NuxtLink to="/reviews">Recensioni</NuxtLink>
+            <NuxtLink to="/#contatti">Contatti</NuxtLink>
+            <NuxtLink to="/portale/login" class="portal-link-minimal">Area Clienti</NuxtLink>
           </nav>
+
+          <!-- Mobile Toggle -->
+          <button class="mobile-toggle" @click="toggleMenu" aria-label="Menu">
+            <div class="hamburger" :class="{ active: mobileMenuOpen }">
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+          </button>
         </div>
-      </Transition>
-    </header>
+
+        <!-- Mobile Drawer -->
+        <Transition name="drawer">
+          <div v-if="mobileMenuOpen" class="mobile-drawer">
+            <nav class="mobile-nav">
+              <NuxtLink to="/#chi-siamo" @click="toggleMenu">Chi Siamo</NuxtLink>
+
+              <div class="mobile-group">
+                <span class="group-title">Moto</span>
+                <NuxtLink to="/#moto" @click="selectFilter('nuovo'); toggleMenu()">Nuovo</NuxtLink>
+                <NuxtLink to="/#moto" @click="selectFilter('usato'); toggleMenu()">Usato</NuxtLink>
+                <NuxtLink to="/#moto" @click="selectFilter('promozioni'); toggleMenu()">Promozioni</NuxtLink>
+              </div>
+
+              <NuxtLink to="/#sicurezza" @click="toggleMenu">Sicurezza</NuxtLink>
+
+              <div class="mobile-group">
+                <span class="group-title">Lifestyle</span>
+                <NuxtLink to="/#caschi" @click="toggleMenu">Accessori</NuxtLink>
+                <NuxtLink to="/#lifestyle" @click="toggleMenu">Mondo Biker</NuxtLink>
+              </div>
+
+              <div class="mobile-group">
+                <span class="group-title">Servizi</span>
+                <NuxtLink to="/#permute" @click="toggleMenu">Permute</NuxtLink>
+                <NuxtLink to="/#assistenza" @click="toggleMenu">Assistenza</NuxtLink>
+              </div>
+
+              <NuxtLink to="/blog" @click="toggleMenu">Blog</NuxtLink>
+              <NuxtLink to="/#contatti" @click="toggleMenu">Contatti</NuxtLink>
+              <NuxtLink to="/portale/login" class="portal-link-mobile" @click="toggleMenu">Area Clienti</NuxtLink>
+            </nav>
+          </div>
+        </Transition>
+      </header>
+    </ClientOnly>
 
     <!-- Main content -->
     <main class="main-content" :class="{ 'admin-main': isExcludedPage }">
