@@ -27,6 +27,6 @@ services:
       - key: CLOUDINARY_API_SECRET
         sync: false
       - key: NUXT_PUBLIC_SITE_URL
-        value: https://road-runner-moto.onrender.com
+        value: https://www.road-runner.it
       - key: NUXT_PUBLIC_API_BASE
         value: https://road-runner-moto.onrender.com

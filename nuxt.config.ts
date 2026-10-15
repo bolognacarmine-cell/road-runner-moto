@@ -1,6 +1,6 @@
 export default defineNuxtConfig({
   site: {
-    url: 'https://road-runner.it'
+    url: 'https://www.road-runner.it'
   },
   // ✅ Compatibilità Nuxt
   compatibilityDate: '2026-03-09',
@@ -45,7 +45,7 @@ export default defineNuxtConfig({
     cloudinaryApiKey: process.env.CLOUDINARY_API_KEY,
     cloudinaryApiSecret: process.env.CLOUDINARY_API_SECRET,
     public: {
-      siteUrl: process.env.NUXT_PUBLIC_SITE_URL || 'https://road-runner.it',
+      siteUrl: process.env.NUXT_PUBLIC_SITE_URL || 'https://www.road-runner.it',
       apiBase: process.env.NUXT_PUBLIC_API_BASE || 'https://api.road-runner.it'
     }
   },
@@ -125,7 +125,7 @@ export default defineNuxtConfig({
 
   // ✅ Sitemap per SEO
   sitemap: {
-    siteUrl: 'https://road-runner.it',
+    siteUrl: 'https://www.road-runner.it',
     gzip: true,
     exclude: [
       '/admin/**',
