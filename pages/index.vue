@@ -158,8 +158,10 @@ const handleBrandSelect = (brandName) => {
   } else {
     selectedBrand.value = brandName
     // Scroll fluido alla sezione veicoli per mostrare il risultato
-    const el = document.getElementById('moto')
-    if (el) el.scrollIntoView({ behavior: 'smooth' })
+    if (process.client) {
+      const el = document.getElementById('moto')
+      if (el) el.scrollIntoView({ behavior: 'smooth' })
+    }
   }
 }
 
@@ -190,15 +192,12 @@ onMounted(() => {
       subtitle="Vendita plurimarche, finanziamenti su misura e assistenza specializzata"
     />
 
-    <!-- Striscia icone info -->
-    <IntroStrip />
-
     <!-- Featured Vehicles dinamico (Nuovo & Usato incorporati) -->
-    <FeaturedVehicles 
+    <FeaturedVehicles
       id="moto"
-      :vehicles="filteredVehicles" 
-      :loading="loading" 
-      :error="error" 
+      :vehicles="filteredVehicles"
+      :loading="loading"
+      :error="error"
     />
 
     <BrandsSection 

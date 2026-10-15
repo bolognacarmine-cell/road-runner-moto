@@ -1,15 +1,44 @@
-
 import { defineEventHandler, getRouterParam, createError } from 'h3'
 import { ObjectId } from 'mongodb'
+import { connectToDatabase } from '~/server/utils/mongodb'
+
+// Fallback locale quando il DB non è configurato (solo sviluppo)
+const mockMoto = {
+  _id: '1',
+  marca: 'Honda',
+  modello: 'PCX 160',
+  categoria: 'Scooter',
+  nuovaUsata: 'nuova',
+  stato: 'nuovo',
+  annoImmatricolazione: 2024,
+  anno: 2024,
+  cilindrata: 160,
+  chilometri: 0,
+  prezzo: 4290,
+  isVisible: true,
+  slug: 'honda-pcx-160',
+  descrizione: 'Mock moto per sviluppo locale.',
+  immagini: [
+    '/brands/honda.jpg'
+  ],
+  createdAt: '2024-01-15T10:00:00.000Z'
+}
 
 export default defineEventHandler(async (event) => {
   const id = getRouterParam(event, 'id')
-  
+
   if (!id) {
     throw createError({
       statusCode: 400,
       statusMessage: 'ID mancante'
     })
+  }
+
+  const config = useRuntimeConfig()
+  const uri = (config as any).mongodbUri as string
+  if (!uri) {
+    if (id === '1') return { moto: mockMoto as any }
+    throw createError({ statusCode: 404, statusMessage: 'Moto non trovata' })
   }
 
   const { db } = await connectToDatabase()

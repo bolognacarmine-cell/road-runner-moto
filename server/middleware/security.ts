@@ -15,6 +15,7 @@ export default defineEventHandler((event) => {
         ...helmet.contentSecurityPolicy.getDefaultDirectives(),
         // 'unsafe-inline' is required for Nuxt 3 SSR hydration and client-side state management
         "script-src": ["'self'", "'unsafe-inline'", "'unsafe-eval'", "*.google-analytics.com", "*.googletagmanager.com", "https://cdn.silktide.com"],
+        "worker-src": ["'self'", "blob:"],
         "img-src": ["'self'", "data:", "https:", "*.google-analytics.com"],
         "connect-src": ["'self'", "https://*.google-analytics.com", "https://*.analytics.google.com", "https://*.googletagmanager.com"],
       },

@@ -14,6 +14,8 @@ gsap.registerPlugin(ScrollTrigger)
 let ctx
 
 onMounted(async () => {
+  if (!process.client) return
+
   await nextTick()
 
   const video = document.querySelector('.hero-video')

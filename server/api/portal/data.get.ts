@@ -1,8 +1,9 @@
 import { defineEventHandler, createError, getQuery } from 'h3'
-import { MongoClient } from 'mongodb'
+import { getPortalPayload } from '../../utils/auth'
 
 export default defineEventHandler(async (event) => {
-  const payloadTarga = (event.context as any)?.portalTarga as string | undefined
+  const payload = getPortalPayload(event)
+  const payloadTarga = payload?.targa as string | undefined
   const query = getQuery(event)
   const requested = (query.targa as string | undefined) || payloadTarga
 

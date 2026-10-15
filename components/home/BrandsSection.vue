@@ -20,6 +20,8 @@ const triggerLoad = () => {
 let observer = null
 
 onMounted(() => {
+  if (!process.client) return
+
   // Su desktop carichiamo subito per non cambiare nulla
   if (window.innerWidth > 700) {
     isLoaded.value = true

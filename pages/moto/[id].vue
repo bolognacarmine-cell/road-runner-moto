@@ -49,7 +49,7 @@ useHead({
   script: moto.value ? [
     {
       type: 'application/ld+json',
-      innerHTML: JSON.stringify({
+      children: JSON.stringify({
         '@context': 'https://schema.org',
         '@type': 'Vehicle',
         name: `${moto.value.marca} ${moto.value.modello}`,
@@ -116,7 +116,7 @@ function formatImages(images: any): string[] {
       </div>
 
       <!-- Loading State -->
-      <div v-if="loading" class="loading-box">
+      <div v-if="!moto && !error" class="loading-box">
         <div class="spinner"></div>
         <p>Caricamento dettagli...</p>
       </div>
@@ -128,7 +128,7 @@ function formatImages(images: any): string[] {
       </div>
 
       <!-- Content -->
-      <div v-else-if="moto" class="moto-detail-grid">
+      <div v-if="moto" class="moto-detail-grid">
         <!-- Colonna Sinistra: Carosello -->
         <div class="moto-visuals">
           <MotoCarousel :images="formatImages(moto.immagini)" :altText="`${moto.marca} ${moto.modello}`" height="500px" />

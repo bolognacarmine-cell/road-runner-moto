@@ -19,7 +19,7 @@ const mockMotos = [
     isVisible: true,
     slug: 'honda-pcx-160',
     immagini: [
-      'https://res.cloudinary.com/roadrunner/image/upload/v1/moto/honda-pcx-160-1.jpg'
+      '/brands/honda.jpg'
     ],
     createdAt: '2024-01-15T10:00:00.000Z'
   },
@@ -38,7 +38,7 @@ const mockMotos = [
     isVisible: true,
     slug: 'piaggio-beverly-300',
     immagini: [
-      'https://res.cloudinary.com/roadrunner/image/upload/v1/moto/piaggio-beverly-300-1.jpg'
+      '/brands/piaggio.jpg'
     ],
     createdAt: '2024-01-14T10:00:00.000Z'
   },
@@ -59,7 +59,7 @@ const mockMotos = [
     isVisible: true,
     slug: 'kymco-x-town-300i',
     immagini: [
-      'https://res.cloudinary.com/roadrunner/image/upload/v1/moto/kymco-x-town-300i-1.jpg'
+      '/brands/kymco.jpg'
     ],
     createdAt: '2024-01-13T10:00:00.000Z'
   },
@@ -78,7 +78,7 @@ const mockMotos = [
     isVisible: true,
     slug: 'honda-cbr-650r',
     immagini: [
-      'https://res.cloudinary.com/roadrunner/image/upload/v1/moto/honda-cbr-650r-1.jpg'
+      '/brands/honda.jpg'
     ],
     createdAt: '2024-01-12T10:00:00.000Z'
   },
@@ -97,7 +97,7 @@ const mockMotos = [
     isVisible: true,
     slug: 'moto-guzzi-v7-iii-stone',
     immagini: [
-      'https://res.cloudinary.com/roadrunner/image/upload/v1/moto/moto-guzzi-v7-iii-stone-1.jpg'
+      '/brands/motoguzzi.jpg'
     ],
     createdAt: '2024-01-11T10:00:00.000Z'
   },
@@ -116,7 +116,7 @@ const mockMotos = [
     isVisible: true,
     slug: 'piaggio-medley-150',
     immagini: [
-      'https://res.cloudinary.com/roadrunner/image/upload/v1/moto/piaggio-medley-150-1.jpg'
+      '/brands/piaggio.jpg'
     ],
     createdAt: '2024-01-10T10:00:00.000Z'
   }

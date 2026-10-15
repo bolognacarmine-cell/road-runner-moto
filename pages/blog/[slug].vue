@@ -48,7 +48,7 @@ useHead({
   script: [
     {
       type: 'application/ld+json',
-      innerHTML: JSON.stringify({
+      children: JSON.stringify({
         '@context': 'https://schema.org',
         '@type': 'Article',
         headline: post.value?.title || '',
@@ -108,9 +108,9 @@ const renderMarkdown = (text) => {
     .replace(/\n/gim, '<br />')
 }
 
-onMounted(() => {
-  fetchPost()
-})
+// onMounted(() => {
+//   fetchPost()
+// })
 
 const formatDate = (d) => new Date(d).toLocaleDateString('it-IT', {
   day: 'numeric',
@@ -121,17 +121,7 @@ const formatDate = (d) => new Date(d).toLocaleDateString('it-IT', {
 
 <template>
   <div class="blog-post-page">
-    <div v-if="loading" class="loading-state">
-      <div class="spinner"></div>
-      <p>Caricamento articolo...</p>
-    </div>
-
-    <div v-else-if="error" class="error-box container">
-      <p>{{ error }}</p>
-      <NuxtLink to="/blog" class="btn-primary-custom">Torna al Blog</NuxtLink>
-    </div>
-
-    <article v-else-if="post" class="post-content">
+    <article v-if="post" class="post-content">
       <!-- Hero Header -->
       <header class="post-hero">
         <div class="hero-bg" :style="{ backgroundImage: `url(${post.imageCover || '/logo-road-runner.jpg'})` }"></div>
@@ -188,6 +178,10 @@ const formatDate = (d) => new Date(d).toLocaleDateString('it-IT', {
         </aside>
       </div>
     </article>
+    <div v-else class="error-box container">
+      <p>Articolo non trovato o errore nel caricamento.</p>
+      <NuxtLink to="/blog" class="btn-primary-custom">Torna al Blog</NuxtLink>
+    </div>
   </div>
 </template>
 

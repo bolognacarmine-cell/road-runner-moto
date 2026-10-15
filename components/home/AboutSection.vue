@@ -49,7 +49,7 @@ onMounted(async () => {
 
     // Animazione Visual Layered (Effetto Parallasse)
     const visualElements = document.querySelectorAll('.visual-layer')
-    const isMobile = window.innerWidth <= 1024
+    const isMobile = process.client ? window.innerWidth <= 1024 : false
     
     visualElements.forEach((el, i) => {
       gsap.fromTo(el, 

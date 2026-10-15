@@ -45,9 +45,7 @@
       <Meta name="twitter:description" content="Le esperienze dei nostri clienti a Capodrise." />
       <Meta name="twitter:image" content="https://road-runner.it/logo-road-runner.jpg" />
       <Link rel="canonical" href="https://road-runner.it/reviews" />
-      <Script type="application/ld+json">
-        {{ JSON.stringify(schemaMarkup) }}
-      </Script>
+      <!-- JSON-LD gestito via useHead per evitare hydration mismatch -->
     </Head>
   </div>
 </template>
@@ -94,6 +92,16 @@ const schemaMarkup = {
     "reviewBody": r.text
   }))
 }
+
+// Inject structured data via useHead to avoid hydration mismatch
+useHead({
+  script: [
+    {
+      type: 'application/ld+json',
+      children: JSON.stringify(schemaMarkup)
+    }
+  ]
+})
 </script>
 
 <style scoped>

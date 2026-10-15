@@ -1,4 +1,7 @@
 export default defineNuxtConfig({
+  site: {
+    url: 'https://road-runner.it'
+  },
   // ✅ Compatibilità Nuxt
   compatibilityDate: '2026-03-09',
 
