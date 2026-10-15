@@ -160,6 +160,19 @@ useHead({
         </div>
       </div>
     </section>
+
+    <!-- FAQ Section (visibile per coerenza con schema FAQPage) -->
+    <section class="faq-section" aria-labelledby="faq-heading">
+      <h2 id="faq-heading">Domande frequenti</h2>
+      <details>
+        <summary>Dove trovare caschi LS2 economici a Caserta?</summary>
+        <p>Road Runner Moto a Capodrise (CE) è rivenditore ufficiale di caschi LS2, offrendo modelli come l'Airflow 2 a prezzi competitivi. Trovi anche le ultime collezioni Momo Design e Dieffe in pronta consegna.</p>
+      </details>
+      <details>
+        <summary>Quali marche di caschi moto sono disponibili in negozio?</summary>
+        <p>Presso il nostro showroom a Capodrise troverai un'ampia selezione di caschi delle migliori marche, tra cui la linea urbana e moderna di Momo Design, la sicurezza tecnologica di LS2 e l'ottimo rapporto qualità-prezzo di Dieffe.</p>
+      </details>
+    </section>
   </div>
 </template>
 

@@ -1,40 +1,77 @@
-<script setup>
-import { ref, onMounted } from 'vue'
+<script setup lang="ts">
+import { ref } from 'vue'
 import { useRoute } from 'vue-router'
 
 const route = useRoute()
-const post = ref(null)
-const relatedMotos = ref([])
-const loading = ref(true)
 const error = ref(null)
 
-const fetchPost = async () => {
+// SSR data fetching — il contenuto è visibile ai crawler
+const { data: post, pending: loading } = await useAsyncData(`blog-${route.params.slug}`, async () => {
   try {
-    console.log('CHIAMATA API PER SLUG:', route.params.slug)
     const res = await $fetch(`/api/blog/${route.params.slug}`)
-    post.value = res.post
-    relatedMotos.value = res.relatedMotos
-
-    // SEO Dinamica
-    if (post.value) {
-      useHead({
-        title: `${post.value.title} | Road Runner Moto Blog`,
-        meta: [
-          { name: 'description', content: post.value.excerpt || `Leggi l'articolo ${post.value.title} sul blog di Road Runner Moto.` },
-          { property: 'og:title', content: `${post.value.title} | Road Runner Moto Blog` },
-          { property: 'og:description', content: post.value.excerpt },
-          { property: 'og:image', content: post.value.imageCover || '/logo-road-runner.jpg' },
-          { property: 'og:type', content: 'article' }
-        ]
-      })
-    }
-  } catch (err) {
+    return res.post
+  } catch (err: any) {
     console.error('ERRORE FETCH POST:', err)
     error.value = err.data?.statusMessage || 'Articolo non trovato o errore nel caricamento.'
-  } finally {
-    loading.value = false
+    return null
   }
-}
+})
+
+const { data: relatedMotos } = await useAsyncData(`related-motos-${route.params.slug}`, async () => {
+  try {
+    const res = await $fetch(`/api/blog/${route.params.slug}`)
+    return res.relatedMotos || []
+  } catch {
+    return []
+  }
+})
+
+// SEO Dinamica
+useHead({
+  title: post.value ? `${post.value.title} | Road Runner Moto Blog` : 'Articolo | Road Runner Moto Blog',
+  meta: post.value ? [
+    { name: 'description', content: post.value.excerpt || `Leggi l'articolo ${post.value.title} sul blog di Road Runner Moto.` },
+    { property: 'og:title', content: `${post.value.title} | Road Runner Moto Blog` },
+    { property: 'og:description', content: post.value.excerpt },
+    { property: 'og:image', content: post.value.imageCover || '/logo-road-runner.jpg' },
+    { property: 'og:type', content: 'article' },
+    { property: 'og:url', content: `https://road-runner.it/blog/${route.params.slug}` },
+    { name: 'twitter:card', content: 'summary_large_image' },
+    { name: 'twitter:title', content: `${post.value.title} | Road Runner Moto Blog` },
+    { name: 'twitter:description', content: post.value.excerpt || '' },
+    { name: 'twitter:image', content: post.value.imageCover || '/logo-road-runner.jpg' }
+  ] : []
+})
+
+// Schema.org Article
+useHead({
+  script: [
+    {
+      type: 'application/ld+json',
+      innerHTML: JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'Article',
+        headline: post.value?.title || '',
+        image: post.value?.imageCover || '/logo-road-runner.jpg',
+        datePublished: post.value?.date,
+        dateModified: post.value?.updatedAt || post.value?.date,
+        author: {
+          '@type': 'Organization',
+          name: post.value?.autore || 'Road Runner Moto'
+        },
+        publisher: {
+          '@type': 'Organization',
+          name: 'Road Runner Moto',
+          logo: { '@type': 'ImageObject', url: 'https://road-runner.it/logo-road-runner.jpg' }
+        },
+        mainEntityOfPage: {
+          '@type': 'WebPage',
+          '@id': `https://road-runner.it/blog/${route.params.slug}`
+        }
+      })
+    }
+  ]
+})
 
 // Semplice parser Markdown (molto base)
 const renderMarkdown = (text) => {

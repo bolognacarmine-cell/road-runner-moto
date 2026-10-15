@@ -402,6 +402,7 @@ onUnmounted(() => {
         <div class="bottom-flex">
           <p>&copy; 2026 Road Runner Moto. Tutti i diritti riservati.</p>
           <div class="privacy-links">
+            <span class="legal-label">🔒 Legal:</span>
             <NuxtLink to="/privacy-policy">Privacy Policy</NuxtLink>
             <NuxtLink to="/cookie-policy">Cookie Policy</NuxtLink>
             <NuxtLink to="/legal-notes">Note Legali</NuxtLink>
@@ -441,7 +442,7 @@ onUnmounted(() => {
 
           <address class="gdpr-company">
             <strong>Road Runner Moto</strong>
-            <span>Via San Francesco 13 - Capodrise (CE)</span>
+            <span>Via Retella 65 - 81020 Capodrise (CE)</span>
             <span><a href="tel:0823516087">Tel: 0823 516087</a> / <a href="tel:+393391581997">339 158 1997</a></span>
             <span><a href="mailto:inforoadrunner@libero.it">inforoadrunner@libero.it</a></span>
           </address>
@@ -915,17 +916,28 @@ onUnmounted(() => {
 .privacy-links {
   display: flex;
   gap: 24px;
+  align-items: center;
+}
+
+.legal-label {
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 0.85rem;
+  font-weight: 700;
+  margin-right: 8px;
 }
 
 .privacy-links a {
-  color: rgba(255, 255, 255, 0.4);
+  color: rgba(255, 255, 255, 0.6);
   text-decoration: none;
   font-size: 0.85rem;
+  font-weight: 600;
   transition: color 0.3s;
+  border-bottom: 1px solid transparent;
 }
 
 .privacy-links a:hover {
-  color: #fff;
+  color: var(--primary-2);
+  border-bottom-color: var(--primary-2);
 }
 
 @media (max-width: 992px) {

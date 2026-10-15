@@ -1,7 +1,12 @@
 import { defineEventHandler, getQuery, createError } from 'h3'
 import { MongoClient, ObjectId } from 'mongodb'
+import { isAdmin } from '../../utils/auth'
 
 export default defineEventHandler(async (event) => {
+  if (!isAdmin(event)) {
+    throw createError({ statusCode: 401, statusMessage: 'Unauthorized' })
+  }
+
   const query = getQuery(event)
   const { id } = query
 

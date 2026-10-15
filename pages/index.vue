@@ -242,6 +242,23 @@ onMounted(() => {
     <!-- Contact Section -->
     <ContactSection id="contatti" />
 
+    <!-- FAQ Section (visibile per coerenza con schema FAQPage) -->
+    <section class="faq-section" aria-labelledby="faq-heading">
+      <h2 id="faq-heading">Domande frequenti</h2>
+      <details>
+        <summary>Qual è la miglior concessionaria moto a Caserta?</summary>
+        <p>Road Runner Moto è considerata una delle migliori concessionarie a Caserta e provincia (Capodrise), grazie a oltre 20 anni di esperienza, showroom plurimarche Honda, Piaggio, Kymco e un servizio di assistenza tecnica specializzata post-vendita.</p>
+      </details>
+      <details>
+        <summary>Dove trovare moto usate vicino Napoli e Caserta?</summary>
+        <p>A Capodrise (CE), Road Runner Moto offre un vasto assortimento di moto usate garantite e controllate. Situata in posizione strategica vicino a Caserta e facilmente raggiungibile da Napoli, propone permute flessibili e finanziamenti su misura.</p>
+      </details>
+      <details>
+        <summary>Road Runner Moto offre finanziamenti per l'acquisto?</summary>
+        <p>Sì, Road Runner Moto collabora con Compass (Gruppo Mediobanca) per offrire finanziamenti personalizzati e veloci su tutta la gamma di moto nuove e usate, permettendo acquisti leggeri con rate su misura.</p>
+      </details>
+    </section>
+
   </div>
 </template>
 

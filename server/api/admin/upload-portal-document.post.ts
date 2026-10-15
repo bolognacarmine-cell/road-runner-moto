@@ -1,8 +1,13 @@
 import { defineEventHandler, readBody, createError } from 'h3'
 import { MongoClient } from 'mongodb'
 import { v2 as cloudinary } from 'cloudinary'
+import { isAdmin } from '../../utils/auth'
 
 export default defineEventHandler(async (event) => {
+  if (!isAdmin(event)) {
+    throw createError({ statusCode: 401, statusMessage: 'Unauthorized' })
+  }
+
   const config = useRuntimeConfig(event)
   const body = await readBody(event)
 

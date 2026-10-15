@@ -1,67 +1,35 @@
-<script setup>
-import { ref, watch, onMounted } from 'vue'
+<script setup lang="ts">
+import { ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import BlogCard from '~/components/blog/BlogCard.vue'
 
 const route = useRoute()
-const posts = ref([])
-const total = ref(0)
-const page = ref(1)
-const totalPages = ref(1)
-const loading = ref(true)
-const selectedCategory = ref('Tutti')
-const searchQuery = ref('')
-
-// Funzione per inizializzare dai parametri URL
-const initFromQuery = () => {
-  if (route.query.category) {
-    selectedCategory.value = route.query.category
-  }
-  if (route.query.search) {
-    searchQuery.value = route.query.search
-  }
-}
+const page = ref(route.query.page ? Number(route.query.page) : 1)
+const selectedCategory = ref((route.query.category as string) || 'Tutti')
+const searchQuery = ref((route.query.search as string) || '')
 
 const categories = ['Tutti', 'Nuove Moto', 'Codice della Strada', 'Sicurezza e Manutenzione', 'Guide per Motociclisti', 'Scooter e Mobilità Urbana', 'Eventi']
 
-const fetchPosts = async () => {
-  loading.value = true
-  try {
-    const res = await $fetch('/api/blog', {
-      query: {
-        category: selectedCategory.value,
-        search: searchQuery.value,
-        page: page.value,
-        limit: 9
-      }
-    })
-    posts.value = res.posts
-    total.value = res.total
-    totalPages.value = res.totalPages
-  } catch (err) {
-    console.error('Errore caricamento blog:', err)
-  } finally {
-    loading.value = false
+// SSR data fetching con parametri reattivi
+const { data: postsData, refresh: refreshPosts } = await useAsyncData(
+  'blog-posts',
+  () => $fetch('/api/blog', {
+    query: {
+      category: selectedCategory.value,
+      search: searchQuery.value,
+      page: page.value,
+      limit: 9
+    }
+  }),
+  {
+    watch: [selectedCategory, page]
   }
-}
+)
 
-// Watchers per aggiornare la lista al cambio di filtri o pagina
-watch([selectedCategory, page], () => {
-  fetchPosts()
-})
-
-// Gestione dei parametri URL per navigazione "back" o link diretti
-watch(() => route.query, (newQuery) => {
-  if (newQuery.category && newQuery.category !== selectedCategory.value) {
-    selectedCategory.value = newQuery.category
-  } else if (!newQuery.category && selectedCategory.value !== 'Tutti') {
-    selectedCategory.value = 'Tutti'
-  }
-  
-  if (newQuery.search !== undefined && newQuery.search !== searchQuery.value) {
-    searchQuery.value = newQuery.search
-  }
-}, { deep: true })
+const posts = computed(() => postsData.value?.posts || [])
+const total = computed(() => postsData.value?.total || 0)
+const totalPages = computed(() => postsData.value?.totalPages || 1)
+const loading = ref(false)
 
 // Debounce per la ricerca
 let searchTimeout
@@ -69,13 +37,7 @@ watch(searchQuery, () => {
   clearTimeout(searchTimeout)
   searchTimeout = setTimeout(() => {
     page.value = 1
-    fetchPosts()
   }, 500)
-})
-
-onMounted(() => {
-  initFromQuery()
-  fetchPosts()
 })
 
 useHead({

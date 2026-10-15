@@ -2,7 +2,19 @@
 useHead({
   title: 'Cookie Policy | Road Runner Moto',
   meta: [
-    { name: 'description', content: 'Informativa sui cookie di Road Runner Moto. Gestione del consenso e tipologie di cookie utilizzati.' }
+    { name: 'description', content: 'Informativa sui cookie di Road Runner Moto. Gestione del consenso e tipologie di cookie utilizzati.' },
+    { property: 'og:type', content: 'website' },
+    { property: 'og:title', content: 'Cookie Policy | Road Runner Moto' },
+    { property: 'og:description', content: 'Informativa sui cookie di Road Runner Moto e gestione del consenso.' },
+    { property: 'og:image', content: 'https://road-runner.it/logo-road-runner.jpg' },
+    { property: 'og:url', content: 'https://road-runner.it/cookie-policy' },
+    { name: 'twitter:card', content: 'summary_large_image' },
+    { name: 'twitter:title', content: 'Cookie Policy | Road Runner Moto' },
+    { name: 'twitter:description', content: 'Informativa sui cookie di Road Runner Moto e gestione del consenso.' },
+    { name: 'twitter:image', content: 'https://road-runner.it/logo-road-runner.jpg' }
+  ],
+  link: [
+    { rel: 'canonical', href: 'https://road-runner.it/cookie-policy' }
   ]
 })
 
@@ -104,6 +116,10 @@ const openConsentManager = () => {
                   <p>Utilizzati per statistiche aggregate con IP Masking attivo.</p>
                 </div>
                 <div class="cookie-type-card">
+                  <strong>Cookie Pubblicitari</strong>
+                  <p>Utilizzati per mostrare contenuti personalizzati. Installati solo dopo consenso esplicito.</p>
+                </div>
+                <div class="cookie-type-card">
                   <strong>Terze Parti</strong>
                   <p>Installati solo dopo il tuo consenso esplicito per mappe o video.</p>
                 </div>
@@ -131,10 +147,10 @@ const openConsentManager = () => {
             <div class="section-body">
               <p>Puoi configurare il tuo browser per rifiutare i cookie seguendo le guide ufficiali:</p>
               <div class="browser-links">
-                <a href="#" class="browser-link">Google Chrome</a>
-                <a href="#" class="browser-link">Mozilla Firefox</a>
-                <a href="#" class="browser-link">Apple Safari</a>
-                <a href="#" class="browser-link">Microsoft Edge</a>
+                <a href="https://support.google.com/chrome/answer/95647" target="_blank" rel="noopener" class="browser-link">Google Chrome</a>
+                <a href="https://support.mozilla.org/it/kb/cookie-informazioni-siti-web" target="_blank" rel="noopener" class="browser-link">Mozilla Firefox</a>
+                <a href="https://support.apple.com/it-it/guide/safari/sfri11471/mac" target="_blank" rel="noopener" class="browser-link">Apple Safari</a>
+                <a href="https://support.microsoft.com/it-it/microsoft-edge/eliminare-i-cookie-in-microsoft-edge-63947406-00cf-c3b8-7b29-6a7990a37689" target="_blank" rel="noopener" class="browser-link">Microsoft Edge</a>
               </div>
             </div>
           </section>
@@ -147,7 +163,7 @@ const openConsentManager = () => {
               <div class="fiscal-card">
                 <div class="fiscal-item">
                   <span>Sede Legale</span>
-                  <strong>Via San Francesco 13, Capodrise (CE)</strong>
+                  <strong>Via Retella 65, Capodrise (CE)</strong>
                 </div>
                 <div class="fiscal-item">
                   <span>P.IVA</span>

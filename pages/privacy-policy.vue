@@ -2,7 +2,19 @@
 useHead({
   title: 'Privacy Policy | Road Runner Moto',
   meta: [
-    { name: 'description', content: 'Informativa sulla privacy di Road Runner Moto. Scopri come trattiamo i tuoi dati personali in conformità al GDPR.' }
+    { name: 'description', content: 'Informativa sulla privacy di Road Runner Moto. Scopri come trattiamo i tuoi dati personali in conformità al GDPR.' },
+    { property: 'og:type', content: 'website' },
+    { property: 'og:title', content: 'Privacy Policy | Road Runner Moto' },
+    { property: 'og:description', content: 'Informativa sulla privacy di Road Runner Moto in conformità al GDPR.' },
+    { property: 'og:image', content: 'https://road-runner.it/logo-road-runner.jpg' },
+    { property: 'og:url', content: 'https://road-runner.it/privacy-policy' },
+    { name: 'twitter:card', content: 'summary_large_image' },
+    { name: 'twitter:title', content: 'Privacy Policy | Road Runner Moto' },
+    { name: 'twitter:description', content: 'Informativa sulla privacy di Road Runner Moto in conformità al GDPR.' },
+    { name: 'twitter:image', content: 'https://road-runner.it/logo-road-runner.jpg' }
+  ],
+  link: [
+    { rel: 'canonical', href: 'https://road-runner.it/privacy-policy' }
   ]
 })
 
@@ -52,7 +64,7 @@ const openConsentManager = () => {
             <div class="section-number">01</div>
             <h2>Titolare del Trattamento</h2>
             <div class="section-body">
-              <p>Il Titolare del Trattamento dei dati è <strong>ROAD RUNNER DI TARTAGLIONE PASQUALE</strong>, con sede legale in VIA SAN FRANCESCO 13 - 81020 - CAPODRISE (CE). P.IVA: 04335610616. Email: <a href="mailto:inforoadrunner@libero.it">inforoadrunner@libero.it</a>.</p>
+              <p>Il Titolare del Trattamento dei dati è <strong>ROAD RUNNER DI TARTAGLIONE PASQUALE</strong>, con sede legale in VIA RETELLA 65 - 81020 - CAPODRISE (CE). P.IVA: 04335610616. Email: <a href="mailto:inforoadrunner@libero.it">inforoadrunner@libero.it</a>.</p>
             </div>
           </section>
 
@@ -101,7 +113,7 @@ const openConsentManager = () => {
             <div class="section-number">04</div>
             <h2>Trasferimenti extra-UE</h2>
             <div class="section-body">
-              <p>Per l'erogazione di alcuni servizi (es. Google Analytics, Google Maps, WhatsApp), i dati potrebbero essere trasferiti verso server situati negli Stati Uniti.</p>
+              <p>Per l'erogazione di alcuni servizi (es. Google Analytics, Google Maps, WhatsApp, Cloudinary per l'hosting delle immagini), i dati potrebbero essere trasferiti verso server situati negli Stati Uniti.</p>
               <div class="info-box">
                 <p>Tali trasferimenti sono garantiti dall'adesione dei fornitori al <strong>Data Privacy Framework (DPF)</strong> o dalla sottoscrizione di <strong>Clausole Contrattuali Standard (SCC)</strong> approvate dalla Commissione Europea.</p>
               </div>

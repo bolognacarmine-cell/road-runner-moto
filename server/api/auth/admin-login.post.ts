@@ -1,7 +1,29 @@
-import { defineEventHandler, readBody, createError } from 'h3'
+import { defineEventHandler, readBody, createError, getRequestIP } from 'h3'
 import { safeEqual, signSession, setAdminCookie } from '../../utils/auth'
 
+// Rate limiting: max 5 tentativi per IP ogni 15 minuti
+const loginAttempts = new Map<string, { count: number; resetAt: number }>()
+const WINDOW_MS = 15 * 60 * 1000
+const MAX_ATTEMPTS = 5
+
+function isRateLimited(ip: string): boolean {
+  const now = Date.now()
+  const record = loginAttempts.get(ip)
+  if (!record || record.resetAt < now) {
+    loginAttempts.set(ip, { count: 1, resetAt: now + WINDOW_MS })
+    return false
+  }
+  record.count++
+  return record.count > MAX_ATTEMPTS
+}
+
 export default defineEventHandler(async (event) => {
+  const ip = getRequestIP(event, { xForwardedFor: true }) || 'unknown'
+
+  if (isRateLimited(ip)) {
+    throw createError({ statusCode: 429, statusMessage: 'Troppi tentativi. Riprova tra 15 minuti.' })
+  }
+
   const body = await readBody(event).catch(() => ({}))
   const username = body?.username
   const password = body?.password

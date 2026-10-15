@@ -1,27 +1,19 @@
 
-<script setup>
-import { ref, onMounted } from 'vue'
+<script setup lang="ts">
+import { ref } from 'vue'
 import FeaturedVehicles from '~/components/home/FeaturedVehicles.vue'
 
-const vehicles = ref([])
-const loading = ref(true)
-const error = ref(false)
-
-const fetchVehicles = async () => {
-  try {
-    const res = await $fetch('/api/motos')
-    vehicles.value = Array.isArray(res.motos) ? res.motos : []
-  } catch (e) {
-    console.error('Errore nel caricamento del catalogo:', e)
-    error.value = true
-  } finally {
-    loading.value = false
+// SSR data fetching — il catalogo è visibile ai crawler
+const { data: vehiclesData, pending: loading, error: fetchError } = await useAsyncData(
+  'motos-catalog',
+  () => $fetch('/api/motos'),
+  {
+    transform: (res: any) => Array.isArray(res.motos) ? res.motos : []
   }
-}
+)
 
-onMounted(() => {
-  fetchVehicles()
-})
+const vehicles = computed(() => vehiclesData.value || [])
+const error = computed(() => !!fetchError.value)
 
 useHead({
   title: 'Catalogo Veicoli | Road Runner Moto',
@@ -86,6 +78,19 @@ useHead({
     </div>
 
     <FeaturedVehicles v-else :vehicles="vehicles" />
+
+    <!-- FAQ Section (visibile per coerenza con schema FAQPage) -->
+    <section class="faq-section" aria-labelledby="faq-heading">
+      <h2 id="faq-heading">Domande frequenti</h2>
+      <details>
+        <summary>Dove posso comprare moto usate garantite a Caserta?</summary>
+        <p>Da Road Runner Moto a Capodrise (CE), trovi una vasta selezione di moto usate garantite di ogni marca (Honda, Piaggio, Kymco, etc.). Ogni veicolo è sottoposto a rigidi controlli tecnici prima della vendita.</p>
+      </details>
+      <details>
+        <summary>Posso permutare la mia vecchia moto per un usato?</summary>
+        <p>Certamente! Road Runner Moto accetta permute flessibili sia sull'acquisto di moto nuove che usate in stock. Contattaci per una valutazione rapida della tua moto attuale.</p>
+      </details>
+    </section>
   </div>
 </template>
 

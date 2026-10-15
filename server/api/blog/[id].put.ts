@@ -1,7 +1,12 @@
 import { defineEventHandler, readBody, createError, getRouterParam } from 'h3'
 import { MongoClient, ObjectId } from 'mongodb'
+import { isAdmin } from '../../utils/auth'
 
 export default defineEventHandler(async (event) => {
+  if (!isAdmin(event)) {
+    throw createError({ statusCode: 401, statusMessage: 'Unauthorized' })
+  }
+
   const id = getRouterParam(event, 'id')
   const body = await readBody(event)
 

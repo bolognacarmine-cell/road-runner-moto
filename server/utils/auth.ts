@@ -6,7 +6,7 @@ const COOKIE_PORTAL = 'rr_portal'
 
 function secret() {
   const config = useRuntimeConfig()
-  return process.env.ADMIN_SESSION_SECRET || (config.adminSessionSecret as string) || 'dev-only-insecure-secret'
+  return process.env.ADMIN_SESSION_SECRET || (config.adminSessionSecret as string) || ''
 }
 
 function b64url(input: Buffer | string) {

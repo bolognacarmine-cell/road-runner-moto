@@ -1,7 +1,12 @@
 import { defineEventHandler, readBody, createError } from 'h3'
 import { MongoClient } from 'mongodb'
+import { isAdmin } from '../../utils/auth'
 
 export default defineEventHandler(async (event) => {
+  if (!isAdmin(event)) {
+    throw createError({ statusCode: 401, statusMessage: 'Unauthorized' })
+  }
+
   const body = await readBody(event)
   const { targa, data, km, descrizione, partiSostituite, costo } = body
 

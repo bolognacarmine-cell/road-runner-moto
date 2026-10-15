@@ -1,8 +1,13 @@
 
-import { defineEventHandler } from 'h3'
+import { defineEventHandler, createError } from 'h3'
 import { MongoClient, ObjectId } from 'mongodb'
+import { isAdmin } from '../../utils/auth'
 
 export default defineEventHandler(async (event) => {
+  if (!isAdmin(event)) {
+    throw createError({ statusCode: 401, statusMessage: 'Unauthorized' })
+  }
+
   const id = event.context.params?.id
 
   if (!id) throw createError({ statusCode: 400, statusMessage: 'ID casco non fornito' })

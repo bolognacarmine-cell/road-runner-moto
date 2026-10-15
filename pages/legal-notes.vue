@@ -65,7 +65,19 @@
 useHead({
   title: 'Note Legali',
   meta: [
-    { name: 'description', content: 'Informazioni sulla proprietà intellettuale, marchi e termini d\'uso del sito Road Runner Moto.' }
+    { name: 'description', content: 'Informazioni sulla proprietà intellettuale, marchi e termini d\'uso del sito Road Runner Moto.' },
+    { property: 'og:type', content: 'website' },
+    { property: 'og:title', content: 'Note Legali | Road Runner Moto' },
+    { property: 'og:description', content: 'Informazioni sulla proprietà intellettuale e termini d\'uso del sito.' },
+    { property: 'og:image', content: 'https://road-runner.it/logo-road-runner.jpg' },
+    { property: 'og:url', content: 'https://road-runner.it/legal-notes' },
+    { name: 'twitter:card', content: 'summary_large_image' },
+    { name: 'twitter:title', content: 'Note Legali | Road Runner Moto' },
+    { name: 'twitter:description', content: 'Informazioni sulla proprietà intellettuale e termini d\'uso del sito.' },
+    { name: 'twitter:image', content: 'https://road-runner.it/logo-road-runner.jpg' }
+  ],
+  link: [
+    { rel: 'canonical', href: 'https://road-runner.it/legal-notes' }
   ]
 })
 </script>

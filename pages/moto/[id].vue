@@ -1,59 +1,76 @@
 
-<script setup>
-import { ref, onMounted } from 'vue'
+<script setup lang="ts">
+import { ref } from 'vue'
 import { useRoute } from 'vue-router'
 import MotoCarousel from '~/components/moto/MotoCarousel.vue'
 
 const route = useRoute()
-const moto = ref(null)
-const relatedMotos = ref([]) // In caso servissero altre moto correlate
-const relatedPosts = ref([])
-const loading = ref(true)
 const error = ref(null)
 
-const fetchMoto = async () => {
+// SSR data fetching — il contenuto è visibile ai crawler
+const { data: moto, pending: loading } = await useAsyncData(`moto-${route.params.id}`, async () => {
   try {
     const res = await $fetch(`/api/motos/${route.params.id}`)
-    moto.value = res.moto
-    // Carica anche articoli blog correlati
-    fetchRelatedPosts()
-    
-    // SEO Dinamica
-    if (moto.value) {
-      useHead({
-        title: `${moto.value.marca} ${moto.value.modello} | Road Runner Moto`,
-        meta: [
-          { name: 'description', content: `Scopri ${moto.value.marca} ${moto.value.modello} presso Road Runner Moto. ${moto.value.chilometri} km, anno ${moto.value.anno}. Prezzo: ${formatPrice(moto.value.prezzo, 'Prezzo su richiesta')}.` },
-          { property: 'og:title', content: `${moto.value.marca} ${moto.value.modello} | Road Runner Moto` },
-          { property: 'og:description', content: `Dettagli e prezzo per ${moto.value.marca} ${moto.value.modello}. Vieni a trovarci a Capodrise.` },
-          { property: 'og:image', content: formatImages(moto.value.immagini)[0] }
-        ]
-      })
-    }
+    return res.moto
   } catch (err) {
     console.error('Errore nel caricamento del veicolo:', err)
     error.value = 'Impossibile caricare i dettagli di questo veicolo.'
-  } finally {
-    loading.value = false
+    return null
   }
-}
-
-const fetchRelatedPosts = async () => {
-  try {
-    const res = await $fetch(`/api/blog/related?motoId=${route.params.id}`)
-    relatedPosts.value = res.posts || []
-  } catch (e) {
-    console.error('Errore caricamento articoli correlati:', e)
-  }
-}
-
-onMounted(() => {
-  fetchMoto()
 })
 
-const formatImages = (images) => {
+const { data: relatedPosts } = await useAsyncData(`related-posts-${route.params.id}`, async () => {
+  try {
+    const res = await $fetch(`/api/blog/related?motoId=${route.params.id}`)
+    return res.posts || []
+  } catch (e) {
+    console.error('Errore caricamento articoli correlati:', e)
+    return []
+  }
+})
+
+// SEO Dinamica
+useHead({
+  title: moto.value ? `${moto.value.marca} ${moto.value.modello} | Road Runner Moto` : 'Moto | Road Runner Moto',
+  meta: moto.value ? [
+    { name: 'description', content: `Scopri ${moto.value.marca} ${moto.value.modello} presso Road Runner Moto. ${moto.value.chilometri} km, anno ${moto.value.anno}.` },
+    { property: 'og:title', content: `${moto.value.marca} ${moto.value.modello} | Road Runner Moto` },
+    { property: 'og:description', content: `Dettagli e prezzo per ${moto.value.marca} ${moto.value.modello}. Vieni a trovarci a Capodrise.` },
+    { property: 'og:image', content: formatImages(moto.value.immagini)[0] },
+    { property: 'og:url', content: `https://road-runner.it/moto/${route.params.id}` },
+    { name: 'twitter:card', content: 'summary_large_image' },
+    { name: 'twitter:title', content: `${moto.value.marca} ${moto.value.modello} | Road Runner Moto` },
+    { name: 'twitter:description', content: `Dettagli e prezzo per ${moto.value.marca} ${moto.value.modello}.` },
+    { name: 'twitter:image', content: formatImages(moto.value.immagini)[0] }
+  ] : [],
+  link: [
+    { rel: 'canonical', href: `https://road-runner.it/moto/${route.params.id}` }
+  ],
+  script: moto.value ? [
+    {
+      type: 'application/ld+json',
+      innerHTML: JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'Product',
+        name: `${moto.value.marca} ${moto.value.modello}`,
+        image: formatImages(moto.value.immagini)[0],
+        description: moto.value.descrizione?.substring(0, 160) || '',
+        brand: { '@type': 'Brand', name: moto.value.marca },
+        offers: {
+          '@type': 'Offer',
+          priceCurrency: 'EUR',
+          price: moto.value.prezzo || 0,
+          availability: moto.value.stato === 'disponibile' ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock',
+          seller: { '@type': 'AutoDealer', name: 'Road Runner Moto' }
+        }
+      })
+    }
+  ] : []
+})
+
+function formatImages(images: any): string[] {
   if (images && Array.isArray(images) && images.length > 0) {
-    return images.map(img => {
+    return images.map((img: any) => {
       const url = typeof img === 'string' ? img : (img?.url || '/logo-road-runner.jpg')
       return url.replace('/upload/', '/upload/f_auto,q_auto/')
     })

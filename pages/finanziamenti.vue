@@ -2,7 +2,19 @@
 useHead({
   title: 'Finanziamenti Moto | Road Runner Moto',
   meta: [
-    { name: 'description', content: 'Finanziamenti moto personalizzati a Capodrise (CE). Acquista la tua nuova Honda o Piaggio con rate agevolate da Road Runner Moto. Contattaci per un preventivo!' }
+    { name: 'description', content: 'Finanziamenti moto personalizzati a Capodrise (CE). Acquista la tua nuova Honda o Piaggio con rate agevolate da Road Runner Moto. Contattaci per un preventivo!' },
+    { property: 'og:type', content: 'website' },
+    { property: 'og:title', content: 'Finanziamenti Moto | Road Runner Moto' },
+    { property: 'og:description', content: 'Finanziamenti moto personalizzati a Capodrise con Compass. Rate agevolate per Honda, Piaggio e Kymco.' },
+    { property: 'og:image', content: 'https://road-runner.it/logo-road-runner.jpg' },
+    { property: 'og:url', content: 'https://road-runner.it/finanziamenti' },
+    { name: 'twitter:card', content: 'summary_large_image' },
+    { name: 'twitter:title', content: 'Finanziamenti Moto | Road Runner Moto' },
+    { name: 'twitter:description', content: 'Finanziamenti moto personalizzati a Capodrise con Compass.' },
+    { name: 'twitter:image', content: 'https://road-runner.it/logo-road-runner.jpg' }
+  ],
+  link: [
+    { rel: 'canonical', href: 'https://road-runner.it/finanziamenti' }
   ]
 })
 </script>

@@ -27,9 +27,7 @@ export default defineNuxtConfig({
     cloudinaryApiSecret: process.env.CLOUDINARY_API_SECRET,
     public: {
       siteUrl: process.env.NUXT_PUBLIC_SITE_URL || 'https://road-runner.it',
-      apiBase: process.env.NUXT_PUBLIC_API_BASE || 'https://api.road-runner.it',
-      adminUser: process.env.ADMIN_USER || 'roadrunner',
-      adminPassword: process.env.ADMIN_PASSWORD || 'runner2026'
+      apiBase: process.env.NUXT_PUBLIC_API_BASE || 'https://api.road-runner.it'
     }
   },
 
@@ -55,10 +53,6 @@ export default defineNuxtConfig({
       link: [
         { rel: 'canonical', href: 'https://road-runner.it' },
         { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
-        // Preconnect per Google Fonts
-        { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
-        { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: '' },
-        { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800;950&display=swap' },
         // Preload per LCP (Hero Background)
         { rel: 'preload', as: 'image', href: '/cta-bg.jpg', fetchpriority: 'high' }
       ]
@@ -100,10 +94,10 @@ export default defineNuxtConfig({
       '/portale/dashboard/**',
       '/portale/login'
     ],
+    autoLastmod: true,
     defaults: {
-      changefreq: 'daily',
-      priority: 0.7,
-      lastmod: new Date().toISOString()
+      changefreq: 'weekly',
+      priority: 0.5
     }
   },
 
