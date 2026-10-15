@@ -10,11 +10,27 @@ export default defineNuxtConfig({
 
   // ✅ Regole di routing e caching per produzione
   routeRules: {
+    // Caching aggressivo per asset statici
+    '/': { isr: true, maxAge: 3600 },
+    '/moto': { isr: true, maxAge: 1800 },
+    '/blog': { isr: true, maxAge: 1800 },
+    '/caschi': { isr: true, maxAge: 3600 },
+    '/finanziamenti': { isr: true, maxAge: 86400 },
+    '/reviews': { isr: true, maxAge: 86400 },
+    '/privacy-policy': { isr: true, maxAge: 604800 },
+    '/cookie-policy': { isr: true, maxAge: 604800 },
+    '/legal-notes': { isr: true, maxAge: 604800 },
     // Evita il caching aggressivo dei chunk Nuxt per prevenire errori "Failed to fetch dynamically imported module"
-    '/_nuxt/**': { 
-      headers: { 
-        'Cache-Control': 'public, max-age=0, must-revalidate' 
-      } 
+    '/_nuxt/**': {
+      headers: {
+        'Cache-Control': 'public, max-age=31536000, immutable'
+      }
+    },
+    // Immagini statiche con cache lunga
+    '/**/*.{jpg,jpeg,png,webp,avif,svg,ico}': {
+      headers: {
+        'Cache-Control': 'public, max-age=31536000, immutable'
+      }
     }
   },
 
@@ -48,7 +64,12 @@ export default defineNuxtConfig({
         { name: 'twitter:card', content: 'summary_large_image' },
         { name: 'twitter:title', content: 'Road Runner Moto | Moto e scooter a Capodrise' },
         { name: 'twitter:description', content: 'Concessionaria moto e scooter plurimarche con vendita, assistenza e finanziamenti personalizzati.' },
-        { name: 'twitter:image', content: 'https://road-runner.it/logo-road-runner.jpg' }
+        { name: 'twitter:image', content: 'https://road-runner.it/logo-road-runner.jpg' },
+        // Preconnect per risorse esterne
+        { rel: 'preconnect', href: 'https://res.cloudinary.com' },
+        { rel: 'preconnect', href: 'https://api.road-runner.it' },
+        // DNS prefetch per domini esterni
+        { rel: 'dns-prefetch', href: 'https://www.google-analytics.com' }
       ],
       link: [
         { rel: 'canonical', href: 'https://road-runner.it' },
@@ -56,12 +77,24 @@ export default defineNuxtConfig({
         // Preload per LCP (Hero Background)
         { rel: 'preload', as: 'image', href: '/cta-bg.jpg', fetchpriority: 'high' }
       ]
-    }
+    },
+    pageTransition: { name: 'page', mode: 'out-in' }
   },
 
   // ✅ Build performance e ottimizzazioni
   vite: {
-    build: { sourcemap: false },
+    build: {
+      sourcemap: false,
+      rollupOptions: {
+        output: {
+          manualChunks: {
+            'gsap': ['gsap'],
+            'vendor': ['vue', 'pinia']
+          }
+        }
+      },
+      chunkSizeWarningLimit: 1000
+    },
     optimizeDeps: { include: ['gsap'] }
   },
 
@@ -70,6 +103,8 @@ export default defineNuxtConfig({
     experimental: {
       bodySizeLimit: '20mb'
     },
+    // Compression per migliorare performance
+    compressPublicAssets: true,
     // Forza l'host e la porta per Render
     devProxy: {},
     hooks: {
@@ -105,6 +140,8 @@ export default defineNuxtConfig({
   image: {
     domains: ['api.road-runner.it'],
     format: ['webp', 'avif'],
+    quality: 80,
+    densities: [1, 2],
     providers: {
       cloudinary: {
         name: 'cloudinary',
@@ -112,5 +149,11 @@ export default defineNuxtConfig({
         baseURL: 'https://res.cloudinary.com/' + (process.env.CLOUDINARY_CLOUD_NAME || 'roadrunner') + '/image/upload/'
       }
     }
+  },
+
+  // ✅ Performance ottimizzazioni
+  experimental: {
+    payloadExtraction: true,
+    inlineSSRStyles: false
   }
 })
