@@ -20,6 +20,11 @@ services:
         value: roadrunner
       - key: ADMIN_PASSWORD
         value: runner2026
+      # Obbligatorio: segreto per firmare i cookie di sessione admin (rr_admin).
+      # Impostarlo come Secret nel dashboard Render, NON committarlo qui.
+      # Se manca, /api/auth/admin-login restituisce 500.
+      - key: ADMIN_SESSION_SECRET
+        sync: false
       - key: CLOUDINARY_CLOUD_NAME
         sync: false
       - key: CLOUDINARY_API_KEY

@@ -23,7 +23,7 @@
             />
           </div>
           <button type="submit" class="btn-primary-custom">Accedi</button>
-          <p v-if="loginError" class="error-msg">Credenziali errate</p>
+          <p v-if="loginError" class="error-msg">{{ loginError }}</p>
         </form>
       </div>
     </div>
@@ -947,7 +947,6 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
-import { useRuntimeConfig } from '#imports'
 import MotoCarousel from '~/components/moto/MotoCarousel.vue'
 import ThemeSwitcher from '~/components/admin/ThemeSwitcher.vue'
 import { useSiteSettings } from '~/stores/useSiteSettings'
@@ -960,27 +959,37 @@ definePageMeta({
 const settings = useSiteSettings()
 
 // --- Auth State ---
-const config = useRuntimeConfig()
+// Login reale verso /api/auth/admin-login: il server emette il cookie httpOnly "rr_admin"
+// firmato HMAC, che le API admin (/api/admin/*, /api/leads, POST/PUT/DELETE /api/motos, ecc.)
+// verificano via isAdmin(event). Niente più controllo client-side delle credenziali.
 const isAuthenticated = ref(false)
 const usernameInput = ref('')
 const passwordInput = ref('')
-const loginError = ref(false)
-const ADMIN_USER = config.public.adminUser || 'roadrunner'
-const ADMIN_PASSWORD = config.public.adminPassword || 'runner2026'
+const loginError = ref('')
 
-const handleLogin = () => {
-  if (usernameInput.value === ADMIN_USER && passwordInput.value === ADMIN_PASSWORD) {
+const handleLogin = async () => {
+  loginError.value = ''
+  try {
+    await $fetch('/api/auth/admin-login', {
+      method: 'POST',
+      body: { username: usernameInput.value, password: passwordInput.value }
+    })
     isAuthenticated.value = true
-    localStorage.setItem('rr_admin_auth', 'true')
+    passwordInput.value = ''
     fetchMotos()
-  } else {
-    loginError.value = true
+  } catch (err) {
+    // 401 credenziali errate, 429 rate limit, 500 secret/admin non configurati
+    loginError.value = err?.data?.statusMessage || 'Credenziali errate'
   }
 }
 
-const logout = () => {
+const logout = async () => {
+  try {
+    await $fetch('/api/auth/admin-logout', { method: 'POST' })
+  } catch {
+    // ignora: anche se il logout fallisce usciamo comunque dalla UI
+  }
   isAuthenticated.value = false
-  localStorage.removeItem('rr_admin_auth')
 }
 
 // --- Data State ---
@@ -1814,11 +1823,15 @@ const deleteMoto = async () => {
   }
 }
 
-onMounted(() => {
+onMounted(async () => {
   settings.fetchSettings()
-  if (localStorage.getItem('rr_admin_auth') === 'true') {
+  // Verifica la sessione admin reale (cookie rr_admin) invece del vecchio localStorage
+  try {
+    await $fetch('/api/auth/admin-session')
     isAuthenticated.value = true
     fetchMotos()
+  } catch {
+    isAuthenticated.value = false
   }
 })
 </script>
