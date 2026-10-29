@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { useRoute } from 'vue-router'
+import { getOptimizedCloudinaryUrl } from '~/utils/cloudinaryImage'
 
 const route = useRoute()
 const error = ref(null)
@@ -26,6 +27,8 @@ const { data: relatedMotos } = await useAsyncData(`related-motos-${route.params.
   }
 })
 
+const heroImage = computed(() => getOptimizedCloudinaryUrl(post.value?.imageCover || '/logo-road-runner.jpg'))
+
 // SEO Dinamica
 useHead({
   title: post.value ? `${post.value.title} | Road Runner Moto Blog` : 'Articolo | Road Runner Moto Blog',
@@ -33,13 +36,13 @@ useHead({
     { name: 'description', content: post.value.excerpt || `Leggi l'articolo ${post.value.title} sul blog di Road Runner Moto.` },
     { property: 'og:title', content: `${post.value.title} | Road Runner Moto Blog` },
     { property: 'og:description', content: post.value.excerpt },
-    { property: 'og:image', content: post.value.imageCover || '/logo-road-runner.jpg' },
+    { property: 'og:image', content: getOptimizedCloudinaryUrl(post.value.imageCover || '/logo-road-runner.jpg') },
     { property: 'og:type', content: 'article' },
     { property: 'og:url', content: `https://road-runner.it/blog/${route.params.slug}` },
     { name: 'twitter:card', content: 'summary_large_image' },
     { name: 'twitter:title', content: `${post.value.title} | Road Runner Moto Blog` },
     { name: 'twitter:description', content: post.value.excerpt || '' },
-    { name: 'twitter:image', content: post.value.imageCover || '/logo-road-runner.jpg' }
+    { name: 'twitter:image', content: getOptimizedCloudinaryUrl(post.value.imageCover || '/logo-road-runner.jpg') }
   ] : []
 })
 
@@ -53,7 +56,7 @@ useHead({
         '@type': 'Article',
         headline: post.value?.title || '',
         description: post.value?.excerpt || post.value?.title,
-        image: post.value?.imageCover || '/logo-road-runner.jpg',
+        image: getOptimizedCloudinaryUrl(post.value?.imageCover || '/logo-road-runner.jpg'),
         datePublished: post.value?.date,
         dateModified: post.value?.updatedAt || post.value?.date,
         author: {
@@ -102,7 +105,7 @@ const renderMarkdown = (text) => {
     .replace(/^# (.*$)/gim, '<h1>$1</h1>')
     .replace(/\*\*(.*)\*\*/gim, '<strong>$1</strong>')
     .replace(/\*(.*)\*/gim, '<em>$1</em>')
-    .replace(/!\[(.*?)\]\((.*?)\)/gim, "<img src='$2' alt='$1' class='blog-content-img' />")
+    .replace(/!\[(.*?)\]\((.*?)\)/gim, (match, alt, src) => `<img src='${getOptimizedCloudinaryUrl(src)}' alt='${alt}' class='blog-content-img' />`)
     .replace(/\[(.*?)\]\((.*?)\)/gim, "<a href='$2' target='_blank'>$1</a>")
     .replace(/^\- (.*$)/gim, '<li>$1</li>')
     .replace(/\n/gim, '<br />')
@@ -124,7 +127,7 @@ const formatDate = (d) => new Date(d).toLocaleDateString('it-IT', {
     <article v-if="post" class="post-content">
       <!-- Hero Header -->
       <header class="post-hero">
-        <div class="hero-bg" :style="{ backgroundImage: `url(${post.imageCover || '/logo-road-runner.jpg'})` }"></div>
+        <div class="hero-bg" :style="{ backgroundImage: `url(${heroImage})` }"></div>
         <div class="hero-overlay"></div>
         <div class="container hero-shell">
           <NuxtLink to="/blog" class="back-link">← Torna al Blog</NuxtLink>
@@ -134,7 +137,11 @@ const formatDate = (d) => new Date(d).toLocaleDateString('it-IT', {
           </div>
           <h1 class="post-title">{{ post.title }}</h1>
           <div class="post-author">
-            <img src="/logo-road-runner.jpg" alt="Author" />
+            <picture>
+              <source srcset="/logo-road-runner.webp" type="image/webp" />
+              <source srcset="/logo-road-runner.avif" type="image/avif" />
+              <img src="/logo-road-runner.jpg" alt="Author" />
+            </picture>
             <span>{{ post.autore || 'Road Runner Team' }}</span>
           </div>
         </div>
@@ -161,7 +168,7 @@ const formatDate = (d) => new Date(d).toLocaleDateString('it-IT', {
             <h3>Moto in evidenza</h3>
             <div class="related-motos">
               <NuxtLink v-for="moto in relatedMotos" :key="moto._id" :to="`/moto/${moto._id}`" class="mini-moto-card">
-                <img :src="moto.immagini?.[0] || '/logo-road-runner.jpg'" alt="Moto" />
+                <img :src="getOptimizedCloudinaryUrl(moto.immagini?.[0] || '/logo-road-runner.jpg')" alt="Moto" />
                 <div class="mini-moto-info">
                   <strong>{{ moto.marca }} {{ moto.modello }}</strong>
                   <span class="price">{{ moto.prezzo ? `€ ${moto.prezzo}` : 'Prezzo su richiesta' }}</span>

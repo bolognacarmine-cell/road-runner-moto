@@ -1,10 +1,17 @@
 <script setup>
-defineProps({
+import { computed } from 'vue'
+import { getOptimizedCloudinaryUrl, getOptimizedSrcSet } from '~/utils/cloudinaryImage'
+
+const props = defineProps({
   post: {
     type: Object,
     required: true
   }
 })
+
+const optimizedImageCover = computed(() => getOptimizedCloudinaryUrl(props.post?.imageCover || '/logo-road-runner.jpg'))
+const optimizedSrcSet = computed(() => getOptimizedSrcSet(props.post?.imageCover || '/logo-road-runner.jpg').join(', '))
+const optimizedImageSizes = computed(() => '(max-width: 1024px) 100vw, 33vw')
 
 const formatDate = (d) => new Date(d).toLocaleDateString('it-IT', {
   day: 'numeric',
@@ -22,7 +29,14 @@ const readingTime = (content) => {
 <template>
   <NuxtLink :to="`/blog/${post.slug}`" class="blog-card">
     <div class="card-image">
-      <img :src="post.imageCover || '/logo-road-runner.jpg'" :alt="post.title" loading="lazy" />
+      <img
+        :src="optimizedImageCover"
+        :srcset="optimizedSrcSet || undefined"
+        :sizes="optimizedImageSizes"
+        :alt="props.post.title"
+        loading="lazy"
+        decoding="async"
+      />
       <div class="category-badge">{{ post.category }}</div>
     </div>
     <div class="card-content">

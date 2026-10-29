@@ -1,6 +1,6 @@
 import { defineEventHandler, getRouterParam, readBody, createError } from 'h3'
 import { MongoClient, ObjectId } from 'mongodb'
-import { v2 as cloudinary } from 'cloudinary'
+import { uploadOptimizedImage } from '../../utils/cloudinaryUpload'
 import { isAdmin } from '../../utils/auth'
 
 export default defineEventHandler(async (event) => {
@@ -8,7 +8,6 @@ export default defineEventHandler(async (event) => {
     throw createError({ statusCode: 401, statusMessage: 'Unauthorized' })
   }
 
-  const config = useRuntimeConfig(event)
   const id = getRouterParam(event, 'id')
   const body = await readBody(event)
   
@@ -16,15 +15,6 @@ export default defineEventHandler(async (event) => {
     throw createError({
       statusCode: 400,
       statusMessage: 'ID mancante'
-    })
-  }
-
-  // 1. Configurazione Cloudinary
-  if (config.cloudinaryCloudName && config.cloudinaryApiKey && config.cloudinaryApiSecret) {
-    cloudinary.config({
-      cloud_name: config.cloudinaryCloudName,
-      api_key: config.cloudinaryApiKey,
-      api_secret: config.cloudinaryApiSecret
     })
   }
 
@@ -36,10 +26,12 @@ export default defineEventHandler(async (event) => {
     if (body.imagesBase64 && Array.isArray(body.imagesBase64)) {
       console.log(`Aggiornamento moto ${id}: upload di ${body.imagesBase64.length} nuove immagini...`)
       for (const base64 of body.imagesBase64) {
-        const uploadResponse = await cloudinary.uploader.upload(base64, {
-          folder: 'road-runner-motos'
+        const uploadResult = await uploadOptimizedImage(base64, {
+          folder: 'road-runner-motos',
+          maxWidth: 1600,
+          resourceType: 'auto'
         })
-        newImageUrls.push(uploadResponse.secure_url)
+        newImageUrls.push(uploadResult.secureUrl)
       }
     }
 

@@ -3,6 +3,7 @@
 import { ref } from 'vue'
 import { useRoute } from 'vue-router'
 import MotoCarousel from '~/components/moto/MotoCarousel.vue'
+import { getOptimizedCloudinaryUrl } from '~/utils/cloudinaryImage'
 
 const route = useRoute()
 const error = ref(null)
@@ -98,7 +99,7 @@ function formatImages(images: any): string[] {
   if (images && Array.isArray(images) && images.length > 0) {
     return images.map((img: any) => {
       const url = typeof img === 'string' ? img : (img?.url || '/logo-road-runner.jpg')
-      return url.replace('/upload/', '/upload/f_auto,q_auto/')
+      return getOptimizedCloudinaryUrl(url)
     })
   }
   return ['/logo-road-runner.jpg']

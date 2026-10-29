@@ -75,6 +75,8 @@ const brands = [
   { name: 'Moto Morini', image: '/brands/motomorini.jpg' },
   { name: 'QJ MOTOR', image: '/brands/qjmotor.jpg' }
 ]
+
+const getBrandImage = (image) => image.replace(/\.jpg$/, '.webp')
 </script>
 
 <template>
@@ -96,7 +98,7 @@ const brands = [
         >
           <div 
             class="brand-image" 
-            :style="isLoaded ? { backgroundImage: `url(${brand.image})` } : {}"
+            :style="isLoaded ? { backgroundImage: `url(${brand.image}), url(${getBrandImage(brand.image)})` } : {}"
           ></div>
           <div class="brand-overlay"></div>
           <span class="brand-name">{{ brand.name }}</span>

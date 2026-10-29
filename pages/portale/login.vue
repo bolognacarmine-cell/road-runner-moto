@@ -62,7 +62,11 @@ useHead({
     <div class="login-container">
       <div class="login-card">
         <div class="login-header">
-          <img src="/logo-road-runner.jpg" alt="Logo" class="portal-logo" />
+          <picture>
+            <source srcset="/logo-road-runner.webp" type="image/webp" />
+            <source srcset="/logo-road-runner.avif" type="image/avif" />
+            <img src="/logo-road-runner.jpg" alt="Logo" class="portal-logo" />
+          </picture>
           <h1>Portale Cliente</h1>
           <p>Inserisci i dati del tuo veicolo per accedere all'area riservata.</p>
         </div>

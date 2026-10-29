@@ -3,7 +3,11 @@
     <!-- Login Section -->
     <div v-if="!isAuthenticated" class="login-wall">
       <div class="login-card">
-        <img src="/logo-road-runner.jpg" alt="Logo" class="login-logo" />
+        <picture>
+          <source srcset="/logo-road-runner.webp" type="image/webp" />
+          <source srcset="/logo-road-runner.avif" type="image/avif" />
+          <img src="/logo-road-runner.jpg" alt="Logo" class="login-logo" />
+        </picture>
         <h2>Accesso Clienti</h2>
         <form @submit.prevent="handleLogin">
           <div class="form-group">
@@ -33,7 +37,11 @@
       <!-- Mobile Header (Visible only on < 768px) -->
       <header class="admin-mobile-header">
         <div class="header-inner">
-          <img src="/logo-road-runner.jpg" alt="Logo" class="sidebar-logo-mini" />
+          <picture>
+            <source srcset="/logo-road-runner.webp" type="image/webp" />
+            <source srcset="/logo-road-runner.avif" type="image/avif" />
+            <img src="/logo-road-runner.jpg" alt="Logo" class="sidebar-logo-mini" />
+          </picture>
           <span class="header-title">Admin Panel</span>
           <button @click="isSidebarOpen = !isSidebarOpen" class="hamburger-admin" :class="{ active: isSidebarOpen }">
             <span></span>
@@ -48,7 +56,11 @@
 
       <aside class="admin-sidebar" :class="{ 'sidebar-open': isSidebarOpen }">
         <div class="sidebar-header">
-          <img src="/logo-road-runner.jpg" alt="Logo" class="sidebar-logo" />
+          <picture>
+            <source srcset="/logo-road-runner.webp" type="image/webp" />
+            <source srcset="/logo-road-runner.avif" type="image/avif" />
+            <img src="/logo-road-runner.jpg" alt="Logo" class="sidebar-logo" />
+          </picture>
           <span>Road Runner Admin</span>
         </div>
         <nav class="sidebar-nav">

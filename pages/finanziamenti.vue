@@ -75,7 +75,7 @@ useHead({
         <div class="finance-visual">
           <div class="image-container">
             <img 
-              :src="'/compass.jpg'" 
+              :src="'/compass.webp'" 
               alt="Compass - Acquisti Leggeri" 
               class="promo-img"
               loading="lazy"

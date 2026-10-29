@@ -1,7 +1,7 @@
 
 import { defineEventHandler, readBody, createError } from 'h3'
 import { MongoClient } from 'mongodb'
-import { v2 as cloudinary } from 'cloudinary'
+import { uploadOptimizedImage } from '../utils/cloudinaryUpload'
 import { isAdmin } from '../utils/auth'
 
 export default defineEventHandler(async (event) => {
@@ -9,21 +9,9 @@ export default defineEventHandler(async (event) => {
     throw createError({ statusCode: 401, statusMessage: 'Unauthorized' })
   }
 
-  const config = useRuntimeConfig(event)
   const body = await readBody(event)
 
-  // 1. Configurazione Cloudinary
-  if (config.cloudinaryCloudName && config.cloudinaryApiKey && config.cloudinaryApiSecret) {
-    cloudinary.config({
-      cloud_name: config.cloudinaryCloudName,
-      api_key: config.cloudinaryApiKey,
-      api_secret: config.cloudinaryApiSecret
-    })
-  } else {
-    console.warn('ATTENZIONE: Cloudinary non configurato. L\'upload delle immagini fallirà.')
-  }
-
-  // 2. Connessione a MongoDB tramite utilità centralizzata
+  // 1. Connessione a MongoDB tramite utilità centralizzata
   const { db } = await connectToDatabase()
 
   try {
@@ -33,12 +21,13 @@ export default defineEventHandler(async (event) => {
       console.log(`Tentativo di upload di ${body.imagesBase64.length} immagini su Cloudinary...`)
       for (const [index, base64] of body.imagesBase64.entries()) {
         try {
-          const uploadResponse = await cloudinary.uploader.upload(base64, {
+          const uploadResult = await uploadOptimizedImage(base64, {
             folder: 'road-runner-motos',
-            resource_type: 'auto'
+            maxWidth: 1600,
+            resourceType: 'auto'
           })
-          imageUrls.push(uploadResponse.secure_url)
-          console.log(`Immagine ${index + 1} caricata: ${uploadResponse.secure_url}`)
+          imageUrls.push(uploadResult.secureUrl)
+          console.log(`Immagine ${index + 1} caricata: ${uploadResult.secureUrl}`)
         } catch (cloudinaryError: any) {
           console.error(`Errore Cloudinary sull'immagine ${index + 1}:`, cloudinaryError.message)
           throw createError({

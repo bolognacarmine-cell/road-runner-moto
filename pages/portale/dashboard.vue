@@ -1,6 +1,7 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
+import { getOptimizedCloudinaryUrl } from '~/utils/cloudinaryImage'
 
 const router = useRouter()
 const user = ref(null)
@@ -71,7 +72,11 @@ const getDateStatus = (dateStr) => {
     <header class="dashboard-header">
       <div class="container header-shell">
         <div class="brand-minimal">
-          <img src="/logo-road-runner.jpg" alt="Logo" />
+          <picture>
+            <source srcset="/logo-road-runner.webp" type="image/webp" />
+            <source srcset="/logo-road-runner.avif" type="image/avif" />
+            <img src="/logo-road-runner.jpg" alt="Logo" />
+          </picture>
           <span>Area Clienti</span>
         </div>
         <div v-if="user" class="user-info">
@@ -91,7 +96,7 @@ const getDateStatus = (dateStr) => {
         <!-- Sidebar / Navigation -->
         <aside class="dashboard-nav">
           <div class="vehicle-mini-card">
-            <img :src="data.vehicle.photoUrl || '/logo-road-runner.jpg'" alt="Moto" />
+            <img :src="getOptimizedCloudinaryUrl(data.vehicle.photoUrl || '/logo-road-runner.jpg')" alt="Moto" />
             <div class="mini-info">
               <h3>{{ data.vehicle.marca }} {{ data.vehicle.modello }}</h3>
               <span class="plate-badge">{{ data.vehicle.targa }}</span>

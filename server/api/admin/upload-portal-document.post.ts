@@ -1,6 +1,6 @@
 import { defineEventHandler, readBody, createError } from 'h3'
 import { MongoClient } from 'mongodb'
-import { v2 as cloudinary } from 'cloudinary'
+import { uploadOptimizedImage } from '../../utils/cloudinaryUpload'
 import { isAdmin } from '../../utils/auth'
 
 export default defineEventHandler(async (event) => {
@@ -8,7 +8,6 @@ export default defineEventHandler(async (event) => {
     throw createError({ statusCode: 401, statusMessage: 'Unauthorized' })
   }
 
-  const config = useRuntimeConfig(event)
   const body = await readBody(event)
 
   const { targa, title, type, fileBase64 } = body
@@ -17,20 +16,14 @@ export default defineEventHandler(async (event) => {
     throw createError({ statusCode: 400, statusMessage: 'Targa e file sono obbligatori.' })
   }
 
-  // Configurazione Cloudinary
-  cloudinary.config({
-    cloud_name: config.cloudinaryCloudName,
-    api_key: config.cloudinaryApiKey,
-    api_secret: config.cloudinaryApiSecret
-  })
-
   const { db } = await connectToDatabase()
 
   try {
-    // 1. Upload su Cloudinary
-    const uploadRes = await cloudinary.uploader.upload(fileBase64, {
+    // 1. Upload su Cloudinary (ottimizzato)
+    const uploadResult = await uploadOptimizedImage(fileBase64, {
       folder: 'portal-docs',
-      resource_type: 'auto'
+      maxWidth: 1600,
+      resourceType: 'auto'
     })
 
     // 2. Salvataggio riferimento su MongoDB
@@ -38,12 +31,12 @@ export default defineEventHandler(async (event) => {
       targa: targa.toUpperCase(),
       title: title || 'Documento senza titolo',
       type: type || 'Altro',
-      url: uploadRes.secure_url,
-      cloudinary_id: uploadRes.public_id,
+      url: uploadResult.secureUrl,
+      cloudinary_id: uploadResult.publicId,
       createdAt: new Date()
     })
 
-    return { success: true, url: uploadRes.secure_url }
+    return { success: true, url: uploadResult.secureUrl }
 
   } catch (error: any) {
     console.error('ERRORE UPLOAD DOC:', error)

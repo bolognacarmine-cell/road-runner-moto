@@ -7,7 +7,11 @@
       class="carousel-watermark"
       :class="watermarkPosition"
     >
-      <img src="/logo-road-runner.jpg" alt="Road Runner" />
+      <picture>
+        <source srcset="/logo-road-runner.webp" type="image/webp" />
+        <source srcset="/logo-road-runner.avif" type="image/avif" />
+        <img src="/logo-road-runner.jpg" alt="Road Runner" />
+      </picture>
     </div>
 
     <!-- Immagini -->
@@ -18,12 +22,24 @@
         class="carousel-slide"
         v-show="currentIndex === index"
       >
-        <img :src="img" :alt="altText" class="carousel-img" loading="lazy" />
+        <img
+          :src="getOptimizedCloudinaryUrl(img)"
+          :srcset="getOptimizedSrcSet(img).length > 1 ? getOptimizedSrcSet(img).join(', ') : undefined"
+          :sizes="carouselSizes"
+          :alt="altText"
+          class="carousel-img"
+          loading="lazy"
+          decoding="async"
+        />
       </div>
       
       <!-- Placeholder se non ci sono immagini -->
       <div v-if="!images || images.length === 0" class="carousel-slide">
-        <img src="/logo-road-runner.jpg" :alt="altText" class="carousel-img" />
+        <picture>
+          <source srcset="/logo-road-runner.webp" type="image/webp" />
+          <source srcset="/logo-road-runner.avif" type="image/avif" />
+          <img src="/logo-road-runner.jpg" :alt="altText" class="carousel-img" loading="lazy" decoding="async" />
+        </picture>
       </div>
     </div>
 
@@ -60,6 +76,7 @@
 
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue'
+import { getOptimizedCloudinaryUrl, getOptimizedSrcSet } from '~/utils/cloudinaryImage'
 
 const props = defineProps({
   images: {
@@ -86,6 +103,7 @@ const props = defineProps({
 
 const currentIndex = ref(0)
 const showArrows = ref(false)
+const carouselSizes = '(max-width: 768px) 100vw, 50vw'
 let timer = null
 
 const startAutoplay = () => {

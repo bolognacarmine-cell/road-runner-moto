@@ -1,6 +1,7 @@
 
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue'
+import { getOptimizedCloudinaryUrl } from '~/utils/cloudinaryImage'
 
 const currentSlide = ref(0)
 
@@ -19,7 +20,7 @@ const images = Array.from({ length: 19 }, (_, i) => {
   }
 
   return {
-    url: `/img/helmets/collezione (${index}).jpg`,
+    url: `/img/helmets/collezione (${index}).webp`,
     title,
     desc
   }
@@ -108,7 +109,7 @@ onUnmounted(() => {
             >
               <div class="slide-image-wrapper">
                 <!-- Immagine con fallback elegante -->
-                <img :src="img.url" :alt="img.title" @error="(e) => e.target.src = '/logo-road-runner.jpg'" />
+                <img :src="getOptimizedCloudinaryUrl(img.url)" :alt="img.title" loading="lazy" decoding="async" @error="(e) => e.target.src = '/logo-road-runner.jpg'" />
                 <div class="slide-overlay">
                   <h4>{{ img.title }}</h4>
                   <p>{{ img.desc }}</p>

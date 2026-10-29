@@ -4,6 +4,7 @@ import { gsap } from 'gsap'
 import { useSearch } from '~/composables/useSearch'
 import { useFilter } from '~/composables/useFilter'
 import MotoCarousel from '~/components/moto/MotoCarousel.vue'
+import { getOptimizedCloudinaryUrl } from '~/utils/cloudinaryImage'
 
 // Props: veicoli dinamici e filtri
 const props = defineProps({
@@ -140,10 +141,7 @@ const formatImages = (moto) => {
       }
       
       // Ottimizzazione Cloudinary solo se è un URL Cloudinary
-      if (url.includes('cloudinary.com')) {
-        return url.replace('/upload/', '/upload/f_auto,q_auto/')
-      }
-      return url
+      return getOptimizedCloudinaryUrl(url)
     })
   }
   return ['/logo-road-runner.jpg']

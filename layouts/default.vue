@@ -283,7 +283,11 @@ onUnmounted(() => {
         <div class="container header-content">
           <NuxtLink to="/" class="minimal-logo">
             <div class="logo-box">
-              <img src="/logo-road-runner.jpg" alt="Logo Road Runner Moto - Concessionaria Capodrise" />
+              <picture>
+                <source srcset="/logo-road-runner.webp" type="image/webp" />
+                <source srcset="/logo-road-runner.avif" type="image/avif" />
+                <img src="/logo-road-runner.jpg" alt="Logo Road Runner Moto - Concessionaria Capodrise" />
+              </picture>
             </div>
             <div class="brand-info">
               <span class="brand-title">ROAD RUNNER</span>

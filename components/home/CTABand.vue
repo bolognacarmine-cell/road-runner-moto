@@ -6,7 +6,7 @@
   <div class="container">
     <div 
       class="cta-band-shell" 
-      :style="{ backgroundImage: `linear-gradient(135deg, rgba(5, 5, 5, 0.8), rgba(5, 5, 5, 0.4)), url('/cta-bg.jpg')` }"
+      :style="{ backgroundImage: `linear-gradient(135deg, rgba(5, 5, 5, 0.8), rgba(5, 5, 5, 0.4)), url('/cta-bg.jpg'), url('/cta-bg.webp')` }"
     >
       <div class="cta-content">
         <p class="section-kicker">Road Runner Moto</p>

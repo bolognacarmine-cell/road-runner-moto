@@ -1,7 +1,7 @@
 
 import { defineEventHandler, readBody, createError } from 'h3'
 import { MongoClient, ObjectId } from 'mongodb'
-import { v2 as cloudinary } from 'cloudinary'
+import { uploadOptimizedImage } from '../../utils/cloudinaryUpload'
 import { isAdmin } from '../../utils/auth'
 
 export default defineEventHandler(async (event) => {
@@ -9,19 +9,10 @@ export default defineEventHandler(async (event) => {
     throw createError({ statusCode: 401, statusMessage: 'Unauthorized' })
   }
 
-  const config = useRuntimeConfig(event)
   const body = await readBody(event)
   const id = event.context.params?.id
 
   if (!id) throw createError({ statusCode: 400, statusMessage: 'ID casco non fornito' })
-
-  if (config.cloudinaryCloudName && config.cloudinaryApiKey && config.cloudinaryApiSecret) {
-    cloudinary.config({
-      cloud_name: config.cloudinaryCloudName,
-      api_key: config.cloudinaryApiKey,
-      api_secret: config.cloudinaryApiSecret
-    })
-  }
 
   const { db } = await connectToDatabase()
 
@@ -29,11 +20,12 @@ export default defineEventHandler(async (event) => {
     const newImageUrls = []
     if (body.imagesBase64 && Array.isArray(body.imagesBase64)) {
       for (const base64 of body.imagesBase64) {
-        const uploadResponse = await cloudinary.uploader.upload(base64, {
+        const uploadResult = await uploadOptimizedImage(base64, {
           folder: 'road-runner-helmets',
-          resource_type: 'auto'
+          maxWidth: 1600,
+          resourceType: 'auto'
         })
-        newImageUrls.push(uploadResponse.secure_url)
+        newImageUrls.push(uploadResult.secureUrl)
       }
     }
 

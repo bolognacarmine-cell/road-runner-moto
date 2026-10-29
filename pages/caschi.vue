@@ -2,6 +2,7 @@
 <script setup>
 import { useAsyncData, computed, ref, useHead } from '#imports'
 import MotoCarousel from '~/components/moto/MotoCarousel.vue'
+import { getOptimizedCloudinaryUrl } from '~/utils/cloudinaryImage'
 
 // Recupero dinamico dei caschi dal database
 const { data: helmetsData, pending: loading } = await useAsyncData('helmets-page', () => $fetch('/api/helmets'), {
@@ -20,6 +21,14 @@ const filteredHelmets = computed(() => {
   if (selectedCategory.value === 'Tutti') return helmets.value
   return helmets.value.filter(h => h.categoria === selectedCategory.value)
 })
+
+const formatHelmetImages = (immagini) => {
+  if (!immagini || !Array.isArray(immagini)) return []
+  return immagini
+    .map((img) => (typeof img === 'string' ? img : (img?.url || '')))
+    .filter((url) => !!url)
+    .map((url) => getOptimizedCloudinaryUrl(url))
+}
 
 useHead({
   title: 'Collezione Caschi Moto | ROAD RUNNER MOTO',
@@ -112,7 +121,7 @@ useHead({
 
             <!-- Carosello Immagini -->
             <div class="product-visual">
-              <MotoCarousel :images="h.immagini" :altText="`${h.marca} ${h.modello}`" watermarkPosition="top-left" />
+              <MotoCarousel :images="formatHelmetImages(h.immagini)" :altText="`${h.marca} ${h.modello}`" watermarkPosition="top-left" />
             </div>
 
             <!-- Info Prodotto -->

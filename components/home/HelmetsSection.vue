@@ -3,6 +3,7 @@
 import { ref, onMounted, onUnmounted } from 'vue'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { getOptimizedCloudinaryUrl } from '~/utils/cloudinaryImage'
 
 if (process.client) {
   gsap.registerPlugin(ScrollTrigger)
@@ -28,7 +29,7 @@ const images = Array.from({ length: 19 }, (_, i) => {
   }
 
   return {
-    url: `/img/helmets/collezione (${index}).jpg`,
+    url: `/img/helmets/collezione (${index}).webp`,
     title,
     badge
   }
@@ -143,7 +144,7 @@ onUnmounted(() => {
           <div class="carousel-wrapper">
             <div class="carousel-inner" :style="{ transform: `translateX(-${currentSlide * 100}%)` }">
               <div v-for="(img, index) in images" :key="index" class="carousel-item">
-                <img :src="img.url" :alt="img.title" />
+                <img :src="getOptimizedCloudinaryUrl(img.url)" :alt="img.title" loading="lazy" decoding="async" />
                 <div class="item-overlay">
                   <span class="item-badge">{{ img.badge }}</span>
                   <h4>{{ img.title }}</h4>

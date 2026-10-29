@@ -113,7 +113,7 @@ useHead({
 
 .hero-mini {
   padding: 8rem 0 4rem;
-  background: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)), url('/cta-bg.jpg') center/cover;
+  background: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)), url('/cta-bg.jpg') center/cover, url('/cta-bg.webp') center/cover;
   text-align: center;
 }
 
