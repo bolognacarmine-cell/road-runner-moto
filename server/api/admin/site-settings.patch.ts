@@ -1,5 +1,5 @@
 import { defineEventHandler, readBody, createError } from 'h3'
-import { MongoClient } from 'mongodb'
+import { connectToDatabase } from '../../utils/mongodb'
 import { isAdmin } from '../../utils/auth'
 
 export default defineEventHandler(async (event) => {

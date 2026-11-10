@@ -41,6 +41,12 @@ export default defineNuxtConfig({
   runtimeConfig: {
     mongodbUri: process.env.MONGODB_URI || process.env.NUXT_MONGODB_URI,
     mongodbDbName: process.env.MONGODB_DB_NAME || process.env.NUXT_MONGODB_DB_NAME || 'roadrunner_db',
+    // Retenzione dati GDPR (giorni). Dopo questo periodo i dati personali vengono eliminati dal DB.
+    gdprRetentionDays: Number(process.env.GDPR_RETENTION_DAYS || 730),
+    // Credenziali admin (server-side only)
+    adminUser: process.env.ADMIN_USER,
+    adminPassword: process.env.ADMIN_PASSWORD,
+    adminSessionSecret: process.env.ADMIN_SESSION_SECRET,
     cloudinaryCloudName: process.env.CLOUDINARY_CLOUD_NAME,
     cloudinaryApiKey: process.env.CLOUDINARY_API_KEY,
     cloudinaryApiSecret: process.env.CLOUDINARY_API_SECRET,
@@ -110,6 +116,14 @@ export default defineNuxtConfig({
     compressPublicAssets: true,
     // Forza l'host e la porta per Render
     devProxy: {},
+    // ✅ Task Nitro: pulizia automatica dati GDPR
+    experimental: {
+      tasks: true
+    },
+    scheduledTasks: {
+      // Ogni giorno alle 03:00 (ora del server) elimina i dati personali oltre la retention configurata
+      '0 3 * * *': ['gdpr:cleanup']
+    },
     hooks: {
       'compiled'() {
         console.log('Nitro compiled with Render config')

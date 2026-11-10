@@ -5,6 +5,7 @@ import { useSearch } from '~/composables/useSearch'
 import { useFilter } from '~/composables/useFilter'
 import { useRoute } from 'vue-router'
 import { useSiteSettings } from '~/stores/useSiteSettings'
+import { isWhatsAppConsented, setPendingWhatsAppHref, consumePendingWhatsAppHref } from '~/composables/useWhatsAppConsent'
 
 const route = useRoute()
 const settings = useSiteSettings()
@@ -24,6 +25,7 @@ const mobileMenuOpen = ref(false)
 const isScrolled = ref(false)
 let ctx;
 let gdprCleanup;
+let onWhatsAppClick = null
 
 const toggleMenu = () => {
   mobileMenuOpen.value = !mobileMenuOpen.value
@@ -108,6 +110,23 @@ onMounted(async () => {
             "onAccept": () => {
               console.log('Logica per la pubblicità caricata');
             }
+          },
+          {
+            "id": "whatsapp",
+            "name": "WhatsApp",
+            "description": "<p>Consente di aprire la chat WhatsApp con il concessionario. Nessun dato personale viene condiviso con Meta senza il tuo consenso; se non lo concedi, i pulsanti WhatsApp restano disattivati.</p>",
+            "required": false,
+            "onAccept": () => {
+              // Se l'utente ha cliccato un link WhatsApp prima di acconsentire,
+              // aprilo ora che la scelta è stata salvata dal pannello preferenze.
+              const href = consumePendingWhatsAppHref()
+              if (href) {
+                window.open(href, '_blank', 'noopener,noreferrer')
+              }
+            },
+            "onReject": () => {
+              setPendingWhatsAppHref(null)
+            }
           }
         ],
         "text": {
@@ -137,6 +156,24 @@ onMounted(async () => {
   }
 
   initSilktide()
+
+  // ✅ Consenso WhatsApp: i link wa.me restano inattivi finché la categoria
+  // "whatsapp" non è accettata. Al click viene aperto il pannello preferenze.
+  const onWhatsAppClickLocal = (e) => {
+    const anchor = e.target?.closest?.('a[href*="wa.me"]')
+    if (!anchor) return
+    if (isWhatsAppConsented()) return
+
+    e.preventDefault()
+    e.stopPropagation()
+    setPendingWhatsAppHref(anchor.getAttribute('href') || anchor.href)
+    if (window.silktideCookieBannerManager) {
+      window.silktideCookieBannerManager.toggleModal(true)
+    }
+  }
+  onWhatsAppClick = onWhatsAppClickLocal
+
+  document.addEventListener('click', onWhatsAppClickLocal, true)
 
   const setupGdprFooter = () => {
     const footer = document.querySelector('.gdpr-footer')
@@ -269,6 +306,7 @@ onMounted(async () => {
 onUnmounted(() => {
   if (process.client) {
     window.removeEventListener('scroll', handleScroll)
+    if (onWhatsAppClick) document.removeEventListener('click', onWhatsAppClick, true)
   }
   if (ctx) ctx.revert()
   if (gdprCleanup) gdprCleanup()

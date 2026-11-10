@@ -141,7 +141,8 @@ const openConsentManager = () => {
               
               <div class="legal-actions">
                 <div class="contact-card">
-                  <p>Per esercitare tali diritti, scrivi a:</p>
+                  <p>Per esercitare tali diritti, usa il modulo online (conferma automatica) o scrivi a:</p>
+                  <NuxtLink to="/richieste-privacy" class="btn-email">Modulo Richieste GDPR</NuxtLink>
                   <a href="mailto:inforoadrunner@libero.it" class="btn-email">inforoadrunner@libero.it</a>
                 </div>
 

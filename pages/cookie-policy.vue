@@ -91,6 +91,12 @@ const openConsentManager = () => {
                       <td>1 anno</td>
                     </tr>
                     <tr>
+                      <td>silktideCookieChoice_* (localStorage)</td>
+                      <td>Proprio (Silktide)</td>
+                      <td>Preferenze consenso per categoria, inclusa la categoria WhatsApp</td>
+                      <td>Fino a modifica</td>
+                    </tr>
+                    <tr>
                       <td>_ga, _gid</td>
                       <td>Google Analytics</td>
                       <td>Analitici (Anonimi)</td>
@@ -118,6 +124,10 @@ const openConsentManager = () => {
                 <div class="cookie-type-card">
                   <strong>Cookie Pubblicitari</strong>
                   <p>Utilizzati per mostrare contenuti personalizzati. Installati solo dopo consenso esplicito.</p>
+                </div>
+                <div class="cookie-type-card">
+                  <strong>WhatsApp</strong>
+                  <p>Consenso per aprire le chat WhatsApp con il concessionario. I link restano disattivati finché non concedi la categoria.</p>
                 </div>
                 <div class="cookie-type-card">
                   <strong>Terze Parti</strong>
